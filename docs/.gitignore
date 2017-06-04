@@ -1,0 +1,10 @@
+/html/
+/latex/
+/man/
+/rtf/
+/xml/
+/docbook/
+/doxyfile.stamp
+/.dirstamp
+/Doxyfile
+/Makefile

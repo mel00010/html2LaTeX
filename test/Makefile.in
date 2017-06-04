@@ -14,7 +14,6 @@
 
 @SET_MAKE@
 
-
 VPATH = @srcdir@
 am__is_gnu_make = { \
   if test -z '$(MAKELEVEL)'; then \
@@ -90,29 +89,28 @@ POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
 target_triplet = @target@
-bin_PROGRAMS = html2LaTeX$(EXEEXT)
-subdir = src
+noinst_PROGRAMS = test$(EXEEXT)
+subdir = test
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
-DIST_COMMON = $(srcdir)/Makefile.am $(include_HEADERS) \
-	$(am__DIST_COMMON)
+DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-am__installdirs = "$(DESTDIR)$(bindir)" "$(DESTDIR)$(includedir)"
-PROGRAMS = $(bin_PROGRAMS)
+PROGRAMS = $(noinst_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
-am_html2LaTeX_OBJECTS = html2LaTeX-main.$(OBJEXT) \
-	html2LaTeX-ProgramOptions.$(OBJEXT) \
-	ParseHTML/html2LaTeX-DetermineCharEncoding.$(OBJEXT) \
-	ParseHTML/html2LaTeX-MagicString.$(OBJEXT)
-html2LaTeX_OBJECTS = $(am_html2LaTeX_OBJECTS)
-html2LaTeX_LDADD = $(LDADD)
-html2LaTeX_LINK = $(CXXLD) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) \
-	$(html2LaTeX_LDFLAGS) $(LDFLAGS) -o $@
+am_test_OBJECTS = test-main_test.$(OBJEXT) \
+	ParseHTML/test-DetermineCharEncoding_test.$(OBJEXT) \
+	ParseHTML/test-MagicString_test.$(OBJEXT) \
+	../src/ParseHTML/test-DetermineCharEncoding.$(OBJEXT) \
+	../src/ParseHTML/test-MagicString.$(OBJEXT)
+test_OBJECTS = $(am_test_OBJECTS)
+test_LDADD = $(LDADD)
+test_LINK = $(CXXLD) $(test_CXXFLAGS) $(CXXFLAGS) $(test_LDFLAGS) \
+	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -146,41 +144,13 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(html2LaTeX_SOURCES)
-DIST_SOURCES = $(html2LaTeX_SOURCES)
+SOURCES = $(test_SOURCES)
+DIST_SOURCES = $(test_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
     *) (install-info --version) >/dev/null 2>&1;; \
   esac
-am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
-am__vpath_adj = case $$p in \
-    $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
-    *) f=$$p;; \
-  esac;
-am__strip_dir = f=`echo $$p | sed -e 's|^.*/||'`;
-am__install_max = 40
-am__nobase_strip_setup = \
-  srcdirstrip=`echo "$(srcdir)" | sed 's/[].[^$$\\*|]/\\\\&/g'`
-am__nobase_strip = \
-  for p in $$list; do echo "$$p"; done | sed -e "s|$$srcdirstrip/||"
-am__nobase_list = $(am__nobase_strip_setup); \
-  for p in $$list; do echo "$$p $$p"; done | \
-  sed "s| $$srcdirstrip/| |;"' / .*\//!s/ .*/ ./; s,\( .*\)/[^/]*$$,\1,' | \
-  $(AWK) 'BEGIN { files["."] = "" } { files[$$2] = files[$$2] " " $$1; \
-    if (++n[$$2] == $(am__install_max)) \
-      { print $$2, files[$$2]; n[$$2] = 0; files[$$2] = "" } } \
-    END { for (dir in files) print dir, files[dir] }'
-am__base_list = \
-  sed '$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;$$!N;s/\n/ /g' | \
-  sed '$$!N;$$!N;$$!N;$$!N;s/\n/ /g'
-am__uninstall_files_from_dir = { \
-  test -z "$$files" \
-    || { test ! -d "$$dir" && test ! -f "$$dir" && test ! -r "$$dir"; } \
-    || { echo " ( cd '$$dir' && rm -f" $$files ")"; \
-         $(am__cd) "$$dir" && rm -f $$files; }; \
-  }
-HEADERS = $(include_HEADERS)
 am__tagged_files = $(HEADERS) $(SOURCES) $(TAGS_FILES) $(LISP)
 # Read a list of newline-separated strings from the standard input,
 # and print each of them once, without duplicates.  Input order is
@@ -306,20 +276,16 @@ target_vendor = @target_vendor@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-html2LaTeX_SOURCES = \
-	main.cpp \
-	ProgramOptions.cpp \
+test_SOURCES = \
+	main_test.cpp \
 	\
-	ParseHTML/DetermineCharEncoding.cpp \
-	ParseHTML/MagicString.cpp
-
-include_HEADERS = \
-	ProgramOptions.hpp \
+	ParseHTML/DetermineCharEncoding_test.cpp \
+	ParseHTML/MagicString_test.cpp \
 	\
-	ParseHTML/DetermineCharEncoding.hpp \
-	ParseHTML/MagicString.hpp
+	../src/ParseHTML/DetermineCharEncoding.cpp \
+	../src/ParseHTML/MagicString.cpp
 
-html2LaTeX_CXXFLAGS = \
+test_CXXFLAGS = \
 	-Wno-unused-result \
 	-Wsign-compare \
 	-g \
@@ -332,13 +298,10 @@ html2LaTeX_CXXFLAGS = \
 	-Wall \
 	-Wextra \
 	-std=gnu++11 \
-	-I /usr/local/include
+	-I /usr/local/include \
+	-I ../src
 
-html2LaTeX_LDFLAGS = \
-	-L/usr/local/lib/ \
-	-lboost_program_options \
-	-lpthread
-
+test_LDFLAGS = -lpthread -lgtest -lgtest_main -L/usr/local/lib
 all: all-am
 
 .SUFFIXES:
@@ -352,9 +315,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign test/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/Makefile
+	  $(AUTOMAKE) --foreign test/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -372,74 +335,49 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
-install-binPROGRAMS: $(bin_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(bindir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(bindir)" || exit 1; \
-	fi; \
-	for p in $$list; do echo "$$p $$p"; done | \
-	sed 's/$(EXEEXT)$$//' | \
-	while read p p1; do if test -f $$p \
-	  ; then echo "$$p"; echo "$$p"; else :; fi; \
-	done | \
-	sed -e 'p;s,.*/,,;n;h' \
-	    -e 's|.*|.|' \
-	    -e 'p;x;s,.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/' | \
-	sed 'N;N;N;s,\n, ,g' | \
-	$(AWK) 'BEGIN { files["."] = ""; dirs["."] = 1 } \
-	  { d=$$3; if (dirs[d] != 1) { print "d", d; dirs[d] = 1 } \
-	    if ($$2 == $$4) files[d] = files[d] " " $$1; \
-	    else { print "f", $$3 "/" $$4, $$1; } } \
-	  END { for (d in files) print "f", d, files[d] }' | \
-	while read type dir files; do \
-	    if test "$$dir" = .; then dir=; else dir=/$$dir; fi; \
-	    test -z "$$files" || { \
-	      echo " $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files '$(DESTDIR)$(bindir)$$dir'"; \
-	      $(INSTALL_PROGRAM_ENV) $(INSTALL_PROGRAM) $$files "$(DESTDIR)$(bindir)$$dir" || exit $$?; \
-	    } \
-	; done
 
-uninstall-binPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; test -n "$(bindir)" || list=; \
-	files=`for p in $$list; do echo "$$p"; done | \
-	  sed -e 'h;s,^.*/,,;s/$(EXEEXT)$$//;$(transform)' \
-	      -e 's/$$/$(EXEEXT)/' \
-	`; \
-	test -n "$$list" || exit 0; \
-	echo " ( cd '$(DESTDIR)$(bindir)' && rm -f" $$files ")"; \
-	cd "$(DESTDIR)$(bindir)" && rm -f $$files
-
-clean-binPROGRAMS:
-	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+clean-noinstPROGRAMS:
+	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
 ParseHTML/$(am__dirstamp):
 	@$(MKDIR_P) ParseHTML
 	@: > ParseHTML/$(am__dirstamp)
 ParseHTML/$(DEPDIR)/$(am__dirstamp):
 	@$(MKDIR_P) ParseHTML/$(DEPDIR)
 	@: > ParseHTML/$(DEPDIR)/$(am__dirstamp)
-ParseHTML/html2LaTeX-DetermineCharEncoding.$(OBJEXT):  \
+ParseHTML/test-DetermineCharEncoding_test.$(OBJEXT):  \
 	ParseHTML/$(am__dirstamp) ParseHTML/$(DEPDIR)/$(am__dirstamp)
-ParseHTML/html2LaTeX-MagicString.$(OBJEXT): ParseHTML/$(am__dirstamp) \
+ParseHTML/test-MagicString_test.$(OBJEXT): ParseHTML/$(am__dirstamp) \
 	ParseHTML/$(DEPDIR)/$(am__dirstamp)
+../src/ParseHTML/$(am__dirstamp):
+	@$(MKDIR_P) ../src/ParseHTML
+	@: > ../src/ParseHTML/$(am__dirstamp)
+../src/ParseHTML/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) ../src/ParseHTML/$(DEPDIR)
+	@: > ../src/ParseHTML/$(DEPDIR)/$(am__dirstamp)
+../src/ParseHTML/test-DetermineCharEncoding.$(OBJEXT):  \
+	../src/ParseHTML/$(am__dirstamp) \
+	../src/ParseHTML/$(DEPDIR)/$(am__dirstamp)
+../src/ParseHTML/test-MagicString.$(OBJEXT):  \
+	../src/ParseHTML/$(am__dirstamp) \
+	../src/ParseHTML/$(DEPDIR)/$(am__dirstamp)
 
-html2LaTeX$(EXEEXT): $(html2LaTeX_OBJECTS) $(html2LaTeX_DEPENDENCIES) $(EXTRA_html2LaTeX_DEPENDENCIES) 
-	@rm -f html2LaTeX$(EXEEXT)
-	$(AM_V_CXXLD)$(html2LaTeX_LINK) $(html2LaTeX_OBJECTS) $(html2LaTeX_LDADD) $(LIBS)
+test$(EXEEXT): $(test_OBJECTS) $(test_DEPENDENCIES) $(EXTRA_test_DEPENDENCIES) 
+	@rm -f test$(EXEEXT)
+	$(AM_V_CXXLD)$(test_LINK) $(test_OBJECTS) $(test_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
+	-rm -f ../src/ParseHTML/*.$(OBJEXT)
 	-rm -f ParseHTML/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/html2LaTeX-ProgramOptions.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/html2LaTeX-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@../src/ParseHTML/$(DEPDIR)/test-DetermineCharEncoding.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@../src/ParseHTML/$(DEPDIR)/test-MagicString.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test-main_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@ParseHTML/$(DEPDIR)/test-DetermineCharEncoding_test.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@ParseHTML/$(DEPDIR)/test-MagicString_test.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -457,82 +395,75 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
 
-html2LaTeX-main.o: main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT html2LaTeX-main.o -MD -MP -MF $(DEPDIR)/html2LaTeX-main.Tpo -c -o html2LaTeX-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/html2LaTeX-main.Tpo $(DEPDIR)/html2LaTeX-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='html2LaTeX-main.o' libtool=no @AMDEPBACKSLASH@
+test-main_test.o: main_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT test-main_test.o -MD -MP -MF $(DEPDIR)/test-main_test.Tpo -c -o test-main_test.o `test -f 'main_test.cpp' || echo '$(srcdir)/'`main_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test-main_test.Tpo $(DEPDIR)/test-main_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main_test.cpp' object='test-main_test.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o html2LaTeX-main.o `test -f 'main.cpp' || echo '$(srcdir)/'`main.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o test-main_test.o `test -f 'main_test.cpp' || echo '$(srcdir)/'`main_test.cpp
 
-html2LaTeX-main.obj: main.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT html2LaTeX-main.obj -MD -MP -MF $(DEPDIR)/html2LaTeX-main.Tpo -c -o html2LaTeX-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/html2LaTeX-main.Tpo $(DEPDIR)/html2LaTeX-main.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main.cpp' object='html2LaTeX-main.obj' libtool=no @AMDEPBACKSLASH@
+test-main_test.obj: main_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT test-main_test.obj -MD -MP -MF $(DEPDIR)/test-main_test.Tpo -c -o test-main_test.obj `if test -f 'main_test.cpp'; then $(CYGPATH_W) 'main_test.cpp'; else $(CYGPATH_W) '$(srcdir)/main_test.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/test-main_test.Tpo $(DEPDIR)/test-main_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='main_test.cpp' object='test-main_test.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o html2LaTeX-main.obj `if test -f 'main.cpp'; then $(CYGPATH_W) 'main.cpp'; else $(CYGPATH_W) '$(srcdir)/main.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o test-main_test.obj `if test -f 'main_test.cpp'; then $(CYGPATH_W) 'main_test.cpp'; else $(CYGPATH_W) '$(srcdir)/main_test.cpp'; fi`
 
-html2LaTeX-ProgramOptions.o: ProgramOptions.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT html2LaTeX-ProgramOptions.o -MD -MP -MF $(DEPDIR)/html2LaTeX-ProgramOptions.Tpo -c -o html2LaTeX-ProgramOptions.o `test -f 'ProgramOptions.cpp' || echo '$(srcdir)/'`ProgramOptions.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/html2LaTeX-ProgramOptions.Tpo $(DEPDIR)/html2LaTeX-ProgramOptions.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProgramOptions.cpp' object='html2LaTeX-ProgramOptions.o' libtool=no @AMDEPBACKSLASH@
+ParseHTML/test-DetermineCharEncoding_test.o: ParseHTML/DetermineCharEncoding_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/test-DetermineCharEncoding_test.o -MD -MP -MF ParseHTML/$(DEPDIR)/test-DetermineCharEncoding_test.Tpo -c -o ParseHTML/test-DetermineCharEncoding_test.o `test -f 'ParseHTML/DetermineCharEncoding_test.cpp' || echo '$(srcdir)/'`ParseHTML/DetermineCharEncoding_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/test-DetermineCharEncoding_test.Tpo ParseHTML/$(DEPDIR)/test-DetermineCharEncoding_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/DetermineCharEncoding_test.cpp' object='ParseHTML/test-DetermineCharEncoding_test.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o html2LaTeX-ProgramOptions.o `test -f 'ProgramOptions.cpp' || echo '$(srcdir)/'`ProgramOptions.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/test-DetermineCharEncoding_test.o `test -f 'ParseHTML/DetermineCharEncoding_test.cpp' || echo '$(srcdir)/'`ParseHTML/DetermineCharEncoding_test.cpp
 
-html2LaTeX-ProgramOptions.obj: ProgramOptions.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT html2LaTeX-ProgramOptions.obj -MD -MP -MF $(DEPDIR)/html2LaTeX-ProgramOptions.Tpo -c -o html2LaTeX-ProgramOptions.obj `if test -f 'ProgramOptions.cpp'; then $(CYGPATH_W) 'ProgramOptions.cpp'; else $(CYGPATH_W) '$(srcdir)/ProgramOptions.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/html2LaTeX-ProgramOptions.Tpo $(DEPDIR)/html2LaTeX-ProgramOptions.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ProgramOptions.cpp' object='html2LaTeX-ProgramOptions.obj' libtool=no @AMDEPBACKSLASH@
+ParseHTML/test-DetermineCharEncoding_test.obj: ParseHTML/DetermineCharEncoding_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/test-DetermineCharEncoding_test.obj -MD -MP -MF ParseHTML/$(DEPDIR)/test-DetermineCharEncoding_test.Tpo -c -o ParseHTML/test-DetermineCharEncoding_test.obj `if test -f 'ParseHTML/DetermineCharEncoding_test.cpp'; then $(CYGPATH_W) 'ParseHTML/DetermineCharEncoding_test.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/DetermineCharEncoding_test.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/test-DetermineCharEncoding_test.Tpo ParseHTML/$(DEPDIR)/test-DetermineCharEncoding_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/DetermineCharEncoding_test.cpp' object='ParseHTML/test-DetermineCharEncoding_test.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o html2LaTeX-ProgramOptions.obj `if test -f 'ProgramOptions.cpp'; then $(CYGPATH_W) 'ProgramOptions.cpp'; else $(CYGPATH_W) '$(srcdir)/ProgramOptions.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/test-DetermineCharEncoding_test.obj `if test -f 'ParseHTML/DetermineCharEncoding_test.cpp'; then $(CYGPATH_W) 'ParseHTML/DetermineCharEncoding_test.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/DetermineCharEncoding_test.cpp'; fi`
 
-ParseHTML/html2LaTeX-DetermineCharEncoding.o: ParseHTML/DetermineCharEncoding.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-DetermineCharEncoding.o -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.o `test -f 'ParseHTML/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`ParseHTML/DetermineCharEncoding.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/DetermineCharEncoding.cpp' object='ParseHTML/html2LaTeX-DetermineCharEncoding.o' libtool=no @AMDEPBACKSLASH@
+ParseHTML/test-MagicString_test.o: ParseHTML/MagicString_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/test-MagicString_test.o -MD -MP -MF ParseHTML/$(DEPDIR)/test-MagicString_test.Tpo -c -o ParseHTML/test-MagicString_test.o `test -f 'ParseHTML/MagicString_test.cpp' || echo '$(srcdir)/'`ParseHTML/MagicString_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/test-MagicString_test.Tpo ParseHTML/$(DEPDIR)/test-MagicString_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/MagicString_test.cpp' object='ParseHTML/test-MagicString_test.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.o `test -f 'ParseHTML/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`ParseHTML/DetermineCharEncoding.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/test-MagicString_test.o `test -f 'ParseHTML/MagicString_test.cpp' || echo '$(srcdir)/'`ParseHTML/MagicString_test.cpp
 
-ParseHTML/html2LaTeX-DetermineCharEncoding.obj: ParseHTML/DetermineCharEncoding.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-DetermineCharEncoding.obj -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.obj `if test -f 'ParseHTML/DetermineCharEncoding.cpp'; then $(CYGPATH_W) 'ParseHTML/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/DetermineCharEncoding.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/DetermineCharEncoding.cpp' object='ParseHTML/html2LaTeX-DetermineCharEncoding.obj' libtool=no @AMDEPBACKSLASH@
+ParseHTML/test-MagicString_test.obj: ParseHTML/MagicString_test.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/test-MagicString_test.obj -MD -MP -MF ParseHTML/$(DEPDIR)/test-MagicString_test.Tpo -c -o ParseHTML/test-MagicString_test.obj `if test -f 'ParseHTML/MagicString_test.cpp'; then $(CYGPATH_W) 'ParseHTML/MagicString_test.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/MagicString_test.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/test-MagicString_test.Tpo ParseHTML/$(DEPDIR)/test-MagicString_test.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/MagicString_test.cpp' object='ParseHTML/test-MagicString_test.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.obj `if test -f 'ParseHTML/DetermineCharEncoding.cpp'; then $(CYGPATH_W) 'ParseHTML/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/DetermineCharEncoding.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/test-MagicString_test.obj `if test -f 'ParseHTML/MagicString_test.cpp'; then $(CYGPATH_W) 'ParseHTML/MagicString_test.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/MagicString_test.cpp'; fi`
 
-ParseHTML/html2LaTeX-MagicString.o: ParseHTML/MagicString.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-MagicString.o -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo -c -o ParseHTML/html2LaTeX-MagicString.o `test -f 'ParseHTML/MagicString.cpp' || echo '$(srcdir)/'`ParseHTML/MagicString.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/MagicString.cpp' object='ParseHTML/html2LaTeX-MagicString.o' libtool=no @AMDEPBACKSLASH@
+../src/ParseHTML/test-DetermineCharEncoding.o: ../src/ParseHTML/DetermineCharEncoding.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ../src/ParseHTML/test-DetermineCharEncoding.o -MD -MP -MF ../src/ParseHTML/$(DEPDIR)/test-DetermineCharEncoding.Tpo -c -o ../src/ParseHTML/test-DetermineCharEncoding.o `test -f '../src/ParseHTML/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`../src/ParseHTML/DetermineCharEncoding.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ../src/ParseHTML/$(DEPDIR)/test-DetermineCharEncoding.Tpo ../src/ParseHTML/$(DEPDIR)/test-DetermineCharEncoding.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='../src/ParseHTML/DetermineCharEncoding.cpp' object='../src/ParseHTML/test-DetermineCharEncoding.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-MagicString.o `test -f 'ParseHTML/MagicString.cpp' || echo '$(srcdir)/'`ParseHTML/MagicString.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ../src/ParseHTML/test-DetermineCharEncoding.o `test -f '../src/ParseHTML/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`../src/ParseHTML/DetermineCharEncoding.cpp
 
-ParseHTML/html2LaTeX-MagicString.obj: ParseHTML/MagicString.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-MagicString.obj -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo -c -o ParseHTML/html2LaTeX-MagicString.obj `if test -f 'ParseHTML/MagicString.cpp'; then $(CYGPATH_W) 'ParseHTML/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/MagicString.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/MagicString.cpp' object='ParseHTML/html2LaTeX-MagicString.obj' libtool=no @AMDEPBACKSLASH@
+../src/ParseHTML/test-DetermineCharEncoding.obj: ../src/ParseHTML/DetermineCharEncoding.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ../src/ParseHTML/test-DetermineCharEncoding.obj -MD -MP -MF ../src/ParseHTML/$(DEPDIR)/test-DetermineCharEncoding.Tpo -c -o ../src/ParseHTML/test-DetermineCharEncoding.obj `if test -f '../src/ParseHTML/DetermineCharEncoding.cpp'; then $(CYGPATH_W) '../src/ParseHTML/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/ParseHTML/DetermineCharEncoding.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ../src/ParseHTML/$(DEPDIR)/test-DetermineCharEncoding.Tpo ../src/ParseHTML/$(DEPDIR)/test-DetermineCharEncoding.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='../src/ParseHTML/DetermineCharEncoding.cpp' object='../src/ParseHTML/test-DetermineCharEncoding.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-MagicString.obj `if test -f 'ParseHTML/MagicString.cpp'; then $(CYGPATH_W) 'ParseHTML/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/MagicString.cpp'; fi`
-install-includeHEADERS: $(include_HEADERS)
-	@$(NORMAL_INSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
-	if test -n "$$list"; then \
-	  echo " $(MKDIR_P) '$(DESTDIR)$(includedir)'"; \
-	  $(MKDIR_P) "$(DESTDIR)$(includedir)" || exit 1; \
-	fi; \
-	for p in $$list; do \
-	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
-	  echo "$$d$$p"; \
-	done | $(am__base_list) | \
-	while read files; do \
-	  echo " $(INSTALL_HEADER) $$files '$(DESTDIR)$(includedir)'"; \
-	  $(INSTALL_HEADER) $$files "$(DESTDIR)$(includedir)" || exit $$?; \
-	done
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ../src/ParseHTML/test-DetermineCharEncoding.obj `if test -f '../src/ParseHTML/DetermineCharEncoding.cpp'; then $(CYGPATH_W) '../src/ParseHTML/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/ParseHTML/DetermineCharEncoding.cpp'; fi`
 
-uninstall-includeHEADERS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
-	files=`for p in $$list; do echo $$p; done | sed -e 's|^.*/||'`; \
-	dir='$(DESTDIR)$(includedir)'; $(am__uninstall_files_from_dir)
+../src/ParseHTML/test-MagicString.o: ../src/ParseHTML/MagicString.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ../src/ParseHTML/test-MagicString.o -MD -MP -MF ../src/ParseHTML/$(DEPDIR)/test-MagicString.Tpo -c -o ../src/ParseHTML/test-MagicString.o `test -f '../src/ParseHTML/MagicString.cpp' || echo '$(srcdir)/'`../src/ParseHTML/MagicString.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ../src/ParseHTML/$(DEPDIR)/test-MagicString.Tpo ../src/ParseHTML/$(DEPDIR)/test-MagicString.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='../src/ParseHTML/MagicString.cpp' object='../src/ParseHTML/test-MagicString.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ../src/ParseHTML/test-MagicString.o `test -f '../src/ParseHTML/MagicString.cpp' || echo '$(srcdir)/'`../src/ParseHTML/MagicString.cpp
+
+../src/ParseHTML/test-MagicString.obj: ../src/ParseHTML/MagicString.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -MT ../src/ParseHTML/test-MagicString.obj -MD -MP -MF ../src/ParseHTML/$(DEPDIR)/test-MagicString.Tpo -c -o ../src/ParseHTML/test-MagicString.obj `if test -f '../src/ParseHTML/MagicString.cpp'; then $(CYGPATH_W) '../src/ParseHTML/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/ParseHTML/MagicString.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ../src/ParseHTML/$(DEPDIR)/test-MagicString.Tpo ../src/ParseHTML/$(DEPDIR)/test-MagicString.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='../src/ParseHTML/MagicString.cpp' object='../src/ParseHTML/test-MagicString.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(test_CXXFLAGS) $(CXXFLAGS) -c -o ../src/ParseHTML/test-MagicString.obj `if test -f '../src/ParseHTML/MagicString.cpp'; then $(CYGPATH_W) '../src/ParseHTML/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/../src/ParseHTML/MagicString.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -618,11 +549,8 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(PROGRAMS) $(HEADERS)
+all-am: Makefile $(PROGRAMS)
 installdirs:
-	for dir in "$(DESTDIR)$(bindir)" "$(DESTDIR)$(includedir)"; do \
-	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
-	done
 install: install-am
 install-exec: install-exec-am
 install-data: install-data-am
@@ -649,6 +577,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
+	-rm -f ../src/ParseHTML/$(DEPDIR)/$(am__dirstamp)
+	-rm -f ../src/ParseHTML/$(am__dirstamp)
 	-rm -f ParseHTML/$(DEPDIR)/$(am__dirstamp)
 	-rm -f ParseHTML/$(am__dirstamp)
 
@@ -657,10 +587,10 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
+clean-am: clean-generic clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR) ParseHTML/$(DEPDIR)
+	-rm -rf ../src/ParseHTML/$(DEPDIR) ./$(DEPDIR) ParseHTML/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -677,13 +607,13 @@ info: info-am
 
 info-am:
 
-install-data-am: install-includeHEADERS
+install-data-am:
 
 install-dvi: install-dvi-am
 
 install-dvi-am:
 
-install-exec-am: install-binPROGRAMS
+install-exec-am:
 
 install-html: install-html-am
 
@@ -706,7 +636,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR) ParseHTML/$(DEPDIR)
+	-rm -rf ../src/ParseHTML/$(DEPDIR) ./$(DEPDIR) ParseHTML/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
@@ -722,23 +652,22 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-includeHEADERS
+uninstall-am:
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS TAGS all all-am check check-am clean \
-	clean-binPROGRAMS clean-generic cscopelist-am ctags ctags-am \
-	distclean distclean-compile distclean-generic distclean-tags \
-	distdir dvi dvi-am html html-am info info-am install \
-	install-am install-binPROGRAMS install-data install-data-am \
-	install-dvi install-dvi-am install-exec install-exec-am \
-	install-html install-html-am install-includeHEADERS \
+.PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
+	clean-noinstPROGRAMS cscopelist-am ctags ctags-am distclean \
+	distclean-compile distclean-generic distclean-tags distdir dvi \
+	dvi-am html html-am info info-am install install-am \
+	install-data install-data-am install-dvi install-dvi-am \
+	install-exec install-exec-am install-html install-html-am \
 	install-info install-info-am install-man install-pdf \
 	install-pdf-am install-ps install-ps-am install-strip \
 	installcheck installcheck-am installdirs maintainer-clean \
 	maintainer-clean-generic mostlyclean mostlyclean-compile \
 	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
-	uninstall-am uninstall-binPROGRAMS uninstall-includeHEADERS
+	uninstall-am
 
 .PRECIOUS: Makefile
 
