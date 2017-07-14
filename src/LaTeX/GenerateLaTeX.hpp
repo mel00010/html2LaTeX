@@ -1,5 +1,5 @@
 /*******************************************************************************
- * main_test.cpp
+ * GenerateLaTeX.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,22 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
+#ifndef LATEX_GENERATELATEX_HPP_
+#define LATEX_GENERATELATEX_HPP_
 
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
-/**
- * @file test/main_test.cpp
- * @brief The main test file of html2LaTeX
- */
-/**
- * @dir test
- * @brief Holds all of the source files and headers for the tests for html2LaTeX
- */
-/**
- * Googletest unit testing main function
- * @param argc
- * @param argv
- * @return
- */
-int main(int argc, char **argv);
 
+
+namespace LaTeX {
+
+} /* namespace LaTeX */
+
+
+
+#endif /* LATEX_GENERATELATEX_HPP_ */

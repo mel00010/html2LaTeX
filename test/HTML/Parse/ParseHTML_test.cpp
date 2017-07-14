@@ -1,5 +1,5 @@
 /*******************************************************************************
- * main_test.cpp
+ * ParseHTML_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -19,20 +19,3 @@
  *******************************************************************************/
 
 #include <gtest/gtest.h>
-#include <gmock/gmock.h>
-/**
- * @file test/main_test.cpp
- * @brief The main test file of html2LaTeX
- */
-/**
- * @dir test
- * @brief Holds all of the source files and headers for the tests for html2LaTeX
- */
-/**
- * Googletest unit testing main function
- * @param argc
- * @param argv
- * @return
- */
-int main(int argc, char **argv);
-

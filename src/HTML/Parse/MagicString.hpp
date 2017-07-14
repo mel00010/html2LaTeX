@@ -17,8 +17,11 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef PARSEHTML_MAGICSTRING_HPP_
-#define PARSEHTML_MAGICSTRING_HPP_
+#ifndef HTML_PARSE_MAGICSTRING_HPP_
+#define HTML_PARSE_MAGICSTRING_HPP_
+
+#include <HTML/Microsyntaxes/ASCII.hpp>
+
 
 #include <cassert>
 #include <cstring>
@@ -28,12 +31,12 @@
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /**
- * @file ParseHTML/MagicString.hpp
+ * @file  HTML/Parse/MagicString.hpp
  * @brief Holds many constants and magic strings relating to determining the character encoding of a document,
  * 		  in addition to their helper classes and functions.
  */
-
-namespace ParseHTML {
+namespace HTML {
+namespace Parse {
 
 typedef uint8_t Byte;
 
@@ -55,108 +58,6 @@ constexpr Byte ATTRIBUTE_SKIP_CHARS[6] = {
 		0x2F
 };
 
-/**
- * @brief An array containing all of the ASCII letters
- * @showinitializer
- */
-constexpr Byte ASCIILetters[52] = {
-		'A',
-		'B',
-		'C',
-		'D',
-		'E',
-		'F',
-		'G',
-		'H',
-		'I',
-		'J',
-		'K',
-		'L',
-		'M',
-		'N',
-		'O',
-		'P',
-		'Q',
-		'R',
-		'S',
-		'T',
-		'U',
-		'V',
-		'W',
-		'X',
-		'Y',
-		'Z',
-		'a',
-		'b',
-		'c',
-		'd',
-		'e',
-		'f',
-		'g',
-		'h',
-		'i',
-		'j',
-		'k',
-		'l',
-		'm',
-		'n',
-		'o',
-		'p',
-		'q',
-		'r',
-		's',
-		't',
-		'u',
-		'v',
-		'w',
-		'x',
-		'y',
-		'z'
-};
-
-/**
- * @brief An array containing all of the ASCII upper case letters
- * @showinitializer
- */
-constexpr Byte ASCIIUpperCaseLetters[26] = {
-		'A',
-		'B',
-		'C',
-		'D',
-		'E',
-		'F',
-		'G',
-		'H',
-		'I',
-		'J',
-		'K',
-		'L',
-		'M',
-		'N',
-		'O',
-		'P',
-		'Q',
-		'R',
-		'S',
-		'T',
-		'U',
-		'V',
-		'W',
-		'X',
-		'Y',
-		'Z',
-};
-
-/**
- * @brief Tests if a byte is an ASCII upper case letter
- * @param buf A reference to the byte to be tested
- * @return If the byte is an ASCII upper case letter, the function returns true.
- * 		   Otherwise, the function returns false.
- *
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_isASCIIUpperCaseLetter_Test, trueCase)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_isASCIIUpperCaseLetter_Test, falseCase)
- */
-bool isASCIIUpperCaseLetter(const Byte& buf);
 
 /**
  * @brief Tests if a Byte array holds the case insensitive ASCII string 'charset'
@@ -237,7 +138,7 @@ inline bool operator==(const Byte (&lhs)[2], const MagicString::PunctuationTag& 
 	{
 		Byte byte = lhs[0];
 		Byte reference[1];
-		memcpy(reference, rhs[(ParseHTML::MagicString::PunctuationTag::PunctuationTagSizeT) 0], 1);
+		memcpy(reference, rhs[(Parse::MagicString::PunctuationTag::PunctuationTagSizeT) 0], 1);
 		if (reference[0] != byte) {
 			return false;
 		}
@@ -245,7 +146,7 @@ inline bool operator==(const Byte (&lhs)[2], const MagicString::PunctuationTag& 
 	{
 		Byte byte = lhs[1];
 		Byte reference[3];
-		memcpy(reference, rhs[(ParseHTML::MagicString::PunctuationTag::PunctuationTagSizeT) 1], 3);
+		memcpy(reference, rhs[(Parse::MagicString::PunctuationTag::PunctuationTagSizeT) 1], 3);
 		bool equal = false;
 		for (int j = 0; j < 3; j++) {
 			if (reference[j] == byte) {
@@ -363,7 +264,7 @@ inline bool operator==(const Byte (&lhs)[6], const MagicString::MetaTag& rhs) {
 	for (int i = 0; i < 6; i++) {
 		Byte byte = lhs[i];
 		Byte reference[6];
-		memcpy(reference, rhs[(ParseHTML::MagicString::MetaTag::MetaTagSizeT) i], 6);
+		memcpy(reference, rhs[(Parse::MagicString::MetaTag::MetaTagSizeT) i], 6);
 		bool equal = false;
 		for (int j = 0; j < 6; j++) {
 			if (reference[j] == byte) {
@@ -441,7 +342,7 @@ struct ASCIITag {
 				case FIRST:
 					return (const Byte**) (&first);
 				case SECOND:
-					return (const Byte**) (&ASCIILetters);
+					return (const Byte**) (&Microsyntaxes::ASCIILetters);
 			}
 			// Should be impossible for control to reach here.
 			return nullptr;
@@ -459,7 +360,7 @@ inline bool operator==(const Byte (&lhs)[2], const MagicString::ASCIITag& rhs) {
 	{
 		Byte byte = lhs[0];
 		Byte reference[1];
-		memcpy(reference, rhs[(ParseHTML::MagicString::ASCIITag::ASCIITagSizeT) 0], 1);
+		memcpy(reference, rhs[(Parse::MagicString::ASCIITag::ASCIITagSizeT) 0], 1);
 		if (reference[0] != byte) {
 			return false;
 		}
@@ -467,7 +368,7 @@ inline bool operator==(const Byte (&lhs)[2], const MagicString::ASCIITag& rhs) {
 	{
 		Byte byte = lhs[1];
 		Byte reference[52];
-		memcpy(reference, rhs[(ParseHTML::MagicString::ASCIITag::ASCIITagSizeT) 1], 52);
+		memcpy(reference, rhs[(Parse::MagicString::ASCIITag::ASCIITagSizeT) 1], 52);
 		bool equal = false;
 		for (int j = 0; j < 52; j++) {
 			if (reference[j] == byte) {
@@ -551,7 +452,7 @@ struct ASCIIEndTag {
 				case SECOND:
 					return (const Byte**) (&second);
 				case THIRD:
-					return (const Byte**) (&ASCIILetters);
+					return (const Byte**) (&Microsyntaxes::ASCIILetters);
 			}
 			// Should be impossible for control to reach here.
 			return nullptr;
@@ -569,7 +470,7 @@ inline bool operator==(const Byte (&lhs)[3], const MagicString::ASCIIEndTag& rhs
 	{
 		Byte byte = lhs[0];
 		Byte reference[1];
-		memcpy(reference, rhs[(ParseHTML::MagicString::ASCIIEndTag::ASCIIEndTagSizeT) 0], 1);
+		memcpy(reference, rhs[(Parse::MagicString::ASCIIEndTag::ASCIIEndTagSizeT) 0], 1);
 		if (reference[0] != byte) {
 			return false;
 		}
@@ -577,7 +478,7 @@ inline bool operator==(const Byte (&lhs)[3], const MagicString::ASCIIEndTag& rhs
 	{
 		Byte byte = lhs[1];
 		Byte reference[1];
-		memcpy(reference, rhs[(ParseHTML::MagicString::ASCIIEndTag::ASCIIEndTagSizeT) 1], 1);
+		memcpy(reference, rhs[(Parse::MagicString::ASCIIEndTag::ASCIIEndTagSizeT) 1], 1);
 		if (reference[0] != byte) {
 			return false;
 		}
@@ -585,7 +486,7 @@ inline bool operator==(const Byte (&lhs)[3], const MagicString::ASCIIEndTag& rhs
 	{
 		Byte byte = lhs[2];
 		Byte reference[52];
-		memcpy(reference, rhs[(ParseHTML::MagicString::ASCIIEndTag::ASCIIEndTagSizeT) 2], 52);
+		memcpy(reference, rhs[(Parse::MagicString::ASCIIEndTag::ASCIIEndTagSizeT) 2], 52);
 		bool equal = false;
 		for (int j = 0; j < 52; j++) {
 			if (reference[j] == byte) {
@@ -634,6 +535,7 @@ inline bool operator!=(const MagicString::ASCIIEndTag& lhs, const Byte (&rhs)[3]
 }
 
 } /* namespace MagicString */
-} /* namespace ParseHTML */
+} /* namespace Parse */
+} /* namespace HTML */
 
-#endif /* PARSEHTML_MAGICSTRING_HPP_ */
+#endif /* HTML_PARSE_MAGICSTRING_HPP_ */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * main_test.cpp
+ * MagicString.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,21 +18,31 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <gtest/gtest.h>
-#include <gmock/gmock.h>
+#include <HTML/Parse/MagicString.hpp>
+namespace HTML {
+namespace Parse {
+namespace MagicString {
+
 /**
- * @file test/main_test.cpp
- * @brief The main test file of html2LaTeX
+ * @file HTML/Parse/MagicString.cpp
+ * @brief Implements HTML::Parse::MagicString::isCharset
  */
-/**
- * @dir test
- * @brief Holds all of the source files and headers for the tests for html2LaTeX
- */
-/**
- * Googletest unit testing main function
- * @param argc
- * @param argv
- * @return
- */
-int main(int argc, char **argv);
+
+
+bool isCharset(const Byte (&string)[7]) {
+	if (((string[0] == 'c') || (string[0] == 'C')) &&
+			((string[1] == 'h') || (string[1] == 'H')) &&
+			((string[2] == 'a') || (string[2] == 'A')) &&
+			((string[3] == 'r') || (string[3] == 'R')) &&
+			((string[4] == 's') || (string[4] == 'S')) &&
+			((string[5] == 'e') || (string[5] == 'E')) &&
+			((string[6] == 't') || (string[6] == 'T'))) {
+		return true;
+	}
+	return false;
+}
+
+} /* namespace MagicString */
+} /* namespace Parse */
+} /* namespace HTML */
 

@@ -18,8 +18,10 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <ParseHTML/DetermineCharEncoding.hpp>
-#include <ParseHTML/MagicString.hpp>
+#include <HTML/Parse/DetermineCharEncoding.hpp>
+#include <HTML/Parse/MagicString.hpp>
+#include <HTML/Microsyntaxes/ASCII.hpp>
+#include <HTML/HTMLTypes.hpp>
 
 #include <iostream>
 #include <fstream>
@@ -28,61 +30,17 @@
 
 #include <vector>
 
-//#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <gtest/gtest.h>
-//#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
+
 
 /**
- * @file ParseHTML/DetermineCharEncoding.cpp
- * @brief Implements DetermineCharEncoding.hpp
+ * @file  HTML/Parse/DetermineCharEncoding.cpp
+ * @brief Implements HTML/Parse/DetermineCharEncoding.hpp
  */
+namespace HTML {
+namespace Parse {
 
-namespace ParseHTML {
-
-::std::ostream& operator<<(::std::ostream& os, const Attribute& attribute) {
-	return os << "\"" << attribute.name << "\":\"" << attribute.value << "\"";
-}
-::std::ostream& operator<<(::std::ostream& os, const CharEncoding& charEncoding) {
-	switch (charEncoding) {
-		case NULL_ENC:
-			os << "NULL_ENC";
-			break;
-		case UNKNOWN:
-			os << "UNKNOWN";
-			break;
-		case UTF_16_BE:
-			os << "UTF_16_BE";
-			break;
-		case UTF_16_LE:
-			os << "UTF_16_LE";
-			break;
-		case UTF_8:
-			os << "UTF_8";
-			break;
-		default:
-			os << "INVALID";
-	}
-	return os;
-}
-::std::ostream& operator<<(::std::ostream& os, const Confidence& confidence) {
-	switch (confidence) {
-		case CERTAIN:
-			os << "CERTAIN";
-			break;
-		case TENTATIVE:
-			os << "TENTATIVE";
-			break;
-		case IRRELEVANT:
-			os << "IRRELEVANT";
-			break;
-		default:
-			os << "INVALID";
-	}
-	return os;
-}
-::std::ostream& operator<<(::std::ostream& os, const ContentType& contentType) {
-	return os << contentType.charEncoding << ":" << contentType.confidence;
-}
 
 
 ContentType DetermineCharEncoding::determineCharEncoding(std::istream& input) {
@@ -393,7 +351,7 @@ Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallow
 							attribute.value = getAttributeValue(input, buf);
 							return attribute;
 						}
-					} else if (MagicString::isASCIIUpperCaseLetter(buf)) {
+					} else if (Microsyntaxes::isASCIIUpper(buf)) {
 						Byte result = buf + 0x20;
 						attribute.name.append((char*) &(result), 1);
 						input.read((char*) &buf, 1);
@@ -429,7 +387,7 @@ std::string DetermineCharEncoding::getAttributeValue(std::istream& input, Byte& 
 				return value_;
 			} else if (buf == 0x3E) {
 				return value;
-			} else if (MagicString::isASCIIUpperCaseLetter(buf)) {
+			} else if (Microsyntaxes::isASCIIUpper(buf)) {
 				Byte result = buf + 0x20;
 				value.append((char*) &(result), 1);
 				std::string value_ = processingLoop(input, buf, value);
@@ -453,7 +411,7 @@ std::string DetermineCharEncoding::processingLoop(std::istream& input, Byte& buf
 			input.read((char*) &buf, 1);
 			if ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x3E)) {
 				return localValue;
-			} else if (MagicString::isASCIIUpperCaseLetter(buf)) {
+			} else if (Microsyntaxes::isASCIIUpper(buf)) {
 				Byte result = buf + 0x20;
 				localValue.append((char*) &(result), 1);
 			} else {
@@ -476,7 +434,7 @@ std::string DetermineCharEncoding::quoteLoop(std::istream& input, Byte& buf, std
 			if (buf == b) {
 				return localValue;
 			} else {
-				if (MagicString::isASCIIUpperCaseLetter(buf)) {
+				if (Microsyntaxes::isASCIIUpper(buf)) {
 					Byte result = buf + 0x20;
 					localValue.append((char*) &(result), 1);
 					input.read((char*) &buf, 1);
@@ -601,4 +559,5 @@ CharEncoding DetermineCharEncoding::getCharEncodingFromString(std::string & inpu
 	}
 	return encoding;
 }
-} /* namespace ParseHTML */
+} /* namespace Parse */
+} /* namespace HTML */

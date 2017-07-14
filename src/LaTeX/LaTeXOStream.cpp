@@ -1,5 +1,5 @@
 /*******************************************************************************
- * main.cpp
+ * LaTeXOStream.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,52 +18,33 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTML/Parse/DetermineCharEncoding.hpp>
-#include <HTML/HTMLTypes.hpp>
-#include <ProgramOptions.hpp>
-
+#include <LaTeX/LaTeXOStream.hpp>
+#include <LaTeX/UnicodeToLaTeX.hpp>
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <locale>
+#include <iomanip>
+#include <codecvt>
+#include <gtest/gtest.h>
 
 
-/**
- * @file main.cpp
- * @brief The main file of html2LaTeX
- */
-/**
- * @dir src
- * @brief Holds all of the source files and headers in html2LaTeX, excluding tests.
- */
+namespace LaTeX {
 
-/**
- * @brief The main function of html2LaTeX
- * @param argc
- * @param argv
- * @return Returns 0 if there are no errors.
- */
-int main(int argc, char** argv) {
-	Options options;
-	try {
-		options.parse(argc, argv);
-	}
-	catch (...) {
-		return 1;
-	}
 
-	std::ifstream file;
-	try {
-		file.open(options.inputFilename, std::istream::binary);
-	} catch (...) {
-		return 1;
-	}
-	HTML::Parse::DetermineCharEncoding determineCharEncoding;
-	HTML::ContentType contentType;
-	try {
-		contentType = determineCharEncoding.determineCharEncoding(file);
-	}
-	catch (...) {
-		return 1;
-	}
-	std::cout << contentType << std::endl;
-	return 0;
+LaTeXOStream::LaTeXOStream(std::ostream& output, UnicodeToLaTeX& converter) :
+		ostream(output), unicodeToLaTeX(converter) {
 }
+
+LaTeXOStream::~LaTeXOStream() {
+}
+
+void LaTeXOStream::write(const char* string, __attribute__((unused))  const size_t size) {
+	std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv32;
+	std::u32string str32 = conv32.from_bytes(string);
+
+	ostream << unicodeToLaTeX.convert(str32);
+}
+
+} /* namespace LaTeX */
+

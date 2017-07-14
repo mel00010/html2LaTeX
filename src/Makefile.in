@@ -107,8 +107,20 @@ PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_html2LaTeX_OBJECTS = html2LaTeX-main.$(OBJEXT) \
 	html2LaTeX-ProgramOptions.$(OBJEXT) \
-	ParseHTML/html2LaTeX-DetermineCharEncoding.$(OBJEXT) \
-	ParseHTML/html2LaTeX-MagicString.$(OBJEXT)
+	HTML/html2LaTeX-HTMLTree.$(OBJEXT) \
+	HTML/html2LaTeX-HTMLTreeInterface.$(OBJEXT) \
+	HTML/html2LaTeX-HTMLTreeElement.$(OBJEXT) \
+	HTML/html2LaTeX-HTMLTreeElementInterface.$(OBJEXT) \
+	HTML/html2LaTeX-HTMLTypes.$(OBJEXT) \
+	HTML/Microsyntaxes/html2LaTeX-ASCII.$(OBJEXT) \
+	HTML/Microsyntaxes/html2LaTeX-SignedInteger.$(OBJEXT) \
+	HTML/Parse/html2LaTeX-DetermineCharEncoding.$(OBJEXT) \
+	HTML/Parse/html2LaTeX-MagicString.$(OBJEXT) \
+	HTML/Parse/html2LaTeX-ParseHTML.$(OBJEXT) \
+	LaTeX/html2LaTeX-GenerateLaTeX.$(OBJEXT) \
+	LaTeX/html2LaTeX-LaTeXOStream.$(OBJEXT) \
+	LaTeX/html2LaTeX-LaTeXTreeInterface.$(OBJEXT) \
+	LaTeX/html2LaTeX-UnicodeToLaTeX.$(OBJEXT)
 html2LaTeX_OBJECTS = $(am_html2LaTeX_OBJECTS)
 html2LaTeX_LDADD = $(LDADD)
 html2LaTeX_LINK = $(CXXLD) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) \
@@ -310,14 +322,51 @@ html2LaTeX_SOURCES = \
 	main.cpp \
 	ProgramOptions.cpp \
 	\
-	ParseHTML/DetermineCharEncoding.cpp \
-	ParseHTML/MagicString.cpp
+	\
+	HTML/HTMLTree.cpp \
+	HTML/HTMLTreeInterface.cpp \
+	HTML/HTMLTreeElement.cpp \
+	HTML/HTMLTreeElementInterface.cpp \
+	HTML/HTMLTypes.cpp \
+	\
+	HTML/Microsyntaxes/ASCII.cpp \
+	HTML/Microsyntaxes/SignedInteger.cpp \
+	\
+	HTML/Parse/DetermineCharEncoding.cpp \
+	HTML/Parse/MagicString.cpp \
+	HTML/Parse/ParseHTML.cpp \
+	\
+	\
+	LaTeX/GenerateLaTeX.cpp \
+	LaTeX/LaTeXOStream.cpp \
+	LaTeX/LaTeXTreeInterface.cpp \
+	LaTeX/UnicodeToLaTeX.cpp 
 
 include_HEADERS = \
 	ProgramOptions.hpp \
 	\
-	ParseHTML/DetermineCharEncoding.hpp \
-	ParseHTML/MagicString.hpp
+	\
+	HTML/HTMLTree.hpp \
+	HTML/HTMLTreeInterface.hpp \
+	HTML/HTMLTreeElement.hpp \
+	HTML/HTMLTreeElementInterface.hpp \
+	HTML/HTMLTypes.hpp \
+	\
+	HTML/Microsyntaxes/ASCII.hpp \
+	HTML/Microsyntaxes/SignedInteger.hpp \
+	\
+	HTML/Parse/DetermineCharEncoding.hpp \
+	HTML/Parse/MagicString.hpp \
+	HTML/Parse/ParseHTML.hpp \
+	\
+	\
+	LaTeX/ConcreteUnicodeToLaTeX.hpp \
+	LaTeX/ConcreteUnicodeToLaTeXConversionArray.hpp \
+	LaTeX/GenerateLaTeX.hpp \
+	LaTeX/LaTeXOStream.hpp \
+	LaTeX/LaTeXTreeInterface.hpp \
+	LaTeX/LaTeXTypes.hpp \
+	LaTeX/UnicodeToLaTeX.hpp
 
 html2LaTeX_CXXFLAGS = \
 	-Wno-unused-result \
@@ -414,16 +463,62 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-ParseHTML/$(am__dirstamp):
-	@$(MKDIR_P) ParseHTML
-	@: > ParseHTML/$(am__dirstamp)
-ParseHTML/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) ParseHTML/$(DEPDIR)
-	@: > ParseHTML/$(DEPDIR)/$(am__dirstamp)
-ParseHTML/html2LaTeX-DetermineCharEncoding.$(OBJEXT):  \
-	ParseHTML/$(am__dirstamp) ParseHTML/$(DEPDIR)/$(am__dirstamp)
-ParseHTML/html2LaTeX-MagicString.$(OBJEXT): ParseHTML/$(am__dirstamp) \
-	ParseHTML/$(DEPDIR)/$(am__dirstamp)
+HTML/$(am__dirstamp):
+	@$(MKDIR_P) HTML
+	@: > HTML/$(am__dirstamp)
+HTML/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) HTML/$(DEPDIR)
+	@: > HTML/$(DEPDIR)/$(am__dirstamp)
+HTML/html2LaTeX-HTMLTree.$(OBJEXT): HTML/$(am__dirstamp) \
+	HTML/$(DEPDIR)/$(am__dirstamp)
+HTML/html2LaTeX-HTMLTreeInterface.$(OBJEXT): HTML/$(am__dirstamp) \
+	HTML/$(DEPDIR)/$(am__dirstamp)
+HTML/html2LaTeX-HTMLTreeElement.$(OBJEXT): HTML/$(am__dirstamp) \
+	HTML/$(DEPDIR)/$(am__dirstamp)
+HTML/html2LaTeX-HTMLTreeElementInterface.$(OBJEXT):  \
+	HTML/$(am__dirstamp) HTML/$(DEPDIR)/$(am__dirstamp)
+HTML/html2LaTeX-HTMLTypes.$(OBJEXT): HTML/$(am__dirstamp) \
+	HTML/$(DEPDIR)/$(am__dirstamp)
+HTML/Microsyntaxes/$(am__dirstamp):
+	@$(MKDIR_P) HTML/Microsyntaxes
+	@: > HTML/Microsyntaxes/$(am__dirstamp)
+HTML/Microsyntaxes/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) HTML/Microsyntaxes/$(DEPDIR)
+	@: > HTML/Microsyntaxes/$(DEPDIR)/$(am__dirstamp)
+HTML/Microsyntaxes/html2LaTeX-ASCII.$(OBJEXT):  \
+	HTML/Microsyntaxes/$(am__dirstamp) \
+	HTML/Microsyntaxes/$(DEPDIR)/$(am__dirstamp)
+HTML/Microsyntaxes/html2LaTeX-SignedInteger.$(OBJEXT):  \
+	HTML/Microsyntaxes/$(am__dirstamp) \
+	HTML/Microsyntaxes/$(DEPDIR)/$(am__dirstamp)
+HTML/Parse/$(am__dirstamp):
+	@$(MKDIR_P) HTML/Parse
+	@: > HTML/Parse/$(am__dirstamp)
+HTML/Parse/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) HTML/Parse/$(DEPDIR)
+	@: > HTML/Parse/$(DEPDIR)/$(am__dirstamp)
+HTML/Parse/html2LaTeX-DetermineCharEncoding.$(OBJEXT):  \
+	HTML/Parse/$(am__dirstamp) \
+	HTML/Parse/$(DEPDIR)/$(am__dirstamp)
+HTML/Parse/html2LaTeX-MagicString.$(OBJEXT):  \
+	HTML/Parse/$(am__dirstamp) \
+	HTML/Parse/$(DEPDIR)/$(am__dirstamp)
+HTML/Parse/html2LaTeX-ParseHTML.$(OBJEXT): HTML/Parse/$(am__dirstamp) \
+	HTML/Parse/$(DEPDIR)/$(am__dirstamp)
+LaTeX/$(am__dirstamp):
+	@$(MKDIR_P) LaTeX
+	@: > LaTeX/$(am__dirstamp)
+LaTeX/$(DEPDIR)/$(am__dirstamp):
+	@$(MKDIR_P) LaTeX/$(DEPDIR)
+	@: > LaTeX/$(DEPDIR)/$(am__dirstamp)
+LaTeX/html2LaTeX-GenerateLaTeX.$(OBJEXT): LaTeX/$(am__dirstamp) \
+	LaTeX/$(DEPDIR)/$(am__dirstamp)
+LaTeX/html2LaTeX-LaTeXOStream.$(OBJEXT): LaTeX/$(am__dirstamp) \
+	LaTeX/$(DEPDIR)/$(am__dirstamp)
+LaTeX/html2LaTeX-LaTeXTreeInterface.$(OBJEXT): LaTeX/$(am__dirstamp) \
+	LaTeX/$(DEPDIR)/$(am__dirstamp)
+LaTeX/html2LaTeX-UnicodeToLaTeX.$(OBJEXT): LaTeX/$(am__dirstamp) \
+	LaTeX/$(DEPDIR)/$(am__dirstamp)
 
 html2LaTeX$(EXEEXT): $(html2LaTeX_OBJECTS) $(html2LaTeX_DEPENDENCIES) $(EXTRA_html2LaTeX_DEPENDENCIES) 
 	@rm -f html2LaTeX$(EXEEXT)
@@ -431,15 +526,30 @@ html2LaTeX$(EXEEXT): $(html2LaTeX_OBJECTS) $(html2LaTeX_DEPENDENCIES) $(EXTRA_ht
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f ParseHTML/*.$(OBJEXT)
+	-rm -f HTML/*.$(OBJEXT)
+	-rm -f HTML/Microsyntaxes/*.$(OBJEXT)
+	-rm -f HTML/Parse/*.$(OBJEXT)
+	-rm -f LaTeX/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/html2LaTeX-ProgramOptions.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/html2LaTeX-main.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/$(DEPDIR)/html2LaTeX-HTMLTree.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElement.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElementInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/$(DEPDIR)/html2LaTeX-HTMLTreeInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/$(DEPDIR)/html2LaTeX-HTMLTypes.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-ASCII.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-SignedInteger.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/Parse/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/Parse/$(DEPDIR)/html2LaTeX-MagicString.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@HTML/Parse/$(DEPDIR)/html2LaTeX-ParseHTML.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@LaTeX/$(DEPDIR)/html2LaTeX-GenerateLaTeX.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@LaTeX/$(DEPDIR)/html2LaTeX-LaTeXOStream.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@LaTeX/$(DEPDIR)/html2LaTeX-LaTeXTreeInterface.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@LaTeX/$(DEPDIR)/html2LaTeX-UnicodeToLaTeX.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)depbase=`echo $@ | sed 's|[^/]*$$|$(DEPDIR)/&|;s|\.o$$||'`;\
@@ -485,33 +595,201 @@ html2LaTeX-ProgramOptions.obj: ProgramOptions.cpp
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o html2LaTeX-ProgramOptions.obj `if test -f 'ProgramOptions.cpp'; then $(CYGPATH_W) 'ProgramOptions.cpp'; else $(CYGPATH_W) '$(srcdir)/ProgramOptions.cpp'; fi`
 
-ParseHTML/html2LaTeX-DetermineCharEncoding.o: ParseHTML/DetermineCharEncoding.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-DetermineCharEncoding.o -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.o `test -f 'ParseHTML/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`ParseHTML/DetermineCharEncoding.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/DetermineCharEncoding.cpp' object='ParseHTML/html2LaTeX-DetermineCharEncoding.o' libtool=no @AMDEPBACKSLASH@
+HTML/html2LaTeX-HTMLTree.o: HTML/HTMLTree.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTree.o -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTree.Tpo -c -o HTML/html2LaTeX-HTMLTree.o `test -f 'HTML/HTMLTree.cpp' || echo '$(srcdir)/'`HTML/HTMLTree.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTree.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTree.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTree.cpp' object='HTML/html2LaTeX-HTMLTree.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.o `test -f 'ParseHTML/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`ParseHTML/DetermineCharEncoding.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTree.o `test -f 'HTML/HTMLTree.cpp' || echo '$(srcdir)/'`HTML/HTMLTree.cpp
 
-ParseHTML/html2LaTeX-DetermineCharEncoding.obj: ParseHTML/DetermineCharEncoding.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-DetermineCharEncoding.obj -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.obj `if test -f 'ParseHTML/DetermineCharEncoding.cpp'; then $(CYGPATH_W) 'ParseHTML/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/DetermineCharEncoding.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/DetermineCharEncoding.cpp' object='ParseHTML/html2LaTeX-DetermineCharEncoding.obj' libtool=no @AMDEPBACKSLASH@
+HTML/html2LaTeX-HTMLTree.obj: HTML/HTMLTree.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTree.obj -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTree.Tpo -c -o HTML/html2LaTeX-HTMLTree.obj `if test -f 'HTML/HTMLTree.cpp'; then $(CYGPATH_W) 'HTML/HTMLTree.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTree.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTree.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTree.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTree.cpp' object='HTML/html2LaTeX-HTMLTree.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-DetermineCharEncoding.obj `if test -f 'ParseHTML/DetermineCharEncoding.cpp'; then $(CYGPATH_W) 'ParseHTML/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/DetermineCharEncoding.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTree.obj `if test -f 'HTML/HTMLTree.cpp'; then $(CYGPATH_W) 'HTML/HTMLTree.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTree.cpp'; fi`
 
-ParseHTML/html2LaTeX-MagicString.o: ParseHTML/MagicString.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-MagicString.o -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo -c -o ParseHTML/html2LaTeX-MagicString.o `test -f 'ParseHTML/MagicString.cpp' || echo '$(srcdir)/'`ParseHTML/MagicString.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/MagicString.cpp' object='ParseHTML/html2LaTeX-MagicString.o' libtool=no @AMDEPBACKSLASH@
+HTML/html2LaTeX-HTMLTreeInterface.o: HTML/HTMLTreeInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTreeInterface.o -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTreeInterface.Tpo -c -o HTML/html2LaTeX-HTMLTreeInterface.o `test -f 'HTML/HTMLTreeInterface.cpp' || echo '$(srcdir)/'`HTML/HTMLTreeInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTreeInterface.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTreeInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTreeInterface.cpp' object='HTML/html2LaTeX-HTMLTreeInterface.o' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-MagicString.o `test -f 'ParseHTML/MagicString.cpp' || echo '$(srcdir)/'`ParseHTML/MagicString.cpp
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTreeInterface.o `test -f 'HTML/HTMLTreeInterface.cpp' || echo '$(srcdir)/'`HTML/HTMLTreeInterface.cpp
 
-ParseHTML/html2LaTeX-MagicString.obj: ParseHTML/MagicString.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT ParseHTML/html2LaTeX-MagicString.obj -MD -MP -MF ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo -c -o ParseHTML/html2LaTeX-MagicString.obj `if test -f 'ParseHTML/MagicString.cpp'; then $(CYGPATH_W) 'ParseHTML/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/MagicString.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Tpo ParseHTML/$(DEPDIR)/html2LaTeX-MagicString.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='ParseHTML/MagicString.cpp' object='ParseHTML/html2LaTeX-MagicString.obj' libtool=no @AMDEPBACKSLASH@
+HTML/html2LaTeX-HTMLTreeInterface.obj: HTML/HTMLTreeInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTreeInterface.obj -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTreeInterface.Tpo -c -o HTML/html2LaTeX-HTMLTreeInterface.obj `if test -f 'HTML/HTMLTreeInterface.cpp'; then $(CYGPATH_W) 'HTML/HTMLTreeInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTreeInterface.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTreeInterface.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTreeInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTreeInterface.cpp' object='HTML/html2LaTeX-HTMLTreeInterface.obj' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o ParseHTML/html2LaTeX-MagicString.obj `if test -f 'ParseHTML/MagicString.cpp'; then $(CYGPATH_W) 'ParseHTML/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/ParseHTML/MagicString.cpp'; fi`
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTreeInterface.obj `if test -f 'HTML/HTMLTreeInterface.cpp'; then $(CYGPATH_W) 'HTML/HTMLTreeInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTreeInterface.cpp'; fi`
+
+HTML/html2LaTeX-HTMLTreeElement.o: HTML/HTMLTreeElement.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTreeElement.o -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElement.Tpo -c -o HTML/html2LaTeX-HTMLTreeElement.o `test -f 'HTML/HTMLTreeElement.cpp' || echo '$(srcdir)/'`HTML/HTMLTreeElement.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElement.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElement.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTreeElement.cpp' object='HTML/html2LaTeX-HTMLTreeElement.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTreeElement.o `test -f 'HTML/HTMLTreeElement.cpp' || echo '$(srcdir)/'`HTML/HTMLTreeElement.cpp
+
+HTML/html2LaTeX-HTMLTreeElement.obj: HTML/HTMLTreeElement.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTreeElement.obj -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElement.Tpo -c -o HTML/html2LaTeX-HTMLTreeElement.obj `if test -f 'HTML/HTMLTreeElement.cpp'; then $(CYGPATH_W) 'HTML/HTMLTreeElement.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTreeElement.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElement.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElement.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTreeElement.cpp' object='HTML/html2LaTeX-HTMLTreeElement.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTreeElement.obj `if test -f 'HTML/HTMLTreeElement.cpp'; then $(CYGPATH_W) 'HTML/HTMLTreeElement.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTreeElement.cpp'; fi`
+
+HTML/html2LaTeX-HTMLTreeElementInterface.o: HTML/HTMLTreeElementInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTreeElementInterface.o -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElementInterface.Tpo -c -o HTML/html2LaTeX-HTMLTreeElementInterface.o `test -f 'HTML/HTMLTreeElementInterface.cpp' || echo '$(srcdir)/'`HTML/HTMLTreeElementInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElementInterface.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElementInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTreeElementInterface.cpp' object='HTML/html2LaTeX-HTMLTreeElementInterface.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTreeElementInterface.o `test -f 'HTML/HTMLTreeElementInterface.cpp' || echo '$(srcdir)/'`HTML/HTMLTreeElementInterface.cpp
+
+HTML/html2LaTeX-HTMLTreeElementInterface.obj: HTML/HTMLTreeElementInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTreeElementInterface.obj -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElementInterface.Tpo -c -o HTML/html2LaTeX-HTMLTreeElementInterface.obj `if test -f 'HTML/HTMLTreeElementInterface.cpp'; then $(CYGPATH_W) 'HTML/HTMLTreeElementInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTreeElementInterface.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElementInterface.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTreeElementInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTreeElementInterface.cpp' object='HTML/html2LaTeX-HTMLTreeElementInterface.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTreeElementInterface.obj `if test -f 'HTML/HTMLTreeElementInterface.cpp'; then $(CYGPATH_W) 'HTML/HTMLTreeElementInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTreeElementInterface.cpp'; fi`
+
+HTML/html2LaTeX-HTMLTypes.o: HTML/HTMLTypes.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTypes.o -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTypes.Tpo -c -o HTML/html2LaTeX-HTMLTypes.o `test -f 'HTML/HTMLTypes.cpp' || echo '$(srcdir)/'`HTML/HTMLTypes.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTypes.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTypes.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTypes.cpp' object='HTML/html2LaTeX-HTMLTypes.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTypes.o `test -f 'HTML/HTMLTypes.cpp' || echo '$(srcdir)/'`HTML/HTMLTypes.cpp
+
+HTML/html2LaTeX-HTMLTypes.obj: HTML/HTMLTypes.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/html2LaTeX-HTMLTypes.obj -MD -MP -MF HTML/$(DEPDIR)/html2LaTeX-HTMLTypes.Tpo -c -o HTML/html2LaTeX-HTMLTypes.obj `if test -f 'HTML/HTMLTypes.cpp'; then $(CYGPATH_W) 'HTML/HTMLTypes.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTypes.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/$(DEPDIR)/html2LaTeX-HTMLTypes.Tpo HTML/$(DEPDIR)/html2LaTeX-HTMLTypes.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/HTMLTypes.cpp' object='HTML/html2LaTeX-HTMLTypes.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/html2LaTeX-HTMLTypes.obj `if test -f 'HTML/HTMLTypes.cpp'; then $(CYGPATH_W) 'HTML/HTMLTypes.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/HTMLTypes.cpp'; fi`
+
+HTML/Microsyntaxes/html2LaTeX-ASCII.o: HTML/Microsyntaxes/ASCII.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Microsyntaxes/html2LaTeX-ASCII.o -MD -MP -MF HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-ASCII.Tpo -c -o HTML/Microsyntaxes/html2LaTeX-ASCII.o `test -f 'HTML/Microsyntaxes/ASCII.cpp' || echo '$(srcdir)/'`HTML/Microsyntaxes/ASCII.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-ASCII.Tpo HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-ASCII.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Microsyntaxes/ASCII.cpp' object='HTML/Microsyntaxes/html2LaTeX-ASCII.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Microsyntaxes/html2LaTeX-ASCII.o `test -f 'HTML/Microsyntaxes/ASCII.cpp' || echo '$(srcdir)/'`HTML/Microsyntaxes/ASCII.cpp
+
+HTML/Microsyntaxes/html2LaTeX-ASCII.obj: HTML/Microsyntaxes/ASCII.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Microsyntaxes/html2LaTeX-ASCII.obj -MD -MP -MF HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-ASCII.Tpo -c -o HTML/Microsyntaxes/html2LaTeX-ASCII.obj `if test -f 'HTML/Microsyntaxes/ASCII.cpp'; then $(CYGPATH_W) 'HTML/Microsyntaxes/ASCII.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Microsyntaxes/ASCII.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-ASCII.Tpo HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-ASCII.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Microsyntaxes/ASCII.cpp' object='HTML/Microsyntaxes/html2LaTeX-ASCII.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Microsyntaxes/html2LaTeX-ASCII.obj `if test -f 'HTML/Microsyntaxes/ASCII.cpp'; then $(CYGPATH_W) 'HTML/Microsyntaxes/ASCII.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Microsyntaxes/ASCII.cpp'; fi`
+
+HTML/Microsyntaxes/html2LaTeX-SignedInteger.o: HTML/Microsyntaxes/SignedInteger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Microsyntaxes/html2LaTeX-SignedInteger.o -MD -MP -MF HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-SignedInteger.Tpo -c -o HTML/Microsyntaxes/html2LaTeX-SignedInteger.o `test -f 'HTML/Microsyntaxes/SignedInteger.cpp' || echo '$(srcdir)/'`HTML/Microsyntaxes/SignedInteger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-SignedInteger.Tpo HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-SignedInteger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Microsyntaxes/SignedInteger.cpp' object='HTML/Microsyntaxes/html2LaTeX-SignedInteger.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Microsyntaxes/html2LaTeX-SignedInteger.o `test -f 'HTML/Microsyntaxes/SignedInteger.cpp' || echo '$(srcdir)/'`HTML/Microsyntaxes/SignedInteger.cpp
+
+HTML/Microsyntaxes/html2LaTeX-SignedInteger.obj: HTML/Microsyntaxes/SignedInteger.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Microsyntaxes/html2LaTeX-SignedInteger.obj -MD -MP -MF HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-SignedInteger.Tpo -c -o HTML/Microsyntaxes/html2LaTeX-SignedInteger.obj `if test -f 'HTML/Microsyntaxes/SignedInteger.cpp'; then $(CYGPATH_W) 'HTML/Microsyntaxes/SignedInteger.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Microsyntaxes/SignedInteger.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-SignedInteger.Tpo HTML/Microsyntaxes/$(DEPDIR)/html2LaTeX-SignedInteger.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Microsyntaxes/SignedInteger.cpp' object='HTML/Microsyntaxes/html2LaTeX-SignedInteger.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Microsyntaxes/html2LaTeX-SignedInteger.obj `if test -f 'HTML/Microsyntaxes/SignedInteger.cpp'; then $(CYGPATH_W) 'HTML/Microsyntaxes/SignedInteger.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Microsyntaxes/SignedInteger.cpp'; fi`
+
+HTML/Parse/html2LaTeX-DetermineCharEncoding.o: HTML/Parse/DetermineCharEncoding.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Parse/html2LaTeX-DetermineCharEncoding.o -MD -MP -MF HTML/Parse/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo -c -o HTML/Parse/html2LaTeX-DetermineCharEncoding.o `test -f 'HTML/Parse/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`HTML/Parse/DetermineCharEncoding.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Parse/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo HTML/Parse/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Parse/DetermineCharEncoding.cpp' object='HTML/Parse/html2LaTeX-DetermineCharEncoding.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Parse/html2LaTeX-DetermineCharEncoding.o `test -f 'HTML/Parse/DetermineCharEncoding.cpp' || echo '$(srcdir)/'`HTML/Parse/DetermineCharEncoding.cpp
+
+HTML/Parse/html2LaTeX-DetermineCharEncoding.obj: HTML/Parse/DetermineCharEncoding.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Parse/html2LaTeX-DetermineCharEncoding.obj -MD -MP -MF HTML/Parse/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo -c -o HTML/Parse/html2LaTeX-DetermineCharEncoding.obj `if test -f 'HTML/Parse/DetermineCharEncoding.cpp'; then $(CYGPATH_W) 'HTML/Parse/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Parse/DetermineCharEncoding.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Parse/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Tpo HTML/Parse/$(DEPDIR)/html2LaTeX-DetermineCharEncoding.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Parse/DetermineCharEncoding.cpp' object='HTML/Parse/html2LaTeX-DetermineCharEncoding.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Parse/html2LaTeX-DetermineCharEncoding.obj `if test -f 'HTML/Parse/DetermineCharEncoding.cpp'; then $(CYGPATH_W) 'HTML/Parse/DetermineCharEncoding.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Parse/DetermineCharEncoding.cpp'; fi`
+
+HTML/Parse/html2LaTeX-MagicString.o: HTML/Parse/MagicString.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Parse/html2LaTeX-MagicString.o -MD -MP -MF HTML/Parse/$(DEPDIR)/html2LaTeX-MagicString.Tpo -c -o HTML/Parse/html2LaTeX-MagicString.o `test -f 'HTML/Parse/MagicString.cpp' || echo '$(srcdir)/'`HTML/Parse/MagicString.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Parse/$(DEPDIR)/html2LaTeX-MagicString.Tpo HTML/Parse/$(DEPDIR)/html2LaTeX-MagicString.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Parse/MagicString.cpp' object='HTML/Parse/html2LaTeX-MagicString.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Parse/html2LaTeX-MagicString.o `test -f 'HTML/Parse/MagicString.cpp' || echo '$(srcdir)/'`HTML/Parse/MagicString.cpp
+
+HTML/Parse/html2LaTeX-MagicString.obj: HTML/Parse/MagicString.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Parse/html2LaTeX-MagicString.obj -MD -MP -MF HTML/Parse/$(DEPDIR)/html2LaTeX-MagicString.Tpo -c -o HTML/Parse/html2LaTeX-MagicString.obj `if test -f 'HTML/Parse/MagicString.cpp'; then $(CYGPATH_W) 'HTML/Parse/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Parse/MagicString.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Parse/$(DEPDIR)/html2LaTeX-MagicString.Tpo HTML/Parse/$(DEPDIR)/html2LaTeX-MagicString.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Parse/MagicString.cpp' object='HTML/Parse/html2LaTeX-MagicString.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Parse/html2LaTeX-MagicString.obj `if test -f 'HTML/Parse/MagicString.cpp'; then $(CYGPATH_W) 'HTML/Parse/MagicString.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Parse/MagicString.cpp'; fi`
+
+HTML/Parse/html2LaTeX-ParseHTML.o: HTML/Parse/ParseHTML.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Parse/html2LaTeX-ParseHTML.o -MD -MP -MF HTML/Parse/$(DEPDIR)/html2LaTeX-ParseHTML.Tpo -c -o HTML/Parse/html2LaTeX-ParseHTML.o `test -f 'HTML/Parse/ParseHTML.cpp' || echo '$(srcdir)/'`HTML/Parse/ParseHTML.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Parse/$(DEPDIR)/html2LaTeX-ParseHTML.Tpo HTML/Parse/$(DEPDIR)/html2LaTeX-ParseHTML.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Parse/ParseHTML.cpp' object='HTML/Parse/html2LaTeX-ParseHTML.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Parse/html2LaTeX-ParseHTML.o `test -f 'HTML/Parse/ParseHTML.cpp' || echo '$(srcdir)/'`HTML/Parse/ParseHTML.cpp
+
+HTML/Parse/html2LaTeX-ParseHTML.obj: HTML/Parse/ParseHTML.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT HTML/Parse/html2LaTeX-ParseHTML.obj -MD -MP -MF HTML/Parse/$(DEPDIR)/html2LaTeX-ParseHTML.Tpo -c -o HTML/Parse/html2LaTeX-ParseHTML.obj `if test -f 'HTML/Parse/ParseHTML.cpp'; then $(CYGPATH_W) 'HTML/Parse/ParseHTML.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Parse/ParseHTML.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) HTML/Parse/$(DEPDIR)/html2LaTeX-ParseHTML.Tpo HTML/Parse/$(DEPDIR)/html2LaTeX-ParseHTML.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='HTML/Parse/ParseHTML.cpp' object='HTML/Parse/html2LaTeX-ParseHTML.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o HTML/Parse/html2LaTeX-ParseHTML.obj `if test -f 'HTML/Parse/ParseHTML.cpp'; then $(CYGPATH_W) 'HTML/Parse/ParseHTML.cpp'; else $(CYGPATH_W) '$(srcdir)/HTML/Parse/ParseHTML.cpp'; fi`
+
+LaTeX/html2LaTeX-GenerateLaTeX.o: LaTeX/GenerateLaTeX.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-GenerateLaTeX.o -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-GenerateLaTeX.Tpo -c -o LaTeX/html2LaTeX-GenerateLaTeX.o `test -f 'LaTeX/GenerateLaTeX.cpp' || echo '$(srcdir)/'`LaTeX/GenerateLaTeX.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-GenerateLaTeX.Tpo LaTeX/$(DEPDIR)/html2LaTeX-GenerateLaTeX.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/GenerateLaTeX.cpp' object='LaTeX/html2LaTeX-GenerateLaTeX.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-GenerateLaTeX.o `test -f 'LaTeX/GenerateLaTeX.cpp' || echo '$(srcdir)/'`LaTeX/GenerateLaTeX.cpp
+
+LaTeX/html2LaTeX-GenerateLaTeX.obj: LaTeX/GenerateLaTeX.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-GenerateLaTeX.obj -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-GenerateLaTeX.Tpo -c -o LaTeX/html2LaTeX-GenerateLaTeX.obj `if test -f 'LaTeX/GenerateLaTeX.cpp'; then $(CYGPATH_W) 'LaTeX/GenerateLaTeX.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/GenerateLaTeX.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-GenerateLaTeX.Tpo LaTeX/$(DEPDIR)/html2LaTeX-GenerateLaTeX.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/GenerateLaTeX.cpp' object='LaTeX/html2LaTeX-GenerateLaTeX.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-GenerateLaTeX.obj `if test -f 'LaTeX/GenerateLaTeX.cpp'; then $(CYGPATH_W) 'LaTeX/GenerateLaTeX.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/GenerateLaTeX.cpp'; fi`
+
+LaTeX/html2LaTeX-LaTeXOStream.o: LaTeX/LaTeXOStream.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-LaTeXOStream.o -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-LaTeXOStream.Tpo -c -o LaTeX/html2LaTeX-LaTeXOStream.o `test -f 'LaTeX/LaTeXOStream.cpp' || echo '$(srcdir)/'`LaTeX/LaTeXOStream.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-LaTeXOStream.Tpo LaTeX/$(DEPDIR)/html2LaTeX-LaTeXOStream.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/LaTeXOStream.cpp' object='LaTeX/html2LaTeX-LaTeXOStream.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-LaTeXOStream.o `test -f 'LaTeX/LaTeXOStream.cpp' || echo '$(srcdir)/'`LaTeX/LaTeXOStream.cpp
+
+LaTeX/html2LaTeX-LaTeXOStream.obj: LaTeX/LaTeXOStream.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-LaTeXOStream.obj -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-LaTeXOStream.Tpo -c -o LaTeX/html2LaTeX-LaTeXOStream.obj `if test -f 'LaTeX/LaTeXOStream.cpp'; then $(CYGPATH_W) 'LaTeX/LaTeXOStream.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/LaTeXOStream.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-LaTeXOStream.Tpo LaTeX/$(DEPDIR)/html2LaTeX-LaTeXOStream.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/LaTeXOStream.cpp' object='LaTeX/html2LaTeX-LaTeXOStream.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-LaTeXOStream.obj `if test -f 'LaTeX/LaTeXOStream.cpp'; then $(CYGPATH_W) 'LaTeX/LaTeXOStream.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/LaTeXOStream.cpp'; fi`
+
+LaTeX/html2LaTeX-LaTeXTreeInterface.o: LaTeX/LaTeXTreeInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-LaTeXTreeInterface.o -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-LaTeXTreeInterface.Tpo -c -o LaTeX/html2LaTeX-LaTeXTreeInterface.o `test -f 'LaTeX/LaTeXTreeInterface.cpp' || echo '$(srcdir)/'`LaTeX/LaTeXTreeInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-LaTeXTreeInterface.Tpo LaTeX/$(DEPDIR)/html2LaTeX-LaTeXTreeInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/LaTeXTreeInterface.cpp' object='LaTeX/html2LaTeX-LaTeXTreeInterface.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-LaTeXTreeInterface.o `test -f 'LaTeX/LaTeXTreeInterface.cpp' || echo '$(srcdir)/'`LaTeX/LaTeXTreeInterface.cpp
+
+LaTeX/html2LaTeX-LaTeXTreeInterface.obj: LaTeX/LaTeXTreeInterface.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-LaTeXTreeInterface.obj -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-LaTeXTreeInterface.Tpo -c -o LaTeX/html2LaTeX-LaTeXTreeInterface.obj `if test -f 'LaTeX/LaTeXTreeInterface.cpp'; then $(CYGPATH_W) 'LaTeX/LaTeXTreeInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/LaTeXTreeInterface.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-LaTeXTreeInterface.Tpo LaTeX/$(DEPDIR)/html2LaTeX-LaTeXTreeInterface.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/LaTeXTreeInterface.cpp' object='LaTeX/html2LaTeX-LaTeXTreeInterface.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-LaTeXTreeInterface.obj `if test -f 'LaTeX/LaTeXTreeInterface.cpp'; then $(CYGPATH_W) 'LaTeX/LaTeXTreeInterface.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/LaTeXTreeInterface.cpp'; fi`
+
+LaTeX/html2LaTeX-UnicodeToLaTeX.o: LaTeX/UnicodeToLaTeX.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-UnicodeToLaTeX.o -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-UnicodeToLaTeX.Tpo -c -o LaTeX/html2LaTeX-UnicodeToLaTeX.o `test -f 'LaTeX/UnicodeToLaTeX.cpp' || echo '$(srcdir)/'`LaTeX/UnicodeToLaTeX.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-UnicodeToLaTeX.Tpo LaTeX/$(DEPDIR)/html2LaTeX-UnicodeToLaTeX.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/UnicodeToLaTeX.cpp' object='LaTeX/html2LaTeX-UnicodeToLaTeX.o' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-UnicodeToLaTeX.o `test -f 'LaTeX/UnicodeToLaTeX.cpp' || echo '$(srcdir)/'`LaTeX/UnicodeToLaTeX.cpp
+
+LaTeX/html2LaTeX-UnicodeToLaTeX.obj: LaTeX/UnicodeToLaTeX.cpp
+@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -MT LaTeX/html2LaTeX-UnicodeToLaTeX.obj -MD -MP -MF LaTeX/$(DEPDIR)/html2LaTeX-UnicodeToLaTeX.Tpo -c -o LaTeX/html2LaTeX-UnicodeToLaTeX.obj `if test -f 'LaTeX/UnicodeToLaTeX.cpp'; then $(CYGPATH_W) 'LaTeX/UnicodeToLaTeX.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/UnicodeToLaTeX.cpp'; fi`
+@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) LaTeX/$(DEPDIR)/html2LaTeX-UnicodeToLaTeX.Tpo LaTeX/$(DEPDIR)/html2LaTeX-UnicodeToLaTeX.Po
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='LaTeX/UnicodeToLaTeX.cpp' object='LaTeX/html2LaTeX-UnicodeToLaTeX.obj' libtool=no @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(html2LaTeX_CXXFLAGS) $(CXXFLAGS) -c -o LaTeX/html2LaTeX-UnicodeToLaTeX.obj `if test -f 'LaTeX/UnicodeToLaTeX.cpp'; then $(CYGPATH_W) 'LaTeX/UnicodeToLaTeX.cpp'; else $(CYGPATH_W) '$(srcdir)/LaTeX/UnicodeToLaTeX.cpp'; fi`
 install-includeHEADERS: $(include_HEADERS)
 	@$(NORMAL_INSTALL)
 	@list='$(include_HEADERS)'; test -n "$(includedir)" || list=; \
@@ -649,8 +927,14 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f ParseHTML/$(DEPDIR)/$(am__dirstamp)
-	-rm -f ParseHTML/$(am__dirstamp)
+	-rm -f HTML/$(DEPDIR)/$(am__dirstamp)
+	-rm -f HTML/$(am__dirstamp)
+	-rm -f HTML/Microsyntaxes/$(DEPDIR)/$(am__dirstamp)
+	-rm -f HTML/Microsyntaxes/$(am__dirstamp)
+	-rm -f HTML/Parse/$(DEPDIR)/$(am__dirstamp)
+	-rm -f HTML/Parse/$(am__dirstamp)
+	-rm -f LaTeX/$(DEPDIR)/$(am__dirstamp)
+	-rm -f LaTeX/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -660,7 +944,7 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
-	-rm -rf ./$(DEPDIR) ParseHTML/$(DEPDIR)
+	-rm -rf ./$(DEPDIR) HTML/$(DEPDIR) HTML/Microsyntaxes/$(DEPDIR) HTML/Parse/$(DEPDIR) LaTeX/$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -706,7 +990,7 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-	-rm -rf ./$(DEPDIR) ParseHTML/$(DEPDIR)
+	-rm -rf ./$(DEPDIR) HTML/$(DEPDIR) HTML/Microsyntaxes/$(DEPDIR) HTML/Parse/$(DEPDIR) LaTeX/$(DEPDIR)
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 

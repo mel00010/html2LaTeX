@@ -1,5 +1,5 @@
 /*******************************************************************************
- * main.cpp
+ * ASCII_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,52 +18,33 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTML/Parse/DetermineCharEncoding.hpp>
+#include <gtest/gtest.h>
+#include <HTML/Microsyntaxes/ASCII.hpp>
 #include <HTML/HTMLTypes.hpp>
-#include <ProgramOptions.hpp>
 
-#include <iostream>
-#include <fstream>
-
-
+namespace HTML {
+namespace Microsyntaxes {
 /**
- * @file main.cpp
- * @brief The main file of html2LaTeX
+ * @brief Holds all of the unit tests for the namespace HTML::Microsyntaxes
  */
+namespace Microsyntaxes_Test {
 /**
- * @dir src
- * @brief Holds all of the source files and headers in html2LaTeX, excluding tests.
+ * @brief Test fixture for HTML::Parse::MagicString::isASCIIUpperCaseLetter()
  */
+class HTML_Microsyntaxes_isASCIIUpper_Test: public ::testing::Test {
+	protected:
+		const HTML::Byte trueCase = 0x53;
+		const HTML::Byte falseCase = 0x70;
+};
 
-/**
- * @brief The main function of html2LaTeX
- * @param argc
- * @param argv
- * @return Returns 0 if there are no errors.
- */
-int main(int argc, char** argv) {
-	Options options;
-	try {
-		options.parse(argc, argv);
-	}
-	catch (...) {
-		return 1;
-	}
-
-	std::ifstream file;
-	try {
-		file.open(options.inputFilename, std::istream::binary);
-	} catch (...) {
-		return 1;
-	}
-	HTML::Parse::DetermineCharEncoding determineCharEncoding;
-	HTML::ContentType contentType;
-	try {
-		contentType = determineCharEncoding.determineCharEncoding(file);
-	}
-	catch (...) {
-		return 1;
-	}
-	std::cout << contentType << std::endl;
-	return 0;
+TEST_F(HTML_Microsyntaxes_isASCIIUpper_Test, trueCase) {
+	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIUpper(trueCase));
 }
+TEST_F(HTML_Microsyntaxes_isASCIIUpper_Test, falseCase) {
+	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIUpper(falseCase));
+}
+
+} /* namespace Microsyntaxes_Test */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
+
