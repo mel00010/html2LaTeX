@@ -1,0 +1,129 @@
+digraph G {
+	node[shape="box", style="rounded"]
+		start;
+		tryUnicodeBOM;
+		prescanDocument;			
+		unicodeBOMReturn[label="return(encoding=encoding, confidence=CERTAIN);"];
+		metaTagAlgorithm;
+		content[label="contentReturnValue=content(attribute.value)"];
+		metaTagReturn[label="return(encoding=charset, confidence=TENTATIVE)"];
+
+	node[shape="parallelogram", style=""]
+		getBytes;
+		getTag;
+		commentTagAction[label="Skip until matching -->"];
+		asciiTagAction[label="Skip until next ASCII TAB, LF, FF, CR, SPACE, or >"];
+		punctuationTagAction[label="Skip until next >"];
+		getAttribute;
+		setGotPragmaToTrue[label="gotPragma=true"];
+		charsetSetCharsetAndMode[label="charset=attribute.value;\nmode='charset';"];
+		contentSetCharsetAndMode[label="charset=contentReturnValue;\nmode='pragma';"];
+		changeCharsetToUTF_8[label="charset=UTF_8"];
+
+	node[shape="diamond", style=""]
+		isUnicodeBOM[label="if(bytes in {(FF FE),(FE FF), (EF BB BF)})"];
+		caseUnicodeBOM[label="case(bytes)"];
+		caseTag[label="case(tag)"]
+		metaTagGetAttributeReturnValueIsNotNull[label="if(attribute!=NULL)"];
+		metaTagIsAttributeInAttributeList[label="if(attributeInAttributeList(attribute))"];
+		caseMetaTagAttribute[label="case(attribute.name)"];
+		isMetaTagAttributeWithNameHttpEquivValueContentType[label="if(attribute.value='content-type')"];
+		charsetIsCharsetStillNull[label="if(charset==NULL)"];
+		didContentReturnAnEncoding[label="if(contentReturnValue!=NULL)"];
+		contentIsCharsetStillNull[label="if(charset==NULL)"];
+		ifModeIsNull[label="if(mode==NULL)"];
+		ifModeIsPragmaButGotPragmaIsFalse[label="if(mode=='pragma' && gotPragma==false)"];
+		ifCharsetIsUTF16[label="if(charset==UTF_16_BE || charset==UTF_16_LE)"];
+		ifCharsetIsNotSupported[label="if(!(charset==UTF_16_BE || charset==UTF_16_LE || charset==UTF_8))"];
+
+	node[shape="box", style=""]
+		UTF_16_BE;
+		UTF_16_LE;
+		UTF_8;
+		isUnicodeBOMTrue[label="true"];
+		isUnicodeBOMFalse[label="false"];
+		metaTagGetAttributeReturnValueIsNotNullTrue[label="true"];
+		metaTagGetAttributeReturnValueIsNotNullFalse[label="false"];
+		metaTagIsAttributeInAttributeListTrue[label="true"];
+		metaTagIsAttributeInAttributeListFalse[label="false"];
+		isMetaTagAttributeWithNameHttpEquivValueContentTypeFalse[label="false"];
+		isMetaTagAttributeWithNameHttpEquivValueContentTypeTrue[label="true"];
+		charsetIsCharsetStillNullTrue[label="true"];
+		charsetIsCharsetStillNullFalse[label="false"];
+		didContentReturnAnEncodingTrue[label="true"];
+		didContentReturnAnEncodingFalse[label="false"];
+		contentIsCharsetStillNullTrue[label="true"];
+		contentIsCharsetStillNullFalse[label="false"];
+		ifModeIsNullTrue[label="true"];
+		ifModeIsNullFalse[label="false"];
+		ifModeIsPragmaButGotPragmaIsFalseTrue[label="true"];
+		ifModeIsPragmaButGotPragmaIsFalseFalse[label="false"];
+		ifCharsetIsUTF16True[label="true"];
+		ifCharsetIsUTF16False[label="false"];
+
+	start -> tryUnicodeBOM -> getBytes -> isUnicodeBOM;
+
+	isUnicodeBOM -> isUnicodeBOMFalse -> prescanDocument;
+	isUnicodeBOM -> isUnicodeBOMTrue -> caseUnicodeBOM;
+
+	caseUnicodeBOM -> UTF_16_BE[label="FE FF"] ;
+	caseUnicodeBOM -> UTF_16_LE[label="FF FE"];
+	caseUnicodeBOM -> UTF_8[label="EF BB BF"];
+
+	UTF_16_BE -> unicodeBOMReturn;	
+	UTF_16_LE -> unicodeBOMReturn;
+	UTF_8 -> unicodeBOMReturn;
+	
+	prescanDocument -> getTag -> caseTag;
+
+	caseTag -> commentTag[label="<!--"];
+	caseTag -> metaTag[label="<meta"];
+	caseTag -> punctuationTag[label="<! or <? or </"];
+	caseTag -> asciiTag[label="<{ANY ASCII LETTER}"];
+
+	commentTag -> commentTagAction -> getTag;
+	asciiTag -> asciiTagAction -> getTag;
+	punctuationTag -> punctuationTagAction -> getTag;
+
+	metaTag -> metaTagAlgorithm;
+	
+	metaTagAlgorithm -> getAttribute -> metaTagGetAttributeReturnValueIsNotNull;
+	
+	metaTagGetAttributeReturnValueIsNotNull -> metaTagGetAttributeReturnValueIsNotNullTrue -> metaTagIsAttributeInAttributeList;
+
+	metaTagIsAttributeInAttributeList -> metaTagIsAttributeInAttributeListTrue -> getAttribute;
+	metaTagIsAttributeInAttributeList -> metaTagIsAttributeInAttributeListFalse -> caseMetaTagAttribute;
+
+	caseMetaTagAttribute -> isMetaTagAttributeWithNameHttpEquivValueContentType[label="http-equiv"];
+	isMetaTagAttributeWithNameHttpEquivValueContentType -> isMetaTagAttributeWithNameHttpEquivValueContentTypeFalse -> getAttribute;
+	isMetaTagAttributeWithNameHttpEquivValueContentType -> isMetaTagAttributeWithNameHttpEquivValueContentTypeTrue -> setGotPragmaToTrue -> getAttribute;
+
+
+	caseMetaTagAttribute -> charsetIsCharsetStillNull[label="charset"];
+	charsetIsCharsetStillNull -> charsetIsCharsetStillNullTrue -> charsetSetCharsetAndMode -> getAttribute;
+	charsetIsCharsetStillNull -> charsetIsCharsetStillNullFalse -> getAttribute;
+
+	caseMetaTagAttribute -> content[label="content"];
+	content -> didContentReturnAnEncoding;
+	didContentReturnAnEncoding -> didContentReturnAnEncodingTrue -> contentIsCharsetStillNull;
+	didContentReturnAnEncoding -> didContentReturnAnEncodingFalse -> getAttribute;
+	contentIsCharsetStillNull -> contentIsCharsetStillNullTrue -> contentSetCharsetAndMode -> getAttribute;
+	contentIsCharsetStillNull -> contentIsCharsetStillNullFalse -> getAttribute;
+
+	caseMetaTagAttribute -> getAttribute[label="other"];
+
+	metaTagGetAttributeReturnValueIsNotNull -> metaTagGetAttributeReturnValueIsNotNullFalse -> ifModeIsNull;
+
+	ifModeIsNull -> ifModeIsNullTrue -> getTag;
+	ifModeIsNull -> ifModeIsNullFalse -> ifModeIsPragmaButGotPragmaIsFalse;
+
+	ifModeIsPragmaButGotPragmaIsFalse -> ifModeIsPragmaButGotPragmaIsFalseTrue -> getTag;
+	ifModeIsPragmaButGotPragmaIsFalse -> ifModeIsPragmaButGotPragmaIsFalseFalse -> ifCharsetIsUTF16;
+
+	ifCharsetIsUTF16 -> ifCharsetIsUTF16True -> changeCharsetToUTF_8 -> ifCharsetIsNotSupported;
+	ifCharsetIsUTF16 -> ifCharsetIsUTF16False -> ifCharsetIsNotSupported;
+
+	ifCharsetIsNotSupported -> ifCharsetIsNotSupportedTrue -> getTag;
+	ifCharsetIsNotSupported -> ifCharsetIsNotSupportedFalse -> metaTagReturn;
+	
+}

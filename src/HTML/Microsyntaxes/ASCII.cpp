@@ -44,7 +44,7 @@ bool isWhitespace(const std::string& string) {
 }
 
 bool isUnicodeWhitespace(const char& character) {
-	//TODO Finish function
+	//! @TODO Finish function
 	return false;
 }
 

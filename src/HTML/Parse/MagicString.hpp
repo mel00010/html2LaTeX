@@ -65,35 +65,40 @@ constexpr Byte ATTRIBUTE_SKIP_CHARS[6] = {
  * @return If the Byte array matches the case insensitive ASCII string 'charset', the function returns true.
  * 		   Otherwise, the function returns false.
  *
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_isCharset_Test, trueCase)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_isCharset_Test, falseCase)
+ * @test TEST_F(HTML_Parse_MagicString_isCharset_Test, trueCase)
+ * @test TEST_F(HTML_Parse_MagicString_isCharset_Test, falseCase)
  */
 bool isCharset(const Byte (&string)[7]);
 
 /**
  * @brief Holds the Unicode Byte Order Marking strings
  */
-struct UnicodeBOM {
-		static constexpr Byte UTF_16_BE[2] = { 0xFE, 0xFF }; /**<	@brief Holds the BOM for the UTF-16 big endian encoding */
-		static constexpr Byte UTF_16_LE[2] = { 0xFF, 0xFE }; /**<	@brief Holds the BOM for the UTF-16 little endian encoding */
-		static constexpr Byte UTF_8[3] = { 0xEF, 0xBB, 0xBF }; /**<	@brief Holds the BOM for the UTF-8 encoding */
+namespace UnicodeBOM {
+constexpr Byte UTF_16_BE[2] = { 0xFE, 0xFF }; /**<	@brief Holds the BOM for the UTF-16 big endian encoding */
+constexpr Byte UTF_16_LE[2] = { 0xFF, 0xFE }; /**<	@brief Holds the BOM for the UTF-16 little endian encoding */
+constexpr Byte UTF_8[3] = { 0xEF, 0xBB, 0xBF }; /**<	@brief Holds the BOM for the UTF-8 encoding */
 };
 /**
  * @brief Holds the byte sequences indicating the start or end of an HTML comment tag.
  */
-struct CommentTag {
-		static constexpr Byte start[4] = { 0x3C, 0x21, 0x2D, 0x2D }; /**< 	@brief Holds the byte sequence for the beginning of a comment tag */
-		static constexpr Byte end[3] = { 0x2D, 0x2D, 0x3E }; /**< 			@brief Holds the byte sequence for the end of a comment tag */
-};
+namespace CommentTag {
+constexpr Byte start[4] = { 0x3C, 0x21, 0x2D, 0x2D }; /**< 	@brief Holds the byte sequence for the beginning of a comment tag */
+constexpr Byte end[3] = { 0x2D, 0x2D, 0x3E }; /**< 			@brief Holds the byte sequence for the end of a comment tag */
+}
+
+//struct CommentTag {
+//		static
+//		static
+//};
 
 /**
  * @brief Holds the byte sequences indicating the start or end of an HTML tag starting with '!', '?', or '/'.
  *
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_PunctuationTag_Test, exclamationPointEqual)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_PunctuationTag_Test, forwardSlashEqual)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_PunctuationTag_Test, questionMarkEqual)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_PunctuationTag_Test, almostEqual)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_PunctuationTag_Test, notEqual)
+ * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, exclamationPointEqual)
+ * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, forwardSlashEqual)
+ * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, questionMarkEqual)
+ * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, almostEqual)
+ * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, notEqual)
  */
 struct PunctuationTag {
 		/**
@@ -197,9 +202,9 @@ inline bool operator!=(const MagicString::PunctuationTag& lhs, const Byte (&rhs)
 /**
  * @brief Holds the byte sequences corresponding to a case-insensitive HTML/XML meta tag.
  *
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_MetaTag_Test, equal)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_MetaTag_Test, almostEqual)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_MetaTag_Test, notEqual)
+ * @test TEST_F(HTML_Parse_MagicString_MetaTag_Test, equal)
+ * @test TEST_F(HTML_Parse_MagicString_MetaTag_Test, almostEqual)
+ * @test TEST_F(HTML_Parse_MagicString_MetaTag_Test, notEqual)
  */
 struct MetaTag {
 		/**
@@ -314,9 +319,9 @@ inline bool operator!=(const MagicString::MetaTag& lhs, const Byte (&rhs)[6]) {
 /**
  * @brief Holds the byte sequences corresponding to an HTML tag starting with an ASCII letter.
  *
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_ASCIITag_Test, equal)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_ASCIITag_Test, almostEqual)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_ASCIITag_Test, notEqual)
+ * @test TEST_F(HTML_Parse_MagicString_ASCIITag_Test, equal)
+ * @test TEST_F(HTML_Parse_MagicString_ASCIITag_Test, almostEqual)
+ * @test TEST_F(HTML_Parse_MagicString_ASCIITag_Test, notEqual)
  */
 struct ASCIITag {
 		/**
@@ -419,9 +424,9 @@ inline bool operator!=(const MagicString::ASCIITag& lhs, const Byte (&rhs)[2]) {
 /**
  * @brief Holds the byte sequences corresponding to an HTML end tag starting with an ASCII letter.
  *
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_ASCIIEndTag_Test, equal)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_ASCIIEndTag_Test, almostEqual)
- * @test MagicString_Test::TEST_F(ParseHTML_MagicString_ASCIIEndTag_Test, notEqual)
+ * @test TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, equal)
+ * @test TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, almostEqual)
+ * @test TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, notEqual)
  */
 struct ASCIIEndTag {
 		/**

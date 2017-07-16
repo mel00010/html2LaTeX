@@ -454,7 +454,6 @@ bool isWhitespace(const std::string& string);
 /**
  * @brief Tests if a character is unicode whitespace
  * @param character Character to test
- * @todo Finish function
  * @return Returns true if character is unicode whitespace, false if it is not
  */
 bool isUnicodeWhitespace(const char& character);
@@ -462,7 +461,6 @@ bool isUnicodeWhitespace(const char& character);
 /**
  * @brief Tests if a string is unicode whitespace
  * @param string String to test
- * @todo Finish function
  * @return Returns true if string is unicode whitespace, false if it is not
  */
 bool isUnicodeWhitespace(const std::string& string);

@@ -139,7 +139,7 @@ ContentType DetermineCharEncoding::commentTagAlgorithm(std::istream& input) {
 		input.read((char*) startBuffer, 4);
 
 		for (size_t i = 0; i < 4; i++) {
-			if (startBuffer[i] != MagicString::CommentTag::start[i]) {
+			if (startBuffer[i] != HTML::Parse::MagicString::CommentTag::start[i]) {
 				input.seekg(-4, input.cur);
 				return encoding;
 			}
@@ -157,7 +157,7 @@ ContentType DetermineCharEncoding::commentTagAlgorithm(std::istream& input) {
 			input.read((char*) endBuffer, 3);
 			bool breakLoop = true;
 			for (size_t i = 0; i < 3; i++) {
-				if (endBuffer[i] != MagicString::CommentTag::end[i]) {
+				if (endBuffer[i] != HTML::Parse::MagicString::CommentTag::end[i]) {
 					input.seekg(-2, input.cur);
 					breakLoop = false;
 					break;
