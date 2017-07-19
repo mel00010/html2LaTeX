@@ -81,7 +81,7 @@ add_compile_options (
 	-fwrapv
 	-Wall
 	-Wextra
-	-std=gnu++11
+	-std=gnu++17
 )
 
 

@@ -25,11 +25,11 @@
 #include <iostream>
 
 /**
- * @file HTML/HTMLTypes.hpp
+ * @file src/HTML/HTMLTypes.hpp
  * @brief Holds type declarations for many types relating to HTML
  */
 /**
- * @dir HTML
+ * @dir src/HTML
  * @brief Holds all source files related to HTML
  */
 /**

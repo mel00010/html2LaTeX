@@ -1,5 +1,5 @@
-build
-.settings
-.autotools
-.cproject
-.project
+/.externalToolBuilders/
+/build/
+/.settings/
+/.cproject
+/.project

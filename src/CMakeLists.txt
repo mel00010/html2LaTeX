@@ -10,7 +10,7 @@ add_compile_options (
 	-fwrapv
 	-Wall
 	-Wextra
-	-std=gnu++11
+	-std=gnu++17
 )
 find_package (Boost 1.65 COMPONENTS program_options REQUIRED)
 

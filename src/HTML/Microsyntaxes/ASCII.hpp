@@ -436,7 +436,7 @@ constexpr char ASCII[128] = {
 /**
  * @brief Tests if a character is whitespace
  * @param character Character to test
- * @return Returns true if character is whitespace, false if it is not
+ * @return Returns true if character is whitespace, false if it is not.
  * @see ASCIIWhitespace
  */
 bool isWhitespace(const char& character);
@@ -444,7 +444,7 @@ bool isWhitespace(const char& character);
 /**
  * @brief Tests if a string is whitespace
  * @param string String to test
- * @return Returns true if string is whitespace, false if it is not
+ * @return Returns true if string is whitespace, false if it is not.
  * @see ASCIIWhitespace
  */
 bool isWhitespace(const std::string& string);
@@ -454,40 +454,40 @@ bool isWhitespace(const std::string& string);
 /**
  * @brief Tests if a character is unicode whitespace
  * @param character Character to test
- * @return Returns true if character is unicode whitespace, false if it is not
+ * @return Returns true if character is unicode whitespace, false if it is not.
  */
 bool isUnicodeWhitespace(const char& character);
 
 /**
  * @brief Tests if a string is unicode whitespace
  * @param string String to test
- * @return Returns true if string is unicode whitespace, false if it is not
+ * @return Returns true if string is unicode whitespace, false if it is not.
  */
 bool isUnicodeWhitespace(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Tests if a character is ASCII
+ * @param character Character to test
+ * @return Returns true if the character is ASCII, false if it is not.
  */
 bool isASCII(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is ASCII
+ * @param string String to test
+ * @return Returns true if string is ASCII, false if it is not.
  */
 bool isASCII(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Tests if a character is an ASCII digit
+ * @param character Character to test
+ * @return Returns true if character is an ASCII digit, false if it is not.
  */
 bool isASCIIDigit(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is ASCII digits
+ * @param string String to test
+ * @return Returns true if string is ASCII digits, false if it is not.
  */
 bool isASCIIDigits(const std::string& string);
 
@@ -502,100 +502,104 @@ bool isASCIIDigits(const std::string& string);
  */
 bool isASCIIUpper(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is ASCII upper case
+ * @param string String to test
+ * @return Returns true if the string is ASCII upper case, false if it is not.
  */
 bool isASCIIUpper(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Tests if a character is ASCII lower case
+ * @param character Character to test
+ * @return Returns true if the character is ASCII lower case, false if it is not.
  */
 bool isASCIILower(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is ASCII lower case
+ * @param string String to test
+ * @return Returns true if the string is ASCII lower case, false if it is not.
  */
 bool isASCIILower(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Tests if a character is alphanumeric ASCII
+ * @param character Character to test
+ * @return Returns true if the character is alphanumeric ASCII, false if it is not.
  */
 bool isAlphanumericASCII(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is alphanumeric ASCII
+ * @param string String to test
+ * @return Returns true if the string is alphanumeric ASCII, false if it is not.
  */
 bool isAlphanumericASCII(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Tests if a character is ASCII hex
+ * @param character Character to test
+ * @return Returns true if the character is ASCII hex, false if it is not.
  */
 bool isASCIIHex(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is ASCII hex
+ * @param string String to test
+ * @return Returns true if the string is ASCII hex, false if it is not.
  */
 bool isASCIIHex(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Tests if a character is ASCII hex upper case
+ * @param character Character to test
+ * @return Returns true if the character is ASCII hex upper case, false if it is not.
  */
 bool isASCIIHexUpper(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is ASCII hex upper case
+ * @param string String to test
+ * @return Returns true if the string is ASCII hex upper case, false if it is not.
  */
 bool isASCIIHexUpper(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Tests if a character is ASCII hex lower case
+ * @param character Character to test
+ * @return Returns true if the character is ASCII hex lower case, false if it is not.
  */
 bool isASCIIHexLower(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Tests if a string is ASCII hex lower case
+ * @param string String to test
+ * @return Returns true if the string is ASCII hex lower case, false if it is not.
  */
 bool isASCIIHexLower(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Converts a character to its ASCII upper case equivalent
+ * @param character Character to convert
+ * @return Returns the ASCII upper case equivalent of the character given.
+ * 		   If the character is not ASCII lower case, the original character is returned.
  */
 char toUpper(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Converts a string to ASCII upper case
+ * @param string String to convert
+ * @return Returns the ASCII upper case equivalent of the string given.
+ * 		   If a character in the string is not ASCII lower case, it is left unmodified in the string.
  */
 std::string toUpper(const std::string& string);
 
 /**
- *
- * @param character
- * @return
+ * @brief Converts a character to its ASCII lower case equivalent
+ * @param character Character to convert
+ * @return Returns the ASCII lower case equivalent of the character given.
+ * 		   If the character is not ASCII upper case, the original character is returned.
  */
 char toLower(const char& character);
 /**
- *
- * @param string
- * @return
+ * @brief Converts a string to ASCII lower case
+ * @param string String to convert
+ * @return Returns the ASCII lower case equivalent of the string given.
+ * 		   If a character in the string is not ASCII upper case, it is left unmodified in the string.
  */
 std::string toLower(const std::string& string);
 

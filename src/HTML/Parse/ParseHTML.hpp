@@ -23,7 +23,7 @@
 #include <gtest/gtest.h>
 
 /**
- * @dir HTML/Parse
+ * @dir src/HTML/Parse
  * @brief Holds all source files related to HTML parsing
  */
 
