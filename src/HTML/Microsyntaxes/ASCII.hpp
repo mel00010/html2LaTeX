@@ -437,7 +437,7 @@ constexpr char ASCII[128] = {
 /**
  * @brief Tests if a character is whitespace
  * @param character Character to test
- * @return Returns true if character is whitespace, false if it is not.
+ * @return Returns @c true if character is whitespace, @c false if it is not.
  * @see ASCIIWhitespace
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isWhitespace)
@@ -447,7 +447,7 @@ bool isWhitespace(const char& character);
 /**
  * @brief Tests if a string is whitespace
  * @param string String to test
- * @return Returns true if string is whitespace, false if it is not.
+ * @return Returns @c true if string is whitespace, @c false if it is not.
  * @see ASCIIWhitespace
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isWhitespace)
@@ -457,7 +457,7 @@ bool isWhitespace(const std::string& string);
 /**
  * @brief Tests if a character is unicode whitespace
  * @param character Character to test
- * @return Returns true if character is unicode whitespace, false if it is not.
+ * @return Returns @c true if character is unicode whitespace, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isUnicodeWhitespace)
  */
@@ -466,7 +466,7 @@ bool isUnicodeWhitespace(const char& character);
 /**
  * @brief Tests if a string is unicode whitespace
  * @param string String to test
- * @return Returns true if string is unicode whitespace, false if it is not.
+ * @return Returns @c true if string is unicode whitespace, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isUnicodeWhitespace)
  */
@@ -475,7 +475,7 @@ bool isUnicodeWhitespace(const std::string& string);
 /**
  * @brief Tests if a character is ASCII
  * @param character Character to test
- * @return Returns true if the character is ASCII, false if it is not.
+ * @return Returns @c true if the character is ASCII, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCII)
  */
@@ -484,7 +484,7 @@ bool isASCII(const char& character);
 /**
  * @brief Tests if a string is ASCII
  * @param string String to test
- * @return Returns true if string is ASCII, false if it is not.
+ * @return Returns @c true if string is ASCII, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCII)
  */
@@ -493,7 +493,7 @@ bool isASCII(const std::string& string);
 /**
  * @brief Tests if a character is an ASCII digit
  * @param character Character to test
- * @return Returns true if character is an ASCII digit, false if it is not.
+ * @return Returns @c true if character is an ASCII digit, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIDigit)
  */
@@ -502,7 +502,7 @@ bool isASCIIDigit(const char& character);
 /**
  * @brief Tests if a string is ASCII digits
  * @param string String to test
- * @return Returns true if string is ASCII digits, false if it is not.
+ * @return Returns @c true if string is ASCII digits, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIDigit)
  */
@@ -511,8 +511,8 @@ bool isASCIIDigits(const std::string& string);
 /**
  * @brief Tests if a byte is an ASCII upper case letter
  * @param character A reference to the byte to be tested
- * @return If the byte is an ASCII upper case letter, the function returns true.
- * 		   Otherwise, the function returns false.
+ * @return If the byte is an ASCII upper case letter, the function returns @c true.
+ * 		   Otherwise, the function returns @c false.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper)
  */
@@ -521,7 +521,7 @@ bool isASCIIUpper(const char& character);
 /**
  * @brief Tests if a string is ASCII upper case
  * @param string String to test
- * @return Returns true if the string is ASCII upper case, false if it is not.
+ * @return Returns @c true if the string is ASCII upper case, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper)
  */
@@ -530,7 +530,7 @@ bool isASCIIUpper(const std::string& string);
 /**
  * @brief Tests if a character is ASCII lower case
  * @param character Character to test
- * @return Returns true if the character is ASCII lower case, false if it is not.
+ * @return Returns @c true if the character is ASCII lower case, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIILower)
  */
@@ -539,7 +539,7 @@ bool isASCIILower(const char& character);
 /**
  * @brief Tests if a string is ASCII lower case
  * @param string String to test
- * @return Returns true if the string is ASCII lower case, false if it is not.
+ * @return Returns @c true if the string is ASCII lower case, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIILower)
  */
@@ -548,7 +548,7 @@ bool isASCIILower(const std::string& string);
 /**
  * @brief Tests if a character is alphanumeric ASCII
  * @param character Character to test
- * @return Returns true if the character is alphanumeric ASCII, false if it is not.
+ * @return Returns @c true if the character is alphanumeric ASCII, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII)
  */
@@ -557,7 +557,7 @@ bool isAlphanumericASCII(const char& character);
 /**
  * @brief Tests if a string is alphanumeric ASCII
  * @param string String to test
- * @return Returns true if the string is alphanumeric ASCII, false if it is not.
+ * @return Returns @c true if the string is alphanumeric ASCII, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII)
  */
@@ -566,7 +566,7 @@ bool isAlphanumericASCII(const std::string& string);
 /**
  * @brief Tests if a character is ASCII hex
  * @param character Character to test
- * @return Returns true if the character is ASCII hex, false if it is not.
+ * @return Returns @c true if the character is ASCII hex, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIHex)
  */
@@ -575,7 +575,7 @@ bool isASCIIHex(const char& character);
 /**
  * @brief Tests if a string is ASCII hex
  * @param string String to test
- * @return Returns true if the string is ASCII hex, false if it is not.
+ * @return Returns @c true if the string is ASCII hex, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIHex)
  */
@@ -584,7 +584,7 @@ bool isASCIIHex(const std::string& string);
 /**
  * @brief Tests if a character is ASCII hex upper case
  * @param character Character to test
- * @return Returns true if the character is ASCII hex upper case, false if it is not.
+ * @return Returns @c true if the character is ASCII hex upper case, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper)
  */
@@ -593,7 +593,7 @@ bool isASCIIHexUpper(const char& character);
 /**
  * @brief Tests if a string is ASCII hex upper case
  * @param string String to test
- * @return Returns true if the string is ASCII hex upper case, false if it is not.
+ * @return Returns @c true if the string is ASCII hex upper case, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper)
  */
@@ -602,7 +602,7 @@ bool isASCIIHexUpper(const std::string& string);
 /**
  * @brief Tests if a character is ASCII hex lower case
  * @param character Character to test
- * @return Returns true if the character is ASCII hex lower case, false if it is not.
+ * @return Returns @c true if the character is ASCII hex lower case, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower)
  */
@@ -611,7 +611,7 @@ bool isASCIIHexLower(const char& character);
 /**
  * @brief Tests if a string is ASCII hex lower case
  * @param string String to test
- * @return Returns true if the string is ASCII hex lower case, false if it is not.
+ * @return Returns @c true if the string is ASCII hex lower case, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower)
  */
@@ -661,9 +661,9 @@ std::string toLower(const std::string& string);
  * @brief Compares two characters in an ASCII case-insensitive manner.
  * @param lhs The first character to compare
  * @param rhs The second character to compare
- * @return Returns true if the characters match exactly except for the ASCII letters,
+ * @return Returns @c true if the characters match exactly except for the ASCII letters,
  *         which are considered to match to their corresponding characters in the other letter case.
- *         Returns false if the characters do not match.
+ *         Returns @c false if the characters do not match.
  *
  */
 bool caseInsensitiveMatch(const char& lhs, const char& rhs);
@@ -682,8 +682,8 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs);
 
 /**
  * @brief Skips whitespace at the beginning of a stream
- * @details Advances the stream until there are no more whitespace characters left at the
- * 			beginning of the stream.  This is determined using the isWhitespace() function.
+ * @details Reads from @c stream until there are no more whitespace characters left at the
+ * 			front of @c stream.  This is determined using the isWhitespace() function.
  * @param stream Stream to be processed
  * @param swallowExceptions Boolean parameter that tells the function whether or not to emit exceptions.
  * 		  Defaults to @c false.
