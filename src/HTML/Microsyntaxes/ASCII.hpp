@@ -648,6 +648,28 @@ char toLower(const char& character);
  */
 std::string toLower(const std::string& string);
 
+/**
+ * @brief Compares two characters in an ASCII case-insensitive manner.
+ * @param lhs The first character to compare
+ * @param rhs The second character to compare
+ * @return Returns true if the characters match exactly except for the ASCII letters,
+ *         which are considered to match to their corresponding characters in the other letter case.
+ *         Returns false if the characters do not match.
+ *
+ */
+bool caseInsensitiveMatch(const char& lhs, const char& rhs);
+
+/**
+ * @brief Compares two strings in an ASCII case-insensitive manner.
+ * @param lhs The first string to compare
+ * @param rhs The second string to compare
+ * @return Returns true if the strings match exactly, code point for code point,
+ * 		   except for the ASCII letters, which are considered to match to their corresponding
+ * 		   characters in the other letter case.  Returns false if the strings do not match.
+ *
+ */
+bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs);
+
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
 

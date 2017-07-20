@@ -99,6 +99,9 @@ enum Confidence {
  */
 class ContentType {
 	public:
+		ContentType(CharEncoding charEncoding = UNKNOWN, Confidence confidence = IRRELEVANT) :
+				charEncoding(charEncoding), confidence(confidence) {
+		}
 		CharEncoding charEncoding = UNKNOWN; /**<	@brief Holds the character encoding of the document. */
 		Confidence confidence = IRRELEVANT; /**<	@brief Holds the confidence of the guess at the character encoding. */
 };
@@ -124,6 +127,9 @@ class Formatting {
  */
 class Attribute {
 	public:
+		Attribute(std::string name = "", std::string value = "") :
+				name(name), value(value) {
+		}
 		std::string name = ""; /**<	@brief Holds the name of the attribute. */
 		std::string value = ""; /**<@brief Holds the value of the attribute. */
 };

@@ -50,79 +50,16 @@ namespace Parse {
 class DetermineCharEncoding {
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 	private:
-		friend class HTML_Parse_DetermineCharEncoding_Test;
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, determineCharEncoding_BOM);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, determineCharEncoding_preScan);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_16_BE);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_16_LE);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_8);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_invalidBOM);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_none);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, preScan_commentTagAlgorithm);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, preScan_metaTagAlgorithm);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, preScan_asciiTagAlgorithm);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, preScan_punctuationTagAlgorithm);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_normal);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_sharingDashes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_notCommentTag);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_unclosed);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_normal);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_notMetaTag);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_Present);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_NotPresent);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_HasNoValue);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_HasWrongValue);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_charset_Present);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_charset);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_noAttributes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_noUsefulAttributes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_unclosed);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_normal);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_notAsciiTag);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_startTag);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_endTag);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_startTagWithAttributes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_unclosed);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_normal);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_notPunctuationTag);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_unclosed);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_nameAndValue);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_nameOnly);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_unclosed);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_noAttribute);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInDoubleQuotes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInSingleQuotes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInUnmatchedDoubleQuotes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInUnmatchedSingleQuotes);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_normal);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_partialCharset);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noCharset);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noEncoding);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noEquals);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unknownEncoding);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_doubleQuotes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_singleQuotes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unmatchedDoubleQuotes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unmatchedSingleQuotes);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_endSpace);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_endSemicolon);
-
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_unicode_1_1_utf_8);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_8);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf8);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16be);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16le);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_unknown);
-		FRIEND_TEST(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_none);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, determineCharEncoding);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, tryUnicodeBOM);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, preScan);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, commentTagAlgorithm);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, metaTagAlgorithm);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, asciiTagAlgorithm);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, punctuationTagAlgorithm);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, getAttribute);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, extractCharEncodingFromMetaTag);
+		FRIEND_TEST(HTML_Parse_DetermineCharEncoding, getCharEncodingFromString);
 		#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 	public:
@@ -134,8 +71,7 @@ class DetermineCharEncoding {
 		 * @param input The input stream whose character encoding will be determined.
 		 * @return A ContentType object containing the character encoding and the confidence in the result.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, determineCharEncoding_BOM)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, determineCharEncoding_preScan);
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, determineCharEncoding)
 		 */
 		ContentType determineCharEncoding(std::istream& input);
 
@@ -151,11 +87,7 @@ class DetermineCharEncoding {
 		 * 		   If unsuccessful, returns a ContentType object with the character encoding UNKNOWN and the confidence IRRELEVANT.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_16_BE)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_16_LE)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_8)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_invalidBOM)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_none)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, tryUnicodeBOM)
 		 */
 		ContentType tryUnicodeBOM(std::istream& input);
 
@@ -166,10 +98,7 @@ class DetermineCharEncoding {
 		 * 		   If unsuccessful, returns a ContentType object with the character encoding UNKNOWN and the confidence IRRELEVANT.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_commentTagAlgorithm)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_metaTagAlgorithm)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_asciiTagAlgorithm)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_punctuationTagAlgorithm)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, preScan)
 		 */
 		ContentType preScan(std::istream& input);
 
@@ -182,10 +111,8 @@ class DetermineCharEncoding {
 		 * @param input The input stream whose character encoding will be determined.
 		 * @return A ContentType object with the character encoding UNKNOWN and the confidence IRRELEVANT.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_normal)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_sharingDashes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_notCommentTag)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_unclosed)
+		 *
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, commentTagAlgorithm)
 		 */
 		ContentType commentTagAlgorithm(std::istream& input);
 
@@ -200,17 +127,7 @@ class DetermineCharEncoding {
 		 * 		   If unsuccessful, returns a ContentType object with the character encoding UNKNOWN and the confidence IRRELEVANT.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_normal)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_notMetaTag)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_Present)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_NotPresent)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_HasNoValue)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_HasWrongValue)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_charset_Present)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_charset)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_noAttributes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_noUsefulAttributes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_unclosed)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, metaTagAlgorithm)
 		 */
 		ContentType metaTagAlgorithm(std::istream& input);
 
@@ -224,12 +141,7 @@ class DetermineCharEncoding {
 		 * @return A ContentType object with the character encoding UNKNOWN and the confidence IRRELEVANT.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_normal)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_notAsciiTag)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_startTag)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_endTag)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_startTagWithAttributes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_unclosed)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, asciiTagAlgorithm)
 		 */
 		ContentType asciiTagAlgorithm(std::istream& input);
 
@@ -243,9 +155,7 @@ class DetermineCharEncoding {
 		 * @return A ContentType object with the character encoding UNKNOWN and the confidence IRRELEVANT.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_normal)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_notPunctuationTag)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_unclosed)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, punctuationTagAlgorithm)
 		 */
 		ContentType punctuationTagAlgorithm(std::istream& input);
 
@@ -261,14 +171,7 @@ class DetermineCharEncoding {
 		 * 		   Otherwise, the exception is thrown upwards.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_nameAndValue)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_nameOnly)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_unclosed)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_noAttribute)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInDoubleQuotes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInSingleQuotes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInUnmatchedDoubleQuotes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInUnmatchedSingleQuotes)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, getAttribute)
 		 */
 		Attribute getAttribute(std::istream& input, bool swallowExceptions = true);
 
@@ -314,18 +217,7 @@ class DetermineCharEncoding {
 		 * @return If a character encoding is successfully extracted, the function returns the character encoding.
 		 * 		   If no character encoding is extracted, the function returns NULL_ENC.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_normal)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_partialCharset)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noCharset)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noEncoding)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noEquals)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unknownEncoding)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_doubleQuotes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_singleQuotes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unmatchedDoubleQuotes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unmatchedSingleQuotes)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_endSpace)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_endSemicolon)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, extractCharEncodingFromMetaTag)
 		 */
 		CharEncoding extractCharEncodingFromMetaTag(std::string& string);
 
@@ -349,14 +241,7 @@ class DetermineCharEncoding {
 		 * @return If a character encoding is successfully recognized, the function returns the character encoding.
 		 * 		   If the character encoding is unrecognized, the function returns NULL_ENC.
 		 *
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_unicode_1_1_utf_8)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_8)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf8)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16be)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16le)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_unknown)
-		 * @test TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_none)
+		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, getCharEncodingFromString)
 		 */
 		CharEncoding getCharEncodingFromString(std::string& input);
 

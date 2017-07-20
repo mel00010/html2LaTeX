@@ -321,6 +321,14 @@ TEST(HTML_Microsyntaxes_ASCII, toLower) {
 	EXPECT_EQ(std::string("mixed case with spaces and punctuation."), HTML::Microsyntaxes::toLower(std::string("mixed CASE with spaces and punctuation.")));
 }
 
+TEST(HTML_Microsyntaxes_ASCII, caseInsensitiveMatch) {
+	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("TEST STRING.", "test string."));
+	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("test String.", "TEST sTRING."));
+	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("TEST STRING.", "test string."));
+	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("TEST STRING.", "TEST STRING."));
+	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("test string.", "test string."));
+	EXPECT_FALSE(HTML::Microsyntaxes::caseInsensitiveMatch("UPPER CASE.", "lower case."));
+}
 } /* namespace Microsyntaxes_Test */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

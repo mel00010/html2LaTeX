@@ -242,6 +242,20 @@ std::string toLower(const std::string& string) {
 	}
 	return converted;
 }
+bool caseInsensitiveMatch(const char& lhs, const char& rhs) {
+	if (toUpper(lhs) == toUpper(rhs)) {
+		return true;
+	}
+	return false;
+}
 
+
+bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs) {
+	if (toUpper(lhs) == toUpper(rhs)) {
+		return true;
+	}
+	return false;
+
+}
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

@@ -47,12 +47,7 @@ class MockStreamBuf: public std::streambuf {
 		MOCK_METHOD1(overflow, int_type(int_type c));
 };
 
-class LaTeX_LaTeXOStream_Test: public ::testing::Test {
-	public:
-
-};
-
-TEST_F(LaTeX_LaTeXOStream_Test, write) {
+TEST(LaTeX, LaTeXOStream) {
 	MockUnicodeToLaTeX converter;
 	MockStreamBuf ostreambuf;
 	std::ostream output(&ostreambuf);

@@ -65,8 +65,7 @@ constexpr Byte ATTRIBUTE_SKIP_CHARS[6] = {
  * @return If the Byte array matches the case insensitive ASCII string 'charset', the function returns true.
  * 		   Otherwise, the function returns false.
  *
- * @test TEST_F(HTML_Parse_MagicString_isCharset_Test, trueCase)
- * @test TEST_F(HTML_Parse_MagicString_isCharset_Test, falseCase)
+ * @test HTML::Parse::MagicString::MagicString_Test::TEST(HTML_Parse_MagicString, isCharset)
  */
 bool isCharset(const Byte (&string)[7]);
 
@@ -94,11 +93,7 @@ constexpr Byte end[3] = { 0x2D, 0x2D, 0x3E }; /**< 			@brief Holds the byte sequ
 /**
  * @brief Holds the byte sequences indicating the start or end of an HTML tag starting with '!', '?', or '/'.
  *
- * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, exclamationPointEqual)
- * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, forwardSlashEqual)
- * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, questionMarkEqual)
- * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, almostEqual)
- * @test TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, notEqual)
+ * @test HTML::Parse::MagicString::MagicString_Test::TEST(HTML_Parse_MagicString, PunctuationTag)
  */
 struct PunctuationTag {
 		/**
@@ -202,9 +197,8 @@ inline bool operator!=(const MagicString::PunctuationTag& lhs, const Byte (&rhs)
 /**
  * @brief Holds the byte sequences corresponding to a case-insensitive HTML/XML meta tag.
  *
- * @test TEST_F(HTML_Parse_MagicString_MetaTag_Test, equal)
- * @test TEST_F(HTML_Parse_MagicString_MetaTag_Test, almostEqual)
- * @test TEST_F(HTML_Parse_MagicString_MetaTag_Test, notEqual)
+ * @test HTML::Parse::MagicString::MagicString_Test::TEST(HTML_Parse_MagicString, MetaTag)
+
  */
 struct MetaTag {
 		/**
@@ -319,9 +313,7 @@ inline bool operator!=(const MagicString::MetaTag& lhs, const Byte (&rhs)[6]) {
 /**
  * @brief Holds the byte sequences corresponding to an HTML tag starting with an ASCII letter.
  *
- * @test TEST_F(HTML_Parse_MagicString_ASCIITag_Test, equal)
- * @test TEST_F(HTML_Parse_MagicString_ASCIITag_Test, almostEqual)
- * @test TEST_F(HTML_Parse_MagicString_ASCIITag_Test, notEqual)
+ * @test HTML::Parse::MagicString::MagicString_Test::TEST(HTML_Parse_MagicString, ASCIITag)
  */
 struct ASCIITag {
 		/**
@@ -424,9 +416,7 @@ inline bool operator!=(const MagicString::ASCIITag& lhs, const Byte (&rhs)[2]) {
 /**
  * @brief Holds the byte sequences corresponding to an HTML end tag starting with an ASCII letter.
  *
- * @test TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, equal)
- * @test TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, almostEqual)
- * @test TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, notEqual)
+ * @test HTML::Parse::MagicString::MagicString_Test::TEST(HTML_Parse_MagicString, ASCIIEndTag)
  */
 struct ASCIIEndTag {
 		/**

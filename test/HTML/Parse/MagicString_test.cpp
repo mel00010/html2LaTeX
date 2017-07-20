@@ -34,117 +34,73 @@ namespace MagicString {
  */
 namespace MagicString_Test {
 
-/**
- * @brief Test fixture for HTML::Parse::MagicString::MetaTag
- */
-class HTML_Parse_MagicString_MetaTag_Test: public ::testing::Test {
-	protected:
-		HTML::Parse::MagicString::MetaTag MetaTag;
-		const HTML::Parse::Byte equal[6] = { 0x3C, 0x4D, 0x65, 0x54, 0x61, 0x0C };
-		const HTML::Parse::Byte almostEqual[6] = { 0x3C, 0x4D, 0x65, 0x53, 0x61, 0x0C };
-		const HTML::Parse::Byte notEqual[6] = { 0x09, 0x0A, 0x0C, 0x0D, 0x20, 0x2F };
-
-};
-/**
- * @brief Test fixture for HTML::Parse::MagicString::ASCIITag
- */
-class HTML_Parse_MagicString_ASCIITag_Test: public ::testing::Test {
-	protected:
-		HTML::Parse::MagicString::ASCIITag ASCIITag;
-		const HTML::Parse::Byte equal[2] = { 0x3C, 0x5A };
-		const HTML::Parse::Byte almostEqual[2] = { 0x3C, 0x8A };
-		const HTML::Parse::Byte notEqual[2] = { 0x24, 0x8A };
-
-};
-
-/**
- * @brief Test fixture for HTML::Parse::MagicString::ASCIIEndTag
- */
-class HTML_Parse_MagicString_ASCIIEndTag_Test: public ::testing::Test {
-	protected:
-		HTML::Parse::MagicString::ASCIIEndTag ASCIIEndTag;
-		const HTML::Parse::Byte equal[3] = { 0x3C, 0x4D, 0x5A };
-		const HTML::Parse::Byte almostEqual[3] = { 0x3C, 0x4D, 0x8A };
-		const HTML::Parse::Byte notEqual[3] = { 0x24, 0x40, 0x8A };
-
-};
-
-/**
- * @brief Test fixture for HTML::Parse::MagicString::PunctuationTag
- */
-class HTML_Parse_MagicString_PunctuationTag_Test: public ::testing::Test {
-	protected:
-		HTML::Parse::MagicString::PunctuationTag PunctuationTag;
-		const HTML::Parse::Byte exclamationPointEqual[2] = { 0x3C, 0x21 };
-		const HTML::Parse::Byte forwardSlashEqual[2] = { 0x3C, 0x2F };
-		const HTML::Parse::Byte questionMarkEqual[2] = { 0x3C, 0x3F };
-		const HTML::Parse::Byte almostEqual[2] = { 0x3C, 0x20 };
-		const HTML::Parse::Byte notEqual[2] = { 0x24, 0x20 };
-
-};
-
-
-/**
- * @brief Test fixture for HTML::Parse::MagicString::isCharset()
- */
-class HTML_Parse_MagicString_isCharset_Test: public ::testing::Test {
-	protected:
-		const HTML::Parse::Byte trueCase[7] = { 'C', 'h', 'A', 'r', 'S', 'e', 'T' };
-		const HTML::Parse::Byte falseCase[7] = { 'c', 'a', 'h', 't', 's', 'e', 'l' };
-};
 /**@{*/
 
-TEST_F(HTML_Parse_MagicString_MetaTag_Test, equal) {
+TEST(HTML_Parse_MagicString, MetaTag) {
+	HTML::Parse::MagicString::MetaTag MetaTag;
+
+	const HTML::Parse::Byte equal[6] = { 0x3C, 0x4D, 0x65, 0x54, 0x61, 0x0C };
+	const HTML::Parse::Byte almostEqual[6] = { 0x3C, 0x4D, 0x65, 0x53, 0x61, 0x0C };
+	const HTML::Parse::Byte notEqual[6] = { 0x09, 0x0A, 0x0C, 0x0D, 0x20, 0x2F };
+
 	EXPECT_EQ(MetaTag, equal);
-}
-TEST_F(HTML_Parse_MagicString_MetaTag_Test, almostEqual) {
 	EXPECT_NE(MetaTag, almostEqual);
-}
-TEST_F(HTML_Parse_MagicString_MetaTag_Test, notEqual) {
 	EXPECT_NE(MetaTag, notEqual);
 }
 
-TEST_F(HTML_Parse_MagicString_ASCIITag_Test, equal) {
+
+TEST(HTML_Parse_MagicString, ASCIITag) {
+	HTML::Parse::MagicString::ASCIITag ASCIITag;
+
+	const HTML::Parse::Byte equal[2] = { 0x3C, 0x5A };
+	const HTML::Parse::Byte almostEqual[2] = { 0x3C, 0x8A };
+	const HTML::Parse::Byte notEqual[2] = { 0x24, 0x8A };
+
 	EXPECT_EQ(ASCIITag, equal);
-}
-TEST_F(HTML_Parse_MagicString_ASCIITag_Test, almostEqual) {
 	EXPECT_NE(ASCIITag, almostEqual);
-}
-TEST_F(HTML_Parse_MagicString_ASCIITag_Test, notEqual) {
 	EXPECT_NE(ASCIITag, notEqual);
+
 }
 
-TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, equal) {
+
+TEST(HTML_Parse_MagicString, ASCIIEndTag) {
+	HTML::Parse::MagicString::ASCIIEndTag ASCIIEndTag;
+
+	const HTML::Parse::Byte equal[3] = { 0x3C, 0x4D, 0x5A };
+	const HTML::Parse::Byte almostEqual[3] = { 0x3C, 0x4D, 0x8A };
+	const HTML::Parse::Byte notEqual[3] = { 0x24, 0x40, 0x8A };
 	EXPECT_EQ(ASCIIEndTag, equal);
-}
-TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, almostEqual) {
 	EXPECT_NE(ASCIIEndTag, almostEqual);
-}
-TEST_F(HTML_Parse_MagicString_ASCIIEndTag_Test, notEqual) {
 	EXPECT_NE(ASCIIEndTag, notEqual);
+
 }
 
-TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, exclamationPointEqual) {
+
+TEST(HTML_Parse_MagicString, PunctuationTag) {
+	HTML::Parse::MagicString::PunctuationTag PunctuationTag;
+
+	const HTML::Parse::Byte exclamationPointEqual[2] = { 0x3C, 0x21 };
+	const HTML::Parse::Byte forwardSlashEqual[2] = { 0x3C, 0x2F };
+	const HTML::Parse::Byte questionMarkEqual[2] = { 0x3C, 0x3F };
+	const HTML::Parse::Byte almostEqual[2] = { 0x3C, 0x20 };
+	const HTML::Parse::Byte notEqual[2] = { 0x24, 0x20 };
+
 	EXPECT_EQ(PunctuationTag, exclamationPointEqual);
-}
-TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, forwardSlashEqual) {
 	EXPECT_EQ(PunctuationTag, forwardSlashEqual);
-}
-TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, questionMarkEqual) {
 	EXPECT_EQ(PunctuationTag, questionMarkEqual);
-}
-TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, almostEqual) {
 	EXPECT_NE(PunctuationTag, almostEqual);
-}
-TEST_F(HTML_Parse_MagicString_PunctuationTag_Test, notEqual) {
 	EXPECT_NE(PunctuationTag, notEqual);
+
 }
 
-TEST_F(HTML_Parse_MagicString_isCharset_Test, trueCase) {
+
+TEST(HTML_Parse_MagicString, isCharset) {
+	const HTML::Parse::Byte trueCase[7] = { 'C', 'h', 'A', 'r', 'S', 'e', 'T' };
+	const HTML::Parse::Byte falseCase[7] = { 'c', 'a', 'h', 't', 's', 'e', 'l' };
+
 	EXPECT_TRUE(HTML::Parse::MagicString::isCharset(trueCase));
-}
-TEST_F(HTML_Parse_MagicString_isCharset_Test, falseCase) {
 	EXPECT_FALSE(HTML::Parse::MagicString::isCharset(falseCase));
+
 }
 /**@}*/
 

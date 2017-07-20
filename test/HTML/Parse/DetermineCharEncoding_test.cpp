@@ -37,454 +37,208 @@ namespace HTML {
 namespace Parse {
 
 /**
- * @brief Test fixture for HTML::Parse::DetermineCharEncoding
- */
-class HTML_Parse_DetermineCharEncoding_Test: public ::testing::Test {
-	protected:
-		DetermineCharEncoding determineCharEncoding;
-};
-/**
  * @{
  * @name DetermineCharEncoding_Tests
  */
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, determineCharEncoding_BOM) {
-	Byte BOM[2] = { 0xFE, 0xFF };
-	std::string testString = (char*) BOM;
-	testString += "unrelated <tags> and other text";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_16_BE;
-	expected.confidence = CERTAIN;
-	EXPECT_EQ(expected, determineCharEncoding.determineCharEncoding(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, determineCharEncoding_preScan) {
-	std::string testString = "<html>\n<head>\n\t<meta charset=utf-8> more unrelated text and <tags>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.determineCharEncoding(testStream));
+TEST(HTML_Parse_DetermineCharEncoding, determineCharEncoding) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream BOM("\xFE\xFFunrelated <tags> and other text");
+	std::istringstream preScan("<html>\n<head>\n\t<meta charset=utf-8> more unrelated text and <tags>");
+
+	EXPECT_EQ(ContentType(UTF_16_BE, CERTAIN), determineCharEncoding.determineCharEncoding(BOM));
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.determineCharEncoding(preScan));
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_commentTagAlgorithm) {
-	std::string testString = "<html>\n<head>\n\t<!-- charset=utf-8> more unrelated text and <tags> --> <meta charset=utf-8>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.determineCharEncoding(testStream));
+
+TEST(HTML_Parse_DetermineCharEncoding, preScan) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream commentTagAlgorithm("<html>\n<head>\n\t<!-- charset=utf-8> more unrelated text and <tags> --> <meta charset=utf-8>");
+	std::istringstream metaTagAlgorithm("<html>\n<head>\n\t<meta charset=utf-8> more unrelated text and <tags>");
+	std::istringstream asciiTagAlgorithm("<html>\n<head>\n\t<unrelatedTag charset=utf-8> more unrelated text and <tags><unrelatedTag> <meta charset=utf-8>");
+	std::istringstream punctuationTagAlgorithm("<html>\n<head>\n\t<? charset=utf-8> more unrelated text and <tags> > <meta charset=utf-8>");
+
+
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.determineCharEncoding(commentTagAlgorithm));
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.determineCharEncoding(metaTagAlgorithm));
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.determineCharEncoding(asciiTagAlgorithm));
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.determineCharEncoding(punctuationTagAlgorithm));
 }
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_metaTagAlgorithm) {
-	std::string testString = "<html>\n<head>\n\t<meta charset=utf-8> more unrelated text and <tags>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.determineCharEncoding(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_asciiTagAlgorithm) {
-	std::string testString = "<html>\n<head>\n\t<unrelatedTag charset=utf-8> more unrelated text and <tags><unrelatedTag> <meta charset=utf-8>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.determineCharEncoding(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, preScan_punctuationTagAlgorithm) {
-	std::string testString = "<html>\n<head>\n\t<? charset=utf-8> more unrelated text and <tags> > <meta charset=utf-8>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.determineCharEncoding(testStream));
+TEST(HTML_Parse_DetermineCharEncoding, tryUnicodeBOM) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream utf_16_be("\xFE\xFF");
+	std::istringstream utf_16_le("\xFF\xFE");
+	std::istringstream utf_8("\xEF\xBB\xBF");
+	std::istringstream invalidBOM("\x5A,\xDE\xCC");
+	std::istringstream none("");
+
+	EXPECT_EQ(ContentType(UTF_16_BE, CERTAIN), determineCharEncoding.tryUnicodeBOM(utf_16_be));
+	EXPECT_EQ(ContentType(UTF_16_LE, CERTAIN), determineCharEncoding.tryUnicodeBOM(utf_16_le));
+	EXPECT_EQ(ContentType(UTF_8, CERTAIN), determineCharEncoding.tryUnicodeBOM(utf_8));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.tryUnicodeBOM(invalidBOM));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.tryUnicodeBOM(none));
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_16_BE) {
-	Byte BOM[2] = { 0xFE, 0xFF };
-	std::string testString = (char*) BOM;
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_16_BE;
-	expected.confidence = CERTAIN;
-	EXPECT_EQ(expected, determineCharEncoding.tryUnicodeBOM(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_16_LE) {
-	Byte BOM[2] = { 0xFF, 0xFE };
-	std::string testString = (char*) BOM;
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_16_LE;
-	expected.confidence = CERTAIN;
-	EXPECT_EQ(expected, determineCharEncoding.tryUnicodeBOM(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_UTF_8) {
-	Byte BOM[3] = { 0xEF, 0xBB, 0xBF };
-	std::string testString = (char*) BOM;
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = CERTAIN;
-	EXPECT_EQ(expected, determineCharEncoding.tryUnicodeBOM(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_invalidBOM) {
-	Byte BOM[3] = { 0x5A, 0xDE, 0xCC };
-	std::string testString = (char*) BOM;
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.tryUnicodeBOM(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, tryUnicodeBOM_none) {
-	std::string testString = "";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.tryUnicodeBOM(testStream));
+TEST(HTML_Parse_DetermineCharEncoding, commentTagAlgorithm) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream normal("<!-- commentText -->");
+	std::istringstream sharingDashes("<!-->");
+	std::istringstream notCommentTag("<notCommentTag>");
+	std::istringstream unclosed("<!-- ");
+
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.commentTagAlgorithm(normal));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.commentTagAlgorithm(sharingDashes));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.commentTagAlgorithm(notCommentTag));
+	EXPECT_THROW(determineCharEncoding.commentTagAlgorithm(unclosed), std::istream::failure);
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_normal) {
-	std::string testString = "<!-- commentText -->";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.commentTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_sharingDashes) {
-	std::string testString = "<!-->";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.commentTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_notCommentTag) {
-	std::string testString = "<notCommentTag>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.commentTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, commentTagAlgorithm_unclosed) {
-	std::string testString = "<!-- ";
-	std::istringstream testStream(testString);
-	EXPECT_THROW(determineCharEncoding.commentTagAlgorithm(testStream), std::istream::failure);
+TEST(HTML_Parse_DetermineCharEncoding, metaTagAlgorithm) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream normal("<meta charset=utf-8>");
+	std::istringstream notMetaTag("<notMetaTag>");
+	std::istringstream content_Present_http_equiv_Present("<meta content=\"charset=utf-8\" http-equiv=\"content-type\">");
+	std::istringstream content_Present_http_equiv_NotPresent("<meta content=\"charset=utf-8\" >");
+	std::istringstream content_Present_http_equiv_HasNoValue("<meta content=\"charset=utf-8\" http-equiv>");
+	std::istringstream content_Present_http_equiv_HasWrongValue("<meta content=\"charset=utf-8\" http-equiv=\"wrong\">");
+	std::istringstream content_Present_charset_Present("<meta content=\"charset=utf-8\" charset=\"utf-8\">");
+	std::istringstream charset("<meta charset=utf-8>");
+	std::istringstream noAttributes("<meta>");
+	std::istringstream noUsefulAttributes("<meta attributeName1=attributeValue1 attributeName2=attributeValue2>");
+	std::istringstream unclosed("<meta");
+
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.metaTagAlgorithm(normal));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.metaTagAlgorithm(notMetaTag));
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.metaTagAlgorithm(content_Present_http_equiv_Present));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.metaTagAlgorithm(content_Present_http_equiv_NotPresent));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.metaTagAlgorithm(content_Present_http_equiv_HasNoValue));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.metaTagAlgorithm(content_Present_http_equiv_HasWrongValue));
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.metaTagAlgorithm(content_Present_charset_Present));
+	EXPECT_EQ(ContentType(UTF_8, TENTATIVE), determineCharEncoding.metaTagAlgorithm(charset));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.metaTagAlgorithm(noAttributes));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.metaTagAlgorithm(noUsefulAttributes));
+	EXPECT_THROW(determineCharEncoding.metaTagAlgorithm(unclosed), std::istream::failure);
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_normal) {
-	std::string testString = "<meta charset=utf-8>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_notMetaTag) {
-	std::string testString = "<notMetaTag>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_Present) {
-	std::string testString = "<meta content=\"charset=utf-8\" http-equiv=\"content-type\">";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_NotPresent) {
-	std::string testString = "<meta content=\"charset=utf-8\" >";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_HasNoValue) {
-	std::string testString = "<meta content=\"charset=utf-8\" http-equiv>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_http_equiv_HasWrongValue) {
-	std::string testString = "<meta content=\"charset=utf-8\" http-equiv=\"wrong\">";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_content_Present_charset_Present) {
-	std::string testString = "<meta content=\"charset=utf-8\" charset=\"utf-8\">";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_charset) {
-	std::string testString = "<meta charset=utf-8>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UTF_8;
-	expected.confidence = TENTATIVE;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_noAttributes) {
-	std::string testString = "<meta>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_noUsefulAttributes) {
-	std::string testString = "<meta attributeName1=attributeValue1 attributeName2=attributeValue2>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.metaTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, metaTagAlgorithm_unclosed) {
-	std::string testString = "<meta";
-	std::istringstream testStream(testString);
-	EXPECT_THROW(determineCharEncoding.metaTagAlgorithm(testStream), std::istream::failure);
+TEST(HTML_Parse_DetermineCharEncoding, asciiTagAlgorithm) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream normal("<AsciiTag>");
+	std::istringstream notAsciiTag("<!-->");
+	std::istringstream startTag("<AsciiTag>");
+	std::istringstream endTag("</AsciiTag>");
+	std::istringstream startTagWithAttributes("<AsciiTag attribute1=value1>");
+	std::istringstream unclosed("<AsciiTag");
+
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.asciiTagAlgorithm(normal));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.asciiTagAlgorithm(notAsciiTag));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.asciiTagAlgorithm(startTag));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.asciiTagAlgorithm(endTag));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.asciiTagAlgorithm(startTagWithAttributes));
+	EXPECT_THROW(determineCharEncoding.asciiTagAlgorithm(unclosed), std::istream::failure);
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_normal) {
-	std::string testString = "<AsciiTag>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.asciiTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_notAsciiTag) {
-	std::string testString = "<!-->";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.asciiTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_startTag) {
-	std::string testString = "<AsciiTag>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.asciiTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_endTag) {
-	std::string testString = "</AsciiTag>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.asciiTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_startTagWithAttributes) {
-	std::string testString = "<AsciiTag attribute1=value1>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.asciiTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, asciiTagAlgorithm_unclosed) {
-	std::string testString = "<AsciiTag";
-	std::istringstream testStream(testString);
-	EXPECT_THROW(determineCharEncoding.asciiTagAlgorithm(testStream), std::istream::failure);
+TEST(HTML_Parse_DetermineCharEncoding, punctuationTagAlgorithm) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream normal("<!punctuationTag>");
+	std::istringstream notPunctuationTag("<notPunctuationTag>");
+	std::istringstream unclosed("<!");
+
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.punctuationTagAlgorithm(normal));
+	EXPECT_EQ(ContentType(UNKNOWN, IRRELEVANT), determineCharEncoding.punctuationTagAlgorithm(notPunctuationTag));
+	EXPECT_THROW(determineCharEncoding.punctuationTagAlgorithm(unclosed), std::istream::failure);
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_normal) {
-	std::string testString = "<!punctuationTag>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.punctuationTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_notPunctuationTag) {
-	std::string testString = "<notPunctuationTag>";
-	std::istringstream testStream(testString);
-	ContentType expected;
-	expected.charEncoding = UNKNOWN;
-	expected.confidence = IRRELEVANT;
-	EXPECT_EQ(expected, determineCharEncoding.punctuationTagAlgorithm(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, punctuationTagAlgorithm_unclosed) {
-	std::string testString = "<!";
-	std::istringstream testStream(testString);
-	EXPECT_THROW(determineCharEncoding.punctuationTagAlgorithm(testStream), std::istream::failure);
+TEST(HTML_Parse_DetermineCharEncoding, getAttribute) {
+	DetermineCharEncoding determineCharEncoding;
+
+	std::istringstream nameAndValue("testName=testValue");
+	std::istringstream nameOnly("testName");
+	std::istringstream unclosed("testName = >");
+	std::istringstream noAttribute("");
+	std::istringstream doubleQuotes("testName = \"testValue\"");
+	std::istringstream singleQuotes("testName = 'testValue'");
+	std::istringstream unmatchedDoubleQuotes("testName = \"testValue");
+	std::istringstream unmatchedSingleQuotes("testName = 'testValue");
+
+	nameAndValue.exceptions(std::istream::eofbit);
+	nameOnly.exceptions(std::istream::eofbit);
+	unclosed.exceptions(std::istream::eofbit);
+	noAttribute.exceptions(std::istream::eofbit);
+	doubleQuotes.exceptions(std::istream::eofbit);
+	singleQuotes.exceptions(std::istream::eofbit);
+	unmatchedDoubleQuotes.exceptions(std::istream::eofbit);
+	unmatchedSingleQuotes.exceptions(std::istream::eofbit);
+
+	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(nameAndValue));
+	EXPECT_EQ(Attribute("testname", ""), determineCharEncoding.getAttribute(nameOnly));
+	EXPECT_EQ(Attribute("testname", ""), determineCharEncoding.getAttribute(unclosed));
+	EXPECT_EQ(Attribute("", ""), determineCharEncoding.getAttribute(noAttribute));
+	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(doubleQuotes));
+	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(singleQuotes));
+	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(unmatchedDoubleQuotes));
+	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(unmatchedSingleQuotes));
+
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_nameAndValue) {
-	std::string testString = "testName=testValue";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "testname";
-	expected.value = "testvalue";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
+TEST(HTML_Parse_DetermineCharEncoding, extractCharEncodingFromMetaTag) {
+	DetermineCharEncoding determineCharEncoding;
 
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_nameOnly) {
-	std::string testString = "testName";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "testname";
-	expected.value = "";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_unclosed) {
-	std::string testString = "testName = >";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "testname";
-	expected.value = "";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_noAttribute) {
-	std::string testString = "";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "";
-	expected.value = "";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInDoubleQuotes) {
-	std::string testString = "testName = \"testValue\"";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "testname";
-	expected.value = "testvalue";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInSingleQuotes) {
-	std::string testString = "testName = 'testValue'";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "testname";
-	expected.value = "testvalue";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInUnmatchedDoubleQuotes) {
-	std::string testString = "testName = \"testValue";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "testname";
-	expected.value = "testvalue";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getAttribute_valueInUnmatchedSingleQuotes) {
-	std::string testString = "testName = 'testValue";
-	std::istringstream testStream(testString);
-	testStream.exceptions(std::istream::eofbit);
-	Attribute expected;
-	expected.name = "testname";
-	expected.value = "testvalue";
-	EXPECT_EQ(expected, determineCharEncoding.getAttribute(testStream));
+	std::string normal = "charSet = utf-8";
+	std::string partialCharset = "char=utf-8";
+	std::string noCharset = "utf-8";
+	std::string noEncoding = "charset=";
+	std::string noEquals = "charset utf-8";
+	std::string unknownEncoding = "charset=unknown";
+	std::string doubleQuotes = "charset = \"utf-8\"";
+	std::string singleQuotes = "charset = 'utf-8'";
+	std::string unmatchedDoubleQuotes = "charset = \"utf-8";
+	std::string unmatchedSingleQuotes = "charset = 'utf-8";
+	std::string endSpace = "charset = utf-8 ";
+	std::string endSemicolon = "charset = utf-8;";
+
+
+	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(normal));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(partialCharset));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(noCharset));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(noEncoding));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(noEquals));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(unknownEncoding));
+	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(doubleQuotes));
+	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(singleQuotes));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(unmatchedDoubleQuotes));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(unmatchedSingleQuotes));
+	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(endSpace));
+	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(endSemicolon));
 }
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_normal) {
-	std::string testString = "charSet = utf-8";
-	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_partialCharset) {
-	std::string testString = "char=utf-8";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noCharset) {
-	std::string testString = "utf-8";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noEncoding) {
-	std::string testString = "charset=";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_noEquals) {
-	std::string testString = "charset utf-8";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unknownEncoding) {
-	std::string testString = "charset=unknown";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_doubleQuotes) {
-	std::string testString = "charset = \"utf-8\"";
-	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_singleQuotes) {
-	std::string testString = "charset = 'utf-8'";
-	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unmatchedDoubleQuotes) {
-	std::string testString = "charset = \"utf-8";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_unmatchedSingleQuotes) {
-	std::string testString = "charset = 'utf-8";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_endSpace) {
-	std::string testString = "charset = utf-8 ";
-	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, extractCharEncodingFromMetaTag_endSemicolon) {
-	std::string testString = "charset = utf-8;";
-	EXPECT_EQ(UTF_8, determineCharEncoding.extractCharEncodingFromMetaTag(testString));
-}
+TEST(HTML_Parse_DetermineCharEncoding, getCharEncodingFromString) {
+	DetermineCharEncoding determineCharEncoding;
 
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_unicode_1_1_utf_8) {
-	std::string testString = "unicode-1-1-utf-8";
-	EXPECT_EQ(UTF_8, determineCharEncoding.getCharEncodingFromString(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_8) {
-	std::string testString = "utf-8";
-	EXPECT_EQ(UTF_8, determineCharEncoding.getCharEncodingFromString(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf8) {
-	std::string testString = "utf8";
-	EXPECT_EQ(UTF_8, determineCharEncoding.getCharEncodingFromString(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16be) {
-	std::string testString = "utf-16be";
-	EXPECT_EQ(UTF_16_BE, determineCharEncoding.getCharEncodingFromString(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16) {
-	std::string testString = "utf-16";
-	EXPECT_EQ(UTF_16_LE, determineCharEncoding.getCharEncodingFromString(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_utf_16le) {
-	std::string testString = "utf-16le";
-	EXPECT_EQ(UTF_16_LE, determineCharEncoding.getCharEncodingFromString(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_unknown) {
-	std::string testString = "badEncoding";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.getCharEncodingFromString(testString));
-}
-TEST_F(HTML_Parse_DetermineCharEncoding_Test, getCharEncodingFromString_none) {
-	std::string testString = "";
-	EXPECT_EQ(NULL_ENC, determineCharEncoding.getCharEncodingFromString(testString));
+	std::string unicode_1_1_utf_8 = "unicode-1-1-utf-8";
+	std::string utf_8 = "utf-8";
+	std::string utf8 = "utf8";
+	std::string utf_16be = "utf-16be";
+	std::string utf_16 = "utf-16";
+	std::string utf_16le = "utf-16le";
+	std::string unknown = "badEncoding";
+	std::string none = "";
+
+	EXPECT_EQ(UTF_8, determineCharEncoding.getCharEncodingFromString(unicode_1_1_utf_8));
+	EXPECT_EQ(UTF_8, determineCharEncoding.getCharEncodingFromString(utf_8));
+	EXPECT_EQ(UTF_8, determineCharEncoding.getCharEncodingFromString(utf8));
+	EXPECT_EQ(UTF_16_BE, determineCharEncoding.getCharEncodingFromString(utf_16be));
+	EXPECT_EQ(UTF_16_LE, determineCharEncoding.getCharEncodingFromString(utf_16));
+	EXPECT_EQ(UTF_16_LE, determineCharEncoding.getCharEncodingFromString(utf_16le));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.getCharEncodingFromString(unknown));
+	EXPECT_EQ(NULL_ENC, determineCharEncoding.getCharEncodingFromString(none));
+
 }
 /**@}*/
-
-} /* namespace ParseHTML */
+} /* namespace Parse */
 } /* namespace HTML */
