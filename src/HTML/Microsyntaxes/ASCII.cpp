@@ -19,7 +19,9 @@
  *******************************************************************************/
 
 #include <HTML/Microsyntaxes/ASCII.hpp>
+#include <HTML/HTMLTypes.hpp>
 
+#include <iostream>
 #include <string>
 
 namespace HTML {
@@ -43,7 +45,7 @@ bool isWhitespace(const std::string& string) {
 	return true;
 }
 
-bool isUnicodeWhitespace(const char& character) {
+bool isUnicodeWhitespace(const char& character __attribute__ ((unused))) {
 	//! @TODO Finish function
 	return false;
 }
@@ -256,6 +258,25 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs) {
 	}
 	return false;
 
+}
+
+std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions) {
+	Byte buf = '\0';
+	try {
+		stream.exceptions(std::istream::eofbit);
+		while (isWhitespace(stream.peek())) {
+			stream.read(reinterpret_cast<char*>(&buf), 1);
+		}
+		return stream;
+	}
+	catch (...) {
+		if (swallowExceptions) {
+			return stream;
+		} else {
+			throw;
+		}
+	}
+	return stream;
 }
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

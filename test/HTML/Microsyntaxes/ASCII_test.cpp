@@ -22,6 +22,9 @@
 #include <HTML/Microsyntaxes/ASCII.hpp>
 #include <HTML/HTMLTypes.hpp>
 
+#include <sstream>
+#include <iostream>
+
 namespace HTML {
 namespace Microsyntaxes {
 /**
@@ -41,15 +44,15 @@ TEST(HTML_Microsyntaxes_ASCII, isWhitespace) {
 	const std::string falseCase = " \t\n x";
 
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isWhitespace(space));
-	EXPECT_TRUE(HTML::Microsyntaxes::isWhitespace(tab));
-	EXPECT_TRUE(HTML::Microsyntaxes::isWhitespace(linefeed));
-	EXPECT_TRUE(HTML::Microsyntaxes::isWhitespace(formfeed));
-	EXPECT_TRUE(HTML::Microsyntaxes::isWhitespace(carriageReturn));
-	EXPECT_FALSE(HTML::Microsyntaxes::isWhitespace(other));
+	EXPECT_TRUE(isWhitespace(space));
+	EXPECT_TRUE(isWhitespace(tab));
+	EXPECT_TRUE(isWhitespace(linefeed));
+	EXPECT_TRUE(isWhitespace(formfeed));
+	EXPECT_TRUE(isWhitespace(carriageReturn));
+	EXPECT_FALSE(isWhitespace(other));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isWhitespace(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isWhitespace(falseCase));
+	EXPECT_TRUE(isWhitespace(trueCase));
+	EXPECT_FALSE(isWhitespace(falseCase));
 
 }
 
@@ -68,15 +71,15 @@ TEST(HTML_Microsyntaxes_ASCII, isASCII) {
 	const std::string trueCase = " sltU2";
 	const std::string falseCase = "0Ul\a";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCII(digit));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCII(upperCaseLetter));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCII(lowerCaseLetter));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCII(punctuation));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCII(whitespace));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCII(other));
+	EXPECT_TRUE(isASCII(digit));
+	EXPECT_TRUE(isASCII(upperCaseLetter));
+	EXPECT_TRUE(isASCII(lowerCaseLetter));
+	EXPECT_TRUE(isASCII(punctuation));
+	EXPECT_TRUE(isASCII(whitespace));
+	EXPECT_FALSE(isASCII(other));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCII(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCII(falseCase));
+	EXPECT_TRUE(isASCII(trueCase));
+	EXPECT_FALSE(isASCII(falseCase));
 
 }
 
@@ -96,20 +99,20 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIDigit) {
 	const std::string trueCase = "0123456789";
 	const std::string falseCase = "0234xs";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(zero));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(one));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(two));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(three));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(four));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(five));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(six));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(seven));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(eight));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigit(nine));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIDigit(other));
+	EXPECT_TRUE(isASCIIDigit(zero));
+	EXPECT_TRUE(isASCIIDigit(one));
+	EXPECT_TRUE(isASCIIDigit(two));
+	EXPECT_TRUE(isASCIIDigit(three));
+	EXPECT_TRUE(isASCIIDigit(four));
+	EXPECT_TRUE(isASCIIDigit(five));
+	EXPECT_TRUE(isASCIIDigit(six));
+	EXPECT_TRUE(isASCIIDigit(seven));
+	EXPECT_TRUE(isASCIIDigit(eight));
+	EXPECT_TRUE(isASCIIDigit(nine));
+	EXPECT_FALSE(isASCIIDigit(other));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIDigits(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIDigits(falseCase));
+	EXPECT_TRUE(isASCIIDigits(trueCase));
+	EXPECT_FALSE(isASCIIDigits(falseCase));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper) {
@@ -119,11 +122,11 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper) {
 	const std::string trueCase = "UPPERCASE";
 	const std::string falseCase = "lowercase";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIUpper(upperCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIUpper(lowerCase));
+	EXPECT_TRUE(isASCIIUpper(upperCase));
+	EXPECT_FALSE(isASCIIUpper(lowerCase));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIUpper(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIUpper(falseCase));
+	EXPECT_TRUE(isASCIIUpper(trueCase));
+	EXPECT_FALSE(isASCIIUpper(falseCase));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIILower) {
@@ -133,11 +136,11 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIILower) {
 	const std::string trueCase = "lowercase";
 	const std::string falseCase = "UPPERCASE";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIILower(lowerCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIILower(upperCase));
+	EXPECT_TRUE(isASCIILower(lowerCase));
+	EXPECT_FALSE(isASCIILower(upperCase));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIILower(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIILower(falseCase));
+	EXPECT_TRUE(isASCIILower(trueCase));
+	EXPECT_FALSE(isASCIILower(falseCase));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII) {
@@ -148,12 +151,12 @@ TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII) {
 	const std::string trueCase = "trueCase0";
 	const std::string falseCase = "falseCase.";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isAlphanumericASCII(letter));
-	EXPECT_TRUE(HTML::Microsyntaxes::isAlphanumericASCII(number));
-	EXPECT_FALSE(HTML::Microsyntaxes::isAlphanumericASCII(other));
+	EXPECT_TRUE(isAlphanumericASCII(letter));
+	EXPECT_TRUE(isAlphanumericASCII(number));
+	EXPECT_FALSE(isAlphanumericASCII(other));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isAlphanumericASCII(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isAlphanumericASCII(falseCase));
+	EXPECT_TRUE(isAlphanumericASCII(trueCase));
+	EXPECT_FALSE(isAlphanumericASCII(falseCase));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIHex) {
@@ -184,33 +187,33 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIHex) {
 	const std::string trueCase = "0123456789abcdefABCDEF";
 	const std::string falseCase = "falseCase";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(zero));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(one));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(two));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(three));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(four));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(five));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(six));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(seven));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(eight));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(nine));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(a));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(b));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(c));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(d));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(e));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(f));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(A));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(B));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(C));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(D));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(E));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(F));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIHex(other));
+	EXPECT_TRUE(isASCIIHex(zero));
+	EXPECT_TRUE(isASCIIHex(one));
+	EXPECT_TRUE(isASCIIHex(two));
+	EXPECT_TRUE(isASCIIHex(three));
+	EXPECT_TRUE(isASCIIHex(four));
+	EXPECT_TRUE(isASCIIHex(five));
+	EXPECT_TRUE(isASCIIHex(six));
+	EXPECT_TRUE(isASCIIHex(seven));
+	EXPECT_TRUE(isASCIIHex(eight));
+	EXPECT_TRUE(isASCIIHex(nine));
+	EXPECT_TRUE(isASCIIHex(a));
+	EXPECT_TRUE(isASCIIHex(b));
+	EXPECT_TRUE(isASCIIHex(c));
+	EXPECT_TRUE(isASCIIHex(d));
+	EXPECT_TRUE(isASCIIHex(e));
+	EXPECT_TRUE(isASCIIHex(f));
+	EXPECT_TRUE(isASCIIHex(A));
+	EXPECT_TRUE(isASCIIHex(B));
+	EXPECT_TRUE(isASCIIHex(C));
+	EXPECT_TRUE(isASCIIHex(D));
+	EXPECT_TRUE(isASCIIHex(E));
+	EXPECT_TRUE(isASCIIHex(F));
+	EXPECT_FALSE(isASCIIHex(other));
 
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHex(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIHex(falseCase));
+	EXPECT_TRUE(isASCIIHex(trueCase));
+	EXPECT_FALSE(isASCIIHex(falseCase));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper) {
@@ -235,26 +238,26 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper) {
 	const std::string trueCase = "0123456789ABCDEF";
 	const std::string falseCase = "falseCase";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(zero));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(one));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(two));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(three));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(four));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(five));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(six));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(seven));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(eight));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(nine));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(A));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(B));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(C));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(D));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(E));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(F));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIHexUpper(other));
+	EXPECT_TRUE(isASCIIHexUpper(zero));
+	EXPECT_TRUE(isASCIIHexUpper(one));
+	EXPECT_TRUE(isASCIIHexUpper(two));
+	EXPECT_TRUE(isASCIIHexUpper(three));
+	EXPECT_TRUE(isASCIIHexUpper(four));
+	EXPECT_TRUE(isASCIIHexUpper(five));
+	EXPECT_TRUE(isASCIIHexUpper(six));
+	EXPECT_TRUE(isASCIIHexUpper(seven));
+	EXPECT_TRUE(isASCIIHexUpper(eight));
+	EXPECT_TRUE(isASCIIHexUpper(nine));
+	EXPECT_TRUE(isASCIIHexUpper(A));
+	EXPECT_TRUE(isASCIIHexUpper(B));
+	EXPECT_TRUE(isASCIIHexUpper(C));
+	EXPECT_TRUE(isASCIIHexUpper(D));
+	EXPECT_TRUE(isASCIIHexUpper(E));
+	EXPECT_TRUE(isASCIIHexUpper(F));
+	EXPECT_FALSE(isASCIIHexUpper(other));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexUpper(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIHexUpper(falseCase));
+	EXPECT_TRUE(isASCIIHexUpper(trueCase));
+	EXPECT_FALSE(isASCIIHexUpper(falseCase));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower) {
@@ -279,55 +282,79 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower) {
 	const std::string trueCase = "0123456789abcdef";
 	const std::string falseCase = "falseCase";
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(zero));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(one));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(two));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(three));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(four));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(five));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(six));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(seven));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(eight));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(nine));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(a));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(b));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(c));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(d));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(e));
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(f));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIHexLower(other));
+	EXPECT_TRUE(isASCIIHexLower(zero));
+	EXPECT_TRUE(isASCIIHexLower(one));
+	EXPECT_TRUE(isASCIIHexLower(two));
+	EXPECT_TRUE(isASCIIHexLower(three));
+	EXPECT_TRUE(isASCIIHexLower(four));
+	EXPECT_TRUE(isASCIIHexLower(five));
+	EXPECT_TRUE(isASCIIHexLower(six));
+	EXPECT_TRUE(isASCIIHexLower(seven));
+	EXPECT_TRUE(isASCIIHexLower(eight));
+	EXPECT_TRUE(isASCIIHexLower(nine));
+	EXPECT_TRUE(isASCIIHexLower(a));
+	EXPECT_TRUE(isASCIIHexLower(b));
+	EXPECT_TRUE(isASCIIHexLower(c));
+	EXPECT_TRUE(isASCIIHexLower(d));
+	EXPECT_TRUE(isASCIIHexLower(e));
+	EXPECT_TRUE(isASCIIHexLower(f));
+	EXPECT_FALSE(isASCIIHexLower(other));
 
-	EXPECT_TRUE(HTML::Microsyntaxes::isASCIIHexLower(trueCase));
-	EXPECT_FALSE(HTML::Microsyntaxes::isASCIIHexLower(falseCase));
+	EXPECT_TRUE(isASCIIHexLower(trueCase));
+	EXPECT_FALSE(isASCIIHexLower(falseCase));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, toUpper) {
-	EXPECT_EQ('A', HTML::Microsyntaxes::toUpper('a'));
-	EXPECT_EQ('A', HTML::Microsyntaxes::toUpper('A'));
-	EXPECT_EQ('0', HTML::Microsyntaxes::toUpper('0'));
-	EXPECT_EQ('.', HTML::Microsyntaxes::toUpper('.'));
-	EXPECT_EQ(' ', HTML::Microsyntaxes::toUpper(' '));
+	EXPECT_EQ('A', toUpper('a'));
+	EXPECT_EQ('A', toUpper('A'));
+	EXPECT_EQ('0', toUpper('0'));
+	EXPECT_EQ('.', toUpper('.'));
+	EXPECT_EQ(' ', toUpper(' '));
 
-	EXPECT_EQ(std::string("MIXED CASE WITH SPACES AND PUNCTUATION."), HTML::Microsyntaxes::toUpper(std::string("mixed CASE with spaces and punctuation.")));
+	EXPECT_EQ(std::string("MIXED CASE WITH SPACES AND PUNCTUATION."), toUpper(std::string("mixed CASE with spaces and punctuation.")));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, toLower) {
-	EXPECT_EQ('a', HTML::Microsyntaxes::toLower('a'));
-	EXPECT_EQ('a', HTML::Microsyntaxes::toLower('A'));
-	EXPECT_EQ('0', HTML::Microsyntaxes::toLower('0'));
-	EXPECT_EQ('.', HTML::Microsyntaxes::toLower('.'));
-	EXPECT_EQ(' ', HTML::Microsyntaxes::toLower(' '));
+	EXPECT_EQ('a', toLower('a'));
+	EXPECT_EQ('a', toLower('A'));
+	EXPECT_EQ('0', toLower('0'));
+	EXPECT_EQ('.', toLower('.'));
+	EXPECT_EQ(' ', toLower(' '));
 
-	EXPECT_EQ(std::string("mixed case with spaces and punctuation."), HTML::Microsyntaxes::toLower(std::string("mixed CASE with spaces and punctuation.")));
+	EXPECT_EQ(std::string("mixed case with spaces and punctuation."), toLower(std::string("mixed CASE with spaces and punctuation.")));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, caseInsensitiveMatch) {
-	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("TEST STRING.", "test string."));
-	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("test String.", "TEST sTRING."));
-	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("TEST STRING.", "test string."));
-	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("TEST STRING.", "TEST STRING."));
-	EXPECT_TRUE(HTML::Microsyntaxes::caseInsensitiveMatch("test string.", "test string."));
-	EXPECT_FALSE(HTML::Microsyntaxes::caseInsensitiveMatch("UPPER CASE.", "lower case."));
+	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "test string."));
+	EXPECT_TRUE(caseInsensitiveMatch("test String.", "TEST sTRING."));
+	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "test string."));
+	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "TEST STRING."));
+	EXPECT_TRUE(caseInsensitiveMatch("test string.", "test string."));
+	EXPECT_FALSE(caseInsensitiveMatch("UPPER CASE.", "lower case."));
+}
+
+TEST(HTML_Microsyntaxes_ASCII, skipWhitespace) {
+	using iterator = std::istreambuf_iterator<char>;
+
+	std::stringstream spaces("    test stream data");
+	std::stringstream lineFeeds("\n\n\n\ntest stream data");
+	std::stringstream carriageReturns("\r\r\r\rtest stream data");
+	std::stringstream formFeeds("\f\f\f\ftest stream data");
+	std::stringstream tabs("\t\t\t\ttest stream data");
+	std::stringstream mixed(" \n\t\r\ftest stream data");
+	std::stringstream allWhitespace("\n\n\n\n");
+
+
+	EXPECT_EQ("test stream data", std::string(iterator(skipWhitespace(spaces)), iterator()));
+	EXPECT_EQ("test stream data", std::string(iterator(skipWhitespace(lineFeeds)), iterator()));
+	EXPECT_EQ("test stream data", std::string(iterator(skipWhitespace(carriageReturns)), iterator()));
+	EXPECT_EQ("test stream data", std::string(iterator(skipWhitespace(formFeeds)), iterator()));
+	EXPECT_EQ("test stream data", std::string(iterator(skipWhitespace(tabs)), iterator()));
+	EXPECT_EQ("test stream data", std::string(iterator(skipWhitespace(mixed)), iterator()));
+
+	EXPECT_THROW(skipWhitespace(allWhitespace), std::istream::failure);
+	EXPECT_NO_THROW(skipWhitespace(allWhitespace, true));
+
 }
 } /* namespace Microsyntaxes_Test */
 } /* namespace Microsyntaxes */
