@@ -48,6 +48,7 @@ set(TEST_SOURCES
 	main_test.cpp
 	HTML/HTMLTree_test.cpp
 	HTML/HTMLTreeInterface_test.cpp
+	HTML/Microsyntaxes/ASCII_test.cpp
 	HTML/Parse/DetermineCharEncoding_test.cpp
 	HTML/Parse/MagicString_test.cpp
 	HTML/Parse/ParseHTML_test.cpp
@@ -60,6 +61,7 @@ set(TEST_SOURCES
 	../src/HTML/HTMLTreeElementInterface.cpp
 	../src/HTML/HTMLTypes.cpp
 	../src/HTML/Microsyntaxes/ASCII.cpp
+	../src/HTML/Microsyntaxes/SignedInteger.cpp
 	../src/HTML/Parse/DetermineCharEncoding.cpp
 	../src/HTML/Parse/MagicString.cpp
 	../src/HTML/Parse/ParseHTML.cpp

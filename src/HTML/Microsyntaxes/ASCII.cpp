@@ -234,7 +234,7 @@ char toLower(const char& character) {
 std::string toLower(const std::string& string) {
 	std::string converted;
 	for (const char& i : string) {
-		if (isASCIILower(i)) {
+		if (isASCIIUpper(i)) {
 			converted += toLower(i);
 		} else {
 			converted += i;
