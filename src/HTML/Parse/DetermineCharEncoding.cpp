@@ -27,7 +27,6 @@
 #include <fstream>
 #include <sstream>
 #include <utility>
-
 #include <vector>
 
 #include <gtest/gtest.h>
@@ -76,7 +75,7 @@ ContentType DetermineCharEncoding::tryUnicodeBOM(std::istream& input) {
 	ContentType encoding;
 	Byte buffer[3] = { 0 };
 
-	input.read((char*) buffer, 3);
+	input.read(reinterpret_cast<char*>(buffer), 3);
 	input.clear();
 	input.seekg(0);
 	if ((buffer[0] == MagicString::UnicodeBOM::UTF_16_BE[0]) && (buffer[1] == MagicString::UnicodeBOM::UTF_16_BE[1])) {
@@ -101,7 +100,7 @@ ContentType DetermineCharEncoding::preScan(std::istream& input) {
 
 	input.exceptions(std::istream::eofbit);
 	try {
-		while (true) {
+		do {
 			input.seekg(1, input.cur);
 			encoding = commentTagAlgorithm(input);
 			if (encoding.charEncoding != UNKNOWN) {
@@ -122,7 +121,7 @@ ContentType DetermineCharEncoding::preScan(std::istream& input) {
 			if (encoding.charEncoding != UNKNOWN) {
 				return encoding;
 			}
-		}
+		} while (input.peek() != std::istream::eofbit);
 	}
 	catch (...) {
 		throw;
@@ -136,7 +135,7 @@ ContentType DetermineCharEncoding::commentTagAlgorithm(std::istream& input) {
 	input.exceptions(std::istream::eofbit);
 	try {
 		Byte startBuffer[4] = { 0 };
-		input.read((char*) startBuffer, 4);
+		input.read(reinterpret_cast<char*>(startBuffer), 4);
 
 		for (size_t i = 0; i < 4; i++) {
 			if (startBuffer[i] != HTML::Parse::MagicString::CommentTag::start[i]) {
@@ -152,9 +151,9 @@ ContentType DetermineCharEncoding::commentTagAlgorithm(std::istream& input) {
 
 	try {
 
-		while (true) {
+		do {
 			Byte endBuffer[3] = { 0 };
-			input.read((char*) endBuffer, 3);
+			input.read(reinterpret_cast<char*>(endBuffer), 3);
 			bool breakLoop = true;
 			for (size_t i = 0; i < 3; i++) {
 				if (endBuffer[i] != HTML::Parse::MagicString::CommentTag::end[i]) {
@@ -167,7 +166,7 @@ ContentType DetermineCharEncoding::commentTagAlgorithm(std::istream& input) {
 			if (breakLoop) {
 				break;
 			}
-		}
+		} while (input.peek() != std::istream::eofbit);
 	}
 	catch (...) {
 		throw;
@@ -182,7 +181,7 @@ ContentType DetermineCharEncoding::metaTagAlgorithm(std::istream& input) {
 
 	input.exceptions(std::istream::eofbit);
 	try {
-		input.read((char*) buffer, 6);
+		input.read(reinterpret_cast<char*>(buffer), 6);
 		if (buffer != MetaTag) {
 			input.seekg(-6, input.cur);
 			return encoding;
@@ -274,19 +273,19 @@ ContentType DetermineCharEncoding::asciiTagAlgorithm(std::istream & input) {
 
 	input.exceptions(std::istream::eofbit);
 	try {
-		input.read((char*) buffer1, 2);
+		input.read(reinterpret_cast<char*>(buffer1), 2);
 		if (buffer1 != ASCIITag) {
 			input.seekg(-2, input.cur);
-			input.read((char*) buffer2, 3);
+			input.read(reinterpret_cast<char*>(buffer2), 3);
 			if (buffer2 != ASCIIEndTag) {
 				input.seekg(-3, input.cur);
 				return encoding;
 			}
 		}
-		Byte buf = 0x00;
-		input.read((char *) &buf, 1);
-		while (buf != 0x3E) {
-			input.read((char *) &buf, 1);
+		Byte buf = '\0';
+		input.read(reinterpret_cast<char*>(&buf), 1);
+		while (buf != '>') {
+			input.read(reinterpret_cast<char*>(&buf), 1);
 		}
 	}
 	catch (...) {
@@ -301,11 +300,11 @@ ContentType DetermineCharEncoding::punctuationTagAlgorithm(std::istream & input)
 
 	input.exceptions(std::istream::eofbit);
 	try {
-		input.read((char*) buffer, 2);
+		input.read(reinterpret_cast<char*>(buffer), 2);
 		if (buffer == PunctuationTag) {
-			Byte buf = 0x00;
-			while (buf != 0x3E) {
-				input.read((char *) &buf, 1);
+			Byte buf = '\0';
+			while (buf != '>') {
+				input.read(reinterpret_cast<char*>(&buf), 1);
 			}
 			input.seekg(1, input.cur);
 		} else {
@@ -323,42 +322,35 @@ Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallow
 	attribute.name = "";
 	attribute.value = "";
 	input.exceptions(std::istream::eofbit);
-	Byte buf = 0x00;
+	Byte buf = '\0';
 	try {
-		input.read((char *) &buf, 1);
-		if ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20) || (buf == 0x2F)) {
-			while ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20) || (buf == 0x2F)) {
-				input.read((char *) &buf, 1);
-			}
+		input.read(reinterpret_cast<char*>(&buf), 1);
+		while (Microsyntaxes::isWhitespace(buf) || (buf == '/')) {
+			input.read(reinterpret_cast<char*>(&buf), 1);
 		}
-		{
-			if (buf == 0x3E) {
-				return attribute;
-			} else {
-				while (true) {
-					if ((buf == 0x3D) && !(attribute.name.empty())) {
+		if (buf == '>') {
+			return attribute;
+		} else {
+			while (true) {
+				if ((buf == '=') && !(attribute.name.empty())) {
+					attribute.value = getAttributeValue(input, buf);
+					return attribute;
+				} else if ((buf == '/') || (buf == '>')) {
+					return attribute;
+				} else if (Microsyntaxes::isWhitespace(buf)) {
+					while (Microsyntaxes::isWhitespace(buf)) {
+						input.read(reinterpret_cast<char*>(&buf), 1);
+					}
+					if (buf != '=') {
+						return attribute;
+					} else {
 						attribute.value = getAttributeValue(input, buf);
 						return attribute;
-					} else if ((buf == 0x2F) || (buf == 0x3E)) {
-						return attribute;
-					} else if ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-						while ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-							input.read((char *) &buf, 1);
-						}
-						if (buf != 0x3D) {
-							return attribute;
-						} else {
-							attribute.value = getAttributeValue(input, buf);
-							return attribute;
-						}
-					} else if (Microsyntaxes::isASCIIUpper(buf)) {
-						Byte result = buf + 0x20;
-						attribute.name.append((char*) &(result), 1);
-						input.read((char*) &buf, 1);
-					} else {
-						attribute.name.append((char*) &buf, 1);
-						input.read((char*) &buf, 1);
 					}
+				} else {
+					Byte result = Microsyntaxes::toLower(buf);
+					attribute.name.append(reinterpret_cast<char*>(&result), 1);
+					input.read(reinterpret_cast<char*>(&buf), 1);
 				}
 			}
 		}
@@ -375,27 +367,22 @@ Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallow
 std::string DetermineCharEncoding::getAttributeValue(std::istream& input, Byte& buf) {
 	std::string value = "";
 	try {
-		input.read((char*) &buf, 1);
-		if ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-			while ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-				input.read((char *) &buf, 1);
-			}
+		input.read(reinterpret_cast<char*>(&buf), 1);
+		if (Microsyntaxes::isWhitespace(buf)) {
+			Microsyntaxes::skipWhitespace(input);
+			input.read(reinterpret_cast<char*>(&buf), 1);
 		}
 		{
-			if ((buf == 0x22) || (buf == 0x27)) {
+			if ((buf == '"') || (buf == '\'')) {
 				std::string value_ = quoteLoop(input, buf, value);
 				return value_;
-			} else if (buf == 0x3E) {
+			} else if (buf == '>') {
 				return value;
-			} else if (Microsyntaxes::isASCIIUpper(buf)) {
-				Byte result = buf + 0x20;
-				value.append((char*) &(result), 1);
-				std::string value_ = processingLoop(input, buf, value);
-				return value_;
 			} else {
-				value.append((char*) &(buf), 1);
-				std::string value_ = processingLoop(input, buf, value);
-				return value_;
+				Byte lowerCaseBuf = Microsyntaxes::toLower(buf);
+				value.append(reinterpret_cast<char*>(&(lowerCaseBuf)), 1);
+				std::string result = processingLoop(input, buf, value);
+				return result;
 			}
 		}
 	}
@@ -408,14 +395,12 @@ std::string DetermineCharEncoding::processingLoop(std::istream& input, Byte& buf
 	std::string localValue(value);
 	try {
 		while (true) {
-			input.read((char*) &buf, 1);
-			if ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x3E)) {
+			input.read(reinterpret_cast<char*>(&buf), 1);
+			if ((buf == '\t') || (buf == '\n') || (buf == '\f') || (buf == '\r') || (buf == '>')) {
 				return localValue;
-			} else if (Microsyntaxes::isASCIIUpper(buf)) {
-				Byte result = buf + 0x20;
-				localValue.append((char*) &(result), 1);
 			} else {
-				localValue.append((char*) &(buf), 1);
+				Byte result = Microsyntaxes::toLower(buf);
+				localValue.append(reinterpret_cast<char*>(&result), 1);
 			}
 		}
 	}
@@ -429,19 +414,15 @@ std::string DetermineCharEncoding::quoteLoop(std::istream& input, Byte& buf, std
 	std::string localValue(value);
 	try {
 		Byte b = buf;
-		input.read((char *) &buf, 1);
+		input.read(reinterpret_cast<char*>(&buf), 1);
 		while (true) {
 			if (buf == b) {
 				return localValue;
 			} else {
-				if (Microsyntaxes::isASCIIUpper(buf)) {
-					Byte result = buf + 0x20;
-					localValue.append((char*) &(result), 1);
-					input.read((char*) &buf, 1);
-				} else {
-					localValue.append((char*) &(buf), 1);
-					input.read((char*) &buf, 1);
-				}
+				Byte result = Microsyntaxes::toLower(buf);
+				localValue.append(reinterpret_cast<char*>(&result), 1);
+				input.read(reinterpret_cast<char*>(&buf), 1);
+
 			}
 		}
 	}
@@ -455,14 +436,14 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 	CharEncoding encoding = NULL_ENC;
 	std::stringstream input(string);
 	input.exceptions(std::istream::eofbit);
-	Byte buf = 0x00;
+	Byte buf = '\0';
 	std::string buffer;
 	bool gotEndQuote = false;
 	try {
-		while (true) {
+		while (input.peek() != std::istream::eofbit) {
 			Byte charsetBuf[7] = { 0 };
 			for (size_t i = 0; i < string.size(); i++) {
-				input.read((char *) charsetBuf, 7);
+				input.read(reinterpret_cast<char*>(charsetBuf), 7);
 				if (MagicString::isCharset(charsetBuf)) {
 					break;
 				} else {
@@ -472,23 +453,21 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 			if (!(MagicString::isCharset(charsetBuf))) {
 				return encoding;
 			}
-			input.read((char*) &buf, 1);
-			if ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-				while ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-					input.read((char *) &buf, 1);
-				}
+			input.read(reinterpret_cast<char*>(&buf), 1);
+			if (Microsyntaxes::isWhitespace(buf)) {
+				Microsyntaxes::skipWhitespace(input);
+				input.read(reinterpret_cast<char*>(&buf), 1);
 			}
-			if (buf != 0x3D) {
+			if (buf != '=') {
 				input.seekg(-1, input.cur);
 			} else {
 				break;
 			}
 		}
-		input.read((char*) &buf, 1);
-		if ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-			while ((buf == 0x09) || (buf == 0x0A) || (buf == 0x0C) || (buf == 0x0D) || (buf == 0x20)) {
-				input.read((char *) &buf, 1);
-			}
+		input.read(reinterpret_cast<char*>(&buf), 1);
+		if (Microsyntaxes::isWhitespace(buf)) {
+			Microsyntaxes::skipWhitespace(input);
+			input.read(reinterpret_cast<char*>(&buf), 1);
 		}
 
 		size_t position = input.tellg();
@@ -498,12 +477,12 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 
 		if (buf == '"') {
 			for (size_t i = 0; i < bytesLeft; i++) {
-				input.read((char *) &buf, 1);
+				input.read(reinterpret_cast<char*>(&buf), 1);
 				if (buf == '"') {
 					gotEndQuote = true;
 					break;
 				} else {
-					buffer.append((char*) &buf, 1);
+					buffer.append(reinterpret_cast<char*>(&buf), 1);
 				}
 			}
 			if (buffer.empty() || !gotEndQuote) {
@@ -511,12 +490,12 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 			}
 		} else if (buf == '\'') {
 			for (size_t i = 0; i < bytesLeft; i++) {
-				input.read((char *) &buf, 1);
+				input.read(reinterpret_cast<char*>(&buf), 1);
 				if (buf == '\'') {
 					gotEndQuote = true;
 					break;
 				} else {
-					buffer.append((char*) &buf, 1);
+					buffer.append(reinterpret_cast<char*>(&buf), 1);
 				}
 			}
 			if (buffer.empty() || !gotEndQuote) {
@@ -527,8 +506,8 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 				if (buf == ' ' || buf == ';') {
 					break;
 				} else {
-					buffer.append((char*) &buf, 1);
-					input.read((char *) &buf, 1);
+					buffer.append(reinterpret_cast<char*>(&buf), 1);
+					input.read(reinterpret_cast<char*>(&buf), 1);
 				}
 			}
 			if (buffer.empty()) {
