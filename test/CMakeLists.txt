@@ -43,7 +43,18 @@ set_target_properties(libgmock_main PROPERTIES
 # I couldn't make it work with INTERFACE_INCLUDE_DIRECTORIES
 include_directories("${source_dir}/googletest/include"
 					"${source_dir}/googlemock/include")
-					
+
+# coverage target setup
+include(CodeCoverage)
+append_coverage_compiler_flags()
+set(COVERAGE_EXCLUDES
+	'${PROJECT_BINARY_DIR}/test/gtest/*'
+	'/usr/include/c++/6/*'
+
+)
+setup_target_for_coverage(NAME coverage EXECUTABLE test/tests DEPENDENCIES tests)
+
+			
 set(TEST_SOURCES
 	main_test.cpp
 	HTML/HTMLTree_test.cpp
@@ -71,24 +82,7 @@ set(TEST_SOURCES
 	../src/LaTeX/UnicodeToLaTeX.cpp
 )
 
-add_compile_options (
-	-Wno-unused-result
-	-Wsign-compare
-	-g
-	-fstack-protector-strong
-	-Wformat
-	-Werror=format-security
-	-DNDEBUG
-	-g
-	-fwrapv
-	-Wall
-	-Wextra
-	-std=gnu++17
-)
-
-
 include_directories (${INCLUDE_DIRECTORIES} ../src)
-
 
 add_executable (tests ${TEST_SOURCES})
 
@@ -98,3 +92,4 @@ target_link_libraries (tests
     libgmock
 	pthread
 )
+

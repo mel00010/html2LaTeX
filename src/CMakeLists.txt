@@ -1,17 +1,3 @@
-add_compile_options (
-	-Wno-unused-result
-	-Wsign-compare
-	-g
-	-fstack-protector-strong
-	-Wformat
-	-Werror=format-security
-	-DNDEBUG
-	-g
-	-fwrapv
-	-Wall
-	-Wextra
-	-std=gnu++17
-)
 find_package (Boost 1.65 COMPONENTS program_options REQUIRED)
 
 set (HTML2LATEX_SRCS
@@ -34,4 +20,7 @@ set (HTML2LATEX_SRCS
 )
 
 add_executable (html2LaTeX ${HTML2LATEX_SRCS})
-target_link_libraries (html2LaTeX boost_program_options pthread)
+target_link_libraries (html2LaTeX
+	boost_program_options
+	pthread
+)
