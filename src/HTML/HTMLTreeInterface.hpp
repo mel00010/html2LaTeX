@@ -25,7 +25,7 @@ namespace HTML {
 /**
  * @brief Interface for all HTMLTree classes
  */
-class HTMLTreeInterface {
+class HTMLTreeInterface { // LCOV_EXCL_LINE
 	public:
 
 };

@@ -20,10 +20,10 @@
 #ifndef HTML_HTMLTREEELEMENTINTERFACE_HPP_
 #define HTML_HTMLTREEELEMENTINTERFACE_HPP_
 
-#include <HTML/HTMLTypes.hpp>
+#include <HTMLTypes.hpp>
 
-#include <vector>
 #include <string>
+#include <vector>
 
 
 namespace HTML {
@@ -33,10 +33,10 @@ namespace HTML {
  */
 class HTMLTreeElementInterface {
 	public:
-		HTMLTreeElementInterface() {
-		}
-		virtual ~HTMLTreeElementInterface() {
-		}
+		HTMLTreeElementInterface() { // LCOV_EXCL_LINE
+		}							 // LCOV_EXCL_LINE
+		virtual ~HTMLTreeElementInterface() { // LCOV_EXCL_LINE
+		}									  // LCOV_EXCL_LINE
 
 	public:
 		virtual const HTMLTreeElementInterface* getRoot() = 0;

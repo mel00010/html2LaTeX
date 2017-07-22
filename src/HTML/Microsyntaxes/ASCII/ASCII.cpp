@@ -18,11 +18,13 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTML/Microsyntaxes/ASCII.hpp>
-#include <HTML/HTMLTypes.hpp>
+#include <ASCII.hpp>
 
+#include <stddef.h>
 #include <iostream>
 #include <string>
+
+#include <HTML/HTMLTypes.hpp>
 
 namespace HTML {
 namespace Microsyntaxes {
@@ -261,7 +263,7 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs) {
 }
 
 std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions) {
-	Byte buf = '\0';
+	uint8_t buf = '\0';
 	try {
 		stream.exceptions(std::istream::eofbit);
 		while (isWhitespace(stream.peek())) {

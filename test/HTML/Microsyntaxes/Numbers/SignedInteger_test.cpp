@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger.hpp
+ * SignedInteger_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,20 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef HTML_MICROSYNTAXES_SIGNEDINTEGER_HPP_
-#define HTML_MICROSYNTAXES_SIGNEDINTEGER_HPP_
 
-#include <string>
+#include <gtest/gtest.h>
+#include <HTML/Microsyntaxes/Numbers/SignedInteger.hpp>
 
-namespace HTML {
-namespace Microsyntaxes {
-
-bool isInteger(std::string);
-int parseInteger(std::string);
-
-
-} /* namespace Microsyntaxes */
-} /* namespace HTML */
-
-
-#endif /* HTML_MICROSYNTAXES_SIGNEDINTEGER_HPP_ */

@@ -17,8 +17,16 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
+
+#include <gtest/gtest.h>
 #include <HTML/HTMLTree.hpp>
 
 namespace HTML {
+
+TEST(HTMLTree, HTMLTree) {
+	HTMLTree htmlTree;
+	HTMLTree* htmlTreePtr = new HTMLTree();
+	delete htmlTreePtr;
+}
 
 } /* namespace HTML */

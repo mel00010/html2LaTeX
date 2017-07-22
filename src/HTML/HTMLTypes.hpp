@@ -21,8 +21,8 @@
 #define HTML_HTMLTYPES_HPP_
 
 #include <cstdint>
-#include <string>
 #include <iostream>
+#include <string>
 
 /**
  * @file src/HTML/HTMLTypes.hpp
@@ -147,9 +147,25 @@ class Attribute {
  * @param rhs The Attribute object on the right hand side of the expression
  * @param lhs The Attribute object on the left hand side of the expression
  * @return Returns true if the attribute objects have the same name and value, otherwise returns false
+ *
+ * @test TEST(HTMLTypes, Attribute)
  */
 inline bool operator==(const Attribute& rhs, const Attribute& lhs) {
 	if ((rhs.name == lhs.name) && (rhs.value == lhs.value)) {
+		return true;
+	}
+	return false;
+}
+/**
+ * @brief Compares two Attribute objects.
+ * @param rhs The Attribute object on the right hand side of the expression
+ * @param lhs The Attribute object on the left hand side of the expression
+ * @return Returns true if the attribute objects do not have the same name and value, otherwise returns false
+ *
+ * @test TEST(HTMLTypes, Attribute)
+ */
+inline bool operator!=(const Attribute& rhs, const Attribute& lhs) {
+	if (!(rhs == lhs)) {
 		return true;
 	}
 	return false;
@@ -159,7 +175,13 @@ inline bool operator==(const Attribute& rhs, const Attribute& lhs) {
  * @brief Compares a bool and an Attribute object
  * @param rhs The bool being compared
  * @param lhs The Attribute object being compared
- * @return If the bool evaluates to true, the function returns false if either the Attribute object's name or value fields are not empty, otherwise it returns true. If the bool evaluates to false, then the function returns the opposite values. */
+ * @return If the bool evaluates to true, the function returns false
+ * 		   if either the Attribute object's name or value fields are not empty,
+ * 		   otherwise it returns true. If the bool evaluates to false, then the
+ * 		   function returns the opposite values.
+ *
+ * @test TEST(HTMLTypes, Attribute)
+ */
 inline bool operator==(const bool& rhs, const Attribute& lhs) {
 	if (lhs.name.empty() && lhs.value.empty()) {
 		if (rhs) {
@@ -183,6 +205,8 @@ inline bool operator==(const bool& rhs, const Attribute& lhs) {
  * @param lhs The Attribute object being compared
  * @param rhs The bool being compared
  * @return Returns the result of comparing a bool and an Attribute object
+ *
+ * @test TEST(HTMLTypes, Attribute)
  */
 inline bool operator==(const Attribute& lhs, const bool& rhs) {
 	return (rhs == lhs);
@@ -218,9 +242,26 @@ inline bool operator==(const Attribute& lhs, const bool& rhs) {
  * @param lhs The ContentType object being compared on the left hand side of the expression.
  * @return Returns true if the charEncoding and confidence properties of the ContentType objects are equal.
  * 		   Otherwise, the function returns false.
+ *
+ * @test TEST(HTMLTypes, ContentType)
  */
 inline bool operator==(const ContentType& rhs, const ContentType& lhs) {
 	if ((rhs.charEncoding == lhs.charEncoding) && (rhs.confidence == lhs.confidence)) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Compares two ContentType objects
+ * @param rhs The ContentType object being compared on the right hand side of the expression.
+ * @param lhs The ContentType object being compared on the left hand side of the expression.
+ * @return Returns true if the charEncoding and confidence properties of the ContentType objects are not equal.
+ * 		   Otherwise, the function returns false.
+ * @test TEST(HTMLTypes, ContentType)
+ */
+inline bool operator!=(const ContentType& rhs, const ContentType& lhs) {
+	if (!(rhs == lhs)) {
 		return true;
 	}
 	return false;

@@ -18,7 +18,8 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTML/Parse/MagicString.hpp>
+#include <MagicString.hpp>
+
 namespace HTML {
 namespace Parse {
 namespace MagicString {

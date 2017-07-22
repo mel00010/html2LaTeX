@@ -17,7 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#include <HTML/HTMLTree.hpp>
+
+#include <HTMLTree.hpp>
 
 namespace HTML {
 

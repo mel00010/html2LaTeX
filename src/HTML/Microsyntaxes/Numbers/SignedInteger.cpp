@@ -1,5 +1,5 @@
 /*******************************************************************************
- * HTMLTreeElementInterface.cpp
+ * SignedInteger.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,8 +18,13 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTMLTreeElementInterface.hpp>
+#include <SignedInteger.hpp>
+
 
 namespace HTML {
+namespace Microsyntaxes {
+namespace Numbers {
 
+} /* namespace Numbers */
+} /* namespace Microsyntaxes */ // LCOV_EXCL_LINE
 } /* namespace HTML */ // LCOV_EXCL_LINE

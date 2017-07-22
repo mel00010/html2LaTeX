@@ -20,7 +20,7 @@
 #ifndef HTML_PARSE_MAGICSTRING_HPP_
 #define HTML_PARSE_MAGICSTRING_HPP_
 
-#include <HTML/Microsyntaxes/ASCII.hpp>
+#include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 
 
 #include <cassert>

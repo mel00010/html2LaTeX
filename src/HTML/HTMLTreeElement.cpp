@@ -18,9 +18,10 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTML/HTMLTreeElement.hpp>
-#include <HTML/HTMLTreeElementInterface.hpp>
-#include <HTML/HTMLTypes.hpp>
+#include <HTMLTreeElement.hpp>
+
+#include <HTMLTreeElementInterface.hpp>
+#include <HTMLTypes.hpp>
 
 #include <vector>
 
@@ -35,7 +36,9 @@ HTMLTreeElement::HTMLTreeElement(HTMLTreeElementInterface* root, HTMLTreeElement
 }
 
 HTMLTreeElement::~HTMLTreeElement() {
-	//TODO Add destructor
+	for (HTMLTreeElementInterface* i : children) {
+		delete i;
+	}
 }
 
 const HTMLTreeElementInterface* HTMLTreeElement::getRoot() {

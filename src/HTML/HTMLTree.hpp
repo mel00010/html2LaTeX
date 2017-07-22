@@ -20,7 +20,7 @@
 #ifndef HTMLTREE_HPP_
 #define HTMLTREE_HPP_
 
-#include <HTML/HTMLTreeInterface.hpp>
+#include <HTMLTreeInterface.hpp>
 
 namespace HTML {
 

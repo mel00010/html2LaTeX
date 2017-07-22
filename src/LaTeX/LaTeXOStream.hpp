@@ -20,10 +20,13 @@
 #ifndef LATEX_LATEXOSTREAM_HPP_
 #define LATEX_LATEXOSTREAM_HPP_
 
-#include <LaTeX/UnicodeToLaTeX.hpp>
+#include <UnicodeToLaTeX.hpp>
+
+#include <stddef.h>
 #include <iostream>
-#include <locale>
-#include <gtest/gtest.h>
+#include <iterator>
+#include <string>
+
 
 
 namespace LaTeX {
@@ -64,7 +67,16 @@ class LaTeXOStream {
 		 * @return
 		 */
 		inline LaTeXOStream& operator<<(const std::string& x) {
-			write(x.c_str(), x.size());
+			write(x);
+			return *this;
+		}
+		/**
+		 * Stream insertion operator handling std::u32string.
+		 * @param x
+		 * @return
+		 */
+		inline LaTeXOStream& operator<<(const std::u32string& x) {
+			write(x);
 			return *this;
 		}
 		/**
@@ -90,6 +102,9 @@ class LaTeXOStream {
 
 	protected:
 		void write(const char* string, __attribute__((unused))  const size_t size);
+		void write(const char32_t& string, __attribute__((unused))    const size_t size);
+		void write(const std::string& string);
+		void write(const std::u32string& string);
 
 	protected:
 

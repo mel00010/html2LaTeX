@@ -18,9 +18,9 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTML/Parse/ParseHTML.hpp>
+//#include <gtest/gtest.h>
+#include <ParseHTML.hpp>
 
-#include <gtest/gtest.h>
 namespace HTML {
 namespace Parse {
 

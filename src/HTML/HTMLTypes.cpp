@@ -18,7 +18,8 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTML/HTMLTypes.hpp>
+#include <HTMLTypes.hpp>
+#include <iostream>
 
 namespace HTML {
 
@@ -42,8 +43,8 @@ namespace HTML {
 		case UTF_8:
 			os << "UTF_8";
 			break;
-		default:
-			os << "INVALID";
+		default: // LCOV_EXCL_LINE
+			os << "INVALID"; // LCOV_EXCL_LINE
 	}
 	return os;
 }
@@ -58,8 +59,8 @@ namespace HTML {
 		case IRRELEVANT:
 			os << "IRRELEVANT";
 			break;
-		default:
-			os << "INVALID";
+		default: // LCOV_EXCL_LINE
+			os << "INVALID"; // LCOV_EXCL_LINE
 	}
 	return os;
 }
@@ -68,4 +69,4 @@ namespace HTML {
 }
 
 
-} /* namespace HTML */
+} /* namespace HTML */ // LCOV_EXCL_LINE

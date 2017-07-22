@@ -18,9 +18,8 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <LaTeX/GenerateLaTeX.hpp>
-
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
+#include <GenerateLaTeX.hpp>
 
 
 namespace LaTeX {

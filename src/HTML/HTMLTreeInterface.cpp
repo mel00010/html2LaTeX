@@ -17,8 +17,9 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#include <HTML/HTMLTreeInterface.hpp>
+
+#include <HTMLTreeInterface.hpp>
 
 namespace HTML {
 
-} /* namespace HTML */
+} /* namespace HTML */ // LCOV_EXCL_LINE

@@ -19,7 +19,8 @@
  *******************************************************************************/
 
 #include <gtest/gtest.h>
-#include <HTML/Microsyntaxes/ASCII.hpp>
+
+#include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 #include <HTML/HTMLTypes.hpp>
 
 #include <sstream>
@@ -57,7 +58,8 @@ TEST(HTML_Microsyntaxes_ASCII, isWhitespace) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isUnicodeWhitespace) {
-
+	EXPECT_FALSE(isUnicodeWhitespace('a'));
+	EXPECT_FALSE(isUnicodeWhitespace("testString"));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCII) {
@@ -325,12 +327,18 @@ TEST(HTML_Microsyntaxes_ASCII, toLower) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, caseInsensitiveMatch) {
+	EXPECT_TRUE(caseInsensitiveMatch('a', 'a'));
+	EXPECT_TRUE(caseInsensitiveMatch('a', 'A'));
+	EXPECT_TRUE(caseInsensitiveMatch('.', '.'));
+	EXPECT_FALSE(caseInsensitiveMatch('a', 'b'));
+
 	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "test string."));
 	EXPECT_TRUE(caseInsensitiveMatch("test String.", "TEST sTRING."));
 	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "test string."));
 	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "TEST STRING."));
 	EXPECT_TRUE(caseInsensitiveMatch("test string.", "test string."));
 	EXPECT_FALSE(caseInsensitiveMatch("UPPER CASE.", "lower case."));
+
 }
 
 TEST(HTML_Microsyntaxes_ASCII, skipWhitespace) {

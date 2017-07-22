@@ -54,42 +54,24 @@ set(COVERAGE_EXCLUDES
 )
 setup_target_for_coverage(NAME coverage EXECUTABLE test/tests DEPENDENCIES tests)
 
-			
-set(TEST_SOURCES
-	main_test.cpp
-	HTML/HTMLTree_test.cpp
-	HTML/HTMLTreeInterface_test.cpp
-	HTML/Microsyntaxes/ASCII_test.cpp
-	HTML/Parse/DetermineCharEncoding_test.cpp
-	HTML/Parse/MagicString_test.cpp
-	HTML/Parse/ParseHTML_test.cpp
-	LaTeX/GenerateLaTeX_test.cpp
-	LaTeX/LaTeXOStream_test.cpp
-	LaTeX/UnicodeToLaTeX_test.cpp
-	../src/HTML/HTMLTree.cpp
-	../src/HTML/HTMLTreeInterface.cpp
-	../src/HTML/HTMLTreeElement.cpp
-	../src/HTML/HTMLTreeElementInterface.cpp
-	../src/HTML/HTMLTypes.cpp
-	../src/HTML/Microsyntaxes/ASCII.cpp
-	../src/HTML/Microsyntaxes/SignedInteger.cpp
-	../src/HTML/Parse/DetermineCharEncoding.cpp
-	../src/HTML/Parse/MagicString.cpp
-	../src/HTML/Parse/ParseHTML.cpp
-	../src/LaTeX/GenerateLaTeX.cpp
-	../src/LaTeX/LaTeXOStream.cpp
-	../src/LaTeX/LaTeXTreeInterface.cpp
-	../src/LaTeX/UnicodeToLaTeX.cpp
+add_executable(tests "")
+
+target_sources(tests
+	PRIVATE
+		main_test.cpp
+)	
+target_include_directories(tests
+	PRIVATE
+		${PROJECT_SOURCE_DIR}/src
 )
-
-include_directories (${INCLUDE_DIRECTORIES} ../src)
-
-add_executable (tests ${TEST_SOURCES})
-
-target_link_libraries (tests
-	libgmock_main
-    libgtest
-    libgmock
+target_link_libraries(tests
+	html_test
+	latex_test
+	libgtest
+	libgmock
+	gmock_main
 	pthread
 )
 
+add_subdirectory(HTML)
+add_subdirectory(LaTeX)

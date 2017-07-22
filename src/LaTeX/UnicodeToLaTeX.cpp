@@ -18,49 +18,48 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <LaTeX/UnicodeToLaTeX.hpp>
-#include <LaTeX/ConcreteUnicodeToLaTeX.hpp>
+#include <UnicodeToLaTeX.hpp>
 
-#include <utility>
-#include <sstream>
-#include <iostream>
-#include <string>
-#include <locale>
 #include <iomanip>
-#include <gtest/gtest.h>
+#include <sstream>
+
+//
+//#include <utility>
+//#include <sstream>
+//#include <iostream>
+//#include <string>
+//#include <locale>
+//#include <iomanip>
+//#include <gtest/gtest.h>
 
 
 namespace LaTeX {
 
-constexpr Item ConcreteUnicodeToLaTeX::unicodeToLaTeX[];
+constexpr Item UnicodeToLaTeX::unicodeToLaTeX[];
 
 
-const constexpr char* ConcreteUnicodeToLaTeX::findValue(const char32_t key, int range) {
+const constexpr char* UnicodeToLaTeX::findValue(const char32_t key, int range) {
 	return
 	(range == 0) ? throw "Key not present" :
 	(unicodeToLaTeX[range - 1].first == key) ? unicodeToLaTeX[range - 1].second : findValue(key, range - 1);
 }
 
 
-constexpr char32_t ConcreteUnicodeToLaTeX::findKey(const char* value, int range) {
+constexpr char32_t UnicodeToLaTeX::findKey(const char* value, int range) {
 	return
 	(range == 0) ? throw "Value not present" :
-	(unicodeToLaTeX[range - 1].second == value) ? unicodeToLaTeX[range - 1].first :
-													findKey(value, range - 1);
+	(unicodeToLaTeX[range - 1].second == value) ? unicodeToLaTeX[range - 1].first : findKey(value, range - 1);
 }
 
-const std::string ConcreteUnicodeToLaTeX::convert(const char32_t codePoint) {
+const std::string UnicodeToLaTeX::convert(const char32_t codePoint) {
 	try {
-		const char* substitution = ConcreteUnicodeToLaTeX::findValue(codePoint);
+		const char* substitution = UnicodeToLaTeX::findValue(codePoint);
 		return substitution;
 	} catch (const char* e) {
 		const char* exceptionString = "Key not present";
 		if (e == exceptionString) {
 			std::ostringstream output;
-			output << "\\char\"";
-			for (size_t i = 0; i < 4; ++i) {
-				output << std::hex << std::setfill('0') << std::setw(2) << (std::uppercase) << (int) codePoint;
-			}
+			output << "\\char\"" << std::hex << std::setfill('0') << std::setw(8) << (std::uppercase) << (int) codePoint << "\"";
 			return output.str();
 		} else {
 			throw;
@@ -69,7 +68,7 @@ const std::string ConcreteUnicodeToLaTeX::convert(const char32_t codePoint) {
 
 }
 
-const std::string ConcreteUnicodeToLaTeX::convert(const std::u32string string) {
+const std::string UnicodeToLaTeX::convert(const std::u32string string) {
 	std::ostringstream output;
 	for (auto& c : string) {
 		output << convert(c);

@@ -19,7 +19,22 @@
  *******************************************************************************/
 
 #include <gtest/gtest.h>
+#include <LaTeX/UnicodeToLaTeX.hpp>
+#include <string>
+
+
 
 namespace LaTeX {
+
+TEST(UnicodeToLaTeX, convert) {
+	UnicodeToLaTeX unicodeToLaTeX;
+	const char32_t unicodeDefined = U'\U0000019B';
+	const char32_t unicodeUndefined = U'\U0000017F';
+	const std::u32string unicodeString = U"\U0000019B abcdef";
+	EXPECT_EQ(std::string("\\textcrlambda abcdef"), unicodeToLaTeX.convert(unicodeString));
+	EXPECT_EQ(std::string("\\textcrlambda"), unicodeToLaTeX.convert(unicodeDefined));
+	EXPECT_EQ(std::string("\\char\"0000017F\""), unicodeToLaTeX.convert(unicodeUndefined));
+
+}
 
 } /* namespace LaTeX */

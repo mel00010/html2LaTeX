@@ -45,22 +45,32 @@ class MockStreamBuf: public std::streambuf {
 	public:
 		MOCK_METHOD2(xsputn, std::streamsize(const char_type* s, std::streamsize n));
 		MOCK_METHOD1(overflow, int_type(int_type c));
-};
+	};
 
 TEST(LaTeX, LaTeXOStream) {
+
 	MockUnicodeToLaTeX converter;
 	MockStreamBuf ostreambuf;
 	std::ostream output(&ostreambuf);
 	LaTeXOStream latexOStream(output, converter);
-	std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv32;
-	std::u32string str32 = conv32.from_bytes(std::string("\\ test"));
-	std::string returnString("\\textbackslash test");
 
-	EXPECT_CALL(converter, convert(TypedEq<std::u32string>(str32)))
-			.WillOnce(Return(returnString));
-	EXPECT_CALL(ostreambuf, xsputn(StrEq(returnString.c_str()), 19))
+	LaTeXOStream* latexOStreamPtr = new LaTeXOStream(output, converter);
+	delete latexOStreamPtr;
+
+	EXPECT_CALL(converter, convert(TypedEq<std::u32string>(std::u32string(U"\\ test"))))
+			.Times(3)
+			.WillRepeatedly(Return(std::string("\\textbackslash test")));
+	EXPECT_CALL(converter, convert(TypedEq<char32_t>(U'\\')))
+			.WillOnce(Return(std::string("\\textbackslash")));
+	EXPECT_CALL(ostreambuf, xsputn(StrEq("\\textbackslash test"), 19))
+			.Times(3)
+			.WillRepeatedly(ReturnArg<1>());
+	EXPECT_CALL(ostreambuf, xsputn(StrEq("\\textbackslash"), 14))
 			.WillOnce(ReturnArg<1>());
+	latexOStream << std::u32string(U"\\ test");
 	latexOStream << std::string("\\ test");
+	latexOStream << "\\ test";
+	latexOStream << U'\\';
 }
 
 } /* namespace LaTeX */

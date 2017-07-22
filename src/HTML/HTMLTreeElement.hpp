@@ -20,11 +20,11 @@
 #ifndef HTML_HTMLTREEELEMENT_HPP_
 #define HTML_HTMLTREEELEMENT_HPP_
 
-#include <HTML/HTMLTreeElementInterface.hpp>
-#include <HTML/HTMLTypes.hpp>
+#include <HTMLTreeElementInterface.hpp>
+#include <HTMLTypes.hpp>
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace HTML {
 

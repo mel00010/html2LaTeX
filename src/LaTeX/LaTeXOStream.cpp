@@ -18,15 +18,17 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <LaTeX/LaTeXOStream.hpp>
-#include <LaTeX/UnicodeToLaTeX.hpp>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <locale>
-#include <iomanip>
+#include <LaTeXOStream.hpp>
+
+#include <UnicodeToLaTeX.hpp>
+
+#include <stddef.h>
 #include <codecvt>
-#include <gtest/gtest.h>
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <locale>
+#include <string>
 
 
 namespace LaTeX {
@@ -46,5 +48,18 @@ void LaTeXOStream::write(const char* string, __attribute__((unused))  const size
 	ostream << unicodeToLaTeX.convert(str32);
 }
 
+void LaTeXOStream::write(const char32_t& string, __attribute__((unused))   const size_t size) {
+	ostream << unicodeToLaTeX.convert(string);
+}
+
+void LaTeXOStream::write(const std::string& string) {
+	std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv32;
+	std::u32string str32 = conv32.from_bytes(string);
+
+	ostream << unicodeToLaTeX.convert(str32);
+}
+void LaTeXOStream::write(const std::u32string& string) {
+	ostream << unicodeToLaTeX.convert(string);
+}
 } /* namespace LaTeX */
 
