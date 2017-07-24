@@ -35,15 +35,22 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wextra")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -std=gnu++17")
 
 
+
 # The version number.
 set (html2LaTeX_VERSION_MAJOR 1)
 set (html2LaTeX_VERSION_MINOR 0)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
 
 #Subdirectories
 add_subdirectory(src)
 add_subdirectory(test)
 add_subdirectory(docs)
 
-			   
+# uninstall target
+configure_file(
+    "${CMAKE_SOURCE_DIR}/cmake/Uninstall.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/Uninstall.cmake"
+    IMMEDIATE @ONLY)
+
+add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/Uninstall.cmake)

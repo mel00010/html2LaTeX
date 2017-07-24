@@ -18,5 +18,9 @@ target_include_directories(html2LaTeX
 		${PROJECT_SOURCE_DIR}/src
 )
 
+install(TARGETS html2LaTeX
+		RUNTIME DESTINATION bin)
+
+
 add_subdirectory(HTML)
 add_subdirectory(LaTeX)
