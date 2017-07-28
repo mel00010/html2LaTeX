@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger_test.cpp
+ * NumberTypes.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,37 +17,33 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
+#ifndef HTML_MICROSYNTAXES_NUMBERS_NUMBERSTYPES_HPP_
+#define HTML_MICROSYNTAXES_NUMBERS_NUMBERSTYPES_HPP_
 
-#include <gtest/gtest.h>
-
-#include <HTML/Microsyntaxes/Numbers/SignedInteger.hpp>
-#include <HTML/Microsyntaxes/Numbers/NumbersTypes.hpp>
+#include <exception>
 
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-TEST(SignedInteger, isInteger) {
-	EXPECT_TRUE(isInteger(std::string("0123456789")));
-	EXPECT_TRUE(isInteger(std::string("-0123456789")));
-	EXPECT_FALSE(isInteger(std::string("Not An Integer")));
-	EXPECT_FALSE(isInteger(std::string("0-123456789")));
-	EXPECT_FALSE(isInteger(std::string("")));
-}
-
-TEST(SignedInteger, parseInteger) {
-	EXPECT_EQ(123456789, parseInteger(std::string("0123456789")));
-	EXPECT_EQ(-123456789, parseInteger(std::string("-0123456789")));
-	EXPECT_THROW(parseInteger(std::string("Not an integer")), parseException);
-	EXPECT_THROW(parseInteger(std::string("")), parseException);
-}
-TEST(SignedInteger, parseException) {
-	parseException test("Test");
-	parseException* testPtr = new parseException("Test");
-	EXPECT_STREQ("Test", test.what());
-	EXPECT_STREQ("Test", testPtr->what());
-}
+class parseException: std::exception {
+	public:
+		parseException() {
+		}
+		parseException(const char* error_message) {
+			message = error_message;
+		}
+		virtual const char* what() const noexcept {
+			return message;
+		}
+	protected:
+		const char* message = "";
+};
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
+
+
+
+#endif /* HTML_MICROSYNTAXES_NUMBERS_NUMBERSTYPES_HPP_ */

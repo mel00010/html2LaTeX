@@ -25,8 +25,20 @@
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
-bool isInteger(std::string);
-int parseInteger(std::string);
+
+/**
+ * @brief Tests if a string represents a valid integer
+ * @param string String to test
+ * @return Returns @c true if the string represents a valid integer, false if it is not.
+ */
+bool isInteger(const std::string& string);
+
+/**
+ * @brief Retrieves the integer a std::string holds
+ * @param string String to parse
+ * @return Returns the integer the string holds.
+ */
+int parseInteger(const std::string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

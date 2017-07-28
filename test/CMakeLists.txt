@@ -48,6 +48,7 @@ include_directories("${source_dir}/googletest/include"
 include(CodeCoverage)
 append_coverage_compiler_flags()
 set(COVERAGE_EXCLUDES
+	'${PROJECT_SOURCE_DIR}/test/*'
 	'${PROJECT_BINARY_DIR}/test/gtest/*'
 	'/usr/include/c++/6/*'
 
@@ -67,6 +68,8 @@ target_include_directories(tests
 target_link_libraries(tests
 	html_test
 	latex_test
+	html
+	latex
 	libgtest
 	libgmock
 	gmock_main

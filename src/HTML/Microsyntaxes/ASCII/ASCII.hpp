@@ -695,7 +695,6 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs);
  */
 std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions = false);
 
-
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
 
