@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger.cpp
+ * NonNegativeInteger.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,42 +18,33 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <SignedInteger.hpp>
-#include <NumbersTypes.hpp>
+#include <NonNegativeInteger.hpp>
 #include <NumbersMisc.hpp>
+#include <NumbersTypes.hpp>
 
 #include <Microsyntaxes/ASCII/ASCII.hpp>
-
 
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-bool isInteger(const std::string& string) {
-	if (string.empty()) {
-		return false;
-	}
-	if (isASCIIDigits(string)) {
-		return true;
-	} else if ((string[0] == '-') && (isASCIIDigits(string.substr(1)))) {
+bool isNonNegativeInteger(const std::string& string) {
+	if (!string.empty() && isASCIIDigits(string)) {
 		return true;
 	}
 	return false;
 }
 
-int parseInteger(const std::string& string) {
+unsigned int parseNonNegativeInteger(const std::string& string) {
 	int accumulated = 0;
-	bool positive = true;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
 		if (isWhitespace(string[i]) && !started) {
 			continue;
 		} else if (isASCIIDigit(string[i])) {
 			started = true;
-			unsigned int digit = ASCIIDigitToInt(string[i]);
+			int digit = ASCIIDigitToInt(string[i]);
 			accumulated = accumulated * 10 + digit;
-		} else if ((!started) && (string[i] == '-')) {
-			positive = false;
 		} else if (started) {
 			break;
 		} else {
@@ -63,13 +54,10 @@ int parseInteger(const std::string& string) {
 	if (!started) {
 		throw parseException();
 	}
-	if (!positive) {
-		return 0 - accumulated;
-	}
 	return accumulated;
 }
 
-} /* namespace Numbers */
-} /* namespace Microsyntaxes */ // LCOV_EXCL_LINE
-} /* namespace HTML */ // LCOV_EXCL_LINE
 
+} /* namespace Numbers */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * NumberTypes.hpp
+ * NumbersTypes.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -21,29 +21,49 @@
 #define HTML_MICROSYNTAXES_NUMBERS_NUMBERSTYPES_HPP_
 
 #include <exception>
+#include <iostream>
 
 namespace HTML {
 namespace Microsyntaxes {
+
+/**
+ * @brief Holds functions related to parsing numbers
+ */
 namespace Numbers {
 
 /**
  * @brief Exception thrown after a parse error occurs
- *
- *
  */
 class parseException: std::exception {
 	public:
-		parseException() {
-		}
-		parseException(const char* error_message) {
-			message = error_message;
-		}
-		virtual const char* what() const noexcept {
-			return message;
-		}
+		/**
+		 * @brief Default constructor
+		 * @details Initializes the message returned by what() to be the empty string.
+		 */
+		parseException();
+
+		/**
+		 * @brief Constructor with error message
+		 * @details Initializes the message returned by what() to be @c error_message
+		 * @param error_message Message to be returned by what()
+		 */
+		parseException(const char* error_message);
+
+	public:
+		/**
+		 * @brief Reads the contents of @c parseException::message
+		 * @return Returns the message stored in @c parseException::message
+		 */
+		virtual const char* what() const noexcept;
 	protected:
+
+		/**
+		 * @brief Stores the message to be returned by what()
+		 */
 		const char* message = "";
 };
+
+::std::ostream& operator<<(::std::ostream& os, const parseException& parseException);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

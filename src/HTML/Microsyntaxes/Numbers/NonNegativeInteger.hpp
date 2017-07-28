@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger.hpp
+ * NonNegativeInteger.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_
-#define HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_
+#ifndef HTML_MICROSYNTAXES_NUMBERS_NONNEGATIVEINTEGER_HPP_
+#define HTML_MICROSYNTAXES_NUMBERS_NONNEGATIVEINTEGER_HPP_
 
 #include <string>
 
@@ -27,26 +27,27 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 /**
- * @brief Tests if a string represents a valid integer
+ * @brief Tests if a string represents a valid non-negative integer
  * @param string String to test
- * @return Returns @c true if @c string represents a valid integer, @c false if it is not.
- * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, isInteger)
+ * @return Returns @c true if @c string represents a non-negative integer, @c false if it does not.
+ *
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, isNonNegativeInteger)
  */
-bool isInteger(const std::string& string);
+bool isNonNegativeInteger(const std::string& string);
 
 /**
- * @brief Retrieves the integer a std::string holds
+ * @brief Retrieves the non-negative integer a std::string holds
  * @param string String to parse
- * @return Returns the integer the string holds.
+ * @return Returns the non-negative the string holds.
  * @exception parseException The algorithm failed to parse @c string.
  *
- * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, parseInteger)
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeInteger)
  */
-int parseInteger(const std::string& string);
+unsigned int parseNonNegativeInteger(const std::string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
 
 
-#endif /* HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_ */
+#endif /* HTML_MICROSYNTAXES_NUMBERS_NONNEGATIVEINTEGER_HPP_ */

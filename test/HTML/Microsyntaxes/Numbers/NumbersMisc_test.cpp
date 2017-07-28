@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger_test.cpp
+ * NumbersMisc_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -20,36 +20,29 @@
 
 #include <gtest/gtest.h>
 
-#include <HTML/Microsyntaxes/Numbers/SignedInteger.hpp>
+#include <HTML/Microsyntaxes/Numbers/NumbersMisc.hpp>
 #include <HTML/Microsyntaxes/Numbers/NumbersTypes.hpp>
 
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-TEST(HTML_Microsyntaxes_Numbers_SignedInteger, isInteger) {
-	EXPECT_TRUE(isInteger(std::string("0123456789")));
-	EXPECT_TRUE(isInteger(std::string("-0123456789")));
-	EXPECT_FALSE(isInteger(std::string("Not An Integer")));
-	EXPECT_FALSE(isInteger(std::string("0-123456789")));
-	EXPECT_FALSE(isInteger(std::string("0 123456789")));
-	EXPECT_FALSE(isInteger(std::string("0a123456789")));
-	EXPECT_FALSE(isInteger(std::string("")));
+TEST(HTML_Microsyntaxes_Numbers_NumbersMisc, ASCIIDigitToInt) {
+	EXPECT_EQ(0u, ASCIIDigitToInt('0'));
+	EXPECT_EQ(1u, ASCIIDigitToInt('1'));
+	EXPECT_EQ(2u, ASCIIDigitToInt('2'));
+	EXPECT_EQ(3u, ASCIIDigitToInt('3'));
+	EXPECT_EQ(4u, ASCIIDigitToInt('4'));
+	EXPECT_EQ(5u, ASCIIDigitToInt('5'));
+	EXPECT_EQ(6u, ASCIIDigitToInt('6'));
+	EXPECT_EQ(7u, ASCIIDigitToInt('7'));
+	EXPECT_EQ(8u, ASCIIDigitToInt('8'));
+	EXPECT_EQ(9u, ASCIIDigitToInt('9'));
+
+	EXPECT_THROW(ASCIIDigitToInt('a'), parseException);
 }
-
-TEST(HTML_Microsyntaxes_Numbers_SignedInteger, parseInteger) {
-	EXPECT_EQ(123456789, parseInteger(std::string("   0123456789")));
-	EXPECT_EQ(123456789, parseInteger(std::string("0123456789   ")));
-	EXPECT_EQ(123456789, parseInteger(std::string("0123456789")));
-	EXPECT_EQ(-123456789, parseInteger(std::string("-0123456789")));
-	EXPECT_EQ(123, parseInteger(std::string("0123 4567 89")));
-	EXPECT_EQ(0, parseInteger(std::string("0-123456789")));
-
-	EXPECT_THROW(parseInteger(std::string("Not an integer")), parseException);
-	EXPECT_THROW(parseInteger(std::string("")), parseException);
-}
-
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
+

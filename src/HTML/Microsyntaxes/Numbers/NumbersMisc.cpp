@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger.hpp
+ * NumbersMisc.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,36 +17,52 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_
-#define HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_
 
-#include <string>
+#include <NumbersMisc.hpp>
+#include <NumbersTypes.hpp>
 
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-/**
- * @brief Tests if a string represents a valid integer
- * @param string String to test
- * @return Returns @c true if @c string represents a valid integer, @c false if it is not.
- * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, isInteger)
- */
-bool isInteger(const std::string& string);
-
-/**
- * @brief Retrieves the integer a std::string holds
- * @param string String to parse
- * @return Returns the integer the string holds.
- * @exception parseException The algorithm failed to parse @c string.
- *
- * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, parseInteger)
- */
-int parseInteger(const std::string& string);
-
+unsigned int ASCIIDigitToInt(const char& digit) {
+	int returned = 0;
+	switch (digit) {
+		case '0':
+			returned = 0;
+			break;
+		case '1':
+			returned = 1;
+			break;
+		case '2':
+			returned = 2;
+			break;
+		case '3':
+			returned = 3;
+			break;
+		case '4':
+			returned = 4;
+			break;
+		case '5':
+			returned = 5;
+			break;
+		case '6':
+			returned = 6;
+			break;
+		case '7':
+			returned = 7;
+			break;
+		case '8':
+			returned = 8;
+			break;
+		case '9':
+			returned = 9;
+			break;
+		default:
+			throw parseException();
+	}
+	return returned;
+}
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
-
-
-#endif /* HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_ */

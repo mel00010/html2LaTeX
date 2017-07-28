@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger.hpp
+ * NumbersMisc.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,36 +17,27 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_
-#define HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_
-
-#include <string>
+#ifndef HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_
+#define HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_
 
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
 /**
- * @brief Tests if a string represents a valid integer
- * @param string String to test
- * @return Returns @c true if @c string represents a valid integer, @c false if it is not.
- * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, isInteger)
- */
-bool isInteger(const std::string& string);
-
-/**
- * @brief Retrieves the integer a std::string holds
- * @param string String to parse
- * @return Returns the integer the string holds.
- * @exception parseException The algorithm failed to parse @c string.
+ * @brief Converts an ASCII digit to its numerical equivalent.
+ * @param digit Digit to convert
+ * @return Returns an unsigned int with a value in the range 0 to 9.
+ * @exception parseException @c digit was not an ASCII digit
  *
- * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, parseInteger)
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NumbersMisc, ASCIIDigitToInt)
  */
-int parseInteger(const std::string& string);
+unsigned int ASCIIDigitToInt(const char& digit);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
 
 
-#endif /* HTML_MICROSYNTAXES_NUMBERS_SIGNEDINTEGER_HPP_ */
+
+#endif /* HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_ */

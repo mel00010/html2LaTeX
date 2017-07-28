@@ -2,8 +2,13 @@ add_library(numbers STATIC "")
 
 target_sources(numbers
 	PRIVATE
+		NonNegativeInteger.cpp
+		NumbersMisc.cpp
+		NumbersTypes.cpp
 		SignedInteger.cpp
 	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/NonNegativeInteger.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/NumbersMisc.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NumbersTypes.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/SignedInteger.hpp
 )
