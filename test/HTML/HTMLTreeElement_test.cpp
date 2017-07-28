@@ -25,14 +25,14 @@
 
 namespace HTML {
 
-TEST(HTMLTreeElement, HTMLTreeElement) {
+TEST(HTML_HTMLTreeElement, HTMLTreeElement) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->makeRoot();
 	HTMLTreeElement* child = new HTMLTreeElement(root, root);
 	delete child;
 	delete root;
 }
-TEST(HTMLTreeElement, getRoot) {
+TEST(HTML_HTMLTreeElement, getRoot) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->makeRoot();
 	HTMLTreeElement* child1 = new HTMLTreeElement(root, root);
@@ -44,7 +44,7 @@ TEST(HTMLTreeElement, getRoot) {
 	delete root;
 }
 
-TEST(HTMLTreeElement, getParent) {
+TEST(HTML_HTMLTreeElement, getParent) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->makeRoot();
 	HTMLTreeElement* parent = new HTMLTreeElement(root, root);
@@ -59,7 +59,7 @@ TEST(HTMLTreeElement, getParent) {
 	delete root;
 }
 
-TEST(HTMLTreeElement, getChildren) {
+TEST(HTML_HTMLTreeElement, getChildren) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->makeRoot();
 	HTMLTreeElement* parent = new HTMLTreeElement(root, root);
@@ -72,69 +72,69 @@ TEST(HTMLTreeElement, getChildren) {
 	delete parent;
 	delete root;
 }
-TEST(HTMLTreeElement, getContents) {
+TEST(HTML_HTMLTreeElement, getContents) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->getContents();
 	delete root;
 }
-TEST(HTMLTreeElement, getAttributes) {
+TEST(HTML_HTMLTreeElement, getAttributes) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->getAttributes();
 	delete root;
 }
-TEST(HTMLTreeElement, getTagName) {
+TEST(HTML_HTMLTreeElement, getTagName) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->getTagName();
 	delete root;
 }
-TEST(HTMLTreeElement, getFormatting) {
+TEST(HTML_HTMLTreeElement, getFormatting) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->getFormatting();
 	delete root;
 }
-TEST(HTMLTreeElement, isText) {
+TEST(HTML_HTMLTreeElement, isText) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->isText();
 	delete root;
 }
-TEST(HTMLTreeElement, isRoot) {
+TEST(HTML_HTMLTreeElement, isRoot) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->isRoot();
 	delete root;
 }
-TEST(HTMLTreeElement, isEmpty) {
+TEST(HTML_HTMLTreeElement, isEmpty) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->isEmpty();
 	delete root;
 }
-TEST(HTMLTreeElement, isInitialized) {
+TEST(HTML_HTMLTreeElement, isInitialized) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->isInitialized();
 	delete root;
 }
-TEST(HTMLTreeElement, hasAttributes) {
+TEST(HTML_HTMLTreeElement, hasAttributes) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->hasAttributes();
 	delete root;
 }
-TEST(HTMLTreeElement, hasChildren) {
+TEST(HTML_HTMLTreeElement, hasChildren) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->hasChildren();
 	delete root;
 }
-TEST(HTMLTreeElement, makeRoot) {
+TEST(HTML_HTMLTreeElement, makeRoot) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->makeRoot();
 	delete root;
 }
-TEST(HTMLTreeElement, addChild) {
+TEST(HTML_HTMLTreeElement, addChild) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	HTMLTreeElement* child = new HTMLTreeElement(root, root);
 	root->addChild(child);
 	delete child;
 	delete root;
 }
-TEST(HTMLTreeElement, deleteChild) {
+TEST(HTML_HTMLTreeElement, deleteChild) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	HTMLTreeElement* child = new HTMLTreeElement(root, root);
 	root->addChild(child);
@@ -142,32 +142,32 @@ TEST(HTMLTreeElement, deleteChild) {
 	delete child;
 	delete root;
 }
-TEST(HTMLTreeElement, addAttribute) {
+TEST(HTML_HTMLTreeElement, addAttribute) {
 	Attribute attribute;
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->addAttribute(attribute);
 	delete root;
 }
-TEST(HTMLTreeElement, removeAttribute) {
+TEST(HTML_HTMLTreeElement, removeAttribute) {
 	Attribute attribute;
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->addAttribute(attribute);
 	root->removeAttribute(attribute);
 	delete root;
 }
-TEST(HTMLTreeElement, setContents) {
+TEST(HTML_HTMLTreeElement, setContents) {
 	std::string contents = "contents";
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->setContents(contents);
 	delete root;
 }
-TEST(HTMLTreeElement, setFormatting) {
+TEST(HTML_HTMLTreeElement, setFormatting) {
 	Formatting formatting;
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->setFormatting(formatting);
 	delete root;
 }
-TEST(HTMLTreeElement, setParent) {
+TEST(HTML_HTMLTreeElement, setParent) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->makeRoot();
 	HTMLTreeElement* newParent = new HTMLTreeElement();
@@ -178,7 +178,7 @@ TEST(HTMLTreeElement, setParent) {
 	delete newParent;
 	delete root;
 }
-TEST(HTMLTreeElement, setRoot) {
+TEST(HTML_HTMLTreeElement, setRoot) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->makeRoot();
 	HTMLTreeElement* newRoot = new HTMLTreeElement();
@@ -189,7 +189,7 @@ TEST(HTMLTreeElement, setRoot) {
 	delete newRoot;
 	delete root;
 }
-TEST(HTMLTreeElement, setTagName) {
+TEST(HTML_HTMLTreeElement, setTagName) {
 	HTMLTreeElement* root = new HTMLTreeElement();
 	root->setTagName();
 	delete root;

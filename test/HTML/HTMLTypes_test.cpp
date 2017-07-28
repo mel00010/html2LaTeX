@@ -24,7 +24,7 @@
 
 namespace HTML {
 
-TEST(HTMLTypes, Attribute) {
+TEST(HTML_HTMLTypes, Attribute) {
 //	Attribute test;
 //	Attribute* testPtr = new Attribute();
 //	delete testPtr;
@@ -47,7 +47,7 @@ TEST(HTMLTypes, Attribute) {
 }
 
 
-TEST(HTMLTypes, ContentType) {
+TEST(HTML_HTMLTypes, ContentType) {
 	std::ostringstream out;
 	out << ContentType(UTF_8, CERTAIN);
 	out << UTF_8 << UTF_16_BE << UTF_16_LE << UNKNOWN << NULL_ENC;

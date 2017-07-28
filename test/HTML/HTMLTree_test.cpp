@@ -23,7 +23,7 @@
 
 namespace HTML {
 
-TEST(HTMLTree, HTMLTree) {
+TEST(HTML_HTMLTree, HTMLTree) {
 	HTMLTree htmlTree;
 	HTMLTree* htmlTreePtr = new HTMLTree();
 	delete htmlTreePtr;

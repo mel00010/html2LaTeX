@@ -26,6 +26,11 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
+/**
+ * @brief Exception thrown after a parse error occurs
+ *
+ *
+ */
 class parseException: std::exception {
 	public:
 		parseException() {

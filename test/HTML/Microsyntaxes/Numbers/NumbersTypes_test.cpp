@@ -1,5 +1,5 @@
 /*******************************************************************************
- * SignedInteger_test.cpp
+ * NumbersTypes_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -20,29 +20,21 @@
 
 #include <gtest/gtest.h>
 
-#include <HTML/Microsyntaxes/Numbers/SignedInteger.hpp>
 #include <HTML/Microsyntaxes/Numbers/NumbersTypes.hpp>
 
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-TEST(HTML_Microsyntaxes_Numbers_SignedInteger, isInteger) {
-	EXPECT_TRUE(isInteger(std::string("0123456789")));
-	EXPECT_TRUE(isInteger(std::string("-0123456789")));
-	EXPECT_FALSE(isInteger(std::string("Not An Integer")));
-	EXPECT_FALSE(isInteger(std::string("0-123456789")));
-	EXPECT_FALSE(isInteger(std::string("")));
+TEST(HTML_Microsyntaxes_Numbers_NumbersTypes, parseException) {
+	parseException test("Test");
+	parseException* testPtr = new parseException("Test");
+	EXPECT_STREQ("Test", test.what());
+	EXPECT_STREQ("Test", testPtr->what());
 }
-
-TEST(HTML_Microsyntaxes_Numbers_SignedInteger, parseInteger) {
-	EXPECT_EQ(123456789, parseInteger(std::string("0123456789")));
-	EXPECT_EQ(-123456789, parseInteger(std::string("-0123456789")));
-	EXPECT_THROW(parseInteger(std::string("Not an integer")), parseException);
-	EXPECT_THROW(parseInteger(std::string("")), parseException);
-}
-
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
-} /* namespace HTML */
+} /* namespace HTML  */
+
+

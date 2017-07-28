@@ -26,7 +26,7 @@
 
 namespace LaTeX {
 
-TEST(UnicodeToLaTeX, convert) {
+TEST(LaTeX_UnicodeToLaTeX, convert) {
 	UnicodeToLaTeX unicodeToLaTeX;
 	const char32_t unicodeDefined = U'\U0000019B';
 	const char32_t unicodeUndefined = U'\U0000017F';
