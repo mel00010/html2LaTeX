@@ -18,8 +18,7 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTMLTypes.hpp>
-#include <iostream>
+#include "HTMLTypes.hpp"
 
 namespace HTML {
 

@@ -18,6 +18,10 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+#include <utility>
+
+using Item = std::pair<char32_t, const char*>;
+
 static constexpr Item unicodeToLaTeX[] = {
 		{ 0x0010, "\n" },
 		{ 0x0020, " " },

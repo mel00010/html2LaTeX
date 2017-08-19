@@ -18,11 +18,14 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <NonNegativeInteger.hpp>
-#include <NumbersMisc.hpp>
-#include <NumbersTypes.hpp>
+#include "NonNegativeInteger.hpp"
 
-#include <Microsyntaxes/ASCII/ASCII.hpp>
+#include "NumbersMisc.hpp"
+#include "NumbersTypes.hpp"
+
+#include <stddef.h>
+
+#include "HTML/Microsyntaxes/ASCII/ASCII.hpp"
 
 namespace HTML {
 namespace Microsyntaxes {

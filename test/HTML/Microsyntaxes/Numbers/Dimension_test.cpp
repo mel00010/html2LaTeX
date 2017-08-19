@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UnicodeToLaTeXInterface.hpp
+ * Dimension_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,25 +17,26 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef LATEX_UNICODETOLATEXINTERFACE_HPP_
-#define LATEX_UNICODETOLATEXINTERFACE_HPP_
 
-//#include <gtest/gtest.h>
-#include <string>
-#include <utility>
+#include <HTML/Microsyntaxes/Numbers/Dimension.hpp>
+
+#include <gtest/gtest.h>
 
 
-namespace LaTeX {
-using Item = std::pair<char32_t, const char*>;
+namespace HTML {
+namespace Microsyntaxes {
+namespace Numbers {
+
+TEST(HTML_Microsyntaxes_Numbers_Dimension, isDimension) {
+
+}
+
+TEST(HTML_Microsyntaxes_Numbers_Dimension, parseDimension) {
+
+}
+
+} /* namespace Numbers */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 
 
-class UnicodeToLaTeXInterface {
-	public:
-		virtual const std::string convert(const char32_t codePoint) = 0;
-		virtual const std::string convert(const std::u32string string) = 0;
-};
-} /* namespace LaTeX */
-
-
-
-#endif /* LATEX_UNICODETOLATEXINTERFACE_HPP_ */

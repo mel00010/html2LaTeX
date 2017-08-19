@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UnicodeToLaTeXInterface.hpp
+ * ListsOfIntegers_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,25 +17,25 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef LATEX_UNICODETOLATEXINTERFACE_HPP_
-#define LATEX_UNICODETOLATEXINTERFACE_HPP_
 
-//#include <gtest/gtest.h>
-#include <string>
-#include <utility>
+#include <gtest/gtest.h>
+
+#include <HTML/Microsyntaxes/Numbers/ListsOfIntegers.hpp>
+
+namespace HTML {
+namespace Microsyntaxes {
+namespace Numbers {
+
+TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, isListOfIntegers) {
+
+}
+
+TEST(HTML_Microsyntaxes_Numbers_ListOfIntegers, parseListOfIntegers) {
+
+}
+
+} /* namespace Numbers */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 
 
-namespace LaTeX {
-using Item = std::pair<char32_t, const char*>;
-
-
-class UnicodeToLaTeXInterface {
-	public:
-		virtual const std::string convert(const char32_t codePoint) = 0;
-		virtual const std::string convert(const std::u32string string) = 0;
-};
-} /* namespace LaTeX */
-
-
-
-#endif /* LATEX_UNICODETOLATEXINTERFACE_HPP_ */

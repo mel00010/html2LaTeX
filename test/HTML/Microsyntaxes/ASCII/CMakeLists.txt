@@ -1,14 +1,10 @@
-add_library(ascii_test STATIC "")
+add_library(ascii_test INTERFACE)
 
 target_sources(ascii_test
-	PUBLIC
+	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/ASCII_test.cpp
 )
 target_link_libraries(ascii_test
-	PUBLIC
+	INTERFACE
 		ascii
-)
-target_include_directories(ascii_test
-	PUBLIC
-		${PROJECT_SOURCE_DIR}/src
 )

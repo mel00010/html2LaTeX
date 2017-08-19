@@ -18,7 +18,7 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTMLTree.hpp>
+#include "HTMLTree.hpp"
 
 namespace HTML {
 

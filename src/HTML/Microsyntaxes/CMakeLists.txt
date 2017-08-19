@@ -9,10 +9,10 @@ target_link_libraries(microsyntaxes
 		numbers
 )
 
-target_include_directories(microsyntaxes
-	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}
-		${PROJECT_SOURCE_DIR}/src
-)
+#target_include_directories(microsyntaxes
+#	PUBLIC
+#		${CMAKE_CURRENT_SOURCE_DIR}
+#		${PROJECT_SOURCE_DIR}/src
+#)
 add_subdirectory(ASCII)
 add_subdirectory(Numbers)

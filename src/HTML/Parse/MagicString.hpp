@@ -20,11 +20,11 @@
 #ifndef HTML_PARSE_MAGICSTRING_HPP_
 #define HTML_PARSE_MAGICSTRING_HPP_
 
-#include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
-
-
 #include <cassert>
+#include <cstdint>
 #include <cstring>
+
+#include "HTML/Microsyntaxes/ASCII/ASCII.hpp"
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <gtest/gtest.h>

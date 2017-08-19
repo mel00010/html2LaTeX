@@ -18,7 +18,7 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <ProgramOptions.hpp>
+#include "ProgramOptions.hpp"
 
 #include <boost/program_options.hpp>
 

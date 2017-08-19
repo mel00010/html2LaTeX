@@ -18,17 +18,17 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <LaTeXOStream.hpp>
+#include "LaTeXOStream.hpp"
 
-#include <UnicodeToLaTeX.hpp>
-
-#include <stddef.h>
+#include <bits/locale_conv.h>
+//#include <stddef.h>
+//#include <UnicodeToLaTeX.hpp>
 #include <codecvt>
-#include <fstream>
-#include <iomanip>
-#include <iostream>
-#include <locale>
-#include <string>
+//#include <fstream>
+//#include <iomanip>
+//#include <iostream>
+//#include <locale>
+//#include <string>
 
 
 namespace LaTeX {

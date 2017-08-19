@@ -18,12 +18,12 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <DetermineCharEncoding.hpp>
+#include "DetermineCharEncoding.hpp"
 
-#include <MagicString.hpp>
+#include "MagicString.hpp"
 
-#include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
-#include <HTML/HTMLTypes.hpp>
+#include "HTML/Microsyntaxes/ASCII/ASCII.hpp"
+#include "HTML/HTMLTypes.hpp"
 
 #include <iostream>
 #include <fstream>

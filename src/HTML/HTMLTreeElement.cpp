@@ -18,12 +18,10 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <HTMLTreeElement.hpp>
-
-#include <HTMLTreeElementInterface.hpp>
-#include <HTMLTypes.hpp>
-
-#include <vector>
+//#include <HTMLTreeElementInterface.hpp>
+//#include <HTMLTypes.hpp>
+#include "HTMLTreeElement.hpp"
+//#include <vector>
 
 namespace HTML {
 HTMLTreeElement::HTMLTreeElement() {

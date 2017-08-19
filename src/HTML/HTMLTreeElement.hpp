@@ -20,8 +20,8 @@
 #ifndef HTML_HTMLTREEELEMENT_HPP_
 #define HTML_HTMLTREEELEMENT_HPP_
 
-#include <HTMLTreeElementInterface.hpp>
-#include <HTMLTypes.hpp>
+#include "HTMLTreeElementInterface.hpp"
+#include "HTMLTypes.hpp"
 
 #include <string>
 #include <vector>

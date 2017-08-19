@@ -22,8 +22,10 @@
 
 #include <boost/program_options/options_description.hpp>
 #include <boost/program_options/positional_options.hpp>
+#include <iostream>
 #include <string>
 #include <vector>
+
 /**
  * @file ProgramOptions.hpp
  * @brief Defines the Options class

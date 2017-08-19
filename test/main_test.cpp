@@ -29,7 +29,7 @@
  * @brief Holds all of the source files and headers for the tests for html2LaTeX
  */
 /**
- * Googletest unit testing main function
+ * Googlemock unit testing main function
  * @param argc
  * @param argv
  * @return

@@ -14,8 +14,3 @@ target_sources(latex
 		${CMAKE_CURRENT_SOURCE_DIR}/UnicodeToLaTeXInterface.hpp
 
 )
-target_include_directories(latex
-	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}
-		${PROJECT_SOURCE_DIR}/src
-)

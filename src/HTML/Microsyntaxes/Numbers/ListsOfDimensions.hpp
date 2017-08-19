@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UnicodeToLaTeXInterface.hpp
+ * ListsOfDimensions.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,25 +17,38 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef LATEX_UNICODETOLATEXINTERFACE_HPP_
-#define LATEX_UNICODETOLATEXINTERFACE_HPP_
+#ifndef HTML_MICROSYNTAXES_NUMBERS_LISTSOFDIMENSIONS_HPP_
+#define HTML_MICROSYNTAXES_NUMBERS_LISTSOFDIMENSIONS_HPP_
 
-//#include <gtest/gtest.h>
+#include "NumbersTypes.hpp"
+
+#include <list>
 #include <string>
-#include <utility>
+
+namespace HTML {
+namespace Microsyntaxes {
+namespace Numbers {
+
+/**
+ * @brief Tests if @c string represents a list of dimensions
+ * @param string String to test
+ * @return Returns @c true if @c string represents a list of dimensions,
+ * 		   @c false if it does not.
+ */
+bool isListOfDimensions(const std::string& string);
+
+/**
+ * @brief Retrieves a list of dimensions from @c string.
+ * @param string String to parse
+ * @return Returns a std::list of Dimension objects retrieved from @c string.
+ */
+std::list<Dimension> parseListOfDimensions(const std::string& string);
+
+} /* namespace Numbers */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 
 
-namespace LaTeX {
-using Item = std::pair<char32_t, const char*>;
 
 
-class UnicodeToLaTeXInterface {
-	public:
-		virtual const std::string convert(const char32_t codePoint) = 0;
-		virtual const std::string convert(const std::u32string string) = 0;
-};
-} /* namespace LaTeX */
-
-
-
-#endif /* LATEX_UNICODETOLATEXINTERFACE_HPP_ */
+#endif /* HTML_MICROSYNTAXES_NUMBERS_LISTSOFDIMENSIONS_HPP_ */

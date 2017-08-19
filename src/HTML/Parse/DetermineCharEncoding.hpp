@@ -20,14 +20,15 @@
 #ifndef HTML_PARSE_DETERMINECHARENCODING_HPP_
 #define HTML_PARSE_DETERMINECHARENCODING_HPP_
 
-#include <HTML/HTMLTypes.hpp>
-
+//#include <gtest/gtest.h>
+#include <gtest/gtest_prod.h>
+//#include <fstream>
 #include <iostream>
-#include <fstream>
-#include <sstream>
+//#include <sstream>
+#include <string>
 
-//#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <gtest/gtest.h>
+#include "HTML/HTMLTypes.hpp"
+
 //#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 /**

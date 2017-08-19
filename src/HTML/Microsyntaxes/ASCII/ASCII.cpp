@@ -18,13 +18,14 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <ASCII.hpp>
+#include "ASCII.hpp"
 
 #include <stddef.h>
-#include <iostream>
-#include <string>
+#include <cstdint>
+//#include <iostream>
+//#include <string>
 
-#include <HTML/HTMLTypes.hpp>
+//#include <HTML/HTMLTypes.hpp>
 
 namespace HTML {
 namespace Microsyntaxes {

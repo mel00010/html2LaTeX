@@ -4,6 +4,8 @@ target_sources(html2LaTeX
 	PRIVATE
 		main.cpp
 		ProgramOptions.cpp
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/ProgramOptions.hpp
 )
 
 target_link_libraries (html2LaTeX
@@ -12,11 +14,7 @@ target_link_libraries (html2LaTeX
 	latex
 	pthread
 )
-target_include_directories(html2LaTeX
-	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}
-		${PROJECT_SOURCE_DIR}/src
-)
+
 
 install(TARGETS html2LaTeX
 		RUNTIME DESTINATION bin)

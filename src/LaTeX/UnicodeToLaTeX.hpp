@@ -20,7 +20,7 @@
 #ifndef LATEX_UNICODETOLATEX_HPP_
 #define LATEX_UNICODETOLATEX_HPP_
 
-#include <UnicodeToLaTeXInterface.hpp>
+#include "UnicodeToLaTeXInterface.hpp"
 
 #include <string>
 #include <locale>

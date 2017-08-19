@@ -1,77 +1,93 @@
 # We need thread support
 find_package (Threads REQUIRED)
 
-# Enable ExternalProject CMake module
-include (ExternalProject)
+# Download and unpack googletest at configure time
+configure_file(GoogleTest.cmake.in  ${CMAKE_BINARY_DIR}/googletest-download/CMakeLists.txt)
 
-# Download and install GoogleTest
-ExternalProject_Add(
-	gtest
-	URL https://github.com/google/googletest/archive/master.zip
-	PREFIX ${CMAKE_CURRENT_BINARY_DIR}/gtest
-	# Disable install step
-	INSTALL_COMMAND ""
-)
+execute_process(COMMAND ${CMAKE_COMMAND} -G "${CMAKE_GENERATOR}" .
+  RESULT_VARIABLE result
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+if(result)
+  message(FATAL_ERROR "CMake step for googletest failed: ${result}")
+endif()
+execute_process(COMMAND ${CMAKE_COMMAND} --build .
+  RESULT_VARIABLE result
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/googletest-download )
+if(result)
+  message(FATAL_ERROR "Build step for googletest failed: ${result}")
+endif()
 
-# Get GTest source and binary directories from CMake project
-ExternalProject_Get_Property(gtest source_dir binary_dir)
+# Prevent overriding the parent project's compiler/linker
+# settings on Windows
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-# Create a libgtest target to be used as a dependency by test programs
-add_library(libgtest IMPORTED STATIC GLOBAL)
-add_dependencies(libgtest gtest)
+# Add googletest directly to our build. This defines
+# the gtest and gtest_main targets.
+add_subdirectory(${CMAKE_BINARY_DIR}/googletest-src
+                 ${CMAKE_BINARY_DIR}/googletest-build)
 
-# Set libgtest properties
-set_target_properties(libgtest PROPERTIES
-	"IMPORTED_LOCATION" "${binary_dir}/googlemock/gtest/libgtest.a"
-	"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-)
+# The gtest/gtest_main targets carry header search path
+# dependencies automatically when using CMake 2.8.11 or
+# later. Otherwise we have to add them here ourselves.
+if (CMAKE_VERSION VERSION_LESS 2.8.11)
+  include_directories("${gtest_SOURCE_DIR}/include")
+endif()
 
-# Create a libgmock target to be used as a dependency by test programs
-add_library(libgmock IMPORTED STATIC GLOBAL)
-add_dependencies(libgmock gtest)
 
-# Set libgmock properties
-set_target_properties(libgmock PROPERTIES
-	"IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock.a"
-	"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-)
-add_library(libgmock_main IMPORTED STATIC GLOBAL)
-set_target_properties(libgmock_main PROPERTIES
-	"IMPORTED_LOCATION" "${binary_dir}/googlemock/libgmock_main.a"
-	"IMPORTED_LINK_INTERFACE_LIBRARIES" "${CMAKE_THREAD_LIBS_INIT}"
-)
-# I couldn't make it work with INTERFACE_INCLUDE_DIRECTORIES
-include_directories("${source_dir}/googletest/include"
-					"${source_dir}/googlemock/include")
 
-# coverage target setup
-include(CodeCoverage)
-append_coverage_compiler_flags()
-set(COVERAGE_EXCLUDES
-	'${PROJECT_SOURCE_DIR}/test/*'
-	'${PROJECT_BINARY_DIR}/test/gtest/*'
-	'/usr/include/c++/6/*'
+if(CMAKE_BUILD_TYPE EQUAL "COVERAGE")
+	# coverage target setup
+	include(CodeCoverage)
+	append_coverage_compiler_flags()
+	set(COVERAGE_EXCLUDES
+		'${PROJECT_SOURCE_DIR}/test/*'
+		'${PROJECT_BINARY_DIR}/test/gtest/*'
+		'/usr/include/c++/6/*'
+	)
+	setup_target_for_coverage(NAME coverage EXECUTABLE test/tests DEPENDENCIES tests)
+endif()
 
-)
-setup_target_for_coverage(NAME coverage EXECUTABLE test/tests DEPENDENCIES tests)
-
-add_executable(tests "")
-
+if(CMAKE_BUILD_TYPE EQUAL "RELEASE")
+	add_executable(tests EXCLUDE_FROM_ALL "")
+else()
+	add_executable(tests "")	
+endif()
 target_sources(tests
 	PRIVATE
 		main_test.cpp
-)	
+#		HTML/HTMLTree_test.cpp
+#		HTML/HTMLTreeElement_test.cpp
+#		HTML/HTMLTreeInterface_test.cpp
+#		HTML/HTMLTypes_test.cpp
+#		HTML/Parse/DetermineCharEncoding_test.cpp
+#		HTML/Parse/MagicString_test.cpp
+#		HTML/Parse/ParseHTML_test.cpp
+#		HTML/Microsyntaxes/ASCII/ASCII_test.cpp
+#		HTML/Microsyntaxes/Numbers/Dimension_test.cpp
+#		HTML/Microsyntaxes/Numbers/FloatingPoint_test.cpp
+#		HTML/Microsyntaxes/Numbers/ListsOfDimensions_test.cpp
+#		HTML/Microsyntaxes/Numbers/ListsOfIntegers_test.cpp
+#		HTML/Microsyntaxes/Numbers/NonNegativeInteger_test.cpp
+#		HTML/Microsyntaxes/Numbers/NumbersTypes_test.cpp
+#		HTML/Microsyntaxes/Numbers/NumbersMisc_test.cpp
+#		HTML/Microsyntaxes/Numbers/SignedInteger_test.cpp
+#		LaTeX/GenerateLaTeX_test.cpp
+#		LaTeX/LaTeXOStream_test.cpp
+#		LaTeX/UnicodeToLaTeX_test.cpp
+)
+
 target_include_directories(tests
 	PRIVATE
 		${PROJECT_SOURCE_DIR}/src
 )
+
 target_link_libraries(tests
 	html_test
 	latex_test
 	html
 	latex
-	libgtest
-	libgmock
+	gtest
+	gmock
 	gmock_main
 	pthread
 )

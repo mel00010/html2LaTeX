@@ -19,7 +19,7 @@
  *******************************************************************************/
 
 //#include <gtest/gtest.h>
-#include <GenerateLaTeX.hpp>
+#include "GenerateLaTeX.hpp"
 
 
 namespace LaTeX {

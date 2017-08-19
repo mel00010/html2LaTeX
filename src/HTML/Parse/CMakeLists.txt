@@ -15,8 +15,8 @@ target_link_libraries(parse
 		htmltypes
 		ascii
 )
-target_include_directories(parse
-	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}
-		${PROJECT_SOURCE_DIR}/src
-)
+#target_include_directories(parse
+#	PUBLIC
+#		${CMAKE_CURRENT_SOURCE_DIR}
+#		${PROJECT_SOURCE_DIR}/src
+#)

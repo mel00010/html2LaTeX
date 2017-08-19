@@ -63,7 +63,35 @@ class parseException: std::exception {
 		const char* message = "";
 };
 
+/**
+ * @brief Stream operator overload to allow printing of parseException objects to streams.
+ * @param os Stream to print to.
+ * @param parseException parseException object to print.
+ * @return Returns a reference to @c os.
+ */
 ::std::ostream& operator<<(::std::ostream& os, const parseException& parseException);
+
+/**
+ * @brief Represents the possible different types of a dimension value.
+ */
+enum class DimensionType {
+	PERCENTAGE, //!< Indicates that the dimension value is a percentage
+	LENGTH     //!< Indicates that the dimension value is a length
+};
+/**
+ * @brief Holds a dimension value
+ */
+struct Dimension {
+		/**
+		 * @brief Holds the value for the dimension.
+		 */
+		double value;
+		/**
+		 * @brief Indicates whether the dimension is a percentage or a length.
+		 */
+		DimensionType type;
+};
+
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

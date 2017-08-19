@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UnicodeToLaTeXInterface.hpp
+ * Dimension.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,25 +17,37 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef LATEX_UNICODETOLATEXINTERFACE_HPP_
-#define LATEX_UNICODETOLATEXINTERFACE_HPP_
+#ifndef HTML_MICROSYNTAXES_NUMBERS_DIMENSION_HPP_
+#define HTML_MICROSYNTAXES_NUMBERS_DIMENSION_HPP_
 
-//#include <gtest/gtest.h>
+#include "NumbersTypes.hpp"
+
 #include <string>
-#include <utility>
+
+namespace HTML {
+namespace Microsyntaxes {
+namespace Numbers {
+
+/**
+ * @brief Tests if @c string represents a dimension
+ * @param string String to test
+ * @return Returns @c true if @c string represents a dimension,
+ * 		   @c false if it does not.
+ */
+bool isDimension(const std::string& string);
+
+/**
+ * @brief Retrieves the dimension @c string holds
+ * @param string String to parse
+ * @return Returns a Dimension object containing the value contained
+ * 		   in the string and whether it is a percentage or length.
+ */
+Dimension parseDimension(const std::string& string);
+} /* namespace Numbers */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 
 
-namespace LaTeX {
-using Item = std::pair<char32_t, const char*>;
 
 
-class UnicodeToLaTeXInterface {
-	public:
-		virtual const std::string convert(const char32_t codePoint) = 0;
-		virtual const std::string convert(const std::u32string string) = 0;
-};
-} /* namespace LaTeX */
-
-
-
-#endif /* LATEX_UNICODETOLATEXINTERFACE_HPP_ */
+#endif /* HTML_MICROSYNTAXES_NUMBERS_DIMENSION_HPP_ */

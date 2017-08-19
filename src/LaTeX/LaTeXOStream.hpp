@@ -20,7 +20,7 @@
 #ifndef LATEX_LATEXOSTREAM_HPP_
 #define LATEX_LATEXOSTREAM_HPP_
 
-#include <UnicodeToLaTeX.hpp>
+#include "UnicodeToLaTeX.hpp"
 
 #include <stddef.h>
 #include <iostream>

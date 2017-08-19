@@ -20,7 +20,7 @@
 #ifndef LATEX_GENERATELATEX_HPP_
 #define LATEX_GENERATELATEX_HPP_
 
-#include <gtest/gtest.h>
+//#include <gtest/gtest.h>
 
 
 namespace LaTeX {

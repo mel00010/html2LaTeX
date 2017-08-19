@@ -20,7 +20,7 @@
 #ifndef HTML_HTMLTREEELEMENTINTERFACE_HPP_
 #define HTML_HTMLTREEELEMENTINTERFACE_HPP_
 
-#include <HTMLTypes.hpp>
+#include "HTMLTypes.hpp"
 
 #include <string>
 #include <vector>

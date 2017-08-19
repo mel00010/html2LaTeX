@@ -18,7 +18,7 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <LaTeXTreeInterface.hpp>
+#include "LaTeXTreeInterface.hpp"
 
 namespace LaTeX {
 

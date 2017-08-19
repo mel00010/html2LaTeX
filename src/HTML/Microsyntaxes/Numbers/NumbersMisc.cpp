@@ -18,8 +18,9 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <NumbersMisc.hpp>
-#include <NumbersTypes.hpp>
+#include "NumbersMisc.hpp"
+
+#include "NumbersTypes.hpp"
 
 namespace HTML {
 namespace Microsyntaxes {

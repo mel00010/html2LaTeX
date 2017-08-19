@@ -13,11 +13,7 @@ target_sources(html
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeInterface.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTypes.hpp
 )
-target_include_directories(html
-	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}
-		${PROJECT_SOURCE_DIR}/src
-)
+
 target_link_libraries(html
 	PUBLIC
 		htmltypes
@@ -26,7 +22,6 @@ target_link_libraries(html
 )
 
 add_library(htmltypes STATIC "")
-#message(${CMAKE_CURRENT_SOURCE_DIR})
 target_sources(htmltypes
 	PRIVATE
 		HTMLTypes.cpp
@@ -35,7 +30,6 @@ target_sources(htmltypes
 )
 target_include_directories(htmltypes
 	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}
 		${PROJECT_SOURCE_DIR}/src
 )
 

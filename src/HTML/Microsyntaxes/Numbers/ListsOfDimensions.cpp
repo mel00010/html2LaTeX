@@ -1,5 +1,5 @@
 /*******************************************************************************
- * UnicodeToLaTeXInterface.hpp
+ * ListsOfDimensions.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,25 +17,26 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef LATEX_UNICODETOLATEXINTERFACE_HPP_
-#define LATEX_UNICODETOLATEXINTERFACE_HPP_
 
-//#include <gtest/gtest.h>
-#include <string>
-#include <utility>
+#include "ListsOfDimensions.hpp"
+
+//#include <list>
+//#include <string>
+
+namespace HTML {
+namespace Microsyntaxes {
+namespace Numbers {
+
+bool isListOfDimensions(const std::string& string) {
+
+}
+
+std::list<Dimension> parseListOfDimensions(const std::string& string) {
+
+}
+
+} /* namespace Numbers */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 
 
-namespace LaTeX {
-using Item = std::pair<char32_t, const char*>;
-
-
-class UnicodeToLaTeXInterface {
-	public:
-		virtual const std::string convert(const char32_t codePoint) = 0;
-		virtual const std::string convert(const std::u32string string) = 0;
-};
-} /* namespace LaTeX */
-
-
-
-#endif /* LATEX_UNICODETOLATEXINTERFACE_HPP_ */
