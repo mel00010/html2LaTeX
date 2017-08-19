@@ -1,0 +1,29 @@
+add_library(dates STATIC "")
+
+target_sources(dates
+	PRIVATE
+		Dates.cpp
+		Durations.cpp
+		FloatingDatesAndTimes.cpp
+		GlobalDatesAndTimes.cpp
+		Months.cpp
+		Times.cpp
+		TimeZones.cpp
+		VaguerMomentsInTime.cpp
+		Weeks.cpp
+		YearlessDates.cpp
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/Dates.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Durations.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/FloatingDatesAndTimes.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/GlobalDatesAndTimes.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Months.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Times.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/TimeZones.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/VaguerMomentsInTime.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Weeks.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/YearlessDates.hpp
+)
+target_link_libraries(dates
+	PUBLIC
+)

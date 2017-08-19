@@ -25,8 +25,3 @@ target_link_libraries(numbers
 		ascii
 		htmltypes
 )
-#target_include_directories(numbers
-#	PUBLIC
-#		${CMAKE_CURRENT_SOURCE_DIR}
-#		${PROJECT_SOURCE_DIR}/src
-#)

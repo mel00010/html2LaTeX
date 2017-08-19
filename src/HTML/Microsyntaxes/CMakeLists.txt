@@ -6,6 +6,7 @@ add_library(microsyntaxes STATIC "")
 target_link_libraries(microsyntaxes
 	PUBLIC
 		ascii
+		dates
 		numbers
 )
 
@@ -15,4 +16,5 @@ target_link_libraries(microsyntaxes
 #		${PROJECT_SOURCE_DIR}/src
 #)
 add_subdirectory(ASCII)
+add_subdirectory(Dates)
 add_subdirectory(Numbers)
