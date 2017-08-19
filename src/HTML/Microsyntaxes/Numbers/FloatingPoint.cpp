@@ -26,9 +26,8 @@
 
 #include <stddef.h>
 #include <cmath>
-//#include <string>
 
-#include "../ASCII/ASCII.hpp"
+#include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 
 namespace HTML {
 namespace Microsyntaxes {
@@ -38,35 +37,48 @@ bool isFloatingPoint(const std::string& string) {
 	if (string.empty()) {
 		return false;
 	}
-	bool started = false;
-	bool decimalPointFound = false;
-	size_t decimalPointPosition = 0;
-	bool exponentDelimiterFound = false;
-	size_t exponentDelimiterPosition = 0;
-
-	for (size_t i = 0; i < string.length(); i++) {
-		if (isWhitespace(string[i]) && !started) {
-			continue;
-		} else if (isWhitespace(string[i]) && started) {
-			break;
-		} else if (isASCIIDigit(string[i]) && !decimalPointFound && !exponentDelimiterFound) {
-
-		} else if (isASCIIDigit(string[i]) && decimalPointFound && !exponentDelimiterFound) {
-
-		} else if (isASCIIDigit(string[i]) && !exponentDelimiterFound) {
-
-		} else if (string[i] == '.' && !decimalPointFound && !exponentDelimiterFound) {
-			decimalPointFound = true;
-			decimalPointPosition = i;
-		} else if ((string[i] == 'e' || string[i] == 'E') && !exponentDelimiterFound) {
-			exponentDelimiterFound = true;
-			exponentDelimiterPosition = i;
-		} else if ((i == (exponentDelimiterPosition + 1)) && (string[i] == '+')) {
-
-		} else if ((i == (exponentDelimiterPosition + 1)) && (string[i] == '-')) {
-
+	size_t position = 0;
+	if (string[0] == '-') {
+		position++;
+	}
+	for (; position < string.length(); position++) {
+		if (!isASCIIDigit(string[position])) {
+			if (string[position] == '.') {
+				position++;
+				for (; position < string.length(); position++) {
+					if (!isASCIIDigit(string[position])) {
+						if ((string[position] == 'e') || (string[position] == 'E')) {
+							position++;
+							if (string[position] == '-') {
+								position++;
+							}
+							for (; position < string.length(); position++) {
+								if (!isASCIIDigit(string[position])) {
+									return false;
+								}
+							}
+							return true;
+						}
+						return false;
+					}
+				}
+			} else if ((string[position] == 'e') || (string[position] == 'E')) {
+				position++;
+				if (string[position] == '-') {
+					position++;
+				}
+				for (; position < string.length(); position++) {
+					if (!isASCIIDigit(string[position])) {
+						return false;
+					}
+				}
+				return true;
+			} else {
+				return false;
+			}
 		}
 	}
+	return true;
 }
 
 double exponentStep(const std::string& string, size_t& position, double& value, double& exponent) {
@@ -88,7 +100,7 @@ double exponentStep(const std::string& string, size_t& position, double& value, 
 		}
 	}
 	if (!isASCIIDigit(string[position])) {
-		return value;
+		throw parseException();
 	}
 
 	std::string digits = "";
@@ -96,19 +108,21 @@ double exponentStep(const std::string& string, size_t& position, double& value, 
 		if (isASCIIDigit(string[position])) {
 			digits += string[position];
 		} else {
-			break;
+			throw parseException();
 		}
 	}
 
 	if (digits.empty()) {
 		return value;
 	}
+
 	exponent *= parseNonNegativeInteger(digits);
 	value *= pow(10, exponent);
 	return value;
 }
 
 double fractionStep(const std::string& string, size_t& position, double& value, double& divisor, double& exponent) {
+	position++;
 	if (position > string.length()) {
 		return value;
 	}
@@ -127,14 +141,14 @@ double fractionStep(const std::string& string, size_t& position, double& value, 
 		value += (static_cast<double>(ASCIIDigitToInt(string[position]))) / divisor;
 	}
 
-	if (position > string.length()) {
+	if (position >= string.length()) {
 		return value;
 	}
 
 	if ((string[position] == 'e') || (string[position] == 'E')) {
 		return exponentStep(string, position, value, exponent);
-	} else if (!(isASCIIDigit(string[position]) || string[position] == 'e' || string[position] == 'E')) {
-		throw(parseException());
+	} else {
+		throw parseException();
 	}
 	return value;
 }
@@ -168,7 +182,6 @@ double parseFloatingPoint(const std::string& string) {
 	if ((string[position] == '.')) {
 		value = 0;
 		if (isASCIIDigit(string[position + 1])) {
-			position++;
 			return fractionStep(string, position, value, divisor, exponent);
 		}
 		position++;
@@ -191,15 +204,17 @@ double parseFloatingPoint(const std::string& string) {
 	}
 	value *= parseNonNegativeInteger(digits);
 
-	if (position > string.length()) {
+	if (position >= string.length()) {
 		return value;
 	}
 	if (string[position] == '.') {
-		position++;
 		return fractionStep(string, position, value, divisor, exponent);
 	}
 	if ((string[position] == 'e') || (string[position] == 'E')) {
 		return exponentStep(string, position, value, exponent);
+	}
+	if (!isASCIIDigit(string[position])) {
+		throw parseException();
 	}
 	return value;
 }

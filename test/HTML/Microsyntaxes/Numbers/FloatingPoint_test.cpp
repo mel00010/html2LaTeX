@@ -19,6 +19,7 @@
  *******************************************************************************/
 
 #include <gtest/gtest.h>
+#include <iostream>
 
 #include <HTML/Microsyntaxes/Numbers/FloatingPoint.hpp>
 #include <HTML/Microsyntaxes/Numbers/NumbersTypes.hpp>
