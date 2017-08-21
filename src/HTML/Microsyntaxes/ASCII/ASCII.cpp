@@ -49,7 +49,7 @@ bool isWhitespace(const std::string& string) {
 }
 
 bool isUnicodeWhitespace(const char& character __attribute__ ((unused))) {
-	//! @TODO Finish function
+	//! @todo Finish function
 	return false;
 }
 

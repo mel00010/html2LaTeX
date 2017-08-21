@@ -37,52 +37,50 @@ class LaTeXOStream {
 		virtual ~LaTeXOStream();
 	public:
 		/**
-		 * Typedef defining the LaTeXOStreamManipulator type for use by the stream operators.
+		 * @brief Typedef defining the LaTeXOStreamManipulator type for use by the stream operators.
 		 */
 		typedef LaTeXOStream& (*LaTeXOStreamManipulator)(LaTeXOStream&);
 		/**
-		 * Typedef defining the CoutType type for use by the stream operators.
+		 * @brief Typedef defining the CoutType type for use by the stream operators.
 		 */
 		typedef std::basic_ostream<char, std::char_traits<char> > CoutType;
 		/**
-		 * Typedef defining the StandardEndLine type for use by the stream operators.
-		 * @param
-		 * @return
+		 * @brief Typedef defining the StandardEndLine type for use by the stream operators.
 		 */
 		typedef CoutType& (*StandardEndLine)(CoutType&);
 
 		template<typename T>
 		/**
-		 * Stream insertion operator.
-		 * @param x
-		 * @return
+		 * @brief Stream insertion operator for LaTeXOStream.
+		 * @param x Reference to the object of type @c T to be written.
+		 * @return Returns a reference to the LaTeXOStream object being written to.
 		 */
 		inline LaTeXOStream& operator<<(const T& x) {
 			write(x, sizeof(x));
 			return *this;
 		}
 		/**
-		 * Stream insertion operator handling std::string.
-		 * @param x
-		 * @return
+		 * @brief Stream insertion operator for LaTeXOStream handling std::string.
+		 * @param x Reference to the @c std::string to be written.
+		 * @return Returns a reference to the LaTeXOStream object being written to.
 		 */
 		inline LaTeXOStream& operator<<(const std::string& x) {
 			write(x);
 			return *this;
 		}
 		/**
-		 * Stream insertion operator handling std::u32string.
-		 * @param x
-		 * @return
+		 * @brief Stream insertion operator for LaTeXOStream handling std::u32string.
+		 * @param x Reference to the @c std::u32string to be written.
+		 * @return Returns a reference to the LaTeXOStream object being written to.
 		 */
 		inline LaTeXOStream& operator<<(const std::u32string& x) {
 			write(x);
 			return *this;
 		}
 		/**
-		 * Stream insertion operator.
-		 * @param in
-		 * @return
+		 * @brief Stream insertion operator for LaTeXOStream.
+		 * @param in Reference to the std::istream object to be writtne.
+		 * @return Returns a reference to the LaTeXOStream object being written to.
 		 */
 		inline std::istream& operator>>(std::istream &in) {
 			std::string s(std::istreambuf_iterator<char>(in), { });
@@ -90,9 +88,9 @@ class LaTeXOStream {
 			return in;
 		}
 		/**
-		 * Stream insertion operator handling std::endl.
-		 * @param manip
-		 * @return
+		 * @brief Stream insertion operator for LaTeXOStream handling std::endl.
+		 * @param manip The @c std::endl object being written.
+		 * @return Returns a reference to the LaTeXOStream object being written to.
 		 */
 		inline LaTeXOStream& operator<<(__attribute__((unused))  StandardEndLine manip) {
 			// Call the function, but we cannot return it's value

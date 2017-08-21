@@ -35,19 +35,20 @@ endif()
 
 
 
-if(CMAKE_BUILD_TYPE EQUAL "COVERAGE")
+if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 	# coverage target setup
 	include(CodeCoverage)
 	append_coverage_compiler_flags()
 	set(COVERAGE_EXCLUDES
 		'${PROJECT_SOURCE_DIR}/test/*'
-		'${PROJECT_BINARY_DIR}/test/gtest/*'
+		'${PROJECT_BINARY_DIR}/googletest-src/*'
+		'${PROJECT_BINARY_DIR}/googletest-build/*'
 		'/usr/include/c++/6/*'
 	)
 	setup_target_for_coverage(NAME coverage EXECUTABLE test/tests DEPENDENCIES tests)
 endif()
 
-if(CMAKE_BUILD_TYPE EQUAL "RELEASE")
+if(CMAKE_BUILD_TYPE STREQUAL "Release")
 	add_executable(tests EXCLUDE_FROM_ALL "")
 else()
 	add_executable(tests "")	
@@ -55,25 +56,6 @@ endif()
 target_sources(tests
 	PRIVATE
 		main_test.cpp
-#		HTML/HTMLTree_test.cpp
-#		HTML/HTMLTreeElement_test.cpp
-#		HTML/HTMLTreeInterface_test.cpp
-#		HTML/HTMLTypes_test.cpp
-#		HTML/Parse/DetermineCharEncoding_test.cpp
-#		HTML/Parse/MagicString_test.cpp
-#		HTML/Parse/ParseHTML_test.cpp
-#		HTML/Microsyntaxes/ASCII/ASCII_test.cpp
-#		HTML/Microsyntaxes/Numbers/Dimension_test.cpp
-#		HTML/Microsyntaxes/Numbers/FloatingPoint_test.cpp
-#		HTML/Microsyntaxes/Numbers/ListsOfDimensions_test.cpp
-#		HTML/Microsyntaxes/Numbers/ListsOfIntegers_test.cpp
-#		HTML/Microsyntaxes/Numbers/NonNegativeInteger_test.cpp
-#		HTML/Microsyntaxes/Numbers/NumbersTypes_test.cpp
-#		HTML/Microsyntaxes/Numbers/NumbersMisc_test.cpp
-#		HTML/Microsyntaxes/Numbers/SignedInteger_test.cpp
-#		LaTeX/GenerateLaTeX_test.cpp
-#		LaTeX/LaTeXOStream_test.cpp
-#		LaTeX/UnicodeToLaTeX_test.cpp
 )
 
 target_include_directories(tests

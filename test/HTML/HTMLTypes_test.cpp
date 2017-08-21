@@ -48,10 +48,37 @@ TEST(HTML_HTMLTypes, Attribute) {
 
 
 TEST(HTML_HTMLTypes, ContentType) {
-	std::ostringstream out;
-	out << ContentType(UTF_8, CERTAIN);
-	out << UTF_8 << UTF_16_BE << UTF_16_LE << UNKNOWN << NULL_ENC;
-	out << IRRELEVANT << TENTATIVE << CERTAIN;
+	std::ostringstream osContentType;
+	std::ostringstream osUTF_8;
+	std::ostringstream osUTF_16_BE;
+	std::ostringstream osUTF_16_LE;
+	std::ostringstream osUNKNOWN;
+	std::ostringstream osNULL_ENC;
+	std::ostringstream osIRRELEVANT;
+	std::ostringstream osTENTATIVE;
+	std::ostringstream osCERTAIN;
+
+	osContentType << ContentType(UTF_8, CERTAIN);
+	osUTF_8 << UTF_8;
+	osUTF_16_BE << UTF_16_BE;
+	osUTF_16_LE << UTF_16_LE;
+	osUNKNOWN << UNKNOWN;
+	osNULL_ENC << NULL_ENC;
+	osIRRELEVANT << IRRELEVANT;
+	osTENTATIVE << TENTATIVE;
+	osCERTAIN << CERTAIN;
+
+	EXPECT_EQ(osContentType.str(), std::string("UTF_8:CERTAIN"));
+	EXPECT_EQ(osUTF_8.str(), std::string("UTF_8"));
+	EXPECT_EQ(osUTF_16_BE.str(), std::string("UTF_16_BE"));
+	EXPECT_EQ(osUTF_16_LE.str(), std::string("UTF_16_LE"));
+	EXPECT_EQ(osUNKNOWN.str(), std::string("UNKNOWN"));
+	EXPECT_EQ(osNULL_ENC.str(), std::string("NULL_ENC"));
+	EXPECT_EQ(osIRRELEVANT.str(), std::string("IRRELEVANT"));
+	EXPECT_EQ(osTENTATIVE.str(), std::string("TENTATIVE"));
+	EXPECT_EQ(osCERTAIN.str(), std::string("CERTAIN"));
+
+
 
 	EXPECT_TRUE(ContentType(UTF_8, CERTAIN) == ContentType(UTF_8, CERTAIN));
 	EXPECT_FALSE(ContentType(UTF_8, CERTAIN) == ContentType(UNKNOWN, CERTAIN));
