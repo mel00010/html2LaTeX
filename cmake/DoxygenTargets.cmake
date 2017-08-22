@@ -222,25 +222,50 @@ function(add_doxygen _doxyfile)
 			@ONLY)
 
 		add_custom_target(DOXYGEN_TARGET
-			COMMAND
-				${DOXYGEN_EXECUTABLE}
-				"${CMAKE_CURRENT_BINARY_DIR}/${_doxyfile}.additional"
-			WORKING_DIRECTORY
-				"${CMAKE_CURRENT_SOURCE_DIR}"
-			COMMENT
-				"Running Doxygen with configuration ${_doxyfile}..."
-			VERBATIM)
+			COMMAND ${DOXYGEN_EXECUTABLE} "${CMAKE_CURRENT_BINARY_DIR}/${_doxyfile}.additional"
+			WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+			COMMENT	"Running Doxygen with configuration ${_doxyfile}..."
+			VERBATIM
+		)
 		if(DOXYGEN_PDFLATEX AND MAKE_PDF)
-			add_dependencies(${DOC_TARGET} MAKE_PDF_SCRIPT)
+			add_dependencies(${DOC_TARGET} PDFLATEX_LAST_RUN)
 		endif()
-		add_custom_target(MAKE_PDF_SCRIPT
-		    COMMAND
-				${CMAKE_COMMAND} -P ${CMAKE_MODULE_PATH}/DoxygenPDFScript.cmake -DOUTPUT=${CMAKE_VERBOSE_MAKEFILE}
-			WORKING_DIRECTORY
-				"${OUTPUT_DIRECTORY}/latex"
-			COMMENT
-				"Compiling PDF with pdflatex"
-			DEPENDS
-				DOXYGEN_TARGET)
-	endif()
+				
+		add_custom_target(PDFLATEX_FIRST_RUN
+		    COMMAND pdflatex refman > /dev/null
+		    WORKING_DIRECTORY "${OUTPUT_DIRECTORY}/latex"
+			COMMENT "Running pdflatex to bootstrap ${INSTALL_PDF_NAME}"
+			DEPENDS	DOXYGEN_TARGET
+		)
+		add_custom_target(MAKEINDEX_FIRST_RUN
+			COMMAND /usr/bin/makeindex refman.idx > /dev/null 2> /dev/null
+		    WORKING_DIRECTORY "${OUTPUT_DIRECTORY}/latex"
+			COMMENT "Running makeindex to generate index"
+			DEPENDS	PDFLATEX_FIRST_RUN
+		)
+		add_custom_target(PDFLATEX_SECOND_RUN
+			COMMAND pdflatex refman > /dev/null
+			WORKING_DIRECTORY "${OUTPUT_DIRECTORY}/latex"
+			COMMENT "Running pdflatex a second time to update references to the index"
+			DEPENDS	MAKEINDEX_FIRST_RUN
+		)		
+		add_custom_target(PDFLATEX_RERUN_LOOP
+			COMMAND ${CMAKE_COMMAND} -P ${CMAKE_MODULE_PATH}/DoxygenPDFScript.cmake > /dev/null
+			WORKING_DIRECTORY "${OUTPUT_DIRECTORY}/latex"
+			COMMENT "Rerunning pdflatex until all references are resolved"
+			DEPENDS	PDFLATEX_SECOND_RUN
+		)
+		add_custom_target(MAKEINDEX_LAST_RUN
+			COMMAND /usr/bin/makeindex refman.idx > /dev/null 2> /dev/null
+			WORKING_DIRECTORY "${OUTPUT_DIRECTORY}/latex"
+			COMMENT "Running makeindex again to finish index"
+			DEPENDS	PDFLATEX_RERUN_LOOP
+		)
+		add_custom_target(PDFLATEX_LAST_RUN
+			COMMAND pdflatex refman > /dev/null
+			WORKING_DIRECTORY "${OUTPUT_DIRECTORY}/latex"
+			COMMENT "Running pdflatex to generate the final version of ${INSTALL_PDF_NAME}"
+			DEPENDS	MAKEINDEX_LAST_RUN
+		)
+		endif()
 endfunction()
