@@ -41,6 +41,24 @@ const char* parseException::what() const noexcept {
 	return os << parseException.what();
 }
 
+::std::ostream& operator<<(::std::ostream& os, const Dimension& dimension) {
+	return os << dimension.value << ":" << dimension.type;
+}
+::std::ostream& operator<<(::std::ostream& os, const DimensionType& dimensionType) {
+	switch (dimensionType) {
+		case DimensionType::UNKNOWN:
+			os << "DimensionType::UNKNOWN";
+			break;
+		case DimensionType::LENGTH:
+			os << "DimensionType::LENGTH";
+			break;
+		case DimensionType::PERCENTAGE:
+			os << "DimensionType::PERCENTAGE";
+			break;
+	}
+	return os;
+}
+
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

@@ -20,8 +20,11 @@
 #ifndef HTML_MICROSYNTAXES_NUMBERS_NUMBERSTYPES_HPP_
 #define HTML_MICROSYNTAXES_NUMBERS_NUMBERSTYPES_HPP_
 
+#include <algorithm>
+#include <cmath>
 #include <exception>
 #include <iostream>
+#include <limits>
 
 namespace HTML {
 namespace Microsyntaxes {
@@ -75,6 +78,7 @@ class parseException: std::exception {
  * @brief Represents the possible different types of a dimension value.
  */
 enum class DimensionType {
+	UNKNOWN, //!< Indicates that the type of the dimension value is unknown
 	PERCENTAGE, //!< Indicates that the dimension value is a percentage
 	LENGTH     //!< Indicates that the dimension value is a length
 };
@@ -82,17 +86,62 @@ enum class DimensionType {
  * @brief Holds a dimension value
  */
 struct Dimension {
+		Dimension(double value, DimensionType type) :
+				value(value), type(type) {
+		}
+
 		/**
 		 * @brief Holds the value for the dimension.
 		 */
-		double value;
+		double value = NAN;
 		/**
 		 * @brief Indicates whether the dimension is a percentage or a length.
 		 */
-		DimensionType type;
+		DimensionType type = DimensionType::UNKNOWN;
 };
+/**
+ * @brief Tests two Dimension objects for equality
+ * @param rhs The Dimension object on the right hand side of the comparison
+ * @param lhs The Dimension object on the left hand side of the comparison
+ * @return Returns @c true if both the value fields and the type fields of both objects are equal.
+ * 		   Otherwise, the function returns @c false.
+ */
+inline bool operator==(const Dimension& rhs, const Dimension& lhs) {
+	if (rhs.type != lhs.type) {
+		return false;
+	}
+	return std::fabs(rhs.value - lhs.value) <= (
+			std::numeric_limits<double>::epsilon() * (
+					std::max(std::fabs(rhs.value), std::fabs(lhs.value))
+					)
+			);
+}
 
+/**
+ * @brief Tests two Dimension objects for inequality
+ * @param rhs The Dimension object on the right hand side of the comparison
+ * @param lhs The Dimension object on the left hand side of the comparison
+ * @return Returns @c true if the value fields or the type fields of both objects are not equal.
+ * 		   Otherwise, the function returns @c false.
+ */
+inline bool operator!=(const Dimension& rhs, const Dimension& lhs) {
+	return !(rhs == lhs);
+}
+/**
+ * @brief Allows printing of Dimension objects to streams
+ * @param os Stream to write to
+ * @param dimension Dimension object to write
+ * @return Returns @c os
+ */
+::std::ostream& operator<<(::std::ostream& os, const Dimension& dimension);
 
+/**
+ * @brief Allows printing of DimensionType enum values to streams
+ * @param os Stream to write to
+ * @param dimensionType DimensionType enum value to write
+ * @return Returns @c os
+ */
+::std::ostream& operator<<(::std::ostream& os, const DimensionType& dimensionType);
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
