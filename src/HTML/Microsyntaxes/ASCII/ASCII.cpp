@@ -281,5 +281,17 @@ std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions) {
 	}
 	return stream;
 }
+
+const std::string& skipWhitespace(const std::string& string, size_t& position) {
+	for (; position < string.length(); position++) {
+		if (isWhitespace(string[position])) {
+			continue;
+		} else {
+			break;
+		}
+	}
+	return string;
+}
+
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

@@ -695,6 +695,16 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs);
  */
 std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions = false);
 
+/**
+ * @brief Skips whitespace
+ * @details Increments @c position until
+ * @param string String to be read
+ * @param position Position pointer
+ * @return Returns a reference to the original string
+ */
+const std::string& skipWhitespace(const std::string& string, size_t& position);
+
+
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
 
