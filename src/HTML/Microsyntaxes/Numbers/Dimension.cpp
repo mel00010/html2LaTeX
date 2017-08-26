@@ -20,18 +20,130 @@
 
 #include "Dimension.hpp"
 
-//#include <string>
+#include "SignedInteger.hpp"
+#include "NumbersTypes.hpp"
+#include "NumbersMisc.hpp"
+
+#include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
+
 
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
 bool isDimension(const std::string& string) {
-
+	return true;
 }
 
 Dimension parseDimension(const std::string& string) {
+	size_t position = 0;
 
+	Dimension dimension = Dimension(NAN, DimensionType::UNKNOWN);
+
+	skipWhitespace(string, position);
+
+	if (position > string.length()) {
+		throw parseException();
+	}
+
+	if (string[position] == '+') {
+		position++;
+	}
+
+	for (; position < string.length(); position++) {
+		if (string[position] != '0') {
+			break;
+		}
+	}
+
+	if (position > string.length()) {
+		throw parseException();
+	}
+
+	if (!isASCIIDigit(string[position])) {
+		throw parseException();
+	}
+
+	if (string[position] == '0') {
+		throw parseException();
+	}
+
+	std::string digits = "";
+	for (; position < string.length(); position++) {
+		if (isASCIIDigit(string[position])) {
+			digits += string[position];
+		} else {
+			break;
+		}
+	}
+
+	dimension.value = parseInteger(digits);
+
+	if (position > string.length()) {
+		dimension.type = DimensionType::LENGTH;
+		if (dimension.value >= 1) {
+			return dimension;
+		} else {
+			throw parseException();
+		}
+	}
+
+	if (string[position] == '.') {
+		position++;
+
+		if (position > string.length()) {
+			dimension.type = DimensionType::LENGTH;
+			if (dimension.value >= 1) {
+				return dimension;
+			} else {
+				throw parseException();
+			}
+
+		}
+
+		if (!isASCIIDigit(string[position])) {
+			dimension.type = DimensionType::LENGTH;
+			if (dimension.value >= 1) {
+				return dimension;
+			} else {
+				throw parseException();
+			}
+		}
+
+		size_t divisor = 1;
+
+		for (; position < string.length(); position++) {
+			if (!isASCIIDigit(string[position])) {
+				break;
+			}
+			divisor *= 10;
+			dimension.value += static_cast<double>(ASCIIDigitToInt(string[position])) / divisor;
+		}
+	}
+
+	if (position > string.length()) {
+		dimension.type = DimensionType::LENGTH;
+		if (dimension.value >= 1) {
+			return dimension;
+		} else {
+			throw parseException();
+		}
+	}
+	if (string[position] == '%') {
+		dimension.type = DimensionType::PERCENTAGE;
+		if (dimension.value >= 1) {
+			return dimension;
+		} else {
+			throw parseException();
+		}
+	}
+
+	dimension.type = DimensionType::LENGTH;
+	if (dimension.value >= 1) {
+		return dimension;
+	} else {
+		throw parseException();
+	}
 }
 
 
