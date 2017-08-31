@@ -691,7 +691,7 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs);
  * @exception std::istream::failure The input stream failed before a non whitespace character was found.
  *
  * @see isWhitespace(const char& character)
- * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, skipWhitespace)
+ * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, istream_skipWhitespace)
  */
 std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions = false);
 
@@ -701,6 +701,8 @@ std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions = fals
  * @param string String to be read
  * @param position Position pointer
  * @return Returns a reference to the original string
+ * @see isWhitespace(const char& character)
+ * @test HTML::Microsyntaxes::Microsyntaxes_Test::TEST(HTML_Microsyntaxes_ASCII, string_skipWhitespace)
  */
 const std::string& skipWhitespace(const std::string& string, size_t& position);
 
