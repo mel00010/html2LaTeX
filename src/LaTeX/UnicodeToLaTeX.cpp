@@ -23,20 +23,10 @@
 #include <iomanip>
 #include <sstream>
 
-//
-//#include <utility>
-//#include <sstream>
-//#include <iostream>
-//#include <string>
-//#include <locale>
-//#include <iomanip>
-//#include <gtest/gtest.h>
-
-
 namespace LaTeX {
 
-constexpr Item UnicodeToLaTeX::unicodeToLaTeX[];
-
+UnicodeToLaTeX::~UnicodeToLaTeX() {
+}
 
 const constexpr char* UnicodeToLaTeX::findValue(const char32_t key, int range) {
 	return
