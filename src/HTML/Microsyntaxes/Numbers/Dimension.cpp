@@ -32,7 +32,98 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 bool isDimension(const std::string& string) {
-	return true;
+	size_t position = 0;
+
+	if (position > string.length()) {
+		return false;
+	}
+
+	if (string[position] == '+') {
+		position++;
+	}
+
+	for (; position < string.length(); position++) {
+		if (string[position] != '0') {
+			break;
+		}
+	}
+
+	if (position >= string.length()) {
+		return false;
+	}
+
+	if (!ASCII::isASCIIDigit(string[position])) {
+		return false;
+	}
+
+	if (string[position] == '0') {
+		return false;
+	}
+
+	std::string digits = "";
+	for (; position < string.length(); position++) {
+		if (ASCII::isASCIIDigit(string[position])) {
+			digits += string[position];
+		} else {
+			break;
+		}
+	}
+
+	double value = parseInteger(digits);
+
+	if (position >= string.length()) {
+		if (value >= 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	if (string[position] == '.') {
+		position++;
+
+		if (position >= string.length()) {
+			if (value >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
+		if (!ASCII::isASCIIDigit(string[position])) {
+			return false;
+
+		}
+		for (; position < string.length(); position++) {
+			if (!ASCII::isASCIIDigit(string[position])) {
+				break;
+			}
+		}
+	}
+
+	if (position >= string.length()) {
+		if (value >= 1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	if (string[position] == '%') {
+		if (value >= 1) {
+			return true;
+		} else {
+			return false;
+		}
+
+	} else {
+		return false;
+	}
+	if (value >= 1) {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 Dimension parseDimension(const std::string& string) {
