@@ -327,7 +327,7 @@ Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallow
 	Byte buf = '\0';
 	try {
 		input.read(reinterpret_cast<char*>(&buf), 1);
-		while (Microsyntaxes::isWhitespace(buf) || (buf == '/')) {
+		while (Microsyntaxes::ASCII::isWhitespace(buf) || (buf == '/')) {
 			input.read(reinterpret_cast<char*>(&buf), 1);
 		}
 		if (buf == '>') {
@@ -339,8 +339,8 @@ Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallow
 					return attribute;
 				} else if ((buf == '/') || (buf == '>')) {
 					return attribute;
-				} else if (Microsyntaxes::isWhitespace(buf)) {
-					while (Microsyntaxes::isWhitespace(buf)) {
+				} else if (Microsyntaxes::ASCII::isWhitespace(buf)) {
+					while (Microsyntaxes::ASCII::isWhitespace(buf)) {
 						input.read(reinterpret_cast<char*>(&buf), 1);
 					}
 					if (buf != '=') {
@@ -350,7 +350,7 @@ Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallow
 						return attribute;
 					}
 				} else {
-					Byte result = Microsyntaxes::toLower(buf);
+					Byte result = Microsyntaxes::ASCII::toLower(buf);
 					attribute.name.append(reinterpret_cast<char*>(&result), 1);
 					input.read(reinterpret_cast<char*>(&buf), 1);
 				}
@@ -370,8 +370,8 @@ std::string DetermineCharEncoding::getAttributeValue(std::istream& input, Byte& 
 	std::string value = "";
 	try {
 		input.read(reinterpret_cast<char*>(&buf), 1);
-		if (Microsyntaxes::isWhitespace(buf)) {
-			Microsyntaxes::skipWhitespace(input);
+		if (Microsyntaxes::ASCII::isWhitespace(buf)) {
+			Microsyntaxes::ASCII::skipWhitespace(input);
 			input.read(reinterpret_cast<char*>(&buf), 1);
 		}
 		{
@@ -381,7 +381,7 @@ std::string DetermineCharEncoding::getAttributeValue(std::istream& input, Byte& 
 			} else if (buf == '>') {
 				return value;
 			} else {
-				Byte lowerCaseBuf = Microsyntaxes::toLower(buf);
+				Byte lowerCaseBuf = Microsyntaxes::ASCII::toLower(buf);
 				value.append(reinterpret_cast<char*>(&(lowerCaseBuf)), 1);
 				std::string result = processingLoop(input, buf, value);
 				return result;
@@ -401,7 +401,7 @@ std::string DetermineCharEncoding::processingLoop(std::istream& input, Byte& buf
 			if ((buf == '\t') || (buf == '\n') || (buf == '\f') || (buf == '\r') || (buf == '>')) {
 				return localValue;
 			} else {
-				Byte result = Microsyntaxes::toLower(buf);
+				Byte result = Microsyntaxes::ASCII::toLower(buf);
 				localValue.append(reinterpret_cast<char*>(&result), 1);
 			}
 		}
@@ -421,7 +421,7 @@ std::string DetermineCharEncoding::quoteLoop(std::istream& input, Byte& buf, std
 			if (buf == b) {
 				return localValue;
 			} else {
-				Byte result = Microsyntaxes::toLower(buf);
+				Byte result = Microsyntaxes::ASCII::toLower(buf);
 				localValue.append(reinterpret_cast<char*>(&result), 1);
 				input.read(reinterpret_cast<char*>(&buf), 1);
 
@@ -456,8 +456,8 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 				return encoding;
 			}
 			input.read(reinterpret_cast<char*>(&buf), 1);
-			if (Microsyntaxes::isWhitespace(buf)) {
-				Microsyntaxes::skipWhitespace(input);
+			if (Microsyntaxes::ASCII::isWhitespace(buf)) {
+				Microsyntaxes::ASCII::skipWhitespace(input);
 				input.read(reinterpret_cast<char*>(&buf), 1);
 			}
 			if (buf != '=') {
@@ -467,8 +467,8 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 			}
 		}
 		input.read(reinterpret_cast<char*>(&buf), 1);
-		if (Microsyntaxes::isWhitespace(buf)) {
-			Microsyntaxes::skipWhitespace(input);
+		if (Microsyntaxes::ASCII::isWhitespace(buf)) {
+			Microsyntaxes::ASCII::skipWhitespace(input);
 			input.read(reinterpret_cast<char*>(&buf), 1);
 		}
 

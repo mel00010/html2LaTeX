@@ -36,9 +36,9 @@ bool isInteger(const std::string& string) {
 	if (string.empty()) {
 		return false;
 	}
-	if (isASCIIDigits(string)) {
+	if (ASCII::isASCIIDigits(string)) {
 		return true;
-	} else if ((string[0] == '-') && (isASCIIDigits(string.substr(1)))) {
+	} else if ((string[0] == '-') && (ASCII::isASCIIDigits(string.substr(1)))) {
 		return true;
 	}
 	return false;
@@ -49,9 +49,9 @@ int parseInteger(const std::string& string) {
 	bool positive = true;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
-		if (isWhitespace(string[i]) && !started) {
+		if (ASCII::isWhitespace(string[i]) && !started) {
 			continue;
-		} else if (isASCIIDigit(string[i])) {
+		} else if (ASCII::isASCIIDigit(string[i])) {
 			started = true;
 			unsigned int digit = ASCIIDigitToInt(string[i]);
 			accumulated = accumulated * 10 + digit;

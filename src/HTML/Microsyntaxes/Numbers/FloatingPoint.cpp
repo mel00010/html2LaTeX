@@ -42,18 +42,18 @@ bool isFloatingPoint(const std::string& string) {
 		position++;
 	}
 	for (; position < string.length(); position++) {
-		if (!isASCIIDigit(string[position])) {
+		if (!ASCII::isASCIIDigit(string[position])) {
 			if (string[position] == '.') {
 				position++;
 				for (; position < string.length(); position++) {
-					if (!isASCIIDigit(string[position])) {
+					if (!ASCII::isASCIIDigit(string[position])) {
 						if ((string[position] == 'e') || (string[position] == 'E')) {
 							position++;
 							if (string[position] == '-') {
 								position++;
 							}
 							for (; position < string.length(); position++) {
-								if (!isASCIIDigit(string[position])) {
+								if (!ASCII::isASCIIDigit(string[position])) {
 									return false;
 								}
 							}
@@ -68,7 +68,7 @@ bool isFloatingPoint(const std::string& string) {
 					position++;
 				}
 				for (; position < string.length(); position++) {
-					if (!isASCIIDigit(string[position])) {
+					if (!ASCII::isASCIIDigit(string[position])) {
 						return false;
 					}
 				}
@@ -99,13 +99,13 @@ double exponentStep(const std::string& string, size_t& position, double& value, 
 			return value;
 		}
 	}
-	if (!isASCIIDigit(string[position])) {
+	if (!ASCII::isASCIIDigit(string[position])) {
 		throw parseException();
 	}
 
 	std::string digits = "";
 	for (; position < string.length(); position++) {
-		if (isASCIIDigit(string[position])) {
+		if (ASCII::isASCIIDigit(string[position])) {
 			digits += string[position];
 		} else {
 			throw parseException();
@@ -134,7 +134,7 @@ double fractionStep(const std::string& string, size_t& position, double& value, 
 	for (; position < string.length(); position++) {
 		divisor = divisor * 10;
 
-		if (!isASCIIDigit(string[position])) {
+		if (!ASCII::isASCIIDigit(string[position])) {
 			break;
 		}
 
@@ -165,7 +165,7 @@ double parseFloatingPoint(const std::string& string) {
 	double exponent = 1;
 
 	for (; position < string.length(); position++) {
-		if (isWhitespace(string[position])) {
+		if (ASCII::isWhitespace(string[position])) {
 			continue;
 		} else {
 			break;
@@ -181,18 +181,18 @@ double parseFloatingPoint(const std::string& string) {
 
 	if ((string[position] == '.')) {
 		value = 0;
-		if (isASCIIDigit(string[position + 1])) {
+		if (ASCII::isASCIIDigit(string[position + 1])) {
 			return fractionStep(string, position, value, divisor, exponent);
 		}
 		position++;
 	}
-	if (!isASCIIDigit(string[position])) {
+	if (!ASCII::isASCIIDigit(string[position])) {
 		throw(parseException("Unexpected non ASCII digit in floating point string!"));
 	}
 
 	std::string digits = "";
 	for (; position < string.length(); position++) {
-		if (isASCIIDigit(string[position])) {
+		if (ASCII::isASCIIDigit(string[position])) {
 			digits += string[position];
 		} else {
 			break;
@@ -213,7 +213,7 @@ double parseFloatingPoint(const std::string& string) {
 	if ((string[position] == 'e') || (string[position] == 'E')) {
 		return exponentStep(string, position, value, exponent);
 	}
-	if (!isASCIIDigit(string[position])) {
+	if (!ASCII::isASCIIDigit(string[position])) {
 		throw parseException();
 	}
 	return value;

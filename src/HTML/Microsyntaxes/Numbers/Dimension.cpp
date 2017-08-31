@@ -40,7 +40,7 @@ Dimension parseDimension(const std::string& string) {
 
 	Dimension dimension = Dimension(NAN, DimensionType::UNKNOWN);
 
-	skipWhitespace(string, position);
+	ASCII::skipWhitespace(string, position);
 
 	if (position > string.length()) {
 		throw parseException();
@@ -60,7 +60,7 @@ Dimension parseDimension(const std::string& string) {
 		throw parseException();
 	}
 
-	if (!isASCIIDigit(string[position])) {
+	if (!ASCII::isASCIIDigit(string[position])) {
 		throw parseException();
 	}
 
@@ -70,7 +70,7 @@ Dimension parseDimension(const std::string& string) {
 
 	std::string digits = "";
 	for (; position < string.length(); position++) {
-		if (isASCIIDigit(string[position])) {
+		if (ASCII::isASCIIDigit(string[position])) {
 			digits += string[position];
 		} else {
 			break;
@@ -101,7 +101,7 @@ Dimension parseDimension(const std::string& string) {
 
 		}
 
-		if (!isASCIIDigit(string[position])) {
+		if (!ASCII::isASCIIDigit(string[position])) {
 			dimension.type = DimensionType::LENGTH;
 			if (dimension.value >= 1) {
 				return dimension;
@@ -113,7 +113,7 @@ Dimension parseDimension(const std::string& string) {
 		size_t divisor = 1;
 
 		for (; position < string.length(); position++) {
-			if (!isASCIIDigit(string[position])) {
+			if (!ASCII::isASCIIDigit(string[position])) {
 				break;
 			}
 			divisor *= 10;

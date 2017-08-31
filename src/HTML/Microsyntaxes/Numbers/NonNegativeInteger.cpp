@@ -32,7 +32,7 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 bool isNonNegativeInteger(const std::string& string) {
-	if (!string.empty() && isASCIIDigits(string)) {
+	if (!string.empty() && ASCII::isASCIIDigits(string)) {
 		return true;
 	}
 	return false;
@@ -42,9 +42,9 @@ unsigned int parseNonNegativeInteger(const std::string& string) {
 	int accumulated = 0;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
-		if (isWhitespace(string[i]) && !started) {
+		if (ASCII::isWhitespace(string[i]) && !started) {
 			continue;
-		} else if (isASCIIDigit(string[i])) {
+		} else if (ASCII::isASCIIDigit(string[i])) {
 			started = true;
 			int digit = ASCIIDigitToInt(string[i]);
 			accumulated = accumulated * 10 + digit;

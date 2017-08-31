@@ -29,7 +29,7 @@
 
 namespace HTML {
 namespace Microsyntaxes {
-
+namespace ASCII {
 bool isWhitespace(const char& character) {
 	for (const char& i : ASCIIWhitespace) {
 		if (character == i) {
@@ -293,5 +293,6 @@ const std::string& skipWhitespace(const std::string& string, size_t& position) {
 	return string;
 }
 
+} /* namespace ASCII */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

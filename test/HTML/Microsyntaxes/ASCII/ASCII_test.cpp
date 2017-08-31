@@ -28,10 +28,7 @@
 
 namespace HTML {
 namespace Microsyntaxes {
-/**
- * @brief Holds all of the unit tests for the namespace HTML::Microsyntaxes
- */
-namespace Microsyntaxes_Test {
+namespace ASCII {
 
 TEST(HTML_Microsyntaxes_ASCII, isWhitespace) {
 	const char space = ' ';
@@ -404,7 +401,7 @@ TEST(HTML_Microsyntaxes_ASCII, string_skipWhitespace) {
 	}
 }
 
-} /* namespace Microsyntaxes_Test */
+} /* namespace ASCII */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */
 

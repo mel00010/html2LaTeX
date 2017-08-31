@@ -339,7 +339,7 @@ struct ASCIITag {
 				case FIRST:
 					return (const Byte**) (&first);
 				case SECOND:
-					return (const Byte**) (&Microsyntaxes::ASCIILetters);
+					return (const Byte**) (&Microsyntaxes::ASCII::ASCIILetters);
 			}
 			// Should be impossible for control to reach here.
 			return nullptr;
@@ -447,7 +447,7 @@ struct ASCIIEndTag {
 				case SECOND:
 					return (const Byte**) (&second);
 				case THIRD:
-					return (const Byte**) (&Microsyntaxes::ASCIILetters);
+					return (const Byte**) (&Microsyntaxes::ASCII::ASCIILetters);
 			}
 			// Should be impossible for control to reach here.
 			return nullptr;
