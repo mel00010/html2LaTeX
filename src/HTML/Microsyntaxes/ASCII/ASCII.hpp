@@ -25,6 +25,9 @@
 
 namespace HTML {
 namespace Microsyntaxes {
+/**
+ * @brief Holds functions related to parsing and manipulating ASCII text.
+ */
 namespace ASCII {
 /**
  * @brief An array containing all of the ASCII letters
