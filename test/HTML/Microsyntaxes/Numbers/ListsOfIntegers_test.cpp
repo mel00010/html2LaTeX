@@ -27,8 +27,27 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, isListOfIntegers) {
-
+	EXPECT_TRUE(isListOfIntegers("1,2,3,4,5,6,7,8,9,0"));
+	EXPECT_TRUE(isListOfIntegers("-1,-2,-3,-4,-5,-6,-7,-8,-9,0"));
+	EXPECT_TRUE(isListOfIntegers("-5,-4,-3,-2,-1,0,1,2,3,4,5"));
+	EXPECT_TRUE(isListOfIntegers("1"));
+	EXPECT_TRUE(isListOfIntegers("1,2"));
+	EXPECT_TRUE(isListOfIntegers("5,4,3,2,1"));
+	EXPECT_FALSE(isListOfIntegers("a"));
+	EXPECT_FALSE(isListOfIntegers("1,2, ,3,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1,2,3 ,4,54"));
+	EXPECT_FALSE(isListOfIntegers("1,2,_3,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1 2 3 4 5"));
+	EXPECT_FALSE(isListOfIntegers(","));
+	EXPECT_FALSE(isListOfIntegers(" "));
+	EXPECT_FALSE(isListOfIntegers(";"));
+	EXPECT_FALSE(isListOfIntegers("-"));
+	EXPECT_FALSE(isListOfIntegers("a,b,c,d"));
+	EXPECT_FALSE(isListOfIntegers("1,2,a,b,c,3"));
+	EXPECT_FALSE(isListOfIntegers("1,2,3,-,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1,2,3,4-,5"));
 }
+
 
 TEST(HTML_Microsyntaxes_Numbers_ListOfIntegers, parseListOfIntegers) {
 
