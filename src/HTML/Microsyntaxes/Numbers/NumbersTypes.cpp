@@ -55,6 +55,15 @@ const char* parseException::what() const noexcept {
 		case DimensionType::PERCENTAGE:
 			os << "DimensionType::PERCENTAGE";
 			break;
+		case DimensionType::RELATIVE:
+			os << "DimensionType::RELATIVE";
+			break;
+		case DimensionType::ABSOLUTE:
+			os << "DimensionType::ABSOLUTE";
+			break;
+		default:
+			os << "Error:  Value is not defined in enum DimensionType!";
+			break;
 	}
 	return os;
 }

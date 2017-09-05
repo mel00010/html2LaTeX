@@ -80,7 +80,9 @@ class parseException: std::exception {
 enum class DimensionType {
 	UNKNOWN, //!< Indicates that the type of the dimension value is unknown
 	PERCENTAGE, //!< Indicates that the dimension value is a percentage
-	LENGTH     //!< Indicates that the dimension value is a length
+	LENGTH,     //!< Indicates that the dimension value is a length
+	RELATIVE, //!< Indicates that the dimension value is relative
+	ABSOLUTE //!< Indicates that the dimension value is absolute
 };
 /**
  * @brief Holds a dimension value
