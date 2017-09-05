@@ -20,7 +20,13 @@
 #ifndef HTML_MICROSYNTAXES_DATES_WEEKS_HPP_
 #define HTML_MICROSYNTAXES_DATES_WEEKS_HPP_
 
+namespace HTML {
+namespace Microsyntaxes {
+namespace Dates {
 
+} /* namespace Dates */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 
 
 

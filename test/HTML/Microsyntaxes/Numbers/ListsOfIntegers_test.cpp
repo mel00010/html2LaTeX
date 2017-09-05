@@ -22,16 +22,57 @@
 
 #include <HTML/Microsyntaxes/Numbers/ListsOfIntegers.hpp>
 
+#include <HTML/Microsyntaxes/Numbers/NumbersTypes.hpp>
+
+#include <list>
+
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
 TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, isListOfIntegers) {
-
+	EXPECT_TRUE(isListOfIntegers("1,2,3,4,5,6,7,8,9,0"));
+	EXPECT_TRUE(isListOfIntegers("-1,-2,-3,-4,-5,-6,-7,-8,-9,0"));
+	EXPECT_TRUE(isListOfIntegers("-5,-4,-3,-2,-1,0,1,2,3,4,5"));
+	EXPECT_TRUE(isListOfIntegers("1"));
+	EXPECT_TRUE(isListOfIntegers("1,2"));
+	EXPECT_TRUE(isListOfIntegers("5,4,3,2,1"));
+	EXPECT_FALSE(isListOfIntegers("a"));
+	EXPECT_FALSE(isListOfIntegers("1,2, ,3,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1,2,3 ,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1,2, 3,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1 2 3 4 5"));
+	EXPECT_FALSE(isListOfIntegers(","));
+	EXPECT_FALSE(isListOfIntegers(" "));
+	EXPECT_FALSE(isListOfIntegers(";"));
+	EXPECT_FALSE(isListOfIntegers("-"));
+	EXPECT_FALSE(isListOfIntegers("a,b,c,d"));
+	EXPECT_FALSE(isListOfIntegers("1,2,a,b,c,3"));
+	EXPECT_FALSE(isListOfIntegers("1,2,3,-,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1,2,3,4-,5"));
 }
 
-TEST(HTML_Microsyntaxes_Numbers_ListOfIntegers, parseListOfIntegers) {
 
+TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, parseListOfIntegers) {
+	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }), parseListOfIntegers("1,2,3,4,5,6,7,8,9,0"));
+	EXPECT_EQ((std::list<int> { -1, -2, -3, -4, -5, -6, -7, -8, -9, 0 }), parseListOfIntegers("-1,-2,-3,-4,-5,-6,-7,-8,-9,0"));
+	EXPECT_EQ((std::list<int> { -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5 }), parseListOfIntegers("-5,-4,-3,-2,-1,0,1,2,3,4,5"));
+	EXPECT_EQ((std::list<int> { 1 }), parseListOfIntegers("1"));
+	EXPECT_EQ((std::list<int> { 1, 2 }), parseListOfIntegers("1,2"));
+	EXPECT_EQ((std::list<int> { 5, 4, 3, 2, 1 }), parseListOfIntegers("5,4,3,2,1"));
+	EXPECT_EQ((std::list<int> { }), parseListOfIntegers(","));
+	EXPECT_EQ((std::list<int> { }), parseListOfIntegers(" "));
+	EXPECT_EQ((std::list<int> { }), parseListOfIntegers(";"));
+	EXPECT_EQ((std::list<int> { }), parseListOfIntegers("a"));
+	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5 }), parseListOfIntegers("1,2, ,3,4,5"));
+	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5 }), parseListOfIntegers("1,2,3 ,4,5"));
+	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5 }), parseListOfIntegers("1,2, 3,4,5"));
+	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5 }), parseListOfIntegers("1 2 3 4 5"));
+	EXPECT_EQ((std::list<int> { }), parseListOfIntegers("-"));
+	EXPECT_EQ((std::list<int> { }), parseListOfIntegers("a,b,c,d"));
+	EXPECT_EQ((std::list<int> { 1, 2 }), parseListOfIntegers("1,2,a,b,c,3"));
+	EXPECT_EQ((std::list<int> { 1, 2, 3 }), parseListOfIntegers("1,2,3,-,4,5"));
+	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5 }), parseListOfIntegers("1,2,3,4-,5"));
 }
 
 } /* namespace Numbers */

@@ -31,6 +31,7 @@ namespace Numbers {
  * @param string String to test
  * @return Returns @c true if @c string represents a floating point number,
  * 		   @c false if it does not.
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_FloatingPoint, isFloatingPoint)
  */
 bool isFloatingPoint(const std::string& string);
 
@@ -38,6 +39,7 @@ bool isFloatingPoint(const std::string& string);
  * @brief Retrieves the floating point number contained in @c string.
  * @param string String to parse
  * @return Returns the floating point number contained in @c string.
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_FloatingPoint, parseFloatingPoint)
  */
 double parseFloatingPoint(const std::string& string);
 } /* namespace Numbers */

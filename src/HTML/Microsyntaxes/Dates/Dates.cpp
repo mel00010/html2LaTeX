@@ -18,5 +18,13 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+#include "Dates.hpp"
 
+namespace HTML {
+namespace Microsyntaxes {
+namespace Dates {
+
+} /* namespace Dates */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 

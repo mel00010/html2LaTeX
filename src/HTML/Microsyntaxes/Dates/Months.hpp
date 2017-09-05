@@ -20,8 +20,13 @@
 #ifndef HTML_MICROSYNTAXES_DATES_MONTHS_HPP_
 #define HTML_MICROSYNTAXES_DATES_MONTHS_HPP_
 
+namespace HTML {
+namespace Microsyntaxes {
+namespace Dates {
 
-
+} /* namespace Dates */
+} /* namespace Microsyntaxes */
+} /* namespace HTML */
 
 
 #endif /* HTML_MICROSYNTAXES_DATES_MONTHS_HPP_ */
