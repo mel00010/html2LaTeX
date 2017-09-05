@@ -32,6 +32,7 @@ namespace Numbers {
  * @param string String to test
  * @return Returns @c true if @c string represents a list of integers,
  * 		   @c false if it does not.
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_ListOfIntegers, isListOfIntegers)
  */
 bool isListOfIntegers(const std::string& string);
 
@@ -39,6 +40,7 @@ bool isListOfIntegers(const std::string& string);
  * @brief Retrieves the list of integers from @c string
  * @param string String to parse
  * @return Returns a std::list of integers retrieved from @c string.
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_ListOfIntegers, parseListOfIntegers)
  */
 std::list<int> parseListOfIntegers(const std::string& string);
 

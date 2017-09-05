@@ -33,6 +33,7 @@ namespace Numbers {
  * @param string String to test
  * @return Returns @c true if @c string represents a dimension,
  * 		   @c false if it does not.
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_Dimension, isDimension)
  */
 bool isDimension(const std::string& string);
 
@@ -41,6 +42,7 @@ bool isDimension(const std::string& string);
  * @param string String to parse
  * @return Returns a Dimension object containing the value contained
  * 		   in the string and whether it is a percentage or length.
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_Dimension, parseDimension)
  */
 Dimension parseDimension(const std::string& string);
 } /* namespace Numbers */
