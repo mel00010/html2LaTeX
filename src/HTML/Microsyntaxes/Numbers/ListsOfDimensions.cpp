@@ -36,7 +36,46 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 bool isListOfDimensions(const std::string& string) {
-	return false;
+	std::string str = (string[string.length() - 1] == ',') ? string.substr(0, string.length() - 1) : string;
+	if (str.empty()) {
+		return false;
+	}
+
+	boost::tokenizer<boost::char_separator<char>> raw_tokens(str, boost::char_separator<char>(","));
+	for (const auto& token : raw_tokens) {
+		size_t i = 0;
+		bool started = false;
+
+		for (; i < token.length(); i++) {
+			if (!ASCII::isASCIIDigit(token[i])) {
+				break;
+			}
+			started = true;
+		}
+
+		if (token[i] == '.') {
+			i++;
+			started = false;
+			for (; i < token.length(); i++) {
+				if (!ASCII::isASCIIDigit(token[i]) && token[i] != ' ') {
+					break;
+				}
+				started = true;
+			}
+		}
+
+		if (token[i] == '%' || token[i] == '*') {
+			i++;
+		}
+
+		if (!started) {
+			return false;
+		}
+		if (i < token.length()) {
+			return false;
+		}
+	}
+	return true;
 }
 
 std::list<Dimension> parseListOfDimensions(const std::string& string) {
