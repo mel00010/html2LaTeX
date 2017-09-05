@@ -53,7 +53,7 @@ TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, isListOfIntegers) {
 }
 
 
-TEST(HTML_Microsyntaxes_Numbers_ListOfIntegers, parseListOfIntegers) {
+TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, parseListOfIntegers) {
 	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }), parseListOfIntegers("1,2,3,4,5,6,7,8,9,0"));
 	EXPECT_EQ((std::list<int> { -1, -2, -3, -4, -5, -6, -7, -8, -9, 0 }), parseListOfIntegers("-1,-2,-3,-4,-5,-6,-7,-8,-9,0"));
 	EXPECT_EQ((std::list<int> { -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5 }), parseListOfIntegers("-5,-4,-3,-2,-1,0,1,2,3,4,5"));
