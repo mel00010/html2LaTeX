@@ -303,6 +303,17 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower) {
 	EXPECT_FALSE(isASCIIHexLower(falseCase));
 }
 
+TEST(HTML_Microsyntaxes_ASCII, isASCIINonAlphanumeric) {
+	for (const char& i : ASCIINonAlphanumeric) {
+		EXPECT_TRUE(isASCIINonAlphanumeric(i));
+	}
+	for (const char& i : ASCIIAlphanumeric) {
+		EXPECT_FALSE(isASCIINonAlphanumeric(i));
+	}
+	EXPECT_TRUE(isASCIINonAlphanumeric("\n \r\"'"));
+	EXPECT_FALSE(isASCIINonAlphanumeric("Alphanumeric0123456789"));
+}
+
 TEST(HTML_Microsyntaxes_ASCII, toUpper) {
 	EXPECT_EQ('A', toUpper('a'));
 	EXPECT_EQ('A', toUpper('A'));

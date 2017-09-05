@@ -249,8 +249,7 @@ constexpr char ASCIIHex[22] = {
 		'c',
 		'd',
 		'e',
-		'f',
-
+		'f'
 };
 
 /**
@@ -297,8 +296,81 @@ constexpr char ASCIIHexLower[16] = {
 		'd',
 		'e',
 		'f'
+
 };
 
+/**
+ * @brief An array holding all of the ASCII characters that are not alphanumeric.
+ * @showinitializer
+ */
+constexpr char ASCIINonAlphanumeric[66] = {
+		'\x00',
+		'\x01',
+		'\x02',
+		'\x03',
+		'\x04',
+		'\x05',
+		'\x06',
+		'\a',
+		'\b',
+		'\t',
+		'\n',
+		'\v',
+		'\f',
+		'\r',
+		'\x0E',
+		'\x0F',
+		'\x10',
+		'\x11',
+		'\x12',
+		'\x13',
+		'\x14',
+		'\x15',
+		'\x16',
+		'\x17',
+		'\x18',
+		'\x19',
+		'\x1A',
+		'\x1B',
+		'\x1C',
+		'\x1D',
+		'\x1E',
+		'\x1F',
+		' ',
+		'!',
+		'"',
+		'#',
+		'$',
+		'%',
+		'&',
+		'\'',
+		'(',
+		')',
+		'*',
+		'+',
+		',',
+		'-',
+		'.',
+		'/',
+		':',
+		';',
+		'<',
+		'=',
+		'>',
+		'?',
+		'@',
+		'[',
+		'\\',
+		']',
+		'^',
+		'_',
+		'`',
+		'{',
+		'|',
+		'}',
+		'~',
+		'\x7F'
+};
 /**
  * @brief An array containing all of the ASCII numerals
  * @showinitializer
@@ -335,10 +407,35 @@ constexpr char ASCIIWhitespace[5] = {
  * @showinitializer
  */
 constexpr char ASCII[128] = {
+		'\x00',
+		'\x01',
+		'\x02',
+		'\x03',
+		'\x04',
+		'\x05',
+		'\x06',
 		'\n',
 		'\t',
 		'\f',
 		'\r',
+		'\x0E',
+		'\x0F',
+		'\x10',
+		'\x11',
+		'\x12',
+		'\x13',
+		'\x14',
+		'\x15',
+		'\x16',
+		'\x17',
+		'\x18',
+		'\x19',
+		'\x1A',
+		'\x1B',
+		'\x1C',
+		'\x1D',
+		'\x1E',
+		'\x1F',
 		' ',
 		'!',
 		'"',
@@ -433,7 +530,8 @@ constexpr char ASCII[128] = {
 		'{',
 		'|',
 		'}',
-		'~'
+		'~',
+		'\x7F'
 };
 
 
@@ -619,6 +717,24 @@ bool isASCIIHexLower(const char& character);
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower)
  */
 bool isASCIIHexLower(const std::string& string);
+
+/**
+ * @brief Tests if a character is an ASCII non-alphanumeric character
+ * @param character Character to test
+ * @return  Returns @c true if the character is an ASCII non-alphanumeric character, @c false if it is not.
+ *
+ * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIINonAlphanumeric)
+ */
+bool isASCIINonAlphanumeric(const char& character);
+
+/**
+ * @brief Tests if a string consists of ASCII non-alphanumeric characters
+ * @param string String to test
+ * @return  Returns @c true if the string consists of ASCII non-alphanumeric characters, @c false if it does not.
+ *
+ * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIINonAlphanumeric)
+ */
+bool isASCIINonAlphanumeric(const std::string& string);
 
 /**
  * @brief Converts a character to its ASCII upper case equivalent

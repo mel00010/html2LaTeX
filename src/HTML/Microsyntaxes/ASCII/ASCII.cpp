@@ -205,6 +205,25 @@ bool isASCIIHexLower(const std::string& string) {
 	}
 	return true;
 }
+
+bool isASCIINonAlphanumeric(const char& character) {
+	for (const char& i : ASCIINonAlphanumeric) {
+		if (character == i) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool isASCIINonAlphanumeric(const std::string& string) {
+	for (const char& i : string) {
+		if (!isASCIINonAlphanumeric(i)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 char toUpper(const char& character) {
 	for (size_t i = 0; i < sizeof(ASCIILower); i++) {
 		if (character == ASCIILower[i]) {
