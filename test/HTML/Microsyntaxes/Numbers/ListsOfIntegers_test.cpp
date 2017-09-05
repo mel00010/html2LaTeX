@@ -21,6 +21,9 @@
 #include <gtest/gtest.h>
 
 #include <HTML/Microsyntaxes/Numbers/ListsOfIntegers.hpp>
+#include <HTML/Microsyntaxes/Numbers/NumbersTypes.hpp>
+
+#include <list>
 
 namespace HTML {
 namespace Microsyntaxes {
@@ -35,8 +38,8 @@ TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, isListOfIntegers) {
 	EXPECT_TRUE(isListOfIntegers("5,4,3,2,1"));
 	EXPECT_FALSE(isListOfIntegers("a"));
 	EXPECT_FALSE(isListOfIntegers("1,2, ,3,4,5"));
-	EXPECT_FALSE(isListOfIntegers("1,2,3 ,4,54"));
-	EXPECT_FALSE(isListOfIntegers("1,2,_3,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1,2,3 ,4,5"));
+	EXPECT_FALSE(isListOfIntegers("1,2, 3,4,5"));
 	EXPECT_FALSE(isListOfIntegers("1 2 3 4 5"));
 	EXPECT_FALSE(isListOfIntegers(","));
 	EXPECT_FALSE(isListOfIntegers(" "));
@@ -50,7 +53,25 @@ TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, isListOfIntegers) {
 
 
 TEST(HTML_Microsyntaxes_Numbers_ListOfIntegers, parseListOfIntegers) {
-
+	EXPECT_EQ((std::list<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 }), parseListOfIntegers("1,2,3,4,5,6,7,8,9,0"));
+	EXPECT_EQ((std::list<int> { -1, -2, -3, -4, -5, -6, -7, -8, -9, 0 }), parseListOfIntegers("-1,-2,-3,-4,-5,-6,-7,-8,-9,0"));
+	EXPECT_EQ((std::list<int> { -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5 }), parseListOfIntegers("-5,-4,-3,-2,-1,0,1,2,3,4,5"));
+	EXPECT_EQ((std::list<int> { 1 }), parseListOfIntegers("1"));
+	EXPECT_EQ((std::list<int> { 1, 2 }), parseListOfIntegers("1,2"));
+	EXPECT_EQ((std::list<int> { 5, 4, 3, 2, 1 }), parseListOfIntegers("5,4,3,2,1"));
+	EXPECT_THROW(parseListOfIntegers("a"), parseException);
+	EXPECT_THROW(parseListOfIntegers("1,2, ,3,4,5"), parseException);
+	EXPECT_THROW(parseListOfIntegers("1,2,3 ,4,5"), parseException);
+	EXPECT_THROW(parseListOfIntegers("1,2, 3,4,5"), parseException);
+	EXPECT_THROW(parseListOfIntegers("1 2 3 4 5"), parseException);
+	EXPECT_THROW(parseListOfIntegers(","), parseException);
+	EXPECT_THROW(parseListOfIntegers(" "), parseException);
+	EXPECT_THROW(parseListOfIntegers(";"), parseException);
+	EXPECT_THROW(parseListOfIntegers("-"), parseException);
+	EXPECT_THROW(parseListOfIntegers("a,b,c,d"), parseException);
+	EXPECT_THROW(parseListOfIntegers("1,2,a,b,c,3"), parseException);
+	EXPECT_THROW(parseListOfIntegers("1,2,3,-,4,5"), parseException);
+	EXPECT_THROW(parseListOfIntegers("1,2,3,4-,5"), parseException);
 }
 
 } /* namespace Numbers */
