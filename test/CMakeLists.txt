@@ -44,6 +44,8 @@ if(CMAKE_BUILD_TYPE STREQUAL "Coverage")
 		'${PROJECT_BINARY_DIR}/googletest-src/*'
 		'${PROJECT_BINARY_DIR}/googletest-build/*'
 		'/usr/include/c++/6/*'
+		'/usr/include/c++/7/*'
+		'/usr/local/include/boost/*'
 	)
 	setup_target_for_coverage(NAME coverage EXECUTABLE test/tests DEPENDENCIES tests)
 endif()
