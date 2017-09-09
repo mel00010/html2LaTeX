@@ -10,8 +10,3 @@ target_link_libraries(ascii
 	PUBLIC
 		htmltypes
 )
-#target_include_directories(ascii
-#	PUBLIC
-#		${CMAKE_CURRENT_SOURCE_DIR}
-#		${PROJECT_SOURCE_DIR}/src
-#)

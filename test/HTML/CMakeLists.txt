@@ -9,12 +9,14 @@ target_sources(html_test
 )
 target_link_libraries(html_test
 	INTERFACE
+		elements
+		elements_test
 		html
 		htmltypes
 		microsyntaxes_test
 		parse_test
 )
 
-
+add_subdirectory(Elements)
 add_subdirectory(Microsyntaxes)
 add_subdirectory(Parse)

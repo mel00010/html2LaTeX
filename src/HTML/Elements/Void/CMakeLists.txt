@@ -1,0 +1,38 @@
+add_library(void STATIC "")
+target_sources(void
+	PRIVATE
+		Area.cpp
+		Base.cpp
+		Br.cpp
+		Col.cpp
+		Embed.cpp
+		Hr.cpp
+		Img.cpp
+		Input.cpp
+		Keygen.cpp
+		Link.cpp
+		Meta.cpp
+		Param.cpp
+		Source.cpp
+		Track.cpp
+		Void.cpp
+		Wbr.cpp
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/Area.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Base.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Br.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Col.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Embed.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Hr.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Img.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Input.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Keygen.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Link.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Meta.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Param.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Source.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Track.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Void.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Wbr.hpp
+		
+)
