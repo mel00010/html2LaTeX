@@ -20,12 +20,46 @@
 #ifndef SRC_HTML_ELEMENTS_ELEMENT_HPP_
 #define SRC_HTML_ELEMENTS_ELEMENT_HPP_
 
+#include <string>
+#include <vector>
+
+#include <HTML/HTMLTypes.hpp>
+
 namespace HTML {
 namespace Elements {
 /**
  * Base class for all other element classes.
  */
 class Element {
+	public:
+		Element();
+		Element(Element* root, Element* parent, std::vector<Element*> children = { }, bool isText = false);
+		virtual ~Element();
+
+	public:
+		const Element* getRoot();
+		const Element* getParent();
+		const std::vector<Element*>& getChildren();
+
+		bool isText();
+		bool isRoot();
+		bool isInitialized();
+		bool hasChildren();
+
+		void makeRoot();
+
+		bool addChild(Element* element);
+		bool deleteChild(Element* element);
+
+		void setParent(Element* new_parent);
+		void setRoot(Element* new_root);
+
+	protected:
+		bool text = false;
+		Element* root = nullptr;
+		Element* parent = nullptr;
+		std::vector<Element*> children;
+
 };
 
 } /* namespace Elements */
