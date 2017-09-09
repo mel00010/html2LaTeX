@@ -29,8 +29,10 @@ Element::Element() :
 		root(nullptr), parent(nullptr) {
 }
 
-Element::Element(Element* root, Element* parent, std::vector<Element*> children, bool isText) :
-		text(isText), root(root), parent(parent), children(children) {
+Element::Element(Element* root, Element* parent,
+		std::vector<Element*> children,
+		std::vector<Attribute*> attributes, bool isText) :
+		text(isText), root(root), parent(parent), children(children), attributes(attributes) {
 }
 
 Element::~Element() {
@@ -49,6 +51,11 @@ const std::vector<Element*>& Element::getChildren() {
 	return children;
 }
 
+const std::vector<Attribute*>& Element::getAttributes() {
+	return attributes;
+}
+
+
 bool Element::isText() {
 	return text;
 }
@@ -64,6 +71,10 @@ bool Element::isInitialized() {
 
 bool Element::hasChildren() {
 	return !children.empty();
+}
+
+bool Element::hasAttributes() {
+	return !attributes.empty();
 }
 
 void Element::makeRoot() {
@@ -85,6 +96,23 @@ bool Element::deleteChild(Element* element) {
 		return false;
 	}
 	children.erase(it);
+	return true;
+}
+
+bool Element::addAttribute(Attribute* attribute) {
+	if (std::find(attributes.begin(), attributes.end(), attribute) != attributes.end()) {
+		return false;
+	}
+	attributes.push_back(attribute);
+	return true;
+}
+
+bool Element::deleteAttribute(Attribute* attribute) {
+	std::vector<Attribute*>::iterator it = std::find(attributes.begin(), attributes.end(), attribute);
+	if (it == attributes.end()) {
+		return false;
+	}
+	attributes.erase(it);
 	return true;
 }
 

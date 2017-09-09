@@ -33,23 +33,31 @@ namespace Elements {
 class Element {
 	public:
 		Element();
-		Element(Element* root, Element* parent, std::vector<Element*> children = { }, bool isText = false);
+		Element(Element* root, Element* parent,
+				std::vector<Element*> children = { },
+				std::vector<Attribute*> attributes = { },
+				bool isText = false);
 		virtual ~Element();
 
 	public:
 		const Element* getRoot();
 		const Element* getParent();
 		const std::vector<Element*>& getChildren();
+		const std::vector<Attribute*>& getAttributes();
 
 		bool isText();
 		bool isRoot();
 		bool isInitialized();
 		bool hasChildren();
+		bool hasAttributes();
 
 		void makeRoot();
 
 		bool addChild(Element* element);
 		bool deleteChild(Element* element);
+
+		bool addAttribute(Attribute* attribute);
+		bool deleteAttribute(Attribute* attribute);
 
 		void setParent(Element* new_parent);
 		void setRoot(Element* new_root);
@@ -59,6 +67,7 @@ class Element {
 		Element* root = nullptr;
 		Element* parent = nullptr;
 		std::vector<Element*> children;
+		std::vector<Attribute*> attributes;
 
 };
 

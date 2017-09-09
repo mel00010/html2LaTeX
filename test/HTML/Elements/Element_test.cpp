@@ -73,10 +73,24 @@ TEST(HTML_Elements_Element, getChildren) {
 	delete child2;
 	delete child1;
 }
+TEST(HTML_Elements_Element, getAttributes) {
+	Attribute* attribute1 = new Attribute();
+	Attribute* attribute2 = new Attribute();
+
+	Element* root = new Element(nullptr, nullptr,
+			std::vector<Element*>( { }),
+			std::vector<Attribute*>( { attribute1, attribute2 }));
+
+	EXPECT_EQ(std::vector<Attribute*>( { attribute1, attribute2 }), root->getAttributes());
+
+	delete root;
+	delete attribute2;
+	delete attribute1;
+}
 
 TEST(HTML_Elements_Element, isText) {
-	Element* trueCase = new Element(nullptr, nullptr, std::vector<Element*>( { }), true);
-	Element* falseCase = new Element(nullptr, nullptr, std::vector<Element*>( { }), false);
+	Element* trueCase = new Element(nullptr, nullptr, std::vector<Element*>( { }), std::vector<Attribute*>( { }), true);
+	Element* falseCase = new Element(nullptr, nullptr, std::vector<Element*>( { }), std::vector<Attribute*>( { }), false);
 
 	EXPECT_TRUE(trueCase->isText());
 	EXPECT_FALSE(falseCase->isText());
@@ -124,6 +138,27 @@ TEST(HTML_Elements_Element, hasChildren) {
 	delete child1;
 }
 
+TEST(HTML_Elements_Element, hasAttributes) {
+	Attribute* attribute1 = new Attribute();
+	Attribute* attribute2 = new Attribute();
+
+	Element* trueCase = new Element(nullptr, nullptr,
+			std::vector<Element*>( { }),
+			std::vector<Attribute*>( { attribute1, attribute2 }));
+	Element* falseCase = new Element(nullptr, nullptr,
+			std::vector<Element*>( { }),
+			std::vector<Attribute*>( { }));
+
+	EXPECT_TRUE(trueCase->hasAttributes());
+	EXPECT_FALSE(falseCase->hasAttributes());
+
+	delete falseCase;
+	delete trueCase;
+	delete attribute2;
+	delete attribute1;
+}
+
+
 TEST(HTML_Elements_Element, makeRoot) {
 	Element* root = new Element();
 
@@ -170,6 +205,42 @@ TEST(HTML_Elements_Element, deleteChild) {
 	delete root;
 	delete child2;
 	delete child1;
+}
+
+TEST(HTML_Elements_Element, addAttribute) {
+	Element* root = new Element();
+	Attribute* attribute1 = new Attribute();
+	Attribute* attribute2 = new Attribute();
+
+	EXPECT_EQ(std::vector<Attribute*>( { }), root->getAttributes());
+	EXPECT_TRUE(root->addAttribute(attribute1));
+	EXPECT_EQ(std::vector<Attribute*>( { attribute1 }), root->getAttributes());
+	EXPECT_TRUE(root->addAttribute(attribute2));
+	EXPECT_EQ(std::vector<Attribute*>( { attribute1, attribute2 }), root->getAttributes());
+	EXPECT_FALSE(root->addAttribute(attribute1));
+	EXPECT_EQ(std::vector<Attribute*>( { attribute1, attribute2 }), root->getAttributes());
+
+	delete attribute2;
+	delete attribute1;
+	delete root;
+}
+TEST(HTML_Elements_Element, deleteAttribute) {
+	Attribute* attribute1 = new Attribute();
+	Attribute* attribute2 = new Attribute();
+	Element* root = new Element(nullptr, nullptr,
+			std::vector<Element*>( { }),
+			std::vector<Attribute*>( { attribute1, attribute2 }));
+
+	EXPECT_EQ(std::vector<Attribute*>( { attribute1, attribute2 }), root->getAttributes());
+	EXPECT_TRUE(root->deleteAttribute(attribute2));
+	EXPECT_EQ(std::vector<Attribute*>( { attribute1 }), root->getAttributes());
+	EXPECT_TRUE(root->deleteAttribute(attribute1));
+	EXPECT_EQ(std::vector<Attribute*>( { }), root->getAttributes());
+	EXPECT_FALSE(root->deleteAttribute(attribute1));
+
+	delete root;
+	delete attribute2;
+	delete attribute1;
 }
 
 TEST(HTML_Elements_Element, setParent) {
