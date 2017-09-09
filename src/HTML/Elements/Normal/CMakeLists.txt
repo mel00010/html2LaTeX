@@ -181,3 +181,7 @@ target_sources(normal
 		${CMAKE_CURRENT_SOURCE_DIR}/Var.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Video.hpp
 )
+target_link_libraries(normal
+	PUBLIC
+		htmltypes
+)

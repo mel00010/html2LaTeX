@@ -4,12 +4,9 @@ target_sources(html
 	PRIVATE
 		HTMLTree.cpp
 		HTMLTreeInterface.cpp
-		HTMLTreeElement.cpp
-		HTMLTreeElementInterface.cpp
+		HTMLTypes.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTree.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeElement.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeElementInterface.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeInterface.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTypes.hpp
 )

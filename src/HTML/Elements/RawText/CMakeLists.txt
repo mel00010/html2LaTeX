@@ -9,3 +9,7 @@ target_sources(rawtext
 		${CMAKE_CURRENT_SOURCE_DIR}/Script.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Style.hpp
 )
+target_link_libraries(rawtext
+	PUBLIC
+		htmltypes
+)

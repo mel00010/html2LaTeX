@@ -3,7 +3,6 @@ add_library(html_test INTERFACE)
 target_sources(html_test
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTree_test.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeElement_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeInterface_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTypes_test.cpp
 )

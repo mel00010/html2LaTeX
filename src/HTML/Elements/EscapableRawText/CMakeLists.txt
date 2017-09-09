@@ -9,3 +9,7 @@ target_sources(escapablerawtext
 		${CMAKE_CURRENT_SOURCE_DIR}/TextArea.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Title.hpp
 )
+target_link_libraries(escapablerawtext
+	PUBLIC
+		htmltypes
+)

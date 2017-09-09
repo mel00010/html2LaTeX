@@ -36,3 +36,7 @@ target_sources(void
 		${CMAKE_CURRENT_SOURCE_DIR}/Wbr.hpp
 		
 )
+target_link_libraries(void
+	PUBLIC
+		htmltypes
+)

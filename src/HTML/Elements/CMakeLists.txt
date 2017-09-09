@@ -9,6 +9,7 @@ target_link_libraries(elements
 	PUBLIC
 		escapablerawtext
 		foreign
+		htmltypes
 		normal
 		rawtext
 		void
