@@ -9,4 +9,9 @@ target_sources(parse_test
 target_link_libraries(parse_test
 	INTERFACE
 		parse
+		tokenization_test
+		treeconstruction_test
 )
+
+add_subdirectory(Tokenization)
+add_subdirectory(TreeConstruction)

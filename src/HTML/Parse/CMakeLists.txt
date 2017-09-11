@@ -12,11 +12,15 @@ target_sources(parse
 )
 target_link_libraries(parse
 	PUBLIC
-		htmltypes
 		ascii
+		htmltypes
+		tokenization
+		treeconstruction
 )
 #target_include_directories(parse
 #	PUBLIC
 #		${CMAKE_CURRENT_SOURCE_DIR}
 #		${PROJECT_SOURCE_DIR}/src
 #)
+add_subdirectory(Tokenization)
+add_subdirectory(TreeConstruction)
