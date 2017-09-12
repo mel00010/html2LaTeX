@@ -95,7 +95,6 @@ void DOCTYPESystemIdentifierSingleQuotedState(StateData& data);
 void afterDOCTYPESystemIdentifierState(StateData& data);
 void bogusDOCTYPEState(StateData& data);
 void CDATASectionState(StateData& data);
-//void tokenizingCharacterReferences(StateData& data);
 
 } /* namespace States */
 } /* namespace Tokenization */

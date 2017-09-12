@@ -353,12 +353,8 @@ void CDATASectionState(StateData& data) {
 
 }
 
-//void tokenizingCharacterReferences(StateData& data) {
-//
-//}
 
-} /* name#include "TokenizationTypes.hpp"
- space States */
+} /* namespace States */
 } /* namespace Tokenization */
 } /* namespace Parse */
 } /* namespace HTML */
