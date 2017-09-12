@@ -27,7 +27,7 @@
 
 
 /**
- * @file main.cpp
+ * @file src/main.cpp
  * @brief The main file of html2LaTeX
  */
 /**
