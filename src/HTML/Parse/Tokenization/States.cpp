@@ -34,7 +34,7 @@ void dataState(StateData& data) {
 
 	if (data.pos >= data.string.length()) {
 		token.type = TokenType::CHARACTER;
-		token.data = data.string[data.pos];
+		token.character_token.data = data.string[data.pos];
 		data.tokens.push_back(token);
 		data.pos++;
 		return;
@@ -50,14 +50,14 @@ void dataState(StateData& data) {
 			break;
 		case '\0':
 			token.type = TokenType::CHARACTER;
-			token.data = data.string[data.pos];
+			token.character_token.data = data.string[data.pos];
 			data.tokens.push_back(token);
 			data.pos++;
 			break;
 
 		default:
 			token.type = TokenType::CHARACTER;
-			token.data = data.string[data.pos];
+			token.character_token.data = data.string[data.pos];
 			data.tokens.push_back(token);
 			data.pos++;
 			break;
@@ -73,7 +73,7 @@ void RCDATAState(StateData& data) {
 	Token token;
 	if (data.pos >= data.string.length()) {
 		token.type = TokenType::CHARACTER;
-		token.data = data.string[data.pos];
+		token.character_token.data = data.string[data.pos];
 		data.tokens.push_back(token);
 		data.pos++;
 		return;
@@ -89,14 +89,14 @@ void RCDATAState(StateData& data) {
 			break;
 		case '\0':
 			token.type = TokenType::CHARACTER;
-			token.data = data.string[data.pos];
+			token.character_token.data = data.string[data.pos];
 			data.tokens.push_back(token);
 			data.pos++;
 			break;
 
 		default:
 			token.type = TokenType::CHARACTER;
-			token.data = data.string[data.pos];
+			token.character_token.data = data.string[data.pos];
 			data.tokens.push_back(token);
 			data.pos++;
 			break;

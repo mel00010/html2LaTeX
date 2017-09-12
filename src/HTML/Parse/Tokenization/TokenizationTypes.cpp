@@ -20,6 +20,9 @@
 
 #include "TokenizationTypes.hpp"
 
+#include <boost/io/ios_state.hpp>
+#include <cstdlib>
+#include <iomanip>
 #include <iostream>
 
 namespace HTML {
@@ -80,12 +83,27 @@ namespace Tokenization {
 	return os;
 }
 
-::std::ostream& operator<<(::std::ostream& os, const Token& token) {
+::std::ostream& operator<<(::std::ostream& os, const CharacterToken& characterToken) {
+	os << "char32_t data = ";
 
+	boost::io::ios_all_saver ias(os);
+
+	os.setf(os.hex, os.basefield);
+	os.setf(os.right, os.adjustfield);
+	os.fill('0');
+
+	os << "U+" << std::setw(8) << (unsigned long) characterToken.data;
+
+	ias.restore();
+	return os;
+}
+
+
+::std::ostream& operator<<(::std::ostream& os, const Token& token) {
 	os << "TokenType type = " << token.type << "\n";
 	os << "DOCTYPEToken doctype_token = " << token.doctype_token << "\n";
 	os << "TagToken tag_token = " << token.tag_token << "\n";
-	os << "char data = " << token.data;
+	os << "CharacterToken character_token = " << token.character_token;
 	return os;
 }
 

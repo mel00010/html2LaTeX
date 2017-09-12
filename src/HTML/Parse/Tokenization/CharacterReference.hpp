@@ -20,6 +20,18 @@
 #ifndef SRC_HTML_PARSE_TOKENIZATION_CHARACTERREFERENCE_HPP_
 #define SRC_HTML_PARSE_TOKENIZATION_CHARACTERREFERENCE_HPP_
 
+#include "TokenizationTypes.hpp"
+
+namespace HTML {
+namespace Parse {
+namespace Tokenization {
+
+Token consumeCharacterReference(StateData& data);
+Token consumeCharacterReference(StateData& data, const char& additional_allowed_character);
+
+} /* namespace Tokenization */
+} /* namespace Parse */
+} /* namespace HTML */
 
 
 

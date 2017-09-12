@@ -58,11 +58,17 @@ struct TagToken {
 };
 ::std::ostream& operator<<(::std::ostream& os, const TagToken& tagToken);
 
+struct CharacterToken {
+		char32_t data;
+};
+::std::ostream& operator<<(::std::ostream& os, const CharacterToken& characterToken);
+
 struct Token {
 		TokenType type;
 		DOCTYPEToken doctype_token;
 		TagToken tag_token;
-		char data;
+		CharacterToken character_token;
+		bool empty = true;
 };
 ::std::ostream& operator<<(::std::ostream& os, const Token& token);
 
@@ -141,6 +147,7 @@ struct StateData {
 		STATES state = STATES::DATA;
 		std::string string = "";
 		size_t pos = 0;
+		char buf = '\0';
 		bool parser_pause_flag = false;
 		size_t script_nesting_level = 0;
 		std::list<Token> tokens;

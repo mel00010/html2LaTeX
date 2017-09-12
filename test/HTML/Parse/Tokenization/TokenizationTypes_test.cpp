@@ -40,6 +40,10 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TagTokenStreamWrite) {
 
 }
 
+TEST(HTML_Parse_Tokenization_TokenizationTypes, CharacterTokenStreamWrite) {
+
+}
+
 TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 }

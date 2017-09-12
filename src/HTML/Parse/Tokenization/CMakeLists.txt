@@ -14,5 +14,6 @@ target_sources(tokenization
 target_link_libraries(tokenization
 	PUBLIC
 		ascii
+		numbers
 		htmltypes	
 )
