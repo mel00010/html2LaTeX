@@ -34,6 +34,8 @@ namespace Numbers {
  */
 unsigned int ASCIIDigitToInt(const char& digit);
 
+unsigned int ASCIIHexDigitToInt(const char& digit);
+
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

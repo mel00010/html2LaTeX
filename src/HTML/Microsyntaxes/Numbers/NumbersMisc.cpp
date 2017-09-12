@@ -64,6 +64,68 @@ unsigned int ASCIIDigitToInt(const char& digit) {
 	}
 	return returned;
 }
+unsigned int ASCIIHexDigitToInt(const char& digit) {
+	int returned = 0x0;
+	switch (digit) {
+		case '0':
+			returned = 0x0;
+			break;
+		case '1':
+			returned = 0x1;
+			break;
+		case '2':
+			returned = 0x2;
+			break;
+		case '3':
+			returned = 0x3;
+			break;
+		case '4':
+			returned = 0x4;
+			break;
+		case '5':
+			returned = 0x5;
+			break;
+		case '6':
+			returned = 0x6;
+			break;
+		case '7':
+			returned = 0x7;
+			break;
+		case '8':
+			returned = 0x8;
+			break;
+		case '9':
+			returned = 0x9;
+			break;
+		case 'a':
+		case 'A':
+			returned = 0xA;
+			break;
+		case 'b':
+		case 'B':
+			returned = 0xB;
+			break;
+		case 'c':
+		case 'C':
+			returned = 0xC;
+			break;
+		case 'd':
+		case 'D':
+			returned = 0xD;
+			break;
+		case 'e':
+		case 'E':
+			returned = 0xE;
+			break;
+		case 'f':
+		case 'F':
+			returned = 0xF;
+			break;
+		default:
+			throw parseException();
+	}
+	return returned;
+}
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

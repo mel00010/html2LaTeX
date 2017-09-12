@@ -37,9 +37,15 @@ bool isNonNegativeInteger(const std::string& string) {
 	}
 	return false;
 }
+bool isNonNegativeHexInteger(const std::string& string) {
+	if (!string.empty() && ASCII::isASCIIHex(string)) {
+		return true;
+	}
+	return false;
+}
 
 unsigned int parseNonNegativeInteger(const std::string& string) {
-	int accumulated = 0;
+	unsigned int accumulated = 0;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
 		if (ASCII::isWhitespace(string[i]) && !started) {
@@ -60,7 +66,27 @@ unsigned int parseNonNegativeInteger(const std::string& string) {
 	return accumulated;
 }
 
-
+unsigned long parseNonNegativeHexInteger(const std::string& string) {
+	unsigned long accumulated = 0;
+	bool started = false;
+	for (size_t i = 0; i < string.length(); i++) {
+		if (ASCII::isWhitespace(string[i]) && !started) {
+			continue;
+		} else if (ASCII::isASCIIHex(string[i])) {
+			started = true;
+			int digit = ASCIIHexDigitToInt(string[i]);
+			accumulated = accumulated * 0x10 + digit;
+		} else if (started) {
+			break;
+		} else {
+			throw parseException();
+		}
+	}
+	if (!started) {
+		throw parseException();
+	}
+	return accumulated;
+}
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

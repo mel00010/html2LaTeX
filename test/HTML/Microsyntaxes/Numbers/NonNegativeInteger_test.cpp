@@ -36,6 +36,15 @@ TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, isNonNegativeInteger) {
 	EXPECT_FALSE(isNonNegativeInteger(std::string("0a123456789")));
 	EXPECT_FALSE(isNonNegativeInteger(std::string("")));
 }
+TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, isNonNegativeHexInteger) {
+	EXPECT_TRUE(isNonNegativeHexInteger(std::string("0123456789abcdefABCDEF")));
+	EXPECT_FALSE(isNonNegativeHexInteger(std::string("-0123456789")));
+	EXPECT_FALSE(isNonNegativeHexInteger(std::string("Not An Integer")));
+	EXPECT_FALSE(isNonNegativeHexInteger(std::string("0-123456789")));
+	EXPECT_FALSE(isNonNegativeHexInteger(std::string("0 123456789")));
+	EXPECT_FALSE(isNonNegativeHexInteger(std::string("")));
+}
+
 
 TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeInteger) {
 	EXPECT_EQ(123456789u, parseNonNegativeInteger(std::string("   0123456789")));
@@ -48,6 +57,18 @@ TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeInteger) {
 	EXPECT_THROW(parseNonNegativeInteger(std::string("-0123456789")), parseException);
 	EXPECT_THROW(parseNonNegativeInteger(std::string("Not an integer")), parseException);
 	EXPECT_THROW(parseNonNegativeInteger(std::string("")), parseException);
+}
+TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeHexInteger) {
+	EXPECT_EQ(0x123456789u, parseNonNegativeHexInteger(std::string("   0123456789")));
+	EXPECT_EQ(0x123456789ABCDEFu, parseNonNegativeHexInteger(std::string("0123456789ABCDEF   ")));
+	EXPECT_EQ(0x123456789ABCDEFu, parseNonNegativeHexInteger(std::string("0123456789abcdef")));
+
+	EXPECT_EQ(0x123u, parseNonNegativeHexInteger(std::string("0123 4567 89 a b c d e f")));
+	EXPECT_EQ(0x0u, parseNonNegativeHexInteger(std::string("0-123456789abcdefABCDEF")));
+
+	EXPECT_THROW(parseNonNegativeHexInteger(std::string("-0123456789abcdefABCDEF")), parseException);
+	EXPECT_THROW(parseNonNegativeHexInteger(std::string("Not an integer")), parseException);
+	EXPECT_THROW(parseNonNegativeHexInteger(std::string("")), parseException);
 }
 
 } /* namespace Numbers */

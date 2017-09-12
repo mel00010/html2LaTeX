@@ -36,14 +36,33 @@ namespace Numbers {
 bool isNonNegativeInteger(const std::string& string);
 
 /**
+ * @brief Tests if a string represents a valid hexadecimal non-negative integer
+ * @param string String to test
+ * @return Returns @c true if @c string represents a hexadecimal non-negative integer, @c false if it does not.
+ *
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, isNonNegativeHexInteger)
+ */
+bool isNonNegativeHexInteger(const std::string& string);
+
+/**
  * @brief Retrieves the non-negative integer a std::string holds
  * @param string String to parse
- * @return Returns the non-negative the string holds.
+ * @return Returns the non-negative integer the string holds.
  * @exception parseException The algorithm failed to parse @c string.
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeInteger)
  */
 unsigned int parseNonNegativeInteger(const std::string& string);
+
+/**
+ * @brief Retrieves the hexadecimal non-negative integer a std::string holds
+ * @param string String to parse
+ * @return Returns the non-negative hexadecimal integer the string holds.
+ * @exception parseException The algorithm failed to parse @c string.
+ *
+ * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeHexInteger)
+ */
+unsigned long parseNonNegativeHexInteger(const std::string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
