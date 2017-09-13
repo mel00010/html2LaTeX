@@ -324,7 +324,7 @@
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1445959962;cdt.managedbuild.config.gnu.exe.debug.1445959962.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1088334272;cdt.managedbuild.tool.gnu.c.compiler.input.1231053059">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.release.910820146;cdt.managedbuild.config.gnu.exe.release.910820146.;cdt.managedbuild.tool.gnu.c.compiler.exe.release.292006123;cdt.managedbuild.tool.gnu.c.compiler.input.143773010">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
@@ -345,7 +345,7 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1445959962;cdt.managedbuild.config.gnu.exe.debug.1445959962.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.924302449;cdt.managedbuild.tool.gnu.cpp.compiler.input.1545515661">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
+			<autodiscovery enabled="false" problemReportingEnabled="true" selectedProfileId="org.eclipse.cdt.make.core.GCCStandardMakePerFileProfile"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.1445959962.1209932023;cdt.managedbuild.config.gnu.exe.debug.1445959962.1209932023.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1035382727;cdt.managedbuild.tool.gnu.cpp.compiler.input.1931147992">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
