@@ -4,10 +4,13 @@ target_sources(tokenization
 		CharacterReference.cpp
 		States.cpp
 		Tokenize.cpp
+		TokenizationMisc.cpp
+		TokenizationTypes.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/CharacterReference.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/States.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Tokenize.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/TokenizationMisc.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TokenizationTypes.hpp
 		
 )

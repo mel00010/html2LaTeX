@@ -44,8 +44,8 @@ bool isNonNegativeHexInteger(const std::string& string) {
 	return false;
 }
 
-unsigned int parseNonNegativeInteger(const std::string& string) {
-	unsigned int accumulated = 0;
+unsigned long parseNonNegativeInteger(const std::string& string) {
+	unsigned long accumulated = 0;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
 		if (ASCII::isWhitespace(string[i]) && !started) {

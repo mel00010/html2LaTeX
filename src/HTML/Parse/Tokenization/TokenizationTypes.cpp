@@ -24,13 +24,62 @@
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <string>
 
 namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-::std::ostream& operator<<(::std::ostream& os, const TokenType& tokenType) {
-	switch (tokenType) {
+::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token) {
+	os << "std::string name = " << ((doctype_token.name == "\0xFF") ? "\\(EOF)" : doctype_token.name) << "\n";
+	os << "std::string public_identifier = ";
+	os << ((doctype_token.public_identifier == "\0xFF") ? "\\(EOF)" : doctype_token.public_identifier) << "\n";
+	os << "std::string system_identifier = ";
+	os << ((doctype_token.system_identifier == "\0xFF") ? "\\(EOF)" : doctype_token.system_identifier) << "\n";
+	os << "bool force_quirks = " << doctype_token.force_quirks;
+	return os;
+}
+
+::std::ostream& operator<<(::std::ostream& os, const TagToken& tag_token) {
+	os << "std::string tag_name = " << tag_token.tag_name << "\n";
+	os << "bool self_closing = " << tag_token.self_closing << "\n";
+	os << "std::list<Attribute> attributes = ";
+	for (auto v : tag_token.attributes) {
+		os << v;
+	}
+	return os;
+}
+
+::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token) {
+	os << "char32_t data = ";
+
+	boost::io::ios_all_saver ias(os);
+
+	os.setf(os.hex, os.basefield);
+	os.setf(os.right, os.adjustfield);
+	os.fill('0');
+
+	os << "U+" << std::setw(8) << (unsigned long) character_token.data;
+
+	ias.restore();
+	return os;
+}
+
+::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token) {
+	return os << "std::string data = " << comment_token.data;
+}
+
+::std::ostream& operator<<(::std::ostream& os, const EOFToken& eof_token) {
+	return os << "\\(EOF)";
+}
+
+::std::ostream& operator<<(::std::ostream& os, const Token& token) {
+	os << "TokenType type = " << token.type << "\n";
+	return os;
+}
+
+::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type) {
+	switch (token_type) {
 		case TokenType::DOCTYPE:
 			os << "TokenType::DOCTYPE";
 			break;
@@ -50,62 +99,12 @@ namespace Tokenization {
 			os << "TokenType::END_OF_FILE";
 			break;
 		default:
-			os << "Error:  Unknown TokenType!";
+			os << "Error: Unknown TokenType!";
 			break;
 	}
 	return os;
 }
 
-::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctypeToken) {
-	struct DOCTYPEToken {
-			std::string name = "";
-			std::string public_identifier = "";
-			std::string system_identifier = "";
-			bool name_missing = true;
-			bool public_identifier_missing = true;
-			bool system_identifier_missing = true;
-			bool force_quirks = false;
-	};
-	os << "std::string name = " << doctypeToken.name << "\n";
-	os << "std::string public_identifier = " << doctypeToken.public_identifier << "\n";
-	os << "std::string system_identifier = " << doctypeToken.system_identifier << "\n";
-	os << "bool name_missing = " << doctypeToken.name_missing << "\n";
-	os << "bool public_identifier_missing = " << doctypeToken.public_identifier_missing << "\n";
-	os << "bool system_identifier_missing = " << doctypeToken.system_identifier_missing << "\n";
-	os << "bool force_quirks = " << doctypeToken.force_quirks;
-	return os;
-}
-
-::std::ostream& operator<<(::std::ostream& os, const TagToken& tagToken) {
-	os << "std::string tag_name = " << tagToken.tag_name << "\n";
-	os << "bool self_closing = " << tagToken.self_closing << "\n";
-	os << "std::list<Attribute> attributes = " << tagToken.attributes;
-	return os;
-}
-
-::std::ostream& operator<<(::std::ostream& os, const CharacterToken& characterToken) {
-	os << "char32_t data = ";
-
-	boost::io::ios_all_saver ias(os);
-
-	os.setf(os.hex, os.basefield);
-	os.setf(os.right, os.adjustfield);
-	os.fill('0');
-
-	os << "U+" << std::setw(8) << (unsigned long) characterToken.data;
-
-	ias.restore();
-	return os;
-}
-
-
-::std::ostream& operator<<(::std::ostream& os, const Token& token) {
-	os << "TokenType type = " << token.type << "\n";
-	os << "DOCTYPEToken doctype_token = " << token.doctype_token << "\n";
-	os << "TagToken tag_token = " << token.tag_token << "\n";
-	os << "CharacterToken character_token = " << token.character_token;
-	return os;
-}
 
 ::std::ostream& operator<<(::std::ostream& os, const STATES& state) {
 	switch (state) {
@@ -314,13 +313,16 @@ namespace Tokenization {
 	return os;
 }
 
-::std::ostream& operator<<(::std::ostream& os, const StateData& stateData) {
-	os << "STATES state = " << stateData.state << "\n";
-	os << "std::string string = " << stateData.string << "\n";
-	os << "size_t pos = " << stateData.pos << "\n";
-	os << "bool parse_pause_flag = " << stateData.parser_pause_flag << "\n"
-	os << "size_t script_nesting_level = " << stateData.script_nesting_level << "\n";
-	os << "std::list<Token> tokens = " << stateData.tokens;
+::std::ostream& operator<<(::std::ostream& os, const StateData& state_data) {
+	os << "STATES state = " << state_data.state << "\n";
+	os << "std::string string = " << state_data.string << "\n";
+	os << "size_t pos = " << state_data.pos << "\n";
+	os << "bool parse_pause_flag = " << state_data.parser_pause_flag << "\n";
+	os << "size_t script_nesting_level = " << state_data.script_nesting_level << "\n";
+	os << "std::list<Token> tokens = ";
+	for (auto v : state_data.tokens) {
+		os << v;
+	}
 	return os;
 }
 

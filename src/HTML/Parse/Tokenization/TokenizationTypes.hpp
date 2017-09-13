@@ -21,14 +21,51 @@
 #define SRC_HTML_PARSE_TOKENIZATION_TOKENIZATIONTYPES_HPP_
 
 
-#include <string>
+
 #include <list>
+#include <string>
+#include <variant>
 
 #include <HTML/HTMLTypes.hpp>
+
 
 namespace HTML {
 namespace Parse {
 namespace Tokenization {
+
+class DOCTYPEToken {
+	public:
+		std::string name = "\0xFF";
+		std::string public_identifier = "\0xFF";
+		std::string system_identifier = "\0xFF";
+		bool force_quirks = false;
+};
+::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token);
+
+class TagToken {
+	public:
+		std::string tag_name = "";
+		bool self_closing = false;
+		std::list<Attribute> attributes = { };
+};
+::std::ostream& operator<<(::std::ostream& os, const TagToken& tag_Token);
+
+class CharacterToken {
+	public:
+		char32_t data = '\0xFF';
+};
+::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token);
+
+class CommentToken {
+	public:
+		std::string data = "";
+};
+::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token);
+
+class EOFToken {
+	public:
+};
+::std::ostream& operator<<(::std::ostream& os, const EOFToken& eof_token);
 
 enum class TokenType {
 	DOCTYPE,
@@ -38,39 +75,15 @@ enum class TokenType {
 	CHARACTER,
 	END_OF_FILE
 };
-::std::ostream& operator<<(::std::ostream& os, const TokenType& tokenType);
+::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type);
 
-struct DOCTYPEToken {
-		std::string name = "";
-		std::string public_identifier = "";
-		std::string system_identifier = "";
-		bool name_missing = true;
-		bool public_identifier_missing = true;
-		bool system_identifier_missing = true;
-		bool force_quirks = false;
-};
-::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctypeToken);
-
-struct TagToken {
-		std::string tag_name = "";
-		bool self_closing = false;
-		std::list<Attribute> attributes;
-};
-::std::ostream& operator<<(::std::ostream& os, const TagToken& tagToken);
-
-struct CharacterToken {
-		char32_t data;
-};
-::std::ostream& operator<<(::std::ostream& os, const CharacterToken& characterToken);
-
-struct Token {
+class Token {
+	public:
 		TokenType type;
-		DOCTYPEToken doctype_token;
-		TagToken tag_token;
-		CharacterToken character_token;
-		bool empty = true;
+		std::variant<DOCTYPEToken, TagToken, CharacterToken, CommentToken, EOFToken> data;
+
 };
-::std::ostream& operator<<(::std::ostream& os, const Token& token);
+//::std::ostream& operator<<(::std::ostream& os, const Token& token);
 
 enum class STATES {
 	DATA,
