@@ -25,24 +25,26 @@
 namespace HTML {
 namespace Parse {
 namespace Tokenization {
-DOCTYPEToken createDOCTYPEToken(const std::string& name, const std::string& public_identifier,
-		const std::string& system_identifier, const bool force_quirks) {
-	return DOCTYPEToken { name, public_identifier, system_identifier, force_quirks };
+
+Token createDOCTYPEToken(const std::string& name, const std::string& public_id, const std::string& system_id, const bool force_quirks) {
+	return Token { TokenType::DOCTYPE, DOCTYPEToken { name, public_id, system_id, force_quirks } };
 }
 
-TagToken createTagToken(const std::string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
-	return TagToken { tag_name, self_closing, attributes };
+Token createStartTagToken(const std::string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
+	return Token { TokenType::START_TAG, StartTagToken { tag_name, self_closing, attributes } };
 }
-CharacterToken createCharacterToken(const char32_t& data) {
-	return CharacterToken { data };
+Token createEndTagToken(const std::string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
+	return Token { TokenType::END_TAG, EndTagToken { tag_name, self_closing, attributes } };
 }
-CommentToken createCommentToken(const std::string& data) {
-	return CommentToken { data };
+Token createCharacterToken(const char32_t& data) {
+	return Token { TokenType::CHARACTER, CharacterToken { data } };
 }
-EOFToken createEOFToken() {
-	return EOFToken { };
+Token createCommentToken(const std::string& data) {
+	return Token { TokenType::COMMENT, CommentToken { data } };
 }
-
+Token createEOFToken() {
+	return Token { TokenType::END_OF_FILE, EOFToken { } };
+}
 
 } /* namespace Tokenization */
 } /* namespace Parse */

@@ -30,17 +30,20 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-DOCTYPEToken createDOCTYPEToken(const std::string& name = "\0xFF",
-		const std::string& public_identifier = "\0xFF",
+Token createDOCTYPEToken(const std::string& name = "\0xFF",
+		const std::string& public_id = "\0xFF",
 		const std::string& system_identifier = "\0xFF",
-		const bool force_quirks = false);
+		const bool system_id = false);
 
-TagToken createTagToken(const std::string& tag_name = "",
+Token createStartTagToken(const std::string& tag_name = "",
 		const bool self_closing = false,
 		const std::list<Attribute>& attributes = { });
-CharacterToken createCharacterToken(const char32_t& data = '\0xFF');
-CommentToken createCommentToken(const std::string& data = "");
-EOFToken createEOFToken();
+Token createEndTagToken(const std::string& tag_name = "",
+		const bool self_closing = false,
+		const std::list<Attribute>& attributes = { });
+Token createCharacterToken(const char32_t& data = -1);
+Token createCommentToken(const std::string& data = "");
+Token createEOFToken();
 
 
 } /* namespace Tokenization */

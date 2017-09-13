@@ -42,17 +42,25 @@ class DOCTYPEToken {
 };
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token);
 
-class TagToken {
+class StartTagToken {
 	public:
 		std::string tag_name = "";
 		bool self_closing = false;
 		std::list<Attribute> attributes = { };
 };
-::std::ostream& operator<<(::std::ostream& os, const TagToken& tag_Token);
+::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_Token);
+
+class EndTagToken {
+	public:
+		std::string tag_name = "";
+		bool self_closing = false;
+		std::list<Attribute> attributes = { };
+};
+::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_Token);
 
 class CharacterToken {
 	public:
-		char32_t data = '\0xFF';
+		char32_t data = -1;
 };
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token);
 
@@ -64,6 +72,7 @@ class CommentToken {
 
 class EOFToken {
 	public:
+		std::string string = "\\(EOF)";
 };
 ::std::ostream& operator<<(::std::ostream& os, const EOFToken& eof_token);
 
@@ -80,10 +89,10 @@ enum class TokenType {
 class Token {
 	public:
 		TokenType type;
-		std::variant<DOCTYPEToken, TagToken, CharacterToken, CommentToken, EOFToken> data;
+		std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token;
 
 };
-//::std::ostream& operator<<(::std::ostream& os, const Token& token);
+::std::ostream& operator<<(::std::ostream& os, const Token& token);
 
 enum class STATES {
 	DATA,

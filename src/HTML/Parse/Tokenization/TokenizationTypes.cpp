@@ -40,11 +40,22 @@ namespace Tokenization {
 	return os;
 }
 
-::std::ostream& operator<<(::std::ostream& os, const TagToken& tag_token) {
-	os << "std::string tag_name = " << tag_token.tag_name << "\n";
-	os << "bool self_closing = " << tag_token.self_closing << "\n";
+::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_token) {
+	os << "std::string tag_name = " << start_tag_token.tag_name << "\n";
+	os << "bool self_closing = " << start_tag_token.self_closing << "\n";
 	os << "std::list<Attribute> attributes = ";
-	for (auto v : tag_token.attributes) {
+	for (auto v : start_tag_token.attributes) {
+		os << v;
+	}
+	return os;
+
+}
+
+::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_token) {
+	os << "std::string tag_name = " << end_tag_token.tag_name << "\n";
+	os << "bool self_closing = " << end_tag_token.self_closing << "\n";
+	os << "std::list<Attribute> attributes = ";
+	for (auto v : end_tag_token.attributes) {
 		os << v;
 	}
 	return os;
@@ -70,11 +81,25 @@ namespace Tokenization {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const EOFToken& eof_token) {
-	return os << "\\(EOF)";
+	return os << eof_token.string;
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const Token& token) {
 	os << "TokenType type = " << token.type << "\n";
+	os << "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+	if (auto doctype_token = std::get_if<DOCTYPEToken>(&token.token)) {
+		os << doctype_token;
+	} else if (auto start_tag_token = std::get_if<StartTagToken>(&token.token)) {
+		os << start_tag_token;
+	} else if (auto end_tag_token = std::get_if<EndTagToken>(&token.token)) {
+		os << end_tag_token;
+	} else if (auto character_token = std::get_if<CharacterToken>(&token.token)) {
+		os << character_token;
+	} else if (auto comment_token = std::get_if<CommentToken>(&token.token)) {
+		os << comment_token;
+	} else if (auto eof_token = std::get_if<EOFToken>(&token.token)) {
+		os << eof_token;
+	}
 	return os;
 }
 
