@@ -20,12 +20,22 @@
 
 #include "CharacterReference.hpp"
 
+#include "TokenizationMisc.hpp"
 #include "TokenizationTypes.hpp"
 
+#include <algorithm>
+#include <cstring>
+#include <iterator>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 #include <HTML/Microsyntaxes/Numbers/NonNegativeInteger.hpp>
+
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
+#include <CharacterReferences.ipp>
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 namespace HTML {
 namespace Parse {
@@ -33,268 +43,107 @@ namespace Tokenization {
 
 Token consumeCharacterReference(StateData& data) {
 	Token token;
-	// If the character after the & is any of the following, this is not a character reference.  Return.
-	if (data.string[data.pos + 1] == '\t') {
-		return token;
-	} else if (data.string[data.pos + 1] == '\n') {
-		return token;
-	} else if (data.string[data.pos + 1] == '\f') {
-		return token;
-	} else if (data.string[data.pos + 1] == ' ') {
-		return token;
-	} else if (data.string[data.pos + 1] == '<') {
-		return token;
-	} else if (data.string[data.pos + 1] == '&') {
-		return token;
 
-		/* Are we at the end of the string?  Is this a "EOF"? */
-	} else if (data.pos + 1 >= data.string.length()) {
-		return token;
-	} else if (data.string[data.pos + 1] == '#') {
+	static constexpr char notACharacterReferenceChars[] {
+			'\t',
+			'\n',
+			'\f',
+			' ',
+			'<',
+			'&',
+			EOF
+	};
+
+	for (auto i : notACharacterReferenceChars) {
+		if (data.string[data.pos + 1] == i) {
+			return token;
+		}
+	}
+
+	if (data.string[data.pos + 1] == '#') {
 		data.pos++;
-		data.buf = data.string[data.pos];
-		bool hexNumber = false;
+
+		bool (*isDigit)(const char&) = &Microsyntaxes::ASCII::isASCIIDigit;
+		unsigned long (*parseInteger)(const std::string&) = &Microsyntaxes::Numbers::parseNonNegativeInteger;
+		bool isHex = false;
 		if (data.string[data.pos + 1] == 'x' || data.string[data.pos + 1] == 'X') {
 			data.pos++;
-			data.buf = data.string[data.pos];
-			hexNumber = true;
+			isHex = true;
+			isDigit = &Microsyntaxes::ASCII::isASCIIHex;
+			parseInteger = &Microsyntaxes::Numbers::parseNonNegativeHexInteger;
+
 		}
+
 		std::string digits = "";
-		unsigned int id = 0;
-		if (hexNumber) {
-			for (; data.pos < data.string.length(); data.pos++) {
-				if (Microsyntaxes::ASCII::isASCIIHex(data.string[data.pos])) {
-					digits += data.string[data.pos];
-				}
+		for (; data.pos < data.string.length(); data.pos++) {
+			if (isDigit(data.string[data.pos])) {
+				digits += data.string[data.pos];
 			}
-			if (digits.empty()) {
-				data.pos--;
-				data.pos--;
-				data.pos--;
-				return token;
-			}
-			id = Microsyntaxes::Numbers::parseNonNegativeHexInteger(digits);
-		} else {
-			for (; data.pos < data.string.length(); data.pos++) {
-				if (Microsyntaxes::ASCII::isASCIIDigit(data.string[data.pos])) {
-					digits += data.string[data.pos];
-				}
-			}
-				if (digits.empty()) {
-					data.pos--;
-					data.pos--;
-				return token;
-				}
-			id = Microsyntaxes::Numbers::parseNonNegativeInteger(digits);
 		}
+
+		if (digits.empty()) {
+			data.pos -= 2;
+			if (isHex) {
+				data.pos--;
+			}
+			return token;
+		}
+
+		unsigned int id = parseInteger(digits);
+
 		if (data.string[data.pos] == ';') {
 			data.pos++;
 		}
-		switch (id) {
-			case 0x00:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000FFFD';
-				token.empty = false;
-				return token;
-				break;
-			case 0x80:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U000020AC';
-				token.empty = false;
-				return token;
-				break;
-			case 0x82:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000201A';
-				token.empty = false;
-				return token;
-				break;
-			case 0x83:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00000192';
-				token.empty = false;
-				return token;
-				break;
-			case 0x84:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000201E';
-				token.empty = false;
-				return token;
-				break;
-			case 0x85:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002026';
-				token.empty = false;
-				return token;
-				break;
-			case 0x86:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002020';
-				token.empty = false;
-				return token;
-				break;
-			case 0x87:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002021';
-				token.empty = false;
-				return token;
-				break;
-			case 0x88:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U000002C6';
-				token.empty = false;
-				return token;
-				break;
-			case 0x89:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002030';
-				token.empty = false;
-				return token;
-				break;
-			case 0x8A:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00000160';
-				token.empty = false;
-				return token;
-				break;
-			case 0x8B:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002039';
-				token.empty = false;
-				return token;
-				break;
-			case 0x8C:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00000152';
-				token.empty = false;
-				return token;
-				break;
-			case 0x8E:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000017D';
-				token.empty = false;
-				return token;
-				break;
-			case 0x91:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002018';
-				token.empty = false;
-				return token;
-				break;
-			case 0x92:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002019';
-				token.empty = false;
-				return token;
-				break;
-			case 0x93:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000201C';
-				token.empty = false;
-				return token;
-				break;
-			case 0x94:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000201D';
-				token.empty = false;
-				return token;
-				break;
-			case 0x95:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002022';
-				token.empty = false;
-				return token;
-				break;
-			case 0x96:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002013';
-				token.empty = false;
-				return token;
-				break;
-			case 0x97:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002014';
-				token.empty = false;
-				return token;
-				break;
-			case 0x98:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U000002DC';
-				token.empty = false;
-				return token;
-				break;
-			case 0x99:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00002122';
-				token.empty = false;
-				return token;
-				break;
-			case 0x9A:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00000161';
-				token.empty = false;
-				return token;
-				break;
-			case 0x9B:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000203A';
-				token.empty = false;
-				return token;
-				break;
-			case 0x9C:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00000153';
-				token.empty = false;
-				return token;
-				break;
-			case 0x9E:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U0000017E';
-				token.empty = false;
-				return token;
-				break;
-			case 0x9F:
-				token.type = TokenType::CHARACTER;
-				token.character_token.data = U'\U00000178';
-				token.empty = false;
-				return token;
-				break;
-			default:
-				break;
-		}
-		if (0xD800 <= id || id <= 0xDFFF) {
-			token.type = TokenType::CHARACTER;
-			token.character_token.data = U'\U0000FFFD';
-			token.empty = false;
-			return token;
-		} else if (id > 0x10FFFF) {
-			token.type = TokenType::CHARACTER;
-			token.character_token.data = U'\U0000FFFD';
-			token.empty = false;
-			return token;
-		} else if (0x0001 <= id || id <= 0x0008) {
-			token.type = TokenType::CHARACTER;
-			token.character_token.data = U'\U0000FFFD';
-			token.empty = false;
-			return token;
-		} else if (0x000D <= id || id <= 0x001F) {
-			token.type = TokenType::CHARACTER;
-			token.character_token.data = U'\U0000FFFD';
-			token.empty = false;
-			return token;
-		} else if (0x007F <= id || id <= 0x009F) {
-			token.type = TokenType::CHARACTER;
-			token.character_token.data = U'\U0000FFFD';
-			token.empty = false;
-			return token;
-		} else if (0xFDD0 <= id || id <= 0xFDEF) {
-			token.type = TokenType::CHARACTER;
-			token.character_token.data = U'\U0000FFFD';
-			token.empty = false;
-			return token;
+
+		using Item = std::pair<unsigned int, char32_t>;
+
+		static constexpr Item conversionArray[] = {
+				{ 0x00, U'\U0000FFFD' },
+				{ 0x80, U'\U000020AC' },
+				{ 0x82, U'\U0000201A' },
+				{ 0x83, U'\U00000192' },
+				{ 0x84, U'\U0000201E' },
+				{ 0x85, U'\U00002026' },
+				{ 0x86, U'\U00002020' },
+				{ 0x87, U'\U00002021' },
+				{ 0x88, U'\U000002C6' },
+				{ 0x89, U'\U00002030' },
+				{ 0x8A, U'\U00000160' },
+				{ 0x8B, U'\U00002039' },
+				{ 0x8C, U'\U00000152' },
+				{ 0x8E, U'\U0000017D' },
+				{ 0x91, U'\U00002018' },
+				{ 0x92, U'\U00002019' },
+				{ 0x93, U'\U0000201C' },
+				{ 0x94, U'\U0000201D' },
+				{ 0x95, U'\U00002022' },
+				{ 0x96, U'\U00002013' },
+				{ 0x97, U'\U00002014' },
+				{ 0x98, U'\U000002DC' },
+				{ 0x99, U'\U00002122' },
+				{ 0x9A, U'\U00000161' },
+				{ 0x9B, U'\U0000203A' },
+				{ 0x9C, U'\U00000153' },
+				{ 0x9E, U'\U0000017E' },
+				{ 0x9F, U'\U00000178' }
+		};
+		for (auto i : conversionArray) {
+			if (id == i.first) {
+				return createCharacterToken(i.second);
+
+			}
 		}
 
-		constexpr unsigned int disallowedCharacters[35] {
+		if ((id > 0x10FFFF) ||
+				(0xD800 <= id && id <= 0xDFFF) ||
+				(0x0001 <= id && id <= 0x0008) ||
+				(0x000D <= id && id <= 0x001F) ||
+				(0x007F <= id && id <= 0x009F) ||
+				(0xFDD0 <= id && id <= 0xFDEF)) {
+			return createCharacterToken(U'\U0000FFFD');
+		}
+
+		static constexpr unsigned int disallowedIDs[] {
 				0x000B,
 				0xFFFE,
 				0xFFFF,
@@ -331,17 +180,33 @@ Token consumeCharacterReference(StateData& data) {
 				0x10FFFE,
 				0x10FFFF
 		};
-		for (auto i : disallowedCharacters) {
+
+		for (auto i : disallowedIDs) {
 			if (id == i) {
 				return token;
 			}
 		}
-		token.type = TokenType::CHARACTER;
-		token.character_token.data = id;
-		token.empty = false;
-		return token;
-	}
 
+		return createCharacterToken(id);
+	}
+	std::string characters = "";
+	std::vector<std::pair<const char*, const char32_t*>> characterReferenceList(
+			std::begin(characterReferences), std::end(characterReferences));
+	auto matchSubStr = [&characters] (std::pair<const char*, const char32_t*> pair) {
+		if(characters == std::string(pair.first).substr(0, characters.length() - 1)) {
+			return false;
+		}
+		return true;
+	};
+	for (; data.pos < data.string.length(); data.pos++) {
+		characters += data.string[data.pos];
+		std::vector<std::pair<const char*, const char32_t*>>::iterator it =
+				std::remove_if(characterReferenceList.begin(), characterReferenceList.end(), matchSubStr);
+		if (characterReferenceList.size() == 1 && characters == std::string((*it).first)) {
+			return createCharacterToken((*it).second[0]);
+		}
+	}
+	return token;
 }
 
 Token consumeCharacterReference(StateData& data, const char& additional_allowed_character) {

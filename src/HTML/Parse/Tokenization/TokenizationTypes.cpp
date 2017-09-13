@@ -84,6 +84,11 @@ namespace Tokenization {
 	return os << eof_token.string;
 }
 
+::std::ostream& operator<<(::std::ostream& os, const NoToken& no_token) {
+	return os << no_token.string;
+}
+
+
 ::std::ostream& operator<<(::std::ostream& os, const Token& token) {
 	os << "TokenType type = " << token.type << "\n";
 	os << "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
@@ -99,7 +104,10 @@ namespace Tokenization {
 		os << comment_token;
 	} else if (auto eof_token = std::get_if<EOFToken>(&token.token)) {
 		os << eof_token;
+	} else if (auto no_token = std::get_if<NoToken>(&token.token)) {
+		os << no_token;
 	}
+
 	return os;
 }
 

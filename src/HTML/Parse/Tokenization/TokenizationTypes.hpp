@@ -60,7 +60,7 @@ class EndTagToken {
 
 class CharacterToken {
 	public:
-		char32_t data = -1;
+		char32_t data = EOF;
 };
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token);
 
@@ -72,9 +72,15 @@ class CommentToken {
 
 class EOFToken {
 	public:
-		std::string string = "\\(EOF)";
+		static constexpr char string[] = "\\(EOF)";
 };
 ::std::ostream& operator<<(::std::ostream& os, const EOFToken& eof_token);
+
+class NoToken {
+	public:
+		static constexpr char string[] = "No Token!";
+};
+::std::ostream& operator<<(::std::ostream& os, const NoToken& no_token);
 
 enum class TokenType {
 	DOCTYPE,
@@ -82,14 +88,15 @@ enum class TokenType {
 	END_TAG,
 	COMMENT,
 	CHARACTER,
-	END_OF_FILE
+	END_OF_FILE,
+	NO_TOKEN
 };
 ::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type);
 
 class Token {
 	public:
-		TokenType type;
-		std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token;
+		TokenType type = TokenType::NO_TOKEN;
+		std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token;
 
 };
 ::std::ostream& operator<<(::std::ostream& os, const Token& token);

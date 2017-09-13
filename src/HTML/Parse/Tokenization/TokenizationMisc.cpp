@@ -39,6 +39,9 @@ Token createEndTagToken(const std::string& tag_name, const bool self_closing, co
 Token createCharacterToken(const char32_t& data) {
 	return Token { TokenType::CHARACTER, CharacterToken { data } };
 }
+Token createCharacterToken(const unsigned int& data) {
+	return Token { TokenType::CHARACTER, CharacterToken { static_cast<char32_t>(data) } };
+}
 Token createCommentToken(const std::string& data) {
 	return Token { TokenType::COMMENT, CommentToken { data } };
 }
