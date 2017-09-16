@@ -29,6 +29,10 @@ namespace Elements {
  *
  */
 class Normal: public Element {
+	public:
+		std::string& setText();
+		std::string& getText();
+		virtual void parse(const std::string& string, size_t& pos);
 };
 
 } /* namespace Elements */

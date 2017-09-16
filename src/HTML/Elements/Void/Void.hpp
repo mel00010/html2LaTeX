@@ -26,6 +26,8 @@ namespace HTML {
 namespace Elements {
 
 class Void: public Element {
+	public:
+		virtual void parse(const std::string& string, size_t& pos);
 };
 
 } /* namespace Elements */

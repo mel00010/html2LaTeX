@@ -29,6 +29,8 @@ namespace Elements {
  *
  */
 class EscapableRawText: public Element {
+	public:
+		virtual void parse(const std::string& string, size_t& pos);
 };
 
 } /* namespace Elements */
