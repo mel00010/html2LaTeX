@@ -39,16 +39,43 @@ namespace Tokenization {
 	os << "bool force_quirks = " << doctype_token.force_quirks;
 	return os;
 }
+bool operator==(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
+	if (lhs.name != rhs.name) {
+		return false;
+	}
+	if (lhs.public_identifier != rhs.public_identifier) {
+		return false;
+	}
+	if (lhs.system_identifier != rhs.system_identifier) {
+		return false;
+	}
+	if (lhs.force_quirks != rhs.force_quirks) {
+		return false;
+	}
+	return true;
+}
 
 ::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_token) {
 	os << "std::string tag_name = " << start_tag_token.tag_name << "\n";
 	os << "bool self_closing = " << start_tag_token.self_closing << "\n";
 	os << "std::list<Attribute> attributes = ";
 	for (auto v : start_tag_token.attributes) {
-		os << v;
+		os << v << ", ";
 	}
 	return os;
+}
 
+bool operator==(const StartTagToken& lhs, const StartTagToken& rhs) {
+	if (lhs.tag_name != rhs.tag_name) {
+		return false;
+	}
+	if (lhs.self_closing != rhs.self_closing) {
+		return false;
+	}
+	if (lhs.attributes != rhs.attributes) {
+		return false;
+	}
+	return true;
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_token) {
@@ -56,9 +83,22 @@ namespace Tokenization {
 	os << "bool self_closing = " << end_tag_token.self_closing << "\n";
 	os << "std::list<Attribute> attributes = ";
 	for (auto v : end_tag_token.attributes) {
-		os << v;
+		os << v << ", ";
 	}
 	return os;
+}
+
+bool operator==(const EndTagToken& lhs, const EndTagToken& rhs) {
+	if (lhs.tag_name != rhs.tag_name) {
+		return false;
+	}
+	if (lhs.self_closing != rhs.self_closing) {
+		return false;
+	}
+	if (lhs.attributes != rhs.attributes) {
+		return false;
+	}
+	return true;
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token) {
@@ -70,45 +110,77 @@ namespace Tokenization {
 	os.setf(os.right, os.adjustfield);
 	os.fill('0');
 
-	os << "U+" << std::setw(8) << (unsigned long) character_token.data;
+	os << "U+" << std::setw(8) << std::uppercase << (unsigned long) character_token.data;
 
 	ias.restore();
 	return os;
 }
 
+bool operator==(const CharacterToken& lhs, const CharacterToken& rhs) {
+	if (lhs.data != rhs.data) {
+		return false;
+	}
+	return true;
+}
+
 ::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token) {
-	return os << "std::string data = " << comment_token.data;
+	return os << "std::string data = \"" << comment_token.data << "\"";
+}
+
+bool operator==(const CommentToken& lhs, const CommentToken& rhs) {
+	if (lhs.data != rhs.data) {
+		return false;
+	}
+	return true;
+
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const EOFToken& eof_token) {
 	return os << eof_token.string;
 }
 
+bool operator==(const EOFToken& lhs, const EOFToken& rhs) {
+	return true;
+}
+
 ::std::ostream& operator<<(::std::ostream& os, const NoToken& no_token) {
 	return os << no_token.string;
 }
 
+bool operator==(const NoToken& lhs, const NoToken& rhs) {
+	return true;
+}
 
 ::std::ostream& operator<<(::std::ostream& os, const Token& token) {
 	os << "TokenType type = " << token.type << "\n";
-	os << "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+	os << "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = ";
 	if (auto doctype_token = std::get_if<DOCTYPEToken>(&token.token)) {
-		os << doctype_token;
+		os << *doctype_token;
 	} else if (auto start_tag_token = std::get_if<StartTagToken>(&token.token)) {
-		os << start_tag_token;
+		os << *start_tag_token;
 	} else if (auto end_tag_token = std::get_if<EndTagToken>(&token.token)) {
-		os << end_tag_token;
+		os << *end_tag_token;
 	} else if (auto character_token = std::get_if<CharacterToken>(&token.token)) {
-		os << character_token;
+		os << *character_token;
 	} else if (auto comment_token = std::get_if<CommentToken>(&token.token)) {
-		os << comment_token;
+		os << *comment_token;
 	} else if (auto eof_token = std::get_if<EOFToken>(&token.token)) {
-		os << eof_token;
+		os << *eof_token;
 	} else if (auto no_token = std::get_if<NoToken>(&token.token)) {
-		os << no_token;
+		os << *no_token;
 	}
 
 	return os;
+}
+
+bool operator==(const Token& lhs, const Token& rhs) {
+	if (lhs.type != rhs.type) {
+		return false;
+	}
+	if (lhs.token != rhs.token) {
+		return false;
+	}
+	return true;
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type) {
@@ -131,6 +203,9 @@ namespace Tokenization {
 		case TokenType::END_OF_FILE:
 			os << "TokenType::END_OF_FILE";
 			break;
+		case TokenType::NO_TOKEN:
+			os << "TokenType::NO_TOKEN";
+			break;
 		default:
 			os << "Error: Unknown TokenType!";
 			break;
@@ -138,9 +213,11 @@ namespace Tokenization {
 	return os;
 }
 
-
 ::std::ostream& operator<<(::std::ostream& os, const STATES& state) {
 	switch (state) {
+		case STATES::NULL_STATE:
+			os << "STATES::NULL_STATE";
+			break;
 		case STATES::DATA:
 			os << "STATES::DATA";
 			break;
@@ -148,7 +225,7 @@ namespace Tokenization {
 			os << "STATES::CHARACTER_REFERENCE_IN_DATA";
 			break;
 		case STATES::RCDATA:
-			os << "STATES::CHARACTER_REFERENCE_IN_RCDATA";
+			os << "STATES::RCDATA";
 			break;
 		case STATES::CHARACTER_REFERENCE_IN_RCDATA:
 			os << "STATES::CHARACTER_REFERENCE_IN_RCDATA";
@@ -241,7 +318,7 @@ namespace Tokenization {
 			os << "STATES::ATTRIBUTE_NAME";
 			break;
 		case STATES::AFTER_ATTRIBUTE_NAME:
-			os << "STATES::ATTRIBUTE_NAME";
+			os << "STATES::AFTER_ATTRIBUTE_NAME";
 			break;
 		case STATES::BEFORE_ATTRIBUTE_VALUE:
 			os << "STATES::BEFORE_ATTRIBUTE_VALUE";
@@ -348,15 +425,43 @@ namespace Tokenization {
 
 ::std::ostream& operator<<(::std::ostream& os, const StateData& state_data) {
 	os << "STATES state = " << state_data.state << "\n";
-	os << "std::string string = " << state_data.string << "\n";
+	os << "std::string string = \"" << state_data.string << "\"\n";
 	os << "size_t pos = " << state_data.pos << "\n";
-	os << "bool parse_pause_flag = " << state_data.parser_pause_flag << "\n";
+	os << "char buf = '" << state_data.buf << "'\n";
+	os << "bool parser_pause_flag = " << state_data.parser_pause_flag << "\n";
 	os << "size_t script_nesting_level = " << state_data.script_nesting_level << "\n";
 	os << "std::list<Token> tokens = ";
+	os << "{\n";
 	for (auto v : state_data.tokens) {
-		os << v;
+		os << "Token { " << v << "}, \n";
 	}
+	os << "}";
 	return os;
+}
+
+bool operator==(const StateData& lhs, const StateData& rhs) {
+	if (lhs.state != rhs.state) {
+		return false;
+	}
+	if (lhs.string != rhs.string) {
+		return false;
+	}
+	if (lhs.pos != rhs.pos) {
+		return false;
+	}
+	if (lhs.buf != rhs.buf) {
+		return false;
+	}
+	if (lhs.parser_pause_flag != rhs.parser_pause_flag) {
+		return false;
+	}
+	if (lhs.script_nesting_level != rhs.script_nesting_level) {
+		return false;
+	}
+	if (lhs.tokens != rhs.tokens) {
+		return false;
+	}
+	return true;
 }
 
 } /* namespace Tokenization */

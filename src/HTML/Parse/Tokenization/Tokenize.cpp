@@ -241,6 +241,7 @@ std::list<Token> tokenize(const std::string& string) {
 				break;
 		}
 	}
+	return state_data.tokens;
 }
 
 } /* Tokenization */

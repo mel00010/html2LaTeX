@@ -41,6 +41,10 @@ class DOCTYPEToken {
 		bool force_quirks = false;
 };
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token);
+bool operator==(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs);
+inline bool operator!=(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
+	return !(lhs == rhs);
+}
 
 class StartTagToken {
 	public:
@@ -49,6 +53,10 @@ class StartTagToken {
 		std::list<Attribute> attributes = { };
 };
 ::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_Token);
+bool operator==(const StartTagToken& lhs, const StartTagToken& rhs);
+inline bool operator!=(const StartTagToken& lhs, const StartTagToken& rhs) {
+	return !(lhs == rhs);
+}
 
 class EndTagToken {
 	public:
@@ -57,30 +65,50 @@ class EndTagToken {
 		std::list<Attribute> attributes = { };
 };
 ::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_Token);
+bool operator==(const EndTagToken& lhs, const EndTagToken& rhs);
+inline bool operator!=(const EndTagToken& lhs, const EndTagToken& rhs) {
+	return !(lhs == rhs);
+}
 
 class CharacterToken {
 	public:
 		char32_t data = EOF;
 };
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token);
+bool operator==(const CharacterToken& lhs, const CharacterToken& rhs);
+inline bool operator!=(const CharacterToken& lhs, const CharacterToken& rhs) {
+	return !(lhs == rhs);
+}
 
 class CommentToken {
 	public:
 		std::string data = "";
 };
 ::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token);
+bool operator==(const CommentToken& lhs, const CommentToken& rhs);
+inline bool operator!=(const CommentToken& lhs, const CommentToken& rhs) {
+	return !(lhs == rhs);
+}
 
 class EOFToken {
 	public:
 		static constexpr char string[] = "\\(EOF)";
 };
 ::std::ostream& operator<<(::std::ostream& os, const EOFToken& eof_token);
+bool operator==(const EOFToken& lhs, const EOFToken& rhs);
+inline bool operator!=(const EOFToken& lhs, const EOFToken& rhs) {
+	return !(lhs == rhs);
+}
 
 class NoToken {
 	public:
 		static constexpr char string[] = "No Token!";
 };
 ::std::ostream& operator<<(::std::ostream& os, const NoToken& no_token);
+bool operator==(const NoToken& lhs, const NoToken& rhs);
+inline bool operator!=(const NoToken& lhs, const NoToken& rhs) {
+	return !(lhs == rhs);
+}
 
 enum class TokenType {
 	DOCTYPE,
@@ -95,13 +123,18 @@ enum class TokenType {
 
 class Token {
 	public:
-		TokenType type = TokenType::NO_TOKEN;
+		TokenType type;
 		std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token;
 
 };
 ::std::ostream& operator<<(::std::ostream& os, const Token& token);
+bool operator==(const Token& lhs, const Token& rhs);
+inline bool operator!=(const Token& lhs, const Token& rhs) {
+	return !(lhs == rhs);
+}
 
 enum class STATES {
+	NULL_STATE,
 	DATA,
 	CHARACTER_REFERENCE_IN_DATA,
 	RCDATA,
@@ -173,16 +206,27 @@ enum class STATES {
 ::std::ostream& operator<<(::std::ostream& os, const STATES& state);
 
 struct StateData {
-		STATES state = STATES::DATA;
-		std::string string = "";
-		size_t pos = 0;
-		char buf = '\0';
-		bool parser_pause_flag = false;
-		size_t script_nesting_level = 0;
+		STATES state;
+		std::string string;
+		size_t pos;
+		char buf;
+		bool parser_pause_flag;
+		size_t script_nesting_level;
 		std::list<Token> tokens;
+		StateData(STATES state = STATES::NULL_STATE, std::string string = "",
+				size_t pos = 0, char buf = '\0', bool parser_pause_flag = false,
+				size_t script_nesting_level = 0, std::list<Token> tokens = { }) :
+				state(state), string(string), pos(pos), buf(buf), parser_pause_flag(parser_pause_flag),
+						script_nesting_level(script_nesting_level), tokens(tokens) {
+
+		}
 };
 
 ::std::ostream& operator<<(::std::ostream& os, const StateData& stateData);
+bool operator==(const StateData& lhs, const StateData& rhs);
+inline bool operator!=(const StateData& lhs, const StateData& rhs) {
+	return !(lhs == rhs);
+}
 
 } /* namespace Tokenization */
 } /* namespace Parse */
