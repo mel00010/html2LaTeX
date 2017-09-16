@@ -25,11 +25,7 @@
 namespace HTML {
 
 TEST(HTML_HTMLTypes, Attribute) {
-//	Attribute test;
-//	Attribute* testPtr = new Attribute();
-//	delete testPtr;
-	std::ostringstream out;
-	out << Attribute("test", "test");
+	EXPECT_EQ("\"name\":\"value\"", static_cast<std::stringstream&>(std::stringstream() << Attribute("name", "value")).str());
 	EXPECT_FALSE(Attribute() == true);
 	EXPECT_FALSE(Attribute("test", "") == false);
 	EXPECT_FALSE(Attribute("test", "test") == false);
@@ -48,37 +44,15 @@ TEST(HTML_HTMLTypes, Attribute) {
 
 
 TEST(HTML_HTMLTypes, ContentType) {
-	std::ostringstream osContentType;
-	std::ostringstream osUTF_8;
-	std::ostringstream osUTF_16_BE;
-	std::ostringstream osUTF_16_LE;
-	std::ostringstream osUNKNOWN;
-	std::ostringstream osNULL_ENC;
-	std::ostringstream osIRRELEVANT;
-	std::ostringstream osTENTATIVE;
-	std::ostringstream osCERTAIN;
-
-	osContentType << ContentType(UTF_8, CERTAIN);
-	osUTF_8 << UTF_8;
-	osUTF_16_BE << UTF_16_BE;
-	osUTF_16_LE << UTF_16_LE;
-	osUNKNOWN << UNKNOWN;
-	osNULL_ENC << NULL_ENC;
-	osIRRELEVANT << IRRELEVANT;
-	osTENTATIVE << TENTATIVE;
-	osCERTAIN << CERTAIN;
-
-	EXPECT_EQ(osContentType.str(), std::string("UTF_8:CERTAIN"));
-	EXPECT_EQ(osUTF_8.str(), std::string("UTF_8"));
-	EXPECT_EQ(osUTF_16_BE.str(), std::string("UTF_16_BE"));
-	EXPECT_EQ(osUTF_16_LE.str(), std::string("UTF_16_LE"));
-	EXPECT_EQ(osUNKNOWN.str(), std::string("UNKNOWN"));
-	EXPECT_EQ(osNULL_ENC.str(), std::string("NULL_ENC"));
-	EXPECT_EQ(osIRRELEVANT.str(), std::string("IRRELEVANT"));
-	EXPECT_EQ(osTENTATIVE.str(), std::string("TENTATIVE"));
-	EXPECT_EQ(osCERTAIN.str(), std::string("CERTAIN"));
-
-
+	EXPECT_EQ("UTF_8:CERTAIN", static_cast<std::stringstream&>(std::stringstream() << ContentType(UTF_8, CERTAIN)).str());
+	EXPECT_EQ("UTF_8", static_cast<std::stringstream&>(std::stringstream() << UTF_8).str());
+	EXPECT_EQ("UTF_16_BE", static_cast<std::stringstream&>(std::stringstream() << UTF_16_BE).str());
+	EXPECT_EQ("UTF_16_LE", static_cast<std::stringstream&>(std::stringstream() << UTF_16_LE).str());
+	EXPECT_EQ("UNKNOWN", static_cast<std::stringstream&>(std::stringstream() << UNKNOWN).str());
+	EXPECT_EQ("NULL_ENC", static_cast<std::stringstream&>(std::stringstream() << NULL_ENC).str());
+	EXPECT_EQ("IRRELEVANT", static_cast<std::stringstream&>(std::stringstream() << IRRELEVANT).str());
+	EXPECT_EQ("TENTATIVE", static_cast<std::stringstream&>(std::stringstream() << TENTATIVE).str());
+	EXPECT_EQ("CERTAIN", static_cast<std::stringstream&>(std::stringstream() << CERTAIN).str());
 
 	EXPECT_TRUE(ContentType(UTF_8, CERTAIN) == ContentType(UTF_8, CERTAIN));
 	EXPECT_FALSE(ContentType(UTF_8, CERTAIN) == ContentType(UNKNOWN, CERTAIN));

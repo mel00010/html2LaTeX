@@ -10,5 +10,5 @@ target_link_libraries(tokenization_test
 	INTERFACE
 		ascii
 		htmltypes
-		tokenization_test
+		tokenization
 )
