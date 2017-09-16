@@ -9,7 +9,6 @@
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>
-			<provider-reference id="de.marw.cmake.cdt.language.settings.providers.CompileCommandsJsonParser" ref="shared-provider"/>
 		</extension>
 	</configuration>
 	<configuration id="cdt.managedbuild.config.gnu.exe.release.910820146" name="Release">

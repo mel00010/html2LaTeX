@@ -48,12 +48,8 @@
 			<storageModule moduleId="de.marw.cdt.cmake.core.settings">
 				<options/>
 				<linux command="cmake" generator="Ninja" use-default="true">
-					<defs/>
-					<undefs/>
 				</linux>
 				<win32 command="cmake" generator="Ninja" use-default="true">
-					<defs/>
-					<undefs/>
 				</win32>
 			</storageModule>
 		</cconfiguration>
@@ -357,4 +353,5 @@
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		</scannerConfigBuildInfo>
 	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 </cproject>
