@@ -5,10 +5,14 @@ target_sources(parse
 		DetermineCharEncoding.cpp
 		MagicString.cpp
 		ParseHTML.cpp
+		ParseTypes.cpp
+		ParseUnicode.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/DetermineCharEncoding.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MagicString.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ParseHTML.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ParseTypes.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ParseUnicode.hpp
 )
 target_link_libraries(parse
 	PUBLIC
@@ -17,10 +21,5 @@ target_link_libraries(parse
 		tokenization
 		treeconstruction
 )
-#target_include_directories(parse
-#	PUBLIC
-#		${CMAKE_CURRENT_SOURCE_DIR}
-#		${PROJECT_SOURCE_DIR}/src
-#)
 add_subdirectory(Tokenization)
 add_subdirectory(TreeConstruction)

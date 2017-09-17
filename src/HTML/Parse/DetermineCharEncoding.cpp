@@ -51,13 +51,13 @@ ContentType DetermineCharEncoding::determineCharEncoding(std::istream& input) {
 
 	try {
 		encoding = tryUnicodeBOM(input);
-		if (encoding.charEncoding != CharEncoding::UNKNOWN) {
+		if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 			input.seekg(0);
 			return encoding;
 		}
 
 		encoding = preScan(input);
-		if (encoding.charEncoding != CharEncoding::UNKNOWN) {
+		if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 			input.seekg(0);
 			return encoding;
 		}
@@ -81,16 +81,16 @@ ContentType DetermineCharEncoding::tryUnicodeBOM(std::istream& input) {
 	input.clear();
 	input.seekg(0);
 	if ((buffer[0] == MagicString::UnicodeBOM::UTF_16_BE[0]) && (buffer[1] == MagicString::UnicodeBOM::UTF_16_BE[1])) {
-		encoding.charEncoding = CharEncoding::UTF_16_BE;
+		encoding.char_encoding = CharEncoding::UTF_16_BE;
 		encoding.confidence = Confidence::CERTAIN;
 		return encoding;
 	} else if ((buffer[0] == MagicString::UnicodeBOM::UTF_16_LE[0]) && (buffer[1] == MagicString::UnicodeBOM::UTF_16_LE[1])) {
-		encoding.charEncoding = CharEncoding::UTF_16_LE;
+		encoding.char_encoding = CharEncoding::UTF_16_LE;
 		encoding.confidence = Confidence::CERTAIN;
 		return encoding;
 	} else if ((buffer[0] == MagicString::UnicodeBOM::UTF_8[0]) && (buffer[1] == MagicString::UnicodeBOM::UTF_8[1])
 			&& (buffer[2] == MagicString::UnicodeBOM::UTF_8[2])) {
-		encoding.charEncoding = CharEncoding::UTF_8;
+		encoding.char_encoding = CharEncoding::UTF_8;
 		encoding.confidence = Confidence::CERTAIN;
 		return encoding;
 	}
@@ -105,22 +105,22 @@ ContentType DetermineCharEncoding::preScan(std::istream& input) {
 		do {
 			input.seekg(1, input.cur);
 			encoding = commentTagAlgorithm(input);
-			if (encoding.charEncoding != CharEncoding::UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 
 			encoding = metaTagAlgorithm(input);
-			if (encoding.charEncoding != CharEncoding::UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 
 			encoding = asciiTagAlgorithm(input);
-			if (encoding.charEncoding != CharEncoding::UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 
 			encoding = punctuationTagAlgorithm(input);
-			if (encoding.charEncoding != CharEncoding::UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 		} while (input.peek() != std::istream::eofbit);
@@ -256,7 +256,7 @@ ContentType DetermineCharEncoding::metaTagAlgorithm(std::istream& input) {
 		if ((charSet == CharEncoding::UTF_16_LE) || (charSet == CharEncoding::UTF_16_BE)) {
 			charSet = CharEncoding::UTF_8;
 		}
-		encoding.charEncoding = charSet;
+		encoding.char_encoding = charSet;
 		encoding.confidence = Confidence::TENTATIVE;
 		return encoding;
 	}

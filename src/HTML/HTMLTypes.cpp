@@ -64,7 +64,7 @@ namespace HTML {
 	return os;
 }
 ::std::ostream& operator<<(::std::ostream& os, const ContentType& contentType) {
-	return os << contentType.charEncoding << ":" << contentType.confidence;
+	return os << contentType.char_encoding << ":" << contentType.confidence;
 }
 
 

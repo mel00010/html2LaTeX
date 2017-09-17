@@ -125,10 +125,10 @@ enum class Confidence {
  */
 class ContentType {
 	public:
-		ContentType(CharEncoding charEncoding = CharEncoding::UNKNOWN, Confidence confidence = Confidence::IRRELEVANT) :
-				charEncoding(charEncoding), confidence(confidence) {
+		ContentType(CharEncoding char_encoding = CharEncoding::UNKNOWN, Confidence confidence = Confidence::IRRELEVANT) :
+				char_encoding(char_encoding), confidence(confidence) {
 		}
-		CharEncoding charEncoding = CharEncoding::UNKNOWN; /**<	@brief Holds the character encoding of the document. */
+		CharEncoding char_encoding = CharEncoding::UNKNOWN; /**<	@brief Holds the character encoding of the document. */
 		Confidence confidence = Confidence::IRRELEVANT; /**<	@brief Holds the confidence of the guess at the character encoding. */
 };
 
@@ -272,7 +272,7 @@ inline bool operator==(const Attribute& lhs, const bool& rhs) {
  * @test TEST(HTMLTypes, ContentType)
  */
 inline bool operator==(const ContentType& rhs, const ContentType& lhs) {
-	if ((rhs.charEncoding == lhs.charEncoding) && (rhs.confidence == lhs.confidence)) {
+	if ((rhs.char_encoding == lhs.char_encoding) && (rhs.confidence == lhs.confidence)) {
 		return true;
 	}
 	return false;
