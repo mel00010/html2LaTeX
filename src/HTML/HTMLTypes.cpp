@@ -27,39 +27,39 @@ namespace HTML {
 }
 ::std::ostream& operator<<(::std::ostream& os, const CharEncoding& charEncoding) {
 	switch (charEncoding) {
-		case NULL_ENC:
-			os << "NULL_ENC";
+		case CharEncoding::NULL_ENC:
+			os << "CharEncoding::NULL_ENC";
 			break;
-		case UNKNOWN:
-			os << "UNKNOWN";
+		case CharEncoding::UNKNOWN:
+			os << "CharEncoding::UNKNOWN";
 			break;
-		case UTF_16_BE:
-			os << "UTF_16_BE";
+		case CharEncoding::UTF_16_BE:
+			os << "CharEncoding::UTF_16_BE";
 			break;
-		case UTF_16_LE:
-			os << "UTF_16_LE";
+		case CharEncoding::UTF_16_LE:
+			os << "CharEncoding::UTF_16_LE";
 			break;
-		case UTF_8:
-			os << "UTF_8";
+		case CharEncoding::UTF_8:
+			os << "CharEncoding::UTF_8";
 			break;
 		default: // LCOV_EXCL_LINE
-			os << "INVALID"; // LCOV_EXCL_LINE
+			os << "Unknown CharEncoding!"; // LCOV_EXCL_LINE
 	}
 	return os;
 }
 ::std::ostream& operator<<(::std::ostream& os, const Confidence& confidence) {
 	switch (confidence) {
-		case CERTAIN:
-			os << "CERTAIN";
+		case Confidence::CERTAIN:
+			os << "Confidence::CERTAIN";
 			break;
-		case TENTATIVE:
-			os << "TENTATIVE";
+		case Confidence::TENTATIVE:
+			os << "Confidence::TENTATIVE";
 			break;
-		case IRRELEVANT:
-			os << "IRRELEVANT";
+		case Confidence::IRRELEVANT:
+			os << "Confidence::IRRELEVANT";
 			break;
 		default: // LCOV_EXCL_LINE
-			os << "INVALID"; // LCOV_EXCL_LINE
+			os << "Unknown Confidence!"; // LCOV_EXCL_LINE
 	}
 	return os;
 }

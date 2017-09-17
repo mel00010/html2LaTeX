@@ -88,7 +88,7 @@ enum class HTMLHeadings {
 /**
  * @brief A three valued boolean logic type.
  */
-enum TriBool {
+enum class TriBool {
 	NONE, /**<	@brief Neither true nor false. @details Used to signify that the variable has not been explicitly set to be true or false. */
 	TRUE, /**<	@brief True */
 	FALSE /**<	@brief False */
@@ -99,7 +99,7 @@ enum TriBool {
  *
  * Defined by the W3C HTML5 standard
  */
-enum CharEncoding {
+enum class CharEncoding {
 	NULL_ENC, /**<	@brief Represents that the character encoding has not been set by the algorithm. */
 	UNKNOWN, /**<	@brief Represents an unknown character encoding. */
 	UTF_16_BE, /**<	@brief Represents the UTF-16 big endian character encoding. */
@@ -112,7 +112,7 @@ enum CharEncoding {
  *
  * Defined by the W3C HTML5 standard.
  */
-enum Confidence {
+enum class Confidence {
 	CERTAIN, /**<	@brief Indicates a definite match for the character encoding of the document.*/
 	TENTATIVE, /**<	@brief Indicates a tentative guess for the character encoding of the document. */
 	IRRELEVANT /**<	@brief Indicates that a guess could not be made. */
@@ -125,11 +125,11 @@ enum Confidence {
  */
 class ContentType {
 	public:
-		ContentType(CharEncoding charEncoding = UNKNOWN, Confidence confidence = IRRELEVANT) :
+		ContentType(CharEncoding charEncoding = CharEncoding::UNKNOWN, Confidence confidence = Confidence::IRRELEVANT) :
 				charEncoding(charEncoding), confidence(confidence) {
 		}
-		CharEncoding charEncoding = UNKNOWN; /**<	@brief Holds the character encoding of the document. */
-		Confidence confidence = IRRELEVANT; /**<	@brief Holds the confidence of the guess at the character encoding. */
+		CharEncoding charEncoding = CharEncoding::UNKNOWN; /**<	@brief Holds the character encoding of the document. */
+		Confidence confidence = Confidence::IRRELEVANT; /**<	@brief Holds the confidence of the guess at the character encoding. */
 };
 
 /**

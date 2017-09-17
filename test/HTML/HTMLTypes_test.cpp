@@ -44,22 +44,22 @@ TEST(HTML_HTMLTypes, Attribute) {
 
 
 TEST(HTML_HTMLTypes, ContentType) {
-	EXPECT_EQ("UTF_8:CERTAIN", static_cast<std::stringstream&>(std::stringstream() << ContentType(UTF_8, CERTAIN)).str());
-	EXPECT_EQ("UTF_8", static_cast<std::stringstream&>(std::stringstream() << UTF_8).str());
-	EXPECT_EQ("UTF_16_BE", static_cast<std::stringstream&>(std::stringstream() << UTF_16_BE).str());
-	EXPECT_EQ("UTF_16_LE", static_cast<std::stringstream&>(std::stringstream() << UTF_16_LE).str());
-	EXPECT_EQ("UNKNOWN", static_cast<std::stringstream&>(std::stringstream() << UNKNOWN).str());
-	EXPECT_EQ("NULL_ENC", static_cast<std::stringstream&>(std::stringstream() << NULL_ENC).str());
-	EXPECT_EQ("IRRELEVANT", static_cast<std::stringstream&>(std::stringstream() << IRRELEVANT).str());
-	EXPECT_EQ("TENTATIVE", static_cast<std::stringstream&>(std::stringstream() << TENTATIVE).str());
-	EXPECT_EQ("CERTAIN", static_cast<std::stringstream&>(std::stringstream() << CERTAIN).str());
+	EXPECT_EQ("CharEncoding::UTF_8:Confidence::CERTAIN", static_cast<std::stringstream&>(std::stringstream() << ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)).str());
+	EXPECT_EQ("CharEncoding::UTF_8", static_cast<std::stringstream&>(std::stringstream() << CharEncoding::UTF_8).str());
+	EXPECT_EQ("CharEncoding::UTF_16_BE", static_cast<std::stringstream&>(std::stringstream() << CharEncoding::UTF_16_BE).str());
+	EXPECT_EQ("CharEncoding::UTF_16_LE", static_cast<std::stringstream&>(std::stringstream() << CharEncoding::UTF_16_LE).str());
+	EXPECT_EQ("CharEncoding::UNKNOWN", static_cast<std::stringstream&>(std::stringstream() << CharEncoding::UNKNOWN).str());
+	EXPECT_EQ("CharEncoding::NULL_ENC", static_cast<std::stringstream&>(std::stringstream() << CharEncoding::NULL_ENC).str());
+	EXPECT_EQ("Confidence::IRRELEVANT", static_cast<std::stringstream&>(std::stringstream() << Confidence::IRRELEVANT).str());
+	EXPECT_EQ("Confidence::TENTATIVE", static_cast<std::stringstream&>(std::stringstream() << Confidence::TENTATIVE).str());
+	EXPECT_EQ("Confidence::CERTAIN", static_cast<std::stringstream&>(std::stringstream() << Confidence::CERTAIN).str());
 
-	EXPECT_TRUE(ContentType(UTF_8, CERTAIN) == ContentType(UTF_8, CERTAIN));
-	EXPECT_FALSE(ContentType(UTF_8, CERTAIN) == ContentType(UNKNOWN, CERTAIN));
-	EXPECT_FALSE(ContentType(UTF_8, CERTAIN) == ContentType(UTF_8, IRRELEVANT));
-	EXPECT_FALSE(ContentType(UTF_8, CERTAIN) == ContentType(UNKNOWN, CERTAIN));
-	EXPECT_TRUE(ContentType(UTF_8, CERTAIN) != ContentType(UNKNOWN, IRRELEVANT));
-	EXPECT_FALSE(ContentType(UTF_8, CERTAIN) != ContentType(UTF_8, CERTAIN));
+	EXPECT_TRUE(ContentType(CharEncoding::UTF_8, Confidence::CERTAIN) == ContentType(CharEncoding::UTF_8, Confidence::CERTAIN));
+	EXPECT_FALSE(ContentType(CharEncoding::UTF_8, Confidence::CERTAIN) == ContentType(CharEncoding::UNKNOWN, Confidence::CERTAIN));
+	EXPECT_FALSE(ContentType(CharEncoding::UTF_8, Confidence::CERTAIN) == ContentType(CharEncoding::UTF_8, Confidence::IRRELEVANT));
+	EXPECT_FALSE(ContentType(CharEncoding::UTF_8, Confidence::CERTAIN) == ContentType(CharEncoding::UNKNOWN, Confidence::CERTAIN));
+	EXPECT_TRUE(ContentType(CharEncoding::UTF_8, Confidence::CERTAIN) != ContentType(CharEncoding::UNKNOWN, Confidence::IRRELEVANT));
+	EXPECT_FALSE(ContentType(CharEncoding::UTF_8, Confidence::CERTAIN) != ContentType(CharEncoding::UTF_8, Confidence::CERTAIN));
 }
 
 
