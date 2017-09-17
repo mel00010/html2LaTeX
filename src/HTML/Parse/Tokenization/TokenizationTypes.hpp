@@ -111,20 +111,20 @@ inline bool operator!=(const NoToken& lhs, const NoToken& rhs) {
 }
 
 enum class TokenType {
+	NO_TOKEN,
 	DOCTYPE,
 	START_TAG,
 	END_TAG,
 	COMMENT,
 	CHARACTER,
-	END_OF_FILE,
-	NO_TOKEN
+	END_OF_FILE
 };
 ::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type);
 
 class Token {
 	public:
-		TokenType type;
-		std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token;
+		TokenType type = TokenType::NO_TOKEN;
+		std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = NoToken();
 
 };
 ::std::ostream& operator<<(::std::ostream& os, const Token& token);

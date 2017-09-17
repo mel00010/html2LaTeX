@@ -153,8 +153,10 @@ bool operator==(const NoToken& lhs, const NoToken& rhs) {
 
 ::std::ostream& operator<<(::std::ostream& os, const Token& token) {
 	os << "TokenType type = " << token.type << "\n";
-	os << "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = ";
-	if (auto doctype_token = std::get_if<DOCTYPEToken>(&token.token)) {
+	os << "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+	if (auto no_token = std::get_if<NoToken>(&token.token)) {
+		os << *no_token;
+	} else if (auto doctype_token = std::get_if<DOCTYPEToken>(&token.token)) {
 		os << *doctype_token;
 	} else if (auto start_tag_token = std::get_if<StartTagToken>(&token.token)) {
 		os << *start_tag_token;
@@ -166,8 +168,6 @@ bool operator==(const NoToken& lhs, const NoToken& rhs) {
 		os << *comment_token;
 	} else if (auto eof_token = std::get_if<EOFToken>(&token.token)) {
 		os << *eof_token;
-	} else if (auto no_token = std::get_if<NoToken>(&token.token)) {
-		os << *no_token;
 	}
 
 	return os;

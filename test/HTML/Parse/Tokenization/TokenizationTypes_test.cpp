@@ -246,7 +246,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::END_OF_FILE\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = \\(EOF)";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = \\(EOF)";
 
 		EXPECT_EQ(result, testStream.str());
 
@@ -257,7 +257,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::NO_TOKEN\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = No Token!";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = No Token!";
 
 		EXPECT_EQ(result, testStream.str());
 
@@ -276,7 +276,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::START_TAG\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = ";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
 		result += "std::string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
@@ -298,7 +298,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::END_TAG\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = ";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
 		result += "std::string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
@@ -312,7 +312,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::COMMENT\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = ";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
 		result += "std::string data = \"this is a comment\"";
 
 		EXPECT_EQ(result, testStream.str());
@@ -325,7 +325,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::CHARACTER\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = ";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
 		result += "char32_t data = U+00001234";
 
 		EXPECT_EQ(result, testStream.str());
@@ -337,7 +337,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::DOCTYPE\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = ";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
 		result += "std::string name = name\n";
 		result += "std::string public_identifier = public_identifier\n";
 		result += "std::string system_identifier = system_identifier\n";
@@ -476,14 +476,14 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		result += "std::list<Token> tokens = {\n";
 
 		result += "Token { TokenType type = TokenType::END_OF_FILE\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = \\(EOF)}, \n";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = \\(EOF)}, \n";
 
 		result += "Token { TokenType type = TokenType::NO_TOKEN\n";
-		result += "std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = No Token!}, \n";
+		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = No Token!}, \n";
 
 		result += "Token { TokenType type = TokenType::START_TAG\n";
 		result +=
-				"std::variant<DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken, NoToken> token = std::string tag_name = tag_name\n";
+				"std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = std::string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
 		result += "}, \n";
