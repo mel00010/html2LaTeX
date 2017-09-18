@@ -11,6 +11,7 @@ target_sources(parse_test
 target_link_libraries(parse_test
 	INTERFACE
 		parse
+		htmltypes
 		tokenization_test
 		treeconstruction_test
 )

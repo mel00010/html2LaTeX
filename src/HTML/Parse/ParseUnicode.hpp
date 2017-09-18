@@ -28,6 +28,7 @@ namespace HTML {
 namespace Parse {
 
 
+
 std::u32string parseUnicode(const std::string& string, const ContentType& content_type);
 
 } /* namespace Parse */
