@@ -31,7 +31,6 @@ namespace HTML {
 namespace Parse {
 
 TEST(HTML_Parse_ParseUnicode, parseUnicode) {
-
 	EXPECT_EQ(std::u32string(U"\U00000024"), parseUnicode( {'\x24'}, ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)));
 	EXPECT_EQ(std::u32string(U"\U000000A2"), parseUnicode( {'\xC2','\xA2'}, ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)));
 	EXPECT_EQ(std::u32string(U"\U000020AC"), parseUnicode( {'\xE2','\x82','\xAC'}, ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)));
@@ -47,12 +46,8 @@ TEST(HTML_Parse_ParseUnicode, parseUnicode) {
 	EXPECT_EQ(std::u32string(U"\U00010437"), parseUnicode( {'\x01','\xD8','\x37','\xDC'}, ContentType(CharEncoding::UTF_16_LE, Confidence::CERTAIN)));
 	EXPECT_EQ(std::u32string(U"\U00024B62"), parseUnicode( {'\x52','\xD8','\x62','\xDF'}, ContentType(CharEncoding::UTF_16_LE, Confidence::CERTAIN)));
 
-//	EXPECT_EQ(std::u32string(U""), parseUnicode("", ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)));
-//	EXPECT_EQ(std::u32string(U""), parseUnicode("", ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)));
-//	EXPECT_EQ(std::u32string(U""), parseUnicode("", ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)));
-//	EXPECT_EQ(std::u32string(U""), parseUnicode("", ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)));
-//	EXPECT_THROW(parseUnicode("", ContentType(CharEncoding::UTF_8, Confidence::CERTAIN)), UnicodeParseException);
-
+	EXPECT_THROW(parseUnicode("", ContentType(CharEncoding::NULL_ENC, Confidence::CERTAIN)), UnicodeParseException);
+	EXPECT_THROW(parseUnicode("", ContentType(CharEncoding::UNKNOWN, Confidence::CERTAIN)), UnicodeParseException);
 }
 
 }
