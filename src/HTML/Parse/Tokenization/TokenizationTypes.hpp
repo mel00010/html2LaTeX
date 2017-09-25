@@ -35,9 +35,9 @@ namespace Tokenization {
 
 class DOCTYPEToken {
 	public:
-		std::string name = "\0xFF";
-		std::string public_identifier = "\0xFF";
-		std::string system_identifier = "\0xFF";
+		std::string name = "\xFF";
+		std::string public_identifier = "\xFF";
+		std::string system_identifier = "\xFF";
 		bool force_quirks = false;
 };
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token);
@@ -121,10 +121,12 @@ enum class TokenType {
 };
 ::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type);
 
+typedef std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> TokenVariant;
+
 class Token {
 	public:
 		TokenType type = TokenType::NO_TOKEN;
-		std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = NoToken();
+		TokenVariant token = NoToken();
 
 };
 ::std::ostream& operator<<(::std::ostream& os, const Token& token);
@@ -206,20 +208,20 @@ enum class STATES {
 ::std::ostream& operator<<(::std::ostream& os, const STATES& state);
 
 struct StateData {
-		STATES state;
-		std::string string;
-		size_t pos;
-		char buf;
-		bool parser_pause_flag;
-		size_t script_nesting_level;
-		std::list<Token> tokens;
-		StateData(STATES state = STATES::NULL_STATE, std::string string = "",
-				size_t pos = 0, char buf = '\0', bool parser_pause_flag = false,
-				size_t script_nesting_level = 0, std::list<Token> tokens = { }) :
-				state(state), string(string), pos(pos), buf(buf), parser_pause_flag(parser_pause_flag),
-						script_nesting_level(script_nesting_level), tokens(tokens) {
-
-		}
+		STATES state = STATES::NULL_STATE;
+		std::u32string string = U"";
+		size_t pos = 0;
+		char32_t buf = '\0';
+		bool parser_pause_flag = false;
+		size_t script_nesting_level = 0;
+		std::list<Token> tokens = { };
+//		StateData(STATES state = STATES::NULL_STATE, std::string string = "",
+//				size_t pos = 0, char32_t buf = '\0', bool parser_pause_flag = false,
+//				size_t script_nesting_level = 0, std::list<Token> tokens = { }) :
+//				state(state), string(string), pos(pos), buf(buf), parser_pause_flag(parser_pause_flag),
+//						script_nesting_level(script_nesting_level), tokens(tokens) {
+//
+//		}
 };
 
 ::std::ostream& operator<<(::std::ostream& os, const StateData& stateData);

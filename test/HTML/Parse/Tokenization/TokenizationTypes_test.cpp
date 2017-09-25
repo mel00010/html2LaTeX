@@ -246,7 +246,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::END_OF_FILE\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = \\(EOF)";
+		result += "TokenVariant token = \\(EOF)";
 
 		EXPECT_EQ(result, testStream.str());
 
@@ -257,7 +257,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::NO_TOKEN\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = No Token!";
+		result += "TokenVariant token = No Token!";
 
 		EXPECT_EQ(result, testStream.str());
 
@@ -276,7 +276,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::START_TAG\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+		result += "TokenVariant token = ";
 		result += "std::string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
@@ -298,7 +298,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::END_TAG\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+		result += "TokenVariant token = ";
 		result += "std::string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
@@ -312,7 +312,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::COMMENT\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+		result += "TokenVariant token = ";
 		result += "std::string data = \"this is a comment\"";
 
 		EXPECT_EQ(result, testStream.str());
@@ -325,7 +325,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::CHARACTER\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+		result += "TokenVariant token = ";
 		result += "char32_t data = U+00001234";
 
 		EXPECT_EQ(result, testStream.str());
@@ -337,7 +337,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 		std::string result = "";
 		result += "TokenType type = TokenType::DOCTYPE\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
+		result += "TokenVariant token = ";
 		result += "std::string name = name\n";
 		result += "std::string public_identifier = public_identifier\n";
 		result += "std::string system_identifier = system_identifier\n";
@@ -434,7 +434,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		testStream << (StateData());
 		std::string result = "";
 		result += "STATES state = STATES::NULL_STATE\n";
-		result += "std::string string = \"\"\n";
+		result += "std::u32string string = \"\"\n";
 		result += "size_t pos = 0\n";
 		result += "char buf = '\0'\n"s;
 		result += "bool parser_pause_flag = 0\n";
@@ -447,7 +447,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		std::stringstream testStream;
 		testStream << (StateData {
 				STATES::DATA,
-				"test string",
+				U"test string",
 				5,
 				'a',
 				true,
@@ -468,7 +468,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		});
 		std::string result = "";
 		result += "STATES state = STATES::DATA\n";
-		result += "std::string string = \"test string\"\n";
+		result += "std::u32string string = \"test string\"\n";
 		result += "size_t pos = 5\n";
 		result += "char buf = 'a'\n";
 		result += "bool parser_pause_flag = 1\n";
@@ -476,14 +476,13 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		result += "std::list<Token> tokens = {\n";
 
 		result += "Token { TokenType type = TokenType::END_OF_FILE\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = \\(EOF)}, \n";
+		result += "TokenVariant token = \\(EOF)}, \n";
 
 		result += "Token { TokenType type = TokenType::NO_TOKEN\n";
-		result += "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = No Token!}, \n";
+		result += "TokenVariant token = No Token!}, \n";
 
 		result += "Token { TokenType type = TokenType::START_TAG\n";
-		result +=
-				"std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = std::string tag_name = tag_name\n";
+		result += "TokenVariant token = std::string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
 		result += "}, \n";
@@ -497,7 +496,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 	EXPECT_EQ(StateData(), StateData());
 	EXPECT_EQ((StateData {
 			STATES::DATA,
-			"test string",
+			U"test string",
 			5,
 			'a',
 			true,
@@ -517,7 +516,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 			}
 	}), (StateData {
 			STATES::DATA,
-			"test string",
+			U"test string",
 			5,
 			'a',
 			true,
@@ -538,7 +537,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 	}));
 	EXPECT_NE((StateData {
 			STATES::DATA,
-			"test string",
+			U"test string",
 			5,
 			'a',
 			true,
@@ -559,7 +558,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 	}), (StateData()));
 	EXPECT_NE((StateData {
 			STATES::DATA,
-			"test string",
+			U"test string",
 			5,
 			'a',
 			true,
@@ -579,7 +578,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 			}
 	}), (StateData {
 			STATES::DATA,
-			"test string",
+			U"test string",
 			5,
 			'a',
 			true,

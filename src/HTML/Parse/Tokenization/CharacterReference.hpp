@@ -22,6 +22,9 @@
 
 #include "TokenizationTypes.hpp"
 
+#include <optional>
+#include <utility>
+
 namespace HTML {
 namespace Parse {
 namespace Tokenization {

@@ -30,7 +30,7 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-std::list<Token> tokenize(const std::string& string) {
+std::list<Token> tokenize(const std::u32string& string) {
 	StateData state_data;
 	state_data.string = string;
 

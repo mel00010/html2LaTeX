@@ -21,9 +21,11 @@
 #include "TokenizationTypes.hpp"
 
 #include <boost/io/ios_state.hpp>
+#include <codecvt>
 #include <cstdlib>
 #include <iomanip>
 #include <iostream>
+#include <locale>
 #include <string>
 
 namespace HTML {
@@ -31,11 +33,11 @@ namespace Parse {
 namespace Tokenization {
 
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token) {
-	os << "std::string name = " << ((doctype_token.name == "\0xFF") ? "\\(EOF)" : doctype_token.name) << "\n";
+	os << "std::string name = " << ((doctype_token.name == "\xFF") ? "\\(EOF)" : doctype_token.name) << "\n";
 	os << "std::string public_identifier = ";
-	os << ((doctype_token.public_identifier == "\0xFF") ? "\\(EOF)" : doctype_token.public_identifier) << "\n";
+	os << ((doctype_token.public_identifier == "\xFF") ? "\\(EOF)" : doctype_token.public_identifier) << "\n";
 	os << "std::string system_identifier = ";
-	os << ((doctype_token.system_identifier == "\0xFF") ? "\\(EOF)" : doctype_token.system_identifier) << "\n";
+	os << ((doctype_token.system_identifier == "\xFF") ? "\\(EOF)" : doctype_token.system_identifier) << "\n";
 	os << "bool force_quirks = " << doctype_token.force_quirks;
 	return os;
 }
@@ -153,24 +155,8 @@ bool operator==(const NoToken& lhs, const NoToken& rhs) {
 
 ::std::ostream& operator<<(::std::ostream& os, const Token& token) {
 	os << "TokenType type = " << token.type << "\n";
-	os << "std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> token = ";
-	if (auto no_token = std::get_if<NoToken>(&token.token)) {
-		os << *no_token;
-	} else if (auto doctype_token = std::get_if<DOCTYPEToken>(&token.token)) {
-		os << *doctype_token;
-	} else if (auto start_tag_token = std::get_if<StartTagToken>(&token.token)) {
-		os << *start_tag_token;
-	} else if (auto end_tag_token = std::get_if<EndTagToken>(&token.token)) {
-		os << *end_tag_token;
-	} else if (auto character_token = std::get_if<CharacterToken>(&token.token)) {
-		os << *character_token;
-	} else if (auto comment_token = std::get_if<CommentToken>(&token.token)) {
-		os << *comment_token;
-	} else if (auto eof_token = std::get_if<EOFToken>(&token.token)) {
-		os << *eof_token;
-	}
-
-	return os;
+	os << "TokenVariant token = ";
+	return std::visit([&os](auto&& arg) {os << arg;}, token.token), os;
 }
 
 bool operator==(const Token& lhs, const Token& rhs) {
@@ -424,10 +410,11 @@ bool operator==(const Token& lhs, const Token& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const StateData& state_data) {
+	;
 	os << "STATES state = " << state_data.state << "\n";
-	os << "std::string string = \"" << state_data.string << "\"\n";
+	os << "std::u32string string = \"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(state_data.string) << "\"\n";
 	os << "size_t pos = " << state_data.pos << "\n";
-	os << "char buf = '" << state_data.buf << "'\n";
+	os << "char buf = '" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(state_data.buf) << "'\n";
 	os << "bool parser_pause_flag = " << state_data.parser_pause_flag << "\n";
 	os << "size_t script_nesting_level = " << state_data.script_nesting_level << "\n";
 	os << "std::list<Token> tokens = ";

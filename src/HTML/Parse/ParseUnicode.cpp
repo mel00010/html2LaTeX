@@ -32,13 +32,13 @@ namespace Parse {
 std::u32string parseUnicode(const std::string& string, const ContentType& content_type) {
 	switch (content_type.char_encoding) {
 		case CharEncoding::UTF_8:
-			return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> { }.from_bytes(string);
+			return std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().from_bytes(string);
 			break;
 		case CharEncoding::UTF_16_BE:
-			return std::wstring_convert<std::codecvt_utf16<char32_t>, char32_t> { }.from_bytes(string);
+			return std::wstring_convert<std::codecvt_utf16<char32_t>, char32_t>().from_bytes(string);
 			break;
 		case CharEncoding::UTF_16_LE:
-			return std::wstring_convert<std::codecvt_utf16<char32_t, 0x10ffff, std::codecvt_mode::little_endian>, char32_t> { }.from_bytes(string);
+			return std::wstring_convert<std::codecvt_utf16<char32_t, 0x10ffff, std::codecvt_mode::little_endian>, char32_t>().from_bytes(string);
 			break;
 		default:
 			throw UnicodeParseException();
