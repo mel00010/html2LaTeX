@@ -43,7 +43,6 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-//std::pair<Token, std::optional<Token>> consumeCharacterReference(StateData& data) {
 Token consumeCharacterReference(StateData& data) {
 
 	Token token;
