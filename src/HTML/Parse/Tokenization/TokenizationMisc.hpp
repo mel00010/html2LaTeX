@@ -42,9 +42,9 @@ Token createStartTagToken(const std::string& tag_name = "",
 Token createEndTagToken(const std::string& tag_name = "",
 		const bool self_closing = false,
 		const std::list<Attribute>& attributes = { });
-Token createCharacterToken(const std::array<const char32_t, 2> data);
-Token createCharacterToken(const char32_t& first_character = EOF, const char32_t& second_character = EOF);
-Token createCharacterToken(const unsigned int& first_character = EOF, const unsigned int& second_character = EOF);
+Token createCharacterToken(const char32_t& data = EOF);
+Token createCharacterToken(const unsigned int& data = EOF);
+Token createCharacterToken(const int& data = EOF);
 
 Token createCommentToken(const std::string& data = "");
 Token createEOFToken();

@@ -72,8 +72,7 @@ inline bool operator!=(const EndTagToken& lhs, const EndTagToken& rhs) {
 
 class CharacterToken {
 	public:
-		char32_t first_character = EOF;
-		char32_t second_character = EOF;
+		char32_t data = EOF;
 };
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token);
 bool operator==(const CharacterToken& lhs, const CharacterToken& rhs);
@@ -228,6 +227,16 @@ struct StateData {
 ::std::ostream& operator<<(::std::ostream& os, const StateData& stateData);
 bool operator==(const StateData& lhs, const StateData& rhs);
 inline bool operator!=(const StateData& lhs, const StateData& rhs) {
+	return !(lhs == rhs);
+}
+
+struct EmmittedTokens {
+		Token first;
+		Token second;
+};
+::std::ostream& operator<<(::std::ostream& os, const EmmittedTokens& tokens);
+bool operator==(const EmmittedTokens& lhs, const EmmittedTokens& rhs);
+inline bool operator!=(const EmmittedTokens& lhs, const EmmittedTokens& rhs) {
 	return !(lhs == rhs);
 }
 

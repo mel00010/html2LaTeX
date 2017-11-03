@@ -36,15 +36,16 @@ Token createStartTagToken(const std::string& tag_name, const bool self_closing, 
 Token createEndTagToken(const std::string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
 	return Token { TokenType::END_TAG, EndTagToken { tag_name, self_closing, attributes } };
 }
-Token createCharacterToken(const std::array<const char32_t, 2> data) {
-	return Token { TokenType::CHARACTER, CharacterToken { data[0], data[1] } };
+Token createCharacterToken(const char32_t& data) {
+	return Token { TokenType::CHARACTER, CharacterToken { data } };
 }
-Token createCharacterToken(const char32_t& first_character, const char32_t& second_character) {
-	return Token { TokenType::CHARACTER, CharacterToken { first_character, second_character } };
-}
-Token createCharacterToken(const unsigned int& first_character, const unsigned int& second_character) {
+Token createCharacterToken(const unsigned int& data) {
 	return Token { TokenType::CHARACTER, CharacterToken
-			{ static_cast<char32_t>(first_character), static_cast<char32_t>(second_character) } };
+			{ static_cast<char32_t>(data) } };
+}
+Token createCharacterToken(const int& data) {
+	return Token { TokenType::CHARACTER, CharacterToken
+			{ static_cast<char32_t>(data) } };
 }
 Token createCommentToken(const std::string& data) {
 	return Token { TokenType::COMMENT, CommentToken { data } };

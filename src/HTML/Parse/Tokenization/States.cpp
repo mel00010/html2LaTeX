@@ -105,7 +105,7 @@ void RCDATAState(StateData& data) {
 
 void characterReferenceINRCDATAState(StateData& data) {
 	data.state = STATES::DATA;
-	//Consume a character reference, no additional allowed character
+
 }
 
 void RAWTEXTState(__attribute__ ((unused)) StateData& data) {

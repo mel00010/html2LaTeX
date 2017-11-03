@@ -47,9 +47,8 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-Token consumeCharacterReference(StateData& data) {
-
-	Token token;
+EmmittedTokens consumeCharacterReference(StateData& data) {
+	EmmittedTokens tokens;
 	size_t original_position = data.pos;
 	static constexpr char32_t notACharacterReferenceChars[] {
 			'\t',
@@ -62,11 +61,11 @@ Token consumeCharacterReference(StateData& data) {
 
 	for (auto i : notACharacterReferenceChars) {
 		if (data.string[data.pos + 1] == i) {
-			return token;
+			return tokens;
 		}
 	}
 	if (data.pos + 1 >= data.string.length()) {
-		return token;
+		return tokens;
 	}
 
 	if (data.string[data.pos + 1] == '#') {
@@ -90,7 +89,7 @@ Token consumeCharacterReference(StateData& data) {
 
 		if (digits.empty()) {
 			data.pos = original_position;
-			return token;
+			return tokens;
 		}
 
 		unsigned long id = parseInteger(digits);
@@ -132,16 +131,16 @@ Token consumeCharacterReference(StateData& data) {
 		};
 		for (auto i : conversionArray) {
 			if (id == i.first) {
-				return createCharacterToken(i.second);
+				return EmmittedTokens { createCharacterToken(i.second), createCharacterToken(EOF) };
 			}
 		}
 
 		if ((id > 0x10FFFF) || (0xD800 <= id && id <= 0xDFFF)) {
-			return createCharacterToken(U'\U0000FFFD');
+			return EmmittedTokens { createCharacterToken(U'\U0000FFFD'), createCharacterToken(EOF) };
 		}
 
 		if ((0x0001 <= id && id <= 0x0008) || (0x000D <= id && id <= 0x001F) || (0x007F <= id && id <= 0x009F) || (0xFDD0 <= id && id <= 0xFDEF)) {
-			return token;
+			return tokens;
 		}
 		static constexpr unsigned long disallowedIDs[] {
 				0x000B,
@@ -182,29 +181,29 @@ Token consumeCharacterReference(StateData& data) {
 		};
 		for (auto i : disallowedIDs) {
 			if (id == i) {
-				return token;
+				return tokens;
 			}
 		}
 
-		return createCharacterToken(static_cast<unsigned int>(id));
+		return EmmittedTokens { createCharacterToken(static_cast<unsigned int>(id)), createCharacterToken(EOF) };
 	} else {
 		std::u32string characters = data.string.substr(data.pos, std::u32string(std::get<0>(characterReferences.front())).length());
 		for (auto i : characterReferences) {
 			if (characters.find(std::u32string(std::get<0>(i))) == 0) {
 				data.pos += std::u32string(std::get<0>(i)).length();
-				return createCharacterToken(std::get<1>(i), std::get<2>(i));
+				return EmmittedTokens { createCharacterToken(std::get<1>(i)), createCharacterToken(std::get<2>(i)) };
 			}
 		}
 	}
 	data.pos = original_position;
-	return token;
+	return tokens;
 
 }
 
-Token consumeCharacterReference(StateData& data, const char32_t& additional_allowed_character) {
-	Token token;
+EmmittedTokens consumeCharacterReference(StateData& data, const char32_t& additional_allowed_character) {
+	EmmittedTokens tokens;
 	if (data.string[data.pos + 1] == additional_allowed_character) {
-		return token;
+		return tokens;
 	}
 	return consumeCharacterReference(data);
 }

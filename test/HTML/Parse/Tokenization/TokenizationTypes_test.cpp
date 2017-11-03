@@ -170,35 +170,30 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, CharacterTokenStreamWrite) {
 		std::stringstream testStream;
 		testStream << CharacterToken();
 		std::string result = "";
-		result += "char32_t first_character = U+FFFFFFFF\n";
-		result += "char32_t second_character = U+FFFFFFFF";
+		result += "char32_t data = U+FFFFFFFF";
 		EXPECT_EQ(result, testStream.str());
 	}
 	{
 		std::stringstream testStream;
-		testStream << (CharacterToken { U'\U00001234', (char32_t) EOF });
+		testStream << (CharacterToken { U'\U00001234' });
 		std::string result = "";
-		result += "char32_t first_character = U+00001234\n";
-		result += "char32_t second_character = U+FFFFFFFF";
+		result += "char32_t data = U+00001234";
 		EXPECT_EQ(result, testStream.str());
 	}
 	{
 		std::stringstream testStream;
-		testStream << (CharacterToken { U'\U00001234', U'\U00005678' });
+		testStream << (CharacterToken { U'\U00001234' });
 		std::string result = "";
-		result += "char32_t first_character = U+00001234\n";
-		result += "char32_t second_character = U+00005678";
+		result += "char32_t data = U+00001234";
 		EXPECT_EQ(result, testStream.str());
 	}
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, CharacterTokenEquality) {
 	EXPECT_EQ(CharacterToken(), CharacterToken());
-	EXPECT_EQ((CharacterToken { U'\U00001234', U'\U00005678' }), (CharacterToken { U'\U00001234', U'\U00005678' }));
-	EXPECT_NE((CharacterToken { U'\U00001234', U'\U00005678' }), (CharacterToken { U'\U12340000', U'\U00005678' }));
-	EXPECT_NE((CharacterToken { U'\U00001234', U'\U00005678' }), (CharacterToken { U'\U00001234', U'\U56780000' }));
-	EXPECT_NE((CharacterToken { U'\U00001234', U'\U00005678' }), (CharacterToken { U'\U12340000', U'\U56780000' }));
-	EXPECT_NE((CharacterToken { U'\U00001234', U'\U00005678' }), CharacterToken());
+	EXPECT_EQ((CharacterToken { U'\U00001234' }), (CharacterToken { U'\U00001234' }));
+	EXPECT_NE((CharacterToken { U'\U00001234' }), (CharacterToken { U'\U12340000' }));
+	EXPECT_NE((CharacterToken { U'\U00001234' }), CharacterToken());
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, CommentTokenStreamWrite) {
@@ -333,13 +328,12 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 
 	{
 		std::stringstream testStream;
-		testStream << (Token { TokenType::CHARACTER, CharacterToken { U'\U00001234', (char32_t) EOF } });
+		testStream << (Token { TokenType::CHARACTER, CharacterToken { U'\U00001234' } });
 
 		std::string result = "";
 		result += "TokenType type = TokenType::CHARACTER\n";
 		result += "TokenVariant token = ";
-		result += "char32_t first_character = U+00001234\n";
-		result += "char32_t second_character = U+FFFFFFFF";
+		result += "char32_t data = U+00001234";
 
 		EXPECT_EQ(result, testStream.str());
 
