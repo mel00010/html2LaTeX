@@ -27,730 +27,431 @@
 #include <HTML/Parse/Tokenization/TokenizationTypes.hpp>
 #include <HTML/Parse/Tokenization/TokenizationMisc.hpp>
 
+#define EXPECT_NULL_TOKEN(test_string, expected_position) \
+	{ \
+		StateData test; \
+		EXPECT_EQ(Token(), consumeCharacterReference(test = StateData { STATES::DATA, test_string})); \
+		EXPECT_EQ(expected_position, (long) test.pos); \
+	}
+#define EXPECT_CHARACTER_TOKEN(first_character, second_character, test_string, expected_position) \
+	{ \
+		StateData test; \
+		Token token = Token {TokenType::CHARACTER, CharacterToken {first_character, (char32_t) second_character}}; \
+		EXPECT_EQ(token, consumeCharacterReference(test = StateData { STATES::DATA, test_string})); \
+		EXPECT_EQ(expected_position, (long) test.pos); \
+	}
+
 namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
 TEST(HTML_Parse_Tokenization_CharacterReference, consumeCharacterReference) {
 	StateData test;
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData { STATES::DATA, U"&\t"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&\n"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&\f"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"& "}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&<"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&&"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&\0"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference((test = StateData {STATES::DATA, U"&a"}), 'a'));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X"}));
-	EXPECT_EQ(0u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#0"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x0"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X0"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000020AC'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#128"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000020AC'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x80"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000020AC'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X80"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201A'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#130"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201A'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x82"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201A'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X82"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000192'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#131"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000192'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x83"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000192'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X83"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201E'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#132"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201E'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x84"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201E'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X84"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002026'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#133"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002026'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x85"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002026'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X85"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002020'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#134"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002020'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x86"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002020'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X86"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002021'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#135"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002021'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x87"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002021'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X87"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000002C6'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#136"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000002C6'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x88"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000002C6'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X88"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002030'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#137"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002030'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x89"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002030'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X89"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000160'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#138"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000160'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x8A"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000160'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X8A"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002039'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#139"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002039'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x8B"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002039'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X8B"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000152'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#140"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000152'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x8C"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000152'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X8C"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000017D'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#142"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000017D'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x8E"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000017D'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X8E"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002018'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#145"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002018'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x91"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002018'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X91"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002019'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#146"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002019'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x92"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002019'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X92"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201C'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#147"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201C'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x93"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201C'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X93"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201D'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#148"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201D'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x94"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000201D'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X94"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002022'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#149"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002022'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x95"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002022'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X95"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002013'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#150"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002013'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x96"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002013'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X96"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002014'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#151"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002014'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x97"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002014'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X97"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000002DC'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#152"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000002DC'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x98"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U000002DC'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X98"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002122'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#153"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002122'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x99"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00002122'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X99"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000161'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#154"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000161'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9A"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000161'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9A"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000203A'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#155"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000203A'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9B"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000203A'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9B"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000153'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#156"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000153'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9C"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000153'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9C"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000017E'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#158"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000017E'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9E"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000017E'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9E"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000178'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#159"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000178'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9F"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U00000178'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9F"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#55296"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xD800"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XD800"}));
-	EXPECT_EQ(7u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#57343"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xDFFF"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XDFFF"}));
-	EXPECT_EQ(7u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#57343"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xDFFF"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XDFFF"}));
-	EXPECT_EQ(7u, test.pos);
-
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#1114112"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x110000"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ((Token {TokenType::CHARACTER, CharacterToken {U'\U0000FFFD'}}), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X110000"}));
-	EXPECT_EQ(9u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#1"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#2"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x2"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X2"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#3"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x3"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X3"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#4"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x4"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X4"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#5"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x5"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X5"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#6"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x6"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X6"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#7"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x7"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X7"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#8"}));
-	EXPECT_EQ(3u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x8"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X8"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#13"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xD"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XD"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#14"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xE"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XE"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#15"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xF"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XF"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#16"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x10"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X10"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#17"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x11"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X11"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#18"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x12"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X12"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#19"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x13"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X13"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#20"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x14"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X14"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#21"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x15"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X15"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#22"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x16"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X16"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#23"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x17"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X17"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#24"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x18"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X18"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#25"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x19"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X19"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#26"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1A"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1A"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#27"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1B"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1B"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#28"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1C"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1C"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#29"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1D"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1D"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#30"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1E"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1E"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#31"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1F"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1F"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#127"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x7F"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X7F"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#159"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9F"}));
-	EXPECT_EQ(5u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9F"}));
-	EXPECT_EQ(5u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#64976"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xFDD0"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XFDD0"}));
-	EXPECT_EQ(7u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#65007"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xFDEF"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XFDEF"}));
-	EXPECT_EQ(7u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#11"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xB"}));
-	EXPECT_EQ(4u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XB"}));
-	EXPECT_EQ(4u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#65534"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xFFFE"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XFFFE"}));
-	EXPECT_EQ(7u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#65535"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xFFFF"}));
-	EXPECT_EQ(7u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XFFFF"}));
-	EXPECT_EQ(7u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#131070"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#131071"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x1FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X1FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#196606"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x2FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X2FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#196607"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x2FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X2FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#262142"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x3FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X3FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#262143"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x3FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X3FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#327678"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x4FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X4FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#327679"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x4FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X4FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#393214"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x5FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X5FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#393215"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x5FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X5FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#458750"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x6FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X6FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#458751"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x6FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X6FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#524286"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x7FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X7FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#524287"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x7FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X7FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#589822"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x8FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X8FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#589823"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x8FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X8FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#655358"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9FFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#655359"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x9FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X9FFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#720894"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xAFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XAFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#720895"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xAFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XAFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#786430"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xBFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XBFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#786431"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xBFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XBFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#851966"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xCFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XCFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#851967"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xCFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XCFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#917502"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xDFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XDFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#917503"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xDFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XDFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#983038"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xEFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XEFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#983039"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xEFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XEFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#1048574"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xFFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XFFFFE"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#1048575"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#xFFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#XFFFFF"}));
-	EXPECT_EQ(8u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#1114110"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x10FFFE"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X10FFFE"}));
-	EXPECT_EQ(9u, test.pos);
-
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#1114111"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#x10FFFF"}));
-	EXPECT_EQ(9u, test.pos);
-	EXPECT_EQ(Token(), consumeCharacterReference(test = StateData {STATES::DATA, U"&#X10FFFF"}));
-	EXPECT_EQ(9u, test.pos);
+	EXPECT_NULL_TOKEN(U"&\t", 0);
+	EXPECT_NULL_TOKEN(U"&\n", 0);
+	EXPECT_NULL_TOKEN(U"&\f", 0);
+	EXPECT_NULL_TOKEN(U"& ", 0);
+	EXPECT_NULL_TOKEN(U"&<", 0);
+	EXPECT_NULL_TOKEN(U"&&", 0);
+	EXPECT_NULL_TOKEN(U"&\0", 0);
+	EXPECT_NULL_TOKEN(U"&a", 0);
+	EXPECT_NULL_TOKEN(U"&#", 0);
+	EXPECT_NULL_TOKEN(U"&#x", 0);
+	EXPECT_NULL_TOKEN(U"&#X", 0);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#0", 3);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#x0", 4);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#X0", 4);
+
+	EXPECT_CHARACTER_TOKEN(U'\U000020AC', EOF, U"&#128", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U000020AC', EOF, U"&#x80", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U000020AC', EOF, U"&#X80", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000201A', EOF, U"&#130", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201A', EOF, U"&#x82", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201A', EOF, U"&#X82", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00000192', EOF, U"&#131", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000192', EOF, U"&#x83", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000192', EOF, U"&#X83", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000201E', EOF, U"&#132", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201E', EOF, U"&#x84", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201E', EOF, U"&#X84", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002026', EOF, U"&#133", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002026', EOF, U"&#x85", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002026', EOF, U"&#X85", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002020', EOF, U"&#134", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002020', EOF, U"&#x86", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002020', EOF, U"&#X86", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002021', EOF, U"&#135", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002021', EOF, U"&#x87", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002021', EOF, U"&#X87", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U000002C6', EOF, U"&#136", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U000002C6', EOF, U"&#x88", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U000002C6', EOF, U"&#X88", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002030', EOF, U"&#137", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002030', EOF, U"&#x89", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002030', EOF, U"&#X89", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00000160', EOF, U"&#138", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000160', EOF, U"&#x8A", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000160', EOF, U"&#X8A", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002039', EOF, U"&#139", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002039', EOF, U"&#x8B", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002039', EOF, U"&#X8B", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00000152', EOF, U"&#140", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000152', EOF, U"&#x8C", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000152', EOF, U"&#X8C", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000017D', EOF, U"&#142", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000017D', EOF, U"&#x8E", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000017D', EOF, U"&#X8E", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002018', EOF, U"&#145", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002018', EOF, U"&#x91", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002018', EOF, U"&#X91", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002019', EOF, U"&#146", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002019', EOF, U"&#x92", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002019', EOF, U"&#X92", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000201C', EOF, U"&#147", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201C', EOF, U"&#x93", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201C', EOF, U"&#X93", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000201D', EOF, U"&#148", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201D', EOF, U"&#x94", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000201D', EOF, U"&#X94", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002022', EOF, U"&#149", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002022', EOF, U"&#x95", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002022', EOF, U"&#X95", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002013', EOF, U"&#150", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002013', EOF, U"&#x96", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002013', EOF, U"&#X96", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002014', EOF, U"&#151", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002014', EOF, U"&#x97", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002014', EOF, U"&#X97", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U000002DC', EOF, U"&#152", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U000002DC', EOF, U"&#x98", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U000002DC', EOF, U"&#X98", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00002122', EOF, U"&#153", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002122', EOF, U"&#x99", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002122', EOF, U"&#X99", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00000161', EOF, U"&#154", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000161', EOF, U"&#x9A", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000161', EOF, U"&#X9A", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000203A', EOF, U"&#155", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000203A', EOF, U"&#x9B", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000203A', EOF, U"&#X9B", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00000153', EOF, U"&#156", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000153', EOF, U"&#x9C", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000153', EOF, U"&#X9C", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000017E', EOF, U"&#158", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000017E', EOF, U"&#x9E", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U0000017E', EOF, U"&#X9E", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U00000178', EOF, U"&#159", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000178', EOF, U"&#x9F", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00000178', EOF, U"&#X9F", 5);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#55296", 7);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#xD800", 7);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#XD800", 7);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#57343", 7);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#xDFFF", 7);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#XDFFF", 7);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#57343", 7);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#xDFFF", 7);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#XDFFF", 7);
+
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#1114112", 9);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#x110000", 9);
+	EXPECT_CHARACTER_TOKEN(U'\U0000FFFD', EOF, U"&#X110000", 9);
+
+	EXPECT_NULL_TOKEN(U"&#1", 3);
+	EXPECT_NULL_TOKEN(U"&#x1", 4);
+	EXPECT_NULL_TOKEN(U"&#X1", 4);
+
+	EXPECT_NULL_TOKEN(U"&#2", 3);
+	EXPECT_NULL_TOKEN(U"&#x2", 4);
+	EXPECT_NULL_TOKEN(U"&#X2", 4);
+
+	EXPECT_NULL_TOKEN(U"&#3", 3);
+	EXPECT_NULL_TOKEN(U"&#x3", 4);
+	EXPECT_NULL_TOKEN(U"&#X3", 4);
+
+	EXPECT_NULL_TOKEN(U"&#4", 3);
+	EXPECT_NULL_TOKEN(U"&#x4", 4);
+	EXPECT_NULL_TOKEN(U"&#X4", 4);
+
+	EXPECT_NULL_TOKEN(U"&#5", 3);
+	EXPECT_NULL_TOKEN(U"&#x5", 4);
+	EXPECT_NULL_TOKEN(U"&#X5", 4);
+
+	EXPECT_NULL_TOKEN(U"&#6", 3);
+	EXPECT_NULL_TOKEN(U"&#x6", 4);
+	EXPECT_NULL_TOKEN(U"&#X6", 4);
+
+	EXPECT_NULL_TOKEN(U"&#7", 3);
+	EXPECT_NULL_TOKEN(U"&#x7", 4);
+	EXPECT_NULL_TOKEN(U"&#X7", 4);
+
+	EXPECT_NULL_TOKEN(U"&#8", 3);
+	EXPECT_NULL_TOKEN(U"&#x8", 4);
+	EXPECT_NULL_TOKEN(U"&#X8", 4);
+
+	EXPECT_NULL_TOKEN(U"&#13", 4);
+	EXPECT_NULL_TOKEN(U"&#xD", 4);
+	EXPECT_NULL_TOKEN(U"&#XD", 4);
+
+	EXPECT_NULL_TOKEN(U"&#14", 4);
+	EXPECT_NULL_TOKEN(U"&#xE", 4);
+	EXPECT_NULL_TOKEN(U"&#XE", 4);
+
+	EXPECT_NULL_TOKEN(U"&#15", 4);
+	EXPECT_NULL_TOKEN(U"&#xF", 4);
+	EXPECT_NULL_TOKEN(U"&#XF", 4);
+
+	EXPECT_NULL_TOKEN(U"&#16", 4);
+	EXPECT_NULL_TOKEN(U"&#x10", 5);
+	EXPECT_NULL_TOKEN(U"&#X10", 5);
+
+	EXPECT_NULL_TOKEN(U"&#17", 4);
+	EXPECT_NULL_TOKEN(U"&#x11", 5);
+	EXPECT_NULL_TOKEN(U"&#X11", 5);
+
+	EXPECT_NULL_TOKEN(U"&#18", 4);
+	EXPECT_NULL_TOKEN(U"&#x12", 5);
+	EXPECT_NULL_TOKEN(U"&#X12", 5);
+
+	EXPECT_NULL_TOKEN(U"&#19", 4);
+	EXPECT_NULL_TOKEN(U"&#x13", 5);
+	EXPECT_NULL_TOKEN(U"&#X13", 5);
+
+	EXPECT_NULL_TOKEN(U"&#20", 4);
+	EXPECT_NULL_TOKEN(U"&#x14", 5);
+	EXPECT_NULL_TOKEN(U"&#X14", 5);
+
+	EXPECT_NULL_TOKEN(U"&#21", 4);
+	EXPECT_NULL_TOKEN(U"&#x15", 5);
+	EXPECT_NULL_TOKEN(U"&#X15", 5);
+
+	EXPECT_NULL_TOKEN(U"&#22", 4);
+	EXPECT_NULL_TOKEN(U"&#x16", 5);
+	EXPECT_NULL_TOKEN(U"&#X16", 5);
+
+	EXPECT_NULL_TOKEN(U"&#23", 4);
+	EXPECT_NULL_TOKEN(U"&#x17", 5);
+	EXPECT_NULL_TOKEN(U"&#X17", 5);
+
+	EXPECT_NULL_TOKEN(U"&#24", 4);
+	EXPECT_NULL_TOKEN(U"&#x18", 5);
+	EXPECT_NULL_TOKEN(U"&#X18", 5);
+
+	EXPECT_NULL_TOKEN(U"&#25", 4);
+	EXPECT_NULL_TOKEN(U"&#x19", 5);
+	EXPECT_NULL_TOKEN(U"&#X19", 5);
+
+	EXPECT_NULL_TOKEN(U"&#26", 4);
+	EXPECT_NULL_TOKEN(U"&#x1A", 5);
+	EXPECT_NULL_TOKEN(U"&#X1A", 5);
+
+	EXPECT_NULL_TOKEN(U"&#27", 4);
+	EXPECT_NULL_TOKEN(U"&#x1B", 5);
+	EXPECT_NULL_TOKEN(U"&#X1B", 5);
+
+	EXPECT_NULL_TOKEN(U"&#28", 4);
+	EXPECT_NULL_TOKEN(U"&#x1C", 5);
+	EXPECT_NULL_TOKEN(U"&#X1C", 5);
+
+	EXPECT_NULL_TOKEN(U"&#29", 4);
+	EXPECT_NULL_TOKEN(U"&#x1D", 5);
+	EXPECT_NULL_TOKEN(U"&#X1D", 5);
+
+	EXPECT_NULL_TOKEN(U"&#30", 4);
+	EXPECT_NULL_TOKEN(U"&#x1E", 5);
+	EXPECT_NULL_TOKEN(U"&#X1E", 5);
+
+	EXPECT_NULL_TOKEN(U"&#31", 4);
+	EXPECT_NULL_TOKEN(U"&#x1F", 5);
+	EXPECT_NULL_TOKEN(U"&#X1F", 5);
+
+	EXPECT_NULL_TOKEN(U"&#127", 5);
+	EXPECT_NULL_TOKEN(U"&#x7F", 5);
+	EXPECT_NULL_TOKEN(U"&#X7F", 5);
+
+	EXPECT_NULL_TOKEN(U"&#64976", 7);
+	EXPECT_NULL_TOKEN(U"&#xFDD0", 7);
+	EXPECT_NULL_TOKEN(U"&#XFDD0", 7);
+
+	EXPECT_NULL_TOKEN(U"&#65007", 7);
+	EXPECT_NULL_TOKEN(U"&#xFDEF", 7);
+	EXPECT_NULL_TOKEN(U"&#XFDEF", 7);
+
+	EXPECT_NULL_TOKEN(U"&#11", 4);
+	EXPECT_NULL_TOKEN(U"&#xB", 4);
+	EXPECT_NULL_TOKEN(U"&#XB", 4);
+
+	EXPECT_NULL_TOKEN(U"&#65534", 7);
+	EXPECT_NULL_TOKEN(U"&#xFFFE", 7);
+	EXPECT_NULL_TOKEN(U"&#XFFFE", 7);
+
+	EXPECT_NULL_TOKEN(U"&#65535", 7);
+	EXPECT_NULL_TOKEN(U"&#xFFFF", 7);
+	EXPECT_NULL_TOKEN(U"&#XFFFF", 7);
+
+	EXPECT_NULL_TOKEN(U"&#131070", 8);
+	EXPECT_NULL_TOKEN(U"&#x1FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X1FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#131071", 8);
+	EXPECT_NULL_TOKEN(U"&#x1FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X1FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#196606", 8);
+	EXPECT_NULL_TOKEN(U"&#x2FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X2FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#196607", 8);
+	EXPECT_NULL_TOKEN(U"&#x2FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X2FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#262142", 8);
+	EXPECT_NULL_TOKEN(U"&#x3FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X3FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#262143", 8);
+	EXPECT_NULL_TOKEN(U"&#x3FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X3FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#327678", 8);
+	EXPECT_NULL_TOKEN(U"&#x4FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X4FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#327679", 8);
+	EXPECT_NULL_TOKEN(U"&#x4FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X4FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#393214", 8);
+	EXPECT_NULL_TOKEN(U"&#x5FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X5FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#393215", 8);
+	EXPECT_NULL_TOKEN(U"&#x5FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X5FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#458750", 8);
+	EXPECT_NULL_TOKEN(U"&#x6FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X6FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#458751", 8);
+	EXPECT_NULL_TOKEN(U"&#x6FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X6FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#524286", 8);
+	EXPECT_NULL_TOKEN(U"&#x7FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X7FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#524287", 8);
+	EXPECT_NULL_TOKEN(U"&#x7FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X7FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#589822", 8);
+	EXPECT_NULL_TOKEN(U"&#x8FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X8FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#589823", 8);
+	EXPECT_NULL_TOKEN(U"&#x8FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X8FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#655358", 8);
+	EXPECT_NULL_TOKEN(U"&#x9FFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#X9FFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#655359", 8);
+	EXPECT_NULL_TOKEN(U"&#x9FFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#X9FFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#720894", 8);
+	EXPECT_NULL_TOKEN(U"&#xAFFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#XAFFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#720895", 8);
+	EXPECT_NULL_TOKEN(U"&#xAFFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#XAFFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#786430", 8);
+	EXPECT_NULL_TOKEN(U"&#xBFFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#XBFFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#786431", 8);
+	EXPECT_NULL_TOKEN(U"&#xBFFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#XBFFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#851966", 8);
+	EXPECT_NULL_TOKEN(U"&#xCFFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#XCFFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#851967", 8);
+	EXPECT_NULL_TOKEN(U"&#xCFFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#XCFFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#917502", 8);
+	EXPECT_NULL_TOKEN(U"&#xDFFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#XDFFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#917503", 8);
+	EXPECT_NULL_TOKEN(U"&#xDFFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#XDFFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#983038", 8);
+	EXPECT_NULL_TOKEN(U"&#xEFFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#XEFFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#983039", 8);
+	EXPECT_NULL_TOKEN(U"&#xEFFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#XEFFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#1048574", 9);
+	EXPECT_NULL_TOKEN(U"&#xFFFFE", 8);
+	EXPECT_NULL_TOKEN(U"&#XFFFFE", 8);
+
+	EXPECT_NULL_TOKEN(U"&#1048575", 9);
+	EXPECT_NULL_TOKEN(U"&#xFFFFF", 8);
+	EXPECT_NULL_TOKEN(U"&#XFFFFF", 8);
+
+	EXPECT_NULL_TOKEN(U"&#1114110", 9);
+	EXPECT_NULL_TOKEN(U"&#x10FFFE", 9);
+	EXPECT_NULL_TOKEN(U"&#X10FFFE", 9);
+
+	EXPECT_NULL_TOKEN(U"&#1114111", 9);
+	EXPECT_NULL_TOKEN(U"&#x10FFFF", 9);
+	EXPECT_NULL_TOKEN(U"&#X10FFFF", 9);
+
+	EXPECT_CHARACTER_TOKEN(U'\U000000C1', EOF, U"&Aacute", 7);
+	EXPECT_CHARACTER_TOKEN(U'\U000000C1', EOF, U"&Aacute;", 8);
+	EXPECT_CHARACTER_TOKEN(U'\U0000223E', U'\U00000333', U"&acE;", 5);
+	EXPECT_CHARACTER_TOKEN(U'\U00002233', EOF, U"&CounterClockwiseContourIntegral;", 33);
+	EXPECT_CHARACTER_TOKEN(U'\U00002063', EOF, U"&ic;", 4);
 
 }
 
@@ -758,3 +459,4 @@ TEST(HTML_Parse_Tokenization_CharacterReference, consumeCharacterReference) {
 /* namespace Tokenization */
 } /* namespace Parse */
 } /* namespace HTML */
+

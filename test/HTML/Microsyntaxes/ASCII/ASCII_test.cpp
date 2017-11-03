@@ -378,37 +378,37 @@ TEST(HTML_Microsyntaxes_ASCII, string_skipWhitespace) {
 		size_t pos = 0;
 		std::string testString = " \n\t\f \r Not Whitespace Text";
 		skipWhitespace(testString, pos);
-		EXPECT_EQ(7, pos);
+		EXPECT_EQ(7, (long ) pos);
 	}
 	{ // String with whitespace at beginning and pos = 7
 		size_t pos = 7;
 		std::string testString = " \n\t\f \r Not Whitespace Text";
 		skipWhitespace(testString, pos);
-		EXPECT_EQ(7, pos);
+		EXPECT_EQ(7, (long ) pos);
 	}
 	{ // String with whitespace at beginning and pos = 9
 		size_t pos = 10;
 		std::string testString = " \n\t\f \r Not Whitespace Text";
 		skipWhitespace(testString, pos);
-		EXPECT_EQ(11, pos);
+		EXPECT_EQ(11, (long ) pos);
 	}
 	{ // String with whitespace at end and pos = 19
 		size_t pos = 19;
 		std::string testString = "Not Whitespace Text \n\r\f\t";
 		skipWhitespace(testString, pos);
-		EXPECT_EQ(24, pos);
+		EXPECT_EQ(24, (long ) pos);
 	}
 	{ // Empty string and pos = 0
 		size_t pos = 0;
 		std::string testString = "";
 		skipWhitespace(testString, pos);
-		EXPECT_EQ(0, pos);
+		EXPECT_EQ(0, (long ) pos);
 	}
 	{ // Empty string and pos = 1
 		size_t pos = 1;
 		std::string testString = "";
 		skipWhitespace(testString, pos);
-		EXPECT_EQ(1, pos);
+		EXPECT_EQ(1, (long ) pos);
 	}
 }
 

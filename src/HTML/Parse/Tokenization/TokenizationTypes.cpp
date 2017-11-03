@@ -104,7 +104,7 @@ bool operator==(const EndTagToken& lhs, const EndTagToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token) {
-	os << "char32_t data = ";
+	os << "char32_t first_character = ";
 
 	boost::io::ios_all_saver ias(os);
 
@@ -112,14 +112,23 @@ bool operator==(const EndTagToken& lhs, const EndTagToken& rhs) {
 	os.setf(os.right, os.adjustfield);
 	os.fill('0');
 
-	os << "U+" << std::setw(8) << std::uppercase << (unsigned long) character_token.data;
+	os << "U+" << std::setw(8) << std::uppercase << (unsigned long) character_token.first_character << std::endl;
+	ias.restore();
+	os << "char32_t second_character = ";
 
+	os.setf(os.hex, os.basefield);
+	os.setf(os.right, os.adjustfield);
+	os.fill('0');
+	os << "U+" << std::setw(8) << std::uppercase << (unsigned long) character_token.second_character;
 	ias.restore();
 	return os;
 }
 
 bool operator==(const CharacterToken& lhs, const CharacterToken& rhs) {
-	if (lhs.data != rhs.data) {
+	if (lhs.first_character != rhs.first_character) {
+		return false;
+	}
+	if (lhs.second_character != rhs.second_character) {
 		return false;
 	}
 	return true;
@@ -141,7 +150,7 @@ bool operator==(const CommentToken& lhs, const CommentToken& rhs) {
 	return os << eof_token.string;
 }
 
-bool operator==(const EOFToken& lhs, const EOFToken& rhs) {
+bool operator==(__attribute__ ((unused)) const EOFToken& lhs, __attribute__ ((unused)) const EOFToken& rhs) {
 	return true;
 }
 
@@ -149,7 +158,7 @@ bool operator==(const EOFToken& lhs, const EOFToken& rhs) {
 	return os << no_token.string;
 }
 
-bool operator==(const NoToken& lhs, const NoToken& rhs) {
+bool operator==(__attribute__ ((unused)) const NoToken& lhs, __attribute__ ((unused)) const NoToken& rhs) {
 	return true;
 }
 

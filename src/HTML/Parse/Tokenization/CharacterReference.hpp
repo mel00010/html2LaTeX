@@ -30,7 +30,7 @@ namespace Parse {
 namespace Tokenization {
 
 Token consumeCharacterReference(StateData& data);
-Token consumeCharacterReference(StateData& data, const char& additional_allowed_character);
+Token consumeCharacterReference(StateData& data, const char32_t& additional_allowed_character);
 
 } /* namespace Tokenization */
 } /* namespace Parse */

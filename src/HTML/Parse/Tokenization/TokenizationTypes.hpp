@@ -72,7 +72,8 @@ inline bool operator!=(const EndTagToken& lhs, const EndTagToken& rhs) {
 
 class CharacterToken {
 	public:
-		char32_t data = EOF;
+		char32_t first_character = EOF;
+		char32_t second_character = EOF;
 };
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token);
 bool operator==(const CharacterToken& lhs, const CharacterToken& rhs);

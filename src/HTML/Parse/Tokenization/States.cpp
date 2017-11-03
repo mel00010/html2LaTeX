@@ -108,248 +108,248 @@ void characterReferenceINRCDATAState(StateData& data) {
 	//Consume a character reference, no additional allowed character
 }
 
-void RAWTEXTState(StateData& data) {
+void RAWTEXTState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataState(StateData& data) {
+void scriptDataState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void plainTextState(StateData& data) {
+void plainTextState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void tagOpenState(StateData& data) {
+void tagOpenState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void endTagOpenState(StateData& data) {
+void endTagOpenState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void tagNameState(StateData& data) {
+void tagNameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void RCDATALessThanSignState(StateData& data) {
+void RCDATALessThanSignState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void RCDATAEndTagOpenState(StateData& data) {
+void RCDATAEndTagOpenState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void RCDATAEndTagNameState(StateData& data) {
+void RCDATAEndTagNameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void RAWTEXTEndTagOpenState(StateData& data) {
+void RAWTEXTEndTagOpenState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void RAWTEXTEndTagNameState(StateData& data) {
+void RAWTEXTEndTagNameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataLessThanSignState(StateData& data) {
+void scriptDataLessThanSignState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEndTagOpenState(StateData& data) {
+void scriptDataEndTagOpenState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEndTagNameState(StateData& data) {
+void scriptDataEndTagNameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEscapeStartState(StateData& data) {
+void scriptDataEscapeStartState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEscapeStartDashState(StateData& data) {
+void scriptDataEscapeStartDashState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEscapedState(StateData& data) {
+void scriptDataEscapedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEscapedDashState(StateData& data) {
+void scriptDataEscapedDashState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEscapedDashDashState(StateData& data) {
+void scriptDataEscapedDashDashState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataEscapedLessThanSignState(StateData& data) {
+void scriptDataEscapedLessThanSignState(__attribute__ ((unused)) StateData& data) {
 
 }
-void scriptDataEscapedEndTagNameState(StateData& data) {
-
-}
-
-void scriptDataDoubleEscapeStartState(StateData& data) {
+void scriptDataEscapedEndTagNameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataDoubleEscapedState(StateData& data) {
+void scriptDataDoubleEscapeStartState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataDoubleEscapedDashState(StateData& data) {
+void scriptDataDoubleEscapedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataDoubleEscapedDashDashState(StateData& data) {
+void scriptDataDoubleEscapedDashState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataDoubleEscapedLessThanSignState(StateData& data) {
+void scriptDataDoubleEscapedDashDashState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void scriptDataDoubleEscapeEndState(StateData& data) {
+void scriptDataDoubleEscapedLessThanSignState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void beforeAttributeState(StateData& data) {
+void scriptDataDoubleEscapeEndState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void attributeNameState(StateData& data) {
+void beforeAttributeState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void afterAttributeNameState(StateData& data) {
-
-}
-void beforeAttributeValueState(StateData& data) {
-
-}
-void attributeValueDoubleQuotedState(StateData& data) {
+void attributeNameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void attributeValueSingleQuotedState(StateData& data) {
+void afterAttributeNameState(__attribute__ ((unused)) StateData& data) {
+
+}
+void beforeAttributeValueState(__attribute__ ((unused)) StateData& data) {
+
+}
+void attributeValueDoubleQuotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void attributeValueUnquotedState(StateData& data) {
+void attributeValueSingleQuotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void characterReferenceInAttributeValueState(StateData& data) {
+void attributeValueUnquotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void afterAttributeQuotedState(StateData& data) {
+void characterReferenceInAttributeValueState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void selfClosingStartTagState(StateData& data) {
+void afterAttributeQuotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void bogusCommentState(StateData& data) {
+void selfClosingStartTagState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void markupDeclarationOpenState(StateData& data) {
+void bogusCommentState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void commentStartState(StateData& data) {
+void markupDeclarationOpenState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void commentStartDashState(StateData& data) {
+void commentStartState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void commentState(StateData& data) {
+void commentStartDashState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void commentEndDashState(StateData& data) {
+void commentState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void commentEndState(StateData& data) {
+void commentEndDashState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void commentEndBangState(StateData& data) {
+void commentEndState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void DOCTYPEState(StateData& data) {
+void commentEndBangState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void beforeDOCTYPENameState(StateData& data) {
+void DOCTYPEState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void DOCTYPENameState(StateData& data) {
+void beforeDOCTYPENameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void afterDOCTYPENameState(StateData& data) {
+void DOCTYPENameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void afterDOCTYPEPublicKeywordState(StateData& data) {
+void afterDOCTYPENameState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void beforeDOCTYPEPublicIdentifierState(StateData& data) {
+void afterDOCTYPEPublicKeywordState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void DOCTYPEPublicIdentifierDoubleQuotedState(StateData& data) {
+void beforeDOCTYPEPublicIdentifierState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void DOCTYPEPublicIdentifierSingleQuotedState(StateData& data) {
+void DOCTYPEPublicIdentifierDoubleQuotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void afterDOCTYPEPublicIdentifierState(StateData& data) {
+void DOCTYPEPublicIdentifierSingleQuotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void betweenDOCTYPEPublicAndSystemIdentifiersState(StateData& data) {
+void afterDOCTYPEPublicIdentifierState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void afterDOCTYPESystemKeywordState(StateData& data) {
+void betweenDOCTYPEPublicAndSystemIdentifiersState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void beforeDOCTYPESystemIdentifierState(StateData& data) {
+void afterDOCTYPESystemKeywordState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void DOCTYPESystemIdentifierDoubleQuotedState(StateData& data) {
+void beforeDOCTYPESystemIdentifierState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void DOCTYPESystemIdentifierSingleQuotedState(StateData& data) {
+void DOCTYPESystemIdentifierDoubleQuotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void afterDOCTYPESystemIdentifierState(StateData& data) {
+void DOCTYPESystemIdentifierSingleQuotedState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void bogusDOCTYPEState(StateData& data) {
+void afterDOCTYPESystemIdentifierState(__attribute__ ((unused)) StateData& data) {
 
 }
 
-void CDATASectionState(StateData& data) {
+void bogusDOCTYPEState(__attribute__ ((unused)) StateData& data) {
+
+}
+
+void CDATASectionState(__attribute__ ((unused)) StateData& data) {
 
 }
 

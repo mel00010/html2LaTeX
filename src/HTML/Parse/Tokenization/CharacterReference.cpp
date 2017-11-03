@@ -24,11 +24,15 @@
 #include "TokenizationTypes.hpp"
 
 #include <algorithm>
+#include <codecvt>
 #include <cstring>
 #include <iterator>
+#include <iostream>
 #include <limits>
+#include <locale>
 #include <optional>
 #include <string>
+#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -36,7 +40,7 @@
 #include <HTML/Microsyntaxes/Numbers/NonNegativeInteger.hpp>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <CharacterReferences.ipp>
+#include <CharacterReferences.hpp>
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 namespace HTML {
@@ -47,7 +51,7 @@ Token consumeCharacterReference(StateData& data) {
 
 	Token token;
 	size_t original_position = data.pos;
-	static constexpr char notACharacterReferenceChars[] {
+	static constexpr char32_t notACharacterReferenceChars[] {
 			'\t',
 			'\n',
 			'\f',
@@ -129,7 +133,6 @@ Token consumeCharacterReference(StateData& data) {
 		for (auto i : conversionArray) {
 			if (id == i.first) {
 				return createCharacterToken(i.second);
-
 			}
 		}
 
@@ -184,33 +187,21 @@ Token consumeCharacterReference(StateData& data) {
 		}
 
 		return createCharacterToken(static_cast<unsigned int>(id));
-	}
-	std::string characters = "";
-	std::vector<std::pair<const char*, const char32_t*>> characterReferenceList(
-			std::begin(characterReferences), std::end(characterReferences));
-	auto matchSubStr = [&characters] (std::pair<const char*, const char32_t*> pair) {
-		if(characters == std::string(pair.first).substr(0, characters.length() - 1)) {
-			return false;
-		}
-		return true;
-	};
-	for (; data.pos < data.string.length(); data.pos++) {
-		characters += data.string[data.pos];
-		characterReferenceList.erase(
-				std::remove_if(
-						characterReferenceList.begin(),
-						characterReferenceList.end(),
-						matchSubStr),
-				characterReferenceList.end());
-		if (characterReferenceList.size() == 1 && characters == std::string(characterReferenceList.front().first)) {
-			return createCharacterToken(characterReferenceList.front().second[0]);
+	} else {
+		std::u32string characters = data.string.substr(data.pos, std::u32string(std::get<0>(characterReferences.front())).length());
+		for (auto i : characterReferences) {
+			if (characters.find(std::u32string(std::get<0>(i))) == 0) {
+				data.pos += std::u32string(std::get<0>(i)).length();
+				return createCharacterToken(std::get<1>(i), std::get<2>(i));
+			}
 		}
 	}
 	data.pos = original_position;
 	return token;
+
 }
 
-Token consumeCharacterReference(StateData& data, const char& additional_allowed_character) {
+Token consumeCharacterReference(StateData& data, const char32_t& additional_allowed_character) {
 	Token token;
 	if (data.string[data.pos + 1] == additional_allowed_character) {
 		return token;
