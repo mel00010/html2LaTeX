@@ -25,21 +25,39 @@
 namespace HTML {
 
 TEST(HTML_HTMLTypes, Attribute) {
-	EXPECT_EQ("\"name\":\"value\"", static_cast<std::stringstream&>(std::stringstream() << Attribute("name", "value")).str());
+	EXPECT_EQ("\"name\":\"value\"", static_cast<std::stringstream&>(std::stringstream() << Attribute(U"name", U"value")).str());
 	EXPECT_FALSE(Attribute() == true);
-	EXPECT_FALSE(Attribute("test", "") == false);
-	EXPECT_FALSE(Attribute("test", "test") == false);
+	EXPECT_FALSE(Attribute(U"test", U"") == false);
+	EXPECT_FALSE(Attribute(U"test", U"test") == false);
 	EXPECT_FALSE(true == Attribute());
 	EXPECT_TRUE(false == Attribute());
-	EXPECT_FALSE(false == Attribute("test", "test"));
-	EXPECT_TRUE(true == Attribute("test", "test"));
+	EXPECT_FALSE(false == Attribute(U"test", U"test"));
+	EXPECT_TRUE(true == Attribute(U"test", U"test"));
 
-	EXPECT_TRUE(Attribute("test1", "test2") == Attribute("test1", "test2"));
-	EXPECT_FALSE(Attribute("test1", "test2") == Attribute("test1", "test3"));
-	EXPECT_FALSE(Attribute("test1", "test2") == Attribute("test3", "test2"));
-	EXPECT_FALSE(Attribute("test1", "test2") == Attribute("test3", "test4"));
-	EXPECT_TRUE(Attribute("test1", "test2") != Attribute("test3", "test4"));
-	EXPECT_FALSE(Attribute("test1", "test2") != Attribute("test1", "test2"));
+	EXPECT_TRUE(Attribute(U"test1", U"test2") == Attribute(U"test1", U"test2"));
+	EXPECT_FALSE(Attribute(U"test1", U"test2") == Attribute(U"test1", U"test3"));
+	EXPECT_FALSE(Attribute(U"test1", U"test2") == Attribute(U"test3", U"test2"));
+	EXPECT_FALSE(Attribute(U"test1", U"test2") == Attribute(U"test3", U"test4"));
+	EXPECT_TRUE(Attribute(U"test1", U"test2") != Attribute(U"test3", U"test4"));
+	EXPECT_FALSE(Attribute(U"test1", U"test2") != Attribute(U"test1", U"test2"));
+}
+
+TEST(HTML_HTMLTypes, ASCIIAttribute) {
+	EXPECT_EQ("\"name\":\"value\"", static_cast<std::stringstream&>(std::stringstream() << ASCIIAttribute("name", "value")).str());
+	EXPECT_FALSE(ASCIIAttribute() == true);
+	EXPECT_FALSE(ASCIIAttribute("test", "") == false);
+	EXPECT_FALSE(ASCIIAttribute("test", "test") == false);
+	EXPECT_FALSE(true == ASCIIAttribute());
+	EXPECT_TRUE(false == ASCIIAttribute());
+	EXPECT_FALSE(false == ASCIIAttribute("test", "test"));
+	EXPECT_TRUE(true == ASCIIAttribute("test", "test"));
+
+	EXPECT_TRUE(ASCIIAttribute("test1", "test2") == ASCIIAttribute("test1", "test2"));
+	EXPECT_FALSE(ASCIIAttribute("test1", "test2") == ASCIIAttribute("test1", "test3"));
+	EXPECT_FALSE(ASCIIAttribute("test1", "test2") == ASCIIAttribute("test3", "test2"));
+	EXPECT_FALSE(ASCIIAttribute("test1", "test2") == ASCIIAttribute("test3", "test4"));
+	EXPECT_TRUE(ASCIIAttribute("test1", "test2") != ASCIIAttribute("test3", "test4"));
+	EXPECT_FALSE(ASCIIAttribute("test1", "test2") != ASCIIAttribute("test1", "test2"));
 }
 
 

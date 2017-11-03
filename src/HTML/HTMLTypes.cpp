@@ -20,10 +20,18 @@
 
 #include "HTMLTypes.hpp"
 
+#include <codecvt>
+#include <locale>
+
 namespace HTML {
 
-::std::ostream& operator<<(::std::ostream& os, const Attribute& attribute) {
+::std::ostream& operator<<(::std::ostream& os, const ASCIIAttribute& attribute) {
 	return os << "\"" << attribute.name << "\":\"" << attribute.value << "\"";
+}
+
+::std::ostream& operator<<(::std::ostream& os, const Attribute& attribute) {
+	return os << "\"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(attribute.name)
+			<< "\":\"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(attribute.value) << "\"";
 }
 ::std::ostream& operator<<(::std::ostream& os, const CharEncoding& charEncoding) {
 	switch (charEncoding) {

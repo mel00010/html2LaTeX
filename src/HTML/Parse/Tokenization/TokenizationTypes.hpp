@@ -35,9 +35,9 @@ namespace Tokenization {
 
 class DOCTYPEToken {
 	public:
-		std::string name = "\xFF";
-		std::string public_identifier = "\xFF";
-		std::string system_identifier = "\xFF";
+		std::u32string name = U"\xFF\xFF\xFF\xFF";
+		std::u32string public_identifier = U"\xFF\xFF\xFF\xFF";
+		std::u32string system_identifier = U"\xFF\xFF\xFF\xFF";
 		bool force_quirks = false;
 };
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token);
@@ -48,7 +48,7 @@ inline bool operator!=(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
 
 class StartTagToken {
 	public:
-		std::string tag_name = "";
+		std::u32string tag_name = U"";
 		bool self_closing = false;
 		std::list<Attribute> attributes = { };
 };
@@ -60,7 +60,7 @@ inline bool operator!=(const StartTagToken& lhs, const StartTagToken& rhs) {
 
 class EndTagToken {
 	public:
-		std::string tag_name = "";
+		std::u32string tag_name = U"";
 		bool self_closing = false;
 		std::list<Attribute> attributes = { };
 };
@@ -82,7 +82,7 @@ inline bool operator!=(const CharacterToken& lhs, const CharacterToken& rhs) {
 
 class CommentToken {
 	public:
-		std::string data = "";
+		std::u32string data = U"";
 };
 ::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token);
 bool operator==(const CommentToken& lhs, const CommentToken& rhs);
@@ -216,7 +216,8 @@ struct StateData {
 		bool parser_pause_flag = false;
 		size_t script_nesting_level = 0;
 		std::list<Token> tokens = { };
-//		StateData(STATES state = STATES::NULL_STATE, std::string string = "",
+		Token token_buffer = Token();
+//		StateData(STATES state = STATES::NULL_STATE, std::u32string string = "",
 //				size_t pos = 0, char32_t buf = '\0', bool parser_pause_flag = false,
 //				size_t script_nesting_level = 0, std::list<Token> tokens = { }) :
 //				state(state), string(string), pos(pos), buf(buf), parser_pause_flag(parser_pause_flag),

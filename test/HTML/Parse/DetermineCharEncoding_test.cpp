@@ -175,14 +175,14 @@ TEST(HTML_Parse_DetermineCharEncoding, getAttribute) {
 	unmatchedDoubleQuotes.exceptions(std::istream::eofbit);
 	unmatchedSingleQuotes.exceptions(std::istream::eofbit);
 
-	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(nameAndValue));
-	EXPECT_EQ(Attribute("testname", ""), determineCharEncoding.getAttribute(nameOnly));
-	EXPECT_EQ(Attribute("testname", ""), determineCharEncoding.getAttribute(unclosed));
-	EXPECT_EQ(Attribute("", ""), determineCharEncoding.getAttribute(noAttribute));
-	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(doubleQuotes));
-	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(singleQuotes));
-	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(unmatchedDoubleQuotes));
-	EXPECT_EQ(Attribute("testname", "testvalue"), determineCharEncoding.getAttribute(unmatchedSingleQuotes));
+	EXPECT_EQ(ASCIIAttribute("testname", "testvalue"), determineCharEncoding.getAttribute(nameAndValue));
+	EXPECT_EQ(ASCIIAttribute("testname", ""), determineCharEncoding.getAttribute(nameOnly));
+	EXPECT_EQ(ASCIIAttribute("testname", ""), determineCharEncoding.getAttribute(unclosed));
+	EXPECT_EQ(ASCIIAttribute("", ""), determineCharEncoding.getAttribute(noAttribute));
+	EXPECT_EQ(ASCIIAttribute("testname", "testvalue"), determineCharEncoding.getAttribute(doubleQuotes));
+	EXPECT_EQ(ASCIIAttribute("testname", "testvalue"), determineCharEncoding.getAttribute(singleQuotes));
+	EXPECT_EQ(ASCIIAttribute("testname", "testvalue"), determineCharEncoding.getAttribute(unmatchedDoubleQuotes));
+	EXPECT_EQ(ASCIIAttribute("testname", "testvalue"), determineCharEncoding.getAttribute(unmatchedSingleQuotes));
 
 }
 

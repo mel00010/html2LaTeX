@@ -49,33 +49,33 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, DOCTYPETokenStreamWrite) {
 		std::stringstream testStream;
 		testStream << DOCTYPEToken();
 		std::string result = "";
-		result += "std::string name = \\(EOF)\n";
-		result += "std::string public_identifier = \\(EOF)\n";
-		result += "std::string system_identifier = \\(EOF)\n";
+		result += "std::u32string name = \\(EOF)\n";
+		result += "std::u32string public_identifier = \\(EOF)\n";
+		result += "std::u32string system_identifier = \\(EOF)\n";
 		result += "bool force_quirks = 0";
 		EXPECT_EQ(result, testStream.str());
 	}
 	{
 		std::stringstream testStream;
-		testStream << (DOCTYPEToken { "name", "public_identifier", "system_identifier", true });
+		testStream << (DOCTYPEToken { U"name", U"public_identifier", U"system_identifier", true});
 		std::string result = "";
-		result += "std::string name = name\n";
-		result += "std::string public_identifier = public_identifier\n";
-		result += "std::string system_identifier = system_identifier\n";
+		result += "std::u32string name = name\n";
+		result += "std::u32string public_identifier = public_identifier\n";
+		result += "std::u32string system_identifier = system_identifier\n";
 		result += "bool force_quirks = 1";
 		EXPECT_EQ(result, testStream.str());
 	}
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, DOCTYPETokenEquality) {
-	EXPECT_EQ((DOCTYPEToken { "name", "public_identifier", "system_identifier", false }),
-			(DOCTYPEToken { "name", "public_identifier", "system_identifier", false }));
-	EXPECT_NE((DOCTYPEToken { "not a name", "not a public_identifier", "system system_identifier", true }),
-			(DOCTYPEToken { "name", "public_identifier", "system_identifier", false }));
-	EXPECT_NE((DOCTYPEToken { "name", "not a public_identifier", "not a system_identifier", true }),
-			(DOCTYPEToken { "name", "public_identifier", "system_identifier", false }));
-	EXPECT_NE((DOCTYPEToken { "name", "public_identifier", "system_identifier", true }),
-			(DOCTYPEToken { "name", "public_identifier", "system_identifier", false }));
+	EXPECT_EQ((DOCTYPEToken { U"name", U"public_identifier", U"system_identifier", false}),
+(DOCTYPEToken {U"name", U"public_identifier", U"system_identifier", false}));
+EXPECT_NE((DOCTYPEToken {U"not a name", U"not a public_identifier", U"system system_identifier", true}),
+(DOCTYPEToken {U"name", U"public_identifier", U"system_identifier", false}));
+EXPECT_NE((DOCTYPEToken {U"name", U"not a public_identifier", U"not a system_identifier", true}),
+(DOCTYPEToken {U"name", U"public_identifier", U"system_identifier", false}));
+EXPECT_NE((DOCTYPEToken {U"name", U"public_identifier", U"system_identifier", true}),
+(DOCTYPEToken {U"name", U"public_identifier", U"system_identifier", false}));
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, StartTagTokenStreamWrite) {
@@ -83,20 +83,20 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StartTagTokenStreamWrite) {
 		std::stringstream testStream;
 		testStream << StartTagToken();
 		std::string result = "";
-		result += "std::string tag_name = \n";
+		result += "std::u32string tag_name = \n";
 		result += "bool self_closing = 0\n";
 		result += "std::list<Attribute> attributes = ";
 		EXPECT_EQ(result, testStream.str());
 	}
 	{
 		std::stringstream testStream;
-		testStream << (StartTagToken { "tag_name",
+		testStream << (StartTagToken { U"tag_name",
 				true,
 				std::list<Attribute> {
-						Attribute { "name1", "value1" },
-						Attribute { "name2", "value2" } } });
+			Attribute {U"name1", U"value1"},
+			Attribute {U"name2", U"value2"}}});
 		std::string result = "";
-		result += "std::string tag_name = tag_name\n";
+		result += "std::u32string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
 		EXPECT_EQ(result, testStream.str());
@@ -104,20 +104,20 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StartTagTokenStreamWrite) {
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, StartTagTokenEquality) {
-	EXPECT_EQ((StartTagToken { "tag_name", false, std::list<Attribute> { } }),
-			(StartTagToken { "tag_name", false, std::list<Attribute> { } }));
-	EXPECT_EQ((StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }),
-			(StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("not the same", "value") } }),
-			(StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "not the same") } }),
-			(StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((StartTagToken { "not the same", false, std::list<Attribute> { Attribute("name", "value") } }),
-			(StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((StartTagToken { "tag_name", true, std::list<Attribute> { Attribute("name", "value") } }),
-			(StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((StartTagToken { "not the same", true, std::list<Attribute> { } }),
-			(StartTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
+	EXPECT_EQ((StartTagToken { U"tag_name", false, std::list<Attribute> {}}),
+(StartTagToken {U"tag_name", false, std::list<Attribute> {}}));
+EXPECT_EQ((StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}),
+(StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"not the same", U"value")}}),
+(StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"not the same")}}),
+(StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((StartTagToken {U"not the same", false, std::list<Attribute> {Attribute(U"name", U"value")}}),
+(StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((StartTagToken {U"tag_name", true, std::list<Attribute> {Attribute(U"name", U"value")}}),
+(StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((StartTagToken {U"not the same", true, std::list<Attribute> {}}),
+(StartTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
 
 }
 
@@ -126,21 +126,21 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, EndTagTokenStreamWrite) {
 		std::stringstream testStream;
 		testStream << EndTagToken();
 		std::string result = "";
-		result += "std::string tag_name = \n";
+		result += "std::u32string tag_name = \n";
 		result += "bool self_closing = 0\n";
 		result += "std::list<Attribute> attributes = ";
 		EXPECT_EQ(result, testStream.str());
 	}
 	{
 		std::stringstream testStream;
-		testStream << (EndTagToken { "tag_name",
+		testStream << (EndTagToken { U"tag_name",
 				true,
 				std::list<Attribute> {
-						Attribute { "name1", "value1" },
-						Attribute { "name2", "value2" } } });
+			Attribute {U"name1", U"value1"},
+			Attribute {U"name2", U"value2"}}});
 
 		std::string result = "";
-		result += "std::string tag_name = tag_name\n";
+		result += "std::u32string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
 		EXPECT_EQ(result, testStream.str());
@@ -148,20 +148,20 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, EndTagTokenStreamWrite) {
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, EndTagTokenEquality) {
-	EXPECT_EQ((EndTagToken { "tag_name", false, std::list<Attribute> { } }),
-			(EndTagToken { "tag_name", false, std::list<Attribute> { } }));
-	EXPECT_EQ((EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }),
-			(EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("not the same", "value") } }),
-			(EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "not the same") } }),
-			(EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((EndTagToken { "not the same", false, std::list<Attribute> { Attribute("name", "value") } }),
-			(EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((EndTagToken { "tag_name", true, std::list<Attribute> { Attribute("name", "value") } }),
-			(EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
-	EXPECT_NE((EndTagToken { "not the same", true, std::list<Attribute> { } }),
-			(EndTagToken { "tag_name", false, std::list<Attribute> { Attribute("name", "value") } }));
+	EXPECT_EQ((EndTagToken { U"tag_name", false, std::list<Attribute> {}}),
+(EndTagToken {U"tag_name", false, std::list<Attribute> {}}));
+EXPECT_EQ((EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}),
+(EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"not the same", U"value")}}),
+(EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"not the same")}}),
+(EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((EndTagToken {U"not the same", false, std::list<Attribute> {Attribute(U"name", U"value")}}),
+(EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((EndTagToken {U"tag_name", true, std::list<Attribute> {Attribute(U"name", U"value")}}),
+(EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
+EXPECT_NE((EndTagToken {U"not the same", true, std::list<Attribute> {}}),
+(EndTagToken {U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}}));
 
 }
 
@@ -200,22 +200,22 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, CommentTokenStreamWrite) {
 	{
 		std::stringstream testStream;
 		testStream << CommentToken();
-		std::string result = "std::string data = \"\"";
+		std::string result = "std::u32string data = \"\"";
 		EXPECT_EQ(result, testStream.str());
 	}
 	{
 		std::stringstream testStream;
-		testStream << (CommentToken { "this is a comment" });
-		std::string result = "std::string data = \"this is a comment\"";
+		testStream << (CommentToken { U"this is a comment"});
+		std::string result = "std::u32string data = \"this is a comment\"";
 		EXPECT_EQ(result, testStream.str());
 	}
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, CommentTokenEquality) {
 	EXPECT_EQ(CommentToken(), CommentToken());
-	EXPECT_EQ((CommentToken { "this is a comment" }), (CommentToken { "this is a comment" }));
-	EXPECT_NE((CommentToken { "this is a comment" }), (CommentToken { "this is not a comment" }));
-	EXPECT_NE((CommentToken { "this is a comment" }), CommentToken());
+	EXPECT_EQ((CommentToken { U"this is a comment"}), (CommentToken {U"this is a comment"}));
+EXPECT_NE((CommentToken {U"this is a comment"}), (CommentToken {U"this is not a comment"}));
+EXPECT_NE((CommentToken {U"this is a comment"}), CommentToken());
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, EOFTokenStreamWrite) {
@@ -272,11 +272,11 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 	{
 		std::stringstream testStream;
 		testStream << (Token { TokenType::START_TAG,
-				StartTagToken { "tag_name",
+				StartTagToken { U"tag_name",
 						true,
 						std::list<Attribute> {
-								Attribute { "name1", "value1" },
-								Attribute { "name2", "value2" }
+			Attribute {U"name1", U"value1"},
+			Attribute {U"name2", U"value2"}
 						}
 				}
 		});
@@ -284,7 +284,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 		std::string result = "";
 		result += "TokenType type = TokenType::START_TAG\n";
 		result += "TokenVariant token = ";
-		result += "std::string tag_name = tag_name\n";
+		result += "std::u32string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
 
@@ -294,11 +294,11 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 	{
 		std::stringstream testStream;
 		testStream << (Token { TokenType::END_TAG,
-				EndTagToken { "tag_name",
+				EndTagToken { U"tag_name",
 						true,
 						std::list<Attribute> {
-								Attribute { "name1", "value1" },
-								Attribute { "name2", "value2" }
+			Attribute {U"name1", U"value1"},
+			Attribute {U"name2", U"value2"}
 						}
 				}
 		});
@@ -306,7 +306,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 		std::string result = "";
 		result += "TokenType type = TokenType::END_TAG\n";
 		result += "TokenVariant token = ";
-		result += "std::string tag_name = tag_name\n";
+		result += "std::u32string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
 
@@ -315,12 +315,12 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 	}
 	{
 		std::stringstream testStream;
-		testStream << (Token { TokenType::COMMENT, CommentToken { "this is a comment" } });
+		testStream << (Token { TokenType::COMMENT, CommentToken { U"this is a comment"}});
 
 		std::string result = "";
 		result += "TokenType type = TokenType::COMMENT\n";
 		result += "TokenVariant token = ";
-		result += "std::string data = \"this is a comment\"";
+		result += "std::u32string data = \"this is a comment\"";
 
 		EXPECT_EQ(result, testStream.str());
 
@@ -340,14 +340,14 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, TokenStreamWrite) {
 	}
 	{
 		std::stringstream testStream;
-		testStream << (Token { TokenType::DOCTYPE, DOCTYPEToken { "name", "public_identifier", "system_identifier", true } });
+		testStream << (Token { TokenType::DOCTYPE, DOCTYPEToken { U"name", U"public_identifier", U"system_identifier", true}});
 
 		std::string result = "";
 		result += "TokenType type = TokenType::DOCTYPE\n";
 		result += "TokenVariant token = ";
-		result += "std::string name = name\n";
-		result += "std::string public_identifier = public_identifier\n";
-		result += "std::string system_identifier = system_identifier\n";
+		result += "std::u32string name = name\n";
+		result += "std::u32string public_identifier = public_identifier\n";
+		result += "std::u32string system_identifier = system_identifier\n";
 		result += "bool force_quirks = 1";
 
 		EXPECT_EQ(result, testStream.str());
@@ -443,7 +443,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		result += "STATES state = STATES::NULL_STATE\n";
 		result += "std::u32string string = \"\"\n";
 		result += "size_t pos = 0\n";
-		result += "char buf = '\0'\n"s;
+		result += "char32_t buf = '\0'\n"s;
 		result += "bool parser_pause_flag = 0\n";
 		result += "size_t script_nesting_level = 0\n";
 		result += "std::list<Token> tokens = {\n";
@@ -463,11 +463,11 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 						Token { TokenType::END_OF_FILE, EOFToken() },
 						Token { TokenType::NO_TOKEN, NoToken() },
 						Token { TokenType::START_TAG,
-								StartTagToken { "tag_name",
+				StartTagToken {U"tag_name",
 										true,
 										std::list<Attribute> {
-												Attribute { "name1", "value1" },
-												Attribute { "name2", "value2" }
+						Attribute {U"name1", U"value1"},
+						Attribute {U"name2", U"value2"}
 										}
 								}
 						}
@@ -477,7 +477,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		result += "STATES state = STATES::DATA\n";
 		result += "std::u32string string = \"test string\"\n";
 		result += "size_t pos = 5\n";
-		result += "char buf = 'a'\n";
+		result += "char32_t buf = 'a'\n";
 		result += "bool parser_pause_flag = 1\n";
 		result += "size_t script_nesting_level = 6\n";
 		result += "std::list<Token> tokens = {\n";
@@ -489,7 +489,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataStreamWrite) {
 		result += "TokenVariant token = No Token!}, \n";
 
 		result += "Token { TokenType type = TokenType::START_TAG\n";
-		result += "TokenVariant token = std::string tag_name = tag_name\n";
+		result += "TokenVariant token = std::u32string tag_name = tag_name\n";
 		result += "bool self_closing = 1\n";
 		result += "std::list<Attribute> attributes = \"name1\":\"value1\", \"name2\":\"value2\", ";
 		result += "}, \n";
@@ -512,11 +512,11 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 					Token { TokenType::END_OF_FILE, EOFToken() },
 					Token { TokenType::NO_TOKEN, NoToken() },
 					Token { TokenType::START_TAG,
-							StartTagToken { "tag_name",
+					StartTagToken {U"tag_name",
 								true,
 								std::list<Attribute> {
-											Attribute { "name1", "value1" },
-											Attribute { "name2", "value2" }
+							Attribute {U"name1", U"value1"},
+							Attribute {U"name2", U"value2"}
 								}
 						}
 					}
@@ -532,11 +532,11 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 					Token { TokenType::END_OF_FILE, EOFToken() },
 					Token { TokenType::NO_TOKEN, NoToken() },
 					Token { TokenType::START_TAG,
-							StartTagToken { "tag_name",
+					StartTagToken {U"tag_name",
 									true,
 									std::list<Attribute> {
-											Attribute { "name1", "value1" },
-											Attribute { "name2", "value2" }
+							Attribute {U"name1", U"value1"},
+							Attribute {U"name2", U"value2"}
 									}
 							}
 					}
@@ -553,11 +553,11 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 					Token { TokenType::END_OF_FILE, EOFToken() },
 					Token { TokenType::NO_TOKEN, NoToken() },
 					Token { TokenType::START_TAG,
-							StartTagToken { "tag_name",
+					StartTagToken {U"tag_name",
 									true,
 									std::list<Attribute> {
-											Attribute { "name1", "value1" },
-											Attribute { "name2", "value2" }
+							Attribute {U"name1", U"value1"},
+							Attribute {U"name2", U"value2"}
 									}
 							}
 					}
@@ -574,11 +574,11 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 					Token { TokenType::END_OF_FILE, EOFToken() },
 					Token { TokenType::NO_TOKEN, NoToken() },
 					Token { TokenType::START_TAG,
-							StartTagToken { "tag_name",
+					StartTagToken {U"tag_name",
 									true,
 									std::list<Attribute> {
-											Attribute { "name1", "value1" },
-											Attribute { "name2", "value2" }
+							Attribute {U"name1", U"value1"},
+							Attribute {U"name2", U"value2"}
 									}
 							}
 					}
@@ -594,10 +594,10 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, StateDataEquality) {
 					Token { TokenType::END_OF_FILE, EOFToken() },
 					Token { TokenType::NO_TOKEN, NoToken() },
 					Token { TokenType::START_TAG,
-							StartTagToken { "tag_name",
+					StartTagToken {U"tag_name",
 									true,
 									std::list<Attribute> {
-											Attribute { "name1", "value1" },
+							Attribute {U"name1", U"value1"},
 									}
 							}
 					}

@@ -166,20 +166,20 @@ class DetermineCharEncoding {
 		 * @param swallowExceptions Boolean value determining whether the algorithm should throw an exception if the
 		 * 							input stream throws an exception or simply return with the character encoding UNKNOWN
 		 * 							and confidence IRRELEVANT. Defaults to true.
-		 * @return An Attribute object containing the name of the attribute and its value.getCharEncodingFromString_utf8
+		 * @return An ASCIIAttribute object containing the name of the attribute and its value.getCharEncodingFromString_utf8
 		 * 		   If swallowExceptions is true and the input stream throws an exception, then the function returns an
-		 * 		   Attribute object whose name and value fields are empty.
+		 * 		   ASCIIAttribute object whose name and value fields are empty.
 		 * 		   Otherwise, the exception is thrown upwards.
 		 * @exception std::istream::failure The input stream failed before enough data could be read to make a guess.
 		 *
 		 * @test HTML::Parse::TEST(HTML_Parse_DetermineCharEncoding, getAttribute)
 		 */
-		Attribute getAttribute(std::istream& input, bool swallowExceptions = true);
+		ASCIIAttribute getAttribute(std::istream& input, bool swallowExceptions = true);
 
 		/**
 		 * @brief Gets an HTML attribute value from the input stream.
 		 *
-		 * Helper function for Attribute getAttribute(std::istream& input, bool swallowExceptions = true)
+		 * Helper function for ASCIIAttribute getAttribute(std::istream& input, bool swallowExceptions = true)
 		 * @param input The input stream whose character encoding will be determined.
 		 * @param buf A reference to the buffer holding the last character read from the input stream
 		 * @return A string containing the attribute's value

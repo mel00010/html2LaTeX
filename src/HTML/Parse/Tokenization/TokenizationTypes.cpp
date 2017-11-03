@@ -33,11 +33,15 @@ namespace Parse {
 namespace Tokenization {
 
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token) {
-	os << "std::string name = " << ((doctype_token.name == "\xFF") ? "\\(EOF)" : doctype_token.name) << "\n";
-	os << "std::string public_identifier = ";
-	os << ((doctype_token.public_identifier == "\xFF") ? "\\(EOF)" : doctype_token.public_identifier) << "\n";
-	os << "std::string system_identifier = ";
-	os << ((doctype_token.system_identifier == "\xFF") ? "\\(EOF)" : doctype_token.system_identifier) << "\n";
+	os << "std::u32string name = " << (
+			(doctype_token.name == U"\xFF\xFF\xFF\xFF") ?
+	"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.name)) << "\n";
+	os << "std::u32string public_identifier = ";
+	os << ((doctype_token.public_identifier == U"\xFF\xFF\xFF\xFF") ?
+			"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.public_identifier)) << "\n";
+	os << "std::u32string system_identifier = ";
+	os << ((doctype_token.system_identifier == U"\xFF\xFF\xFF\xFF") ?
+			"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.system_identifier)) << "\n";
 	os << "bool force_quirks = " << doctype_token.force_quirks;
 	return os;
 }
@@ -58,7 +62,7 @@ bool operator==(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_token) {
-	os << "std::string tag_name = " << start_tag_token.tag_name << "\n";
+	os << "std::u32string tag_name = " << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(start_tag_token.tag_name) << "\n";
 	os << "bool self_closing = " << start_tag_token.self_closing << "\n";
 	os << "std::list<Attribute> attributes = ";
 	for (auto v : start_tag_token.attributes) {
@@ -81,7 +85,7 @@ bool operator==(const StartTagToken& lhs, const StartTagToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_token) {
-	os << "std::string tag_name = " << end_tag_token.tag_name << "\n";
+	os << "std::u32string tag_name = " << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(end_tag_token.tag_name) << "\n";
 	os << "bool self_closing = " << end_tag_token.self_closing << "\n";
 	os << "std::list<Attribute> attributes = ";
 	for (auto v : end_tag_token.attributes) {
@@ -125,7 +129,7 @@ bool operator==(const CharacterToken& lhs, const CharacterToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token) {
-	return os << "std::string data = \"" << comment_token.data << "\"";
+	return os << "std::u32string data = \"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(comment_token.data) << "\"";
 }
 
 bool operator==(const CommentToken& lhs, const CommentToken& rhs) {
@@ -413,7 +417,7 @@ bool operator==(const Token& lhs, const Token& rhs) {
 	os << "STATES state = " << state_data.state << "\n";
 	os << "std::u32string string = \"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(state_data.string) << "\"\n";
 	os << "size_t pos = " << state_data.pos << "\n";
-	os << "char buf = '" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(state_data.buf) << "'\n";
+	os << "char32_t buf = '" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(state_data.buf) << "'\n";
 	os << "bool parser_pause_flag = " << state_data.parser_pause_flag << "\n";
 	os << "size_t script_nesting_level = " << state_data.script_nesting_level << "\n";
 	os << "std::list<Token> tokens = ";

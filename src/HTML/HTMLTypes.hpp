@@ -153,11 +153,11 @@ class Formatting {
  */
 class Attribute {
 	public:
-		Attribute(std::string name = "", std::string value = "") :
+		Attribute(std::u32string name = U"", std::u32string value = U"") :
 				name(name), value(value) {
 		}
-		std::string name = ""; /**<	@brief Holds the name of the attribute. */
-		std::string value = ""; /**<@brief Holds the value of the attribute. */
+		std::u32string name = U""; /**<	@brief Holds the name of the attribute. */
+		std::u32string value = U""; /**<@brief Holds the value of the attribute. */
 };
 
 /**
@@ -235,6 +235,96 @@ inline bool operator==(const bool& rhs, const Attribute& lhs) {
  * @test TEST(HTMLTypes, Attribute)
  */
 inline bool operator==(const Attribute& lhs, const bool& rhs) {
+	return (rhs == lhs);
+}
+
+/**
+ * @brief Holds an HTML attribute.
+ */
+class ASCIIAttribute {
+	public:
+		ASCIIAttribute(std::string name = "", std::string value = "") :
+				name(name), value(value) {
+		}
+		std::string name = ""; /**<	@brief Holds the name of the attribute. */
+		std::string value = ""; /**<@brief Holds the value of the attribute. */
+};
+
+/**
+ * @brief Writes an ASCIIAttribute object to an output stream.
+ * @param os A reference to std::ostream object for the ASCIIAttribute object to be written to.
+ * @param attribute A reference to the ASCIIAttribute object to be displayed.
+ * @return A reference to the std::ostream object passed to the function.
+ */
+::std::ostream& operator<<(::std::ostream& os, const ASCIIAttribute& attribute);
+
+/**
+ * @brief Compares two ASCIIAttribute objects.
+ * @param rhs The ASCIIAttribute object on the right hand side of the expression
+ * @param lhs The ASCIIAttribute object on the left hand side of the expression
+ * @return Returns true if the attribute objects have the same name and value, otherwise returns false
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator==(const ASCIIAttribute& rhs, const ASCIIAttribute& lhs) {
+	if ((rhs.name == lhs.name) && (rhs.value == lhs.value)) {
+		return true;
+	}
+	return false;
+}
+/**
+ * @brief Compares two ASCIIAttribute objects.
+ * @param rhs The ASCIIAttribute object on the right hand side of the expression
+ * @param lhs The ASCIIAttribute object on the left hand side of the expression
+ * @return Returns true if the attribute objects do not have the same name and value, otherwise returns false
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator!=(const ASCIIAttribute& rhs, const ASCIIAttribute& lhs) {
+	if (!(rhs == lhs)) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Compares a bool and an ASCIIAttribute object
+ * @param rhs The bool being compared
+ * @param lhs The ASCIIAttribute object being compared
+ * @return If the bool evaluates to true, the function returns false
+ * 		   if either the ASCIIAttribute object's name or value fields are not empty,
+ * 		   otherwise it returns true. If the bool evaluates to false, then the
+ * 		   function returns the opposite values.
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator==(const bool& rhs, const ASCIIAttribute& lhs) {
+	if (lhs.name.empty() && lhs.value.empty()) {
+		if (rhs) {
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		if (rhs) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	return false;
+}
+
+/**
+ * @brief Compares an ASCIIAttribute object and a bool
+ * @see operator==(const bool& rhs, const ASCIIAttribute& lhs)
+ * @param lhs The ASCIIAttribute object being compared
+ * @param rhs The bool being compared
+ * @return Returns the result of comparing a bool and an ASCIIAttribute object
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator==(const ASCIIAttribute& lhs, const bool& rhs) {
 	return (rhs == lhs);
 }
 

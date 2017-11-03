@@ -196,12 +196,12 @@ ContentType DetermineCharEncoding::metaTagAlgorithm(std::istream& input) {
 	}
 
 	try {
-		std::vector<Attribute> attributeList;
+		std::vector<ASCIIAttribute> attributeList;
 		bool gotPragma = false;
 		TriBool needPragma = TriBool::NONE;
 		CharEncoding charSet = CharEncoding::NULL_ENC;
 		while (true) {
-			Attribute attribute;
+			ASCIIAttribute attribute;
 			try {
 				attribute = getAttribute(input);
 			}
@@ -319,8 +319,8 @@ ContentType DetermineCharEncoding::punctuationTagAlgorithm(std::istream & input)
 	return encoding;
 }
 
-Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallowExceptions) {
-	Attribute attribute;
+ASCIIAttribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallowExceptions) {
+	ASCIIAttribute attribute;
 	attribute.name = "";
 	attribute.value = "";
 	input.exceptions(std::istream::eofbit);

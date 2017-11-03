@@ -176,7 +176,10 @@ void tagOpenState(__attribute__ ((unused)) StateData& data) {
 		TreeConstruction::dispatch(createEOFToken());
 	} else {
 		if (Microsyntaxes::ASCII::isASCIIUpper(data.string[data.pos])) {
-
+			data.token_buffer = createStartTagToken(Microsyntaxes::ASCII::toLower(std::u32string(&data.string[data.pos])), false, { });
+			/* Create new start tag token */
+		} else if (Microsyntaxes::ASCII::isASCIILower(data.string[data.pos])) {
+			data.token_buffer = createStartTagToken(std::u32string(&data.string[data.pos]), false, { });
 		}
 		switch (data.string[data.pos]) {
 			case '!':
@@ -185,8 +188,13 @@ void tagOpenState(__attribute__ ((unused)) StateData& data) {
 			case '/':
 				data.state = STATES::END_TAG_OPEN;
 				break;
+			case '?':
+				data.state = STATES::BOGUS_COMMENT;
+				break;
 			default:
-				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				data.state = STATES::DATA;
+				TreeConstruction::dispatch(createCharacterToken('>'));
+				data.pos--;
 				break;
 		}
 	}

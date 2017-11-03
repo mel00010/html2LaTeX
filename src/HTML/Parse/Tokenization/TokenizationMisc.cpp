@@ -26,14 +26,14 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-Token createDOCTYPEToken(const std::string& name, const std::string& public_id, const std::string& system_id, const bool force_quirks) {
+Token createDOCTYPEToken(const std::u32string& name, const std::u32string& public_id, const std::u32string& system_id, const bool force_quirks) {
 	return Token { TokenType::DOCTYPE, DOCTYPEToken { name, public_id, system_id, force_quirks } };
 }
 
-Token createStartTagToken(const std::string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
+Token createStartTagToken(const std::u32string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
 	return Token { TokenType::START_TAG, StartTagToken { tag_name, self_closing, attributes } };
 }
-Token createEndTagToken(const std::string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
+Token createEndTagToken(const std::u32string& tag_name, const bool self_closing, const std::list<Attribute>& attributes) {
 	return Token { TokenType::END_TAG, EndTagToken { tag_name, self_closing, attributes } };
 }
 Token createCharacterToken(const char32_t& data) {
@@ -47,7 +47,7 @@ Token createCharacterToken(const int& data) {
 	return Token { TokenType::CHARACTER, CharacterToken
 			{ static_cast<char32_t>(data) } };
 }
-Token createCommentToken(const std::string& data) {
+Token createCommentToken(const std::u32string& data) {
 	return Token { TokenType::COMMENT, CommentToken { data } };
 }
 Token createEOFToken() {
