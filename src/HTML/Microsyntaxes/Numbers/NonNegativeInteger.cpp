@@ -31,20 +31,20 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-bool isNonNegativeInteger(const std::string& string) {
+bool isNonNegativeInteger(const std::u32string& string) {
 	if (!string.empty() && ASCII::isASCIIDigits(string)) {
 		return true;
 	}
 	return false;
 }
-bool isNonNegativeHexInteger(const std::string& string) {
+bool isNonNegativeHexInteger(const std::u32string& string) {
 	if (!string.empty() && ASCII::isASCIIHex(string)) {
 		return true;
 	}
 	return false;
 }
 
-unsigned long parseNonNegativeInteger(const std::string& string) {
+unsigned long parseNonNegativeInteger(const std::u32string& string) {
 	unsigned long accumulated = 0;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
@@ -66,7 +66,7 @@ unsigned long parseNonNegativeInteger(const std::string& string) {
 	return accumulated;
 }
 
-unsigned long parseNonNegativeHexInteger(const std::string& string) {
+unsigned long parseNonNegativeHexInteger(const std::u32string& string) {
 	unsigned long accumulated = 0;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {

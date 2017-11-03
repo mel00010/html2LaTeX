@@ -31,7 +31,7 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-bool isListOfIntegers(const std::string& string) {
+bool isListOfIntegers(const std::u32string& string) {
 	size_t i = 0;
 	if (i >= string.length()) {
 		return false;
@@ -71,7 +71,7 @@ bool isListOfIntegers(const std::string& string) {
 	return false;
 }
 
-std::list<int> parseListOfIntegers(const std::string& string) {
+std::list<int> parseListOfIntegers(const std::u32string& string) {
 	size_t i = 0;
 	std::list<int> numbers = { };
 

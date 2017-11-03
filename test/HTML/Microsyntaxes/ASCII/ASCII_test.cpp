@@ -31,15 +31,15 @@ namespace Microsyntaxes {
 namespace ASCII {
 
 TEST(HTML_Microsyntaxes_ASCII, isWhitespace) {
-	const char space = ' ';
-	const char tab = '\t';
-	const char linefeed = '\n';
-	const char formfeed = '\f';
-	const char carriageReturn = '\r';
-	const char other = 'x';
+	const char32_t space = U' ';
+	const char32_t tab = U'\t';
+	const char32_t linefeed = U'\n';
+	const char32_t formfeed = U'\f';
+	const char32_t carriageReturn = U'\r';
+	const char32_t other = U'x';
 
-	const std::string trueCase = " \t\n";
-	const std::string falseCase = " \t\n x";
+	const std::u32string trueCase = U" \t\n";
+	const std::u32string falseCase = U" \t\n x";
 
 
 	EXPECT_TRUE(isWhitespace(space));
@@ -55,20 +55,20 @@ TEST(HTML_Microsyntaxes_ASCII, isWhitespace) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isUnicodeWhitespace) {
-	EXPECT_FALSE(isUnicodeWhitespace('a'));
-	EXPECT_FALSE(isUnicodeWhitespace("testString"));
+	EXPECT_FALSE(isUnicodeWhitespace(U'a'));
+	EXPECT_FALSE(isUnicodeWhitespace(U"testString"));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCII) {
-	const char digit = '0';
-	const char upperCaseLetter = 'U';
-	const char lowerCaseLetter = 'l';
-	const char punctuation = '.';
-	const char whitespace = ' ';
-	const char other = '\a';
+	const char32_t digit = U'0';
+	const char32_t upperCaseLetter = U'U';
+	const char32_t lowerCaseLetter = U'l';
+	const char32_t punctuation = U'.';
+	const char32_t whitespace = U' ';
+	const char32_t other = U'\a';
 
-	const std::string trueCase = " sltU2";
-	const std::string falseCase = "0Ul\a";
+	const std::u32string trueCase = U" sltU2";
+	const std::u32string falseCase = U"0Ul\a";
 
 	EXPECT_TRUE(isASCII(digit));
 	EXPECT_TRUE(isASCII(upperCaseLetter));
@@ -83,20 +83,20 @@ TEST(HTML_Microsyntaxes_ASCII, isASCII) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIDigit) {
-	const char zero = '0';
-	const char one = '1';
-	const char two = '2';
-	const char three = '3';
-	const char four = '4';
-	const char five = '5';
-	const char six = '6';
-	const char seven = '7';
-	const char eight = '8';
-	const char nine = '9';
-	const char other = 'x';
+	const char32_t zero = U'0';
+	const char32_t one = U'1';
+	const char32_t two = U'2';
+	const char32_t three = U'3';
+	const char32_t four = U'4';
+	const char32_t five = U'5';
+	const char32_t six = U'6';
+	const char32_t seven = U'7';
+	const char32_t eight = U'8';
+	const char32_t nine = U'9';
+	const char32_t other = U'x';
 
-	const std::string trueCase = "0123456789";
-	const std::string falseCase = "0234xs";
+	const std::u32string trueCase = U"0123456789";
+	const std::u32string falseCase = U"0234xs";
 
 	EXPECT_TRUE(isASCIIDigit(zero));
 	EXPECT_TRUE(isASCIIDigit(one));
@@ -115,11 +115,11 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIDigit) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper) {
-	const char upperCase = 'A';
-	const char lowerCase = 'a';
+	const char32_t upperCase = U'A';
+	const char32_t lowerCase = U'a';
 
-	const std::string trueCase = "UPPERCASE";
-	const std::string falseCase = "lowercase";
+	const std::u32string trueCase = U"UPPERCASE";
+	const std::u32string falseCase = U"lowercase";
 
 	EXPECT_TRUE(isASCIIUpper(upperCase));
 	EXPECT_FALSE(isASCIIUpper(lowerCase));
@@ -129,11 +129,11 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIILower) {
-	const char upperCase = 'A';
-	const char lowerCase = 'a';
+	const char32_t upperCase = U'A';
+	const char32_t lowerCase = U'a';
 
-	const std::string trueCase = "lowercase";
-	const std::string falseCase = "UPPERCASE";
+	const std::u32string trueCase = U"lowercase";
+	const std::u32string falseCase = U"UPPERCASE";
 
 	EXPECT_TRUE(isASCIILower(lowerCase));
 	EXPECT_FALSE(isASCIILower(upperCase));
@@ -143,12 +143,12 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIILower) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII) {
-	const char letter = 'a';
-	const char number = '0';
-	const char other = '.';
+	const char32_t letter = U'a';
+	const char32_t number = U'0';
+	const char32_t other = U'.';
 
-	const std::string trueCase = "trueCase0";
-	const std::string falseCase = "falseCase.";
+	const std::u32string trueCase = U"trueCase0";
+	const std::u32string falseCase = U"falseCase.";
 
 	EXPECT_TRUE(isAlphanumericASCII(letter));
 	EXPECT_TRUE(isAlphanumericASCII(number));
@@ -159,32 +159,32 @@ TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIHex) {
-	const char zero = '0';
-	const char one = '1';
-	const char two = '2';
-	const char three = '3';
-	const char four = '4';
-	const char five = '5';
-	const char six = '6';
-	const char seven = '7';
-	const char eight = '8';
-	const char nine = '9';
-	const char a = 'a';
-	const char b = 'b';
-	const char c = 'c';
-	const char d = 'd';
-	const char e = 'e';
-	const char f = 'f';
-	const char A = 'A';
-	const char B = 'B';
-	const char C = 'C';
-	const char D = 'D';
-	const char E = 'E';
-	const char F = 'F';
-	const char other = 'x';
+	const char32_t zero = U'0';
+	const char32_t one = U'1';
+	const char32_t two = U'2';
+	const char32_t three = U'3';
+	const char32_t four = U'4';
+	const char32_t five = U'5';
+	const char32_t six = U'6';
+	const char32_t seven = U'7';
+	const char32_t eight = U'8';
+	const char32_t nine = U'9';
+	const char32_t a = U'a';
+	const char32_t b = U'b';
+	const char32_t c = U'c';
+	const char32_t d = U'd';
+	const char32_t e = U'e';
+	const char32_t f = U'f';
+	const char32_t A = U'A';
+	const char32_t B = U'B';
+	const char32_t C = U'C';
+	const char32_t D = U'D';
+	const char32_t E = U'E';
+	const char32_t F = U'F';
+	const char32_t other = U'x';
 
-	const std::string trueCase = "0123456789abcdefABCDEF";
-	const std::string falseCase = "falseCase";
+	const std::u32string trueCase = U"0123456789abcdefABCDEF";
+	const std::u32string falseCase = U"falseCase";
 
 	EXPECT_TRUE(isASCIIHex(zero));
 	EXPECT_TRUE(isASCIIHex(one));
@@ -216,26 +216,26 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIHex) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper) {
-	const char zero = '0';
-	const char one = '1';
-	const char two = '2';
-	const char three = '3';
-	const char four = '4';
-	const char five = '5';
-	const char six = '6';
-	const char seven = '7';
-	const char eight = '8';
-	const char nine = '9';
-	const char A = 'A';
-	const char B = 'B';
-	const char C = 'C';
-	const char D = 'D';
-	const char E = 'E';
-	const char F = 'F';
-	const char other = 'x';
+	const char32_t zero = U'0';
+	const char32_t one = U'1';
+	const char32_t two = U'2';
+	const char32_t three = U'3';
+	const char32_t four = U'4';
+	const char32_t five = U'5';
+	const char32_t six = U'6';
+	const char32_t seven = U'7';
+	const char32_t eight = U'8';
+	const char32_t nine = U'9';
+	const char32_t A = U'A';
+	const char32_t B = U'B';
+	const char32_t C = U'C';
+	const char32_t D = U'D';
+	const char32_t E = U'E';
+	const char32_t F = U'F';
+	const char32_t other = U'x';
 
-	const std::string trueCase = "0123456789ABCDEF";
-	const std::string falseCase = "falseCase";
+	const std::u32string trueCase = U"0123456789ABCDEF";
+	const std::u32string falseCase = U"falseCase";
 
 	EXPECT_TRUE(isASCIIHexUpper(zero));
 	EXPECT_TRUE(isASCIIHexUpper(one));
@@ -260,26 +260,26 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower) {
-	const char zero = '0';
-	const char one = '1';
-	const char two = '2';
-	const char three = '3';
-	const char four = '4';
-	const char five = '5';
-	const char six = '6';
-	const char seven = '7';
-	const char eight = '8';
-	const char nine = '9';
-	const char a = 'a';
-	const char b = 'b';
-	const char c = 'c';
-	const char d = 'd';
-	const char e = 'e';
-	const char f = 'f';
-	const char other = 'x';
+	const char32_t zero = U'0';
+	const char32_t one = U'1';
+	const char32_t two = U'2';
+	const char32_t three = U'3';
+	const char32_t four = U'4';
+	const char32_t five = U'5';
+	const char32_t six = U'6';
+	const char32_t seven = U'7';
+	const char32_t eight = U'8';
+	const char32_t nine = U'9';
+	const char32_t a = U'a';
+	const char32_t b = U'b';
+	const char32_t c = U'c';
+	const char32_t d = U'd';
+	const char32_t e = U'e';
+	const char32_t f = U'f';
+	const char32_t other = U'x';
 
-	const std::string trueCase = "0123456789abcdef";
-	const std::string falseCase = "falseCase";
+	const std::u32string trueCase = U"0123456789abcdef";
+	const std::u32string falseCase = U"falseCase";
 
 	EXPECT_TRUE(isASCIIHexLower(zero));
 	EXPECT_TRUE(isASCIIHexLower(one));
@@ -304,48 +304,48 @@ TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower) {
 }
 
 TEST(HTML_Microsyntaxes_ASCII, isASCIINonAlphanumeric) {
-	for (const char& i : ASCIINonAlphanumeric) {
+	for (const char32_t& i : ASCIINonAlphanumericUTF32) {
 		EXPECT_TRUE(isASCIINonAlphanumeric(i));
 	}
-	for (const char& i : ASCIIAlphanumeric) {
+	for (const char32_t& i : ASCIIAlphanumericUTF32) {
 		EXPECT_FALSE(isASCIINonAlphanumeric(i));
 	}
-	EXPECT_TRUE(isASCIINonAlphanumeric("\n \r\"'"));
-	EXPECT_FALSE(isASCIINonAlphanumeric("Alphanumeric0123456789"));
+	EXPECT_TRUE(isASCIINonAlphanumeric(U"\n \r\"'"));
+	EXPECT_FALSE(isASCIINonAlphanumeric(U"Alphanumeric0123456789"));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, toUpper) {
-	EXPECT_EQ('A', toUpper('a'));
-	EXPECT_EQ('A', toUpper('A'));
-	EXPECT_EQ('0', toUpper('0'));
-	EXPECT_EQ('.', toUpper('.'));
-	EXPECT_EQ(' ', toUpper(' '));
+	EXPECT_EQ(U'A', toUpper(U'a'));
+	EXPECT_EQ(U'A', toUpper(U'A'));
+	EXPECT_EQ(U'0', toUpper(U'0'));
+	EXPECT_EQ(U'.', toUpper(U'.'));
+	EXPECT_EQ(U' ', toUpper(U' '));
 
-	EXPECT_EQ(std::string("MIXED CASE WITH SPACES AND PUNCTUATION."), toUpper(std::string("mixed CASE with spaces and punctuation.")));
+	EXPECT_EQ(std::u32string(U"MIXED CASE WITH SPACES AND PUNCTUATION."), toUpper(std::u32string(U"mixed CASE with spaces and punctuation.")));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, toLower) {
-	EXPECT_EQ('a', toLower('a'));
-	EXPECT_EQ('a', toLower('A'));
-	EXPECT_EQ('0', toLower('0'));
-	EXPECT_EQ('.', toLower('.'));
-	EXPECT_EQ(' ', toLower(' '));
+	EXPECT_EQ(U'a', toLower(U'a'));
+	EXPECT_EQ(U'a', toLower(U'A'));
+	EXPECT_EQ(U'0', toLower(U'0'));
+	EXPECT_EQ(U'.', toLower(U'.'));
+	EXPECT_EQ(U' ', toLower(U' '));
 
-	EXPECT_EQ(std::string("mixed case with spaces and punctuation."), toLower(std::string("mixed CASE with spaces and punctuation.")));
+	EXPECT_EQ(std::u32string(U"mixed case with spaces and punctuation."), toLower(std::u32string(U"mixed CASE with spaces and punctuation.")));
 }
 
 TEST(HTML_Microsyntaxes_ASCII, caseInsensitiveMatch) {
-	EXPECT_TRUE(caseInsensitiveMatch('a', 'a'));
-	EXPECT_TRUE(caseInsensitiveMatch('a', 'A'));
-	EXPECT_TRUE(caseInsensitiveMatch('.', '.'));
-	EXPECT_FALSE(caseInsensitiveMatch('a', 'b'));
+	EXPECT_TRUE(caseInsensitiveMatch(U'a', U'a'));
+	EXPECT_TRUE(caseInsensitiveMatch(U'a', U'A'));
+	EXPECT_TRUE(caseInsensitiveMatch(U'.', U'.'));
+	EXPECT_FALSE(caseInsensitiveMatch(U'a', U'b'));
 
-	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "test string."));
-	EXPECT_TRUE(caseInsensitiveMatch("test String.", "TEST sTRING."));
-	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "test string."));
-	EXPECT_TRUE(caseInsensitiveMatch("TEST STRING.", "TEST STRING."));
-	EXPECT_TRUE(caseInsensitiveMatch("test string.", "test string."));
-	EXPECT_FALSE(caseInsensitiveMatch("UPPER CASE.", "lower case."));
+	EXPECT_TRUE(caseInsensitiveMatch(U"TEST STRING.", U"test string."));
+	EXPECT_TRUE(caseInsensitiveMatch(U"test String.", U"TEST sTRING."));
+	EXPECT_TRUE(caseInsensitiveMatch(U"TEST STRING.", U"test string."));
+	EXPECT_TRUE(caseInsensitiveMatch(U"TEST STRING.", U"TEST STRING."));
+	EXPECT_TRUE(caseInsensitiveMatch(U"test string.", U"test string."));
+	EXPECT_FALSE(caseInsensitiveMatch(U"UPPER CASE.", U"lower case."));
 
 }
 
@@ -376,37 +376,37 @@ TEST(HTML_Microsyntaxes_ASCII, string_skipWhitespace) {
 	//Testing value of pos because skipWhitespace advances pos until string[pos] is no longer whitespace
 	{	// String with whitespace at beginning and pos = 0
 		size_t pos = 0;
-		std::string testString = " \n\t\f \r Not Whitespace Text";
+		std::u32string testString = U" \n\t\f \r Not Whitespace Text";
 		skipWhitespace(testString, pos);
 		EXPECT_EQ(7, (long ) pos);
 	}
 	{ // String with whitespace at beginning and pos = 7
 		size_t pos = 7;
-		std::string testString = " \n\t\f \r Not Whitespace Text";
+		std::u32string testString = U" \n\t\f \r Not Whitespace Text";
 		skipWhitespace(testString, pos);
 		EXPECT_EQ(7, (long ) pos);
 	}
 	{ // String with whitespace at beginning and pos = 9
 		size_t pos = 10;
-		std::string testString = " \n\t\f \r Not Whitespace Text";
+		std::u32string testString = U" \n\t\f \r Not Whitespace Text";
 		skipWhitespace(testString, pos);
 		EXPECT_EQ(11, (long ) pos);
 	}
 	{ // String with whitespace at end and pos = 19
 		size_t pos = 19;
-		std::string testString = "Not Whitespace Text \n\r\f\t";
+		std::u32string testString = U"Not Whitespace Text \n\r\f\t";
 		skipWhitespace(testString, pos);
 		EXPECT_EQ(24, (long ) pos);
 	}
 	{ // Empty string and pos = 0
 		size_t pos = 0;
-		std::string testString = "";
+		std::u32string testString = U"";
 		skipWhitespace(testString, pos);
 		EXPECT_EQ(0, (long ) pos);
 	}
 	{ // Empty string and pos = 1
 		size_t pos = 1;
-		std::string testString = "";
+		std::u32string testString = U"";
 		skipWhitespace(testString, pos);
 		EXPECT_EQ(1, (long ) pos);
 	}

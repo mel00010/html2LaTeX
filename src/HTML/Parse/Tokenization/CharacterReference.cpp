@@ -40,7 +40,7 @@
 #include <HTML/Microsyntaxes/Numbers/NonNegativeInteger.hpp>
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <CharacterReferences.hpp>
+#include "CharacterReferences.hpp"
 #endif /* DOXYGEN_SHOULD_SKIP_THIS */
 
 namespace HTML {
@@ -71,8 +71,8 @@ EmmittedTokens consumeCharacterReference(StateData& data) {
 	if (data.string[data.pos + 1] == '#') {
 		data.pos++;
 
-		bool (*isDigit)(const char&) = &Microsyntaxes::ASCII::isASCIIDigit;
-		unsigned long (*parseInteger)(const std::string&) = &Microsyntaxes::Numbers::parseNonNegativeInteger;
+		bool (*isDigit)(const char32_t&) = &Microsyntaxes::ASCII::isASCIIDigit;
+		unsigned long (*parseInteger)(const std::u32string&) = &Microsyntaxes::Numbers::parseNonNegativeInteger;
 		if (data.string[data.pos + 1] == 'x' || data.string[data.pos + 1] == 'X') {
 			data.pos++;
 			isDigit = &Microsyntaxes::ASCII::isASCIIHex;
@@ -80,7 +80,7 @@ EmmittedTokens consumeCharacterReference(StateData& data) {
 
 		}
 
-		std::string digits = "";
+		std::u32string digits = U"";
 		for (; data.pos < data.string.length(); data.pos++) {
 			if (isDigit(data.string[data.pos])) {
 				digits += data.string[data.pos];

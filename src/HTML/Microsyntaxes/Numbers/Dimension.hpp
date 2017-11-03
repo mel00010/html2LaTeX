@@ -35,7 +35,7 @@ namespace Numbers {
  * 		   @c false if it does not.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_Dimension, isDimension)
  */
-bool isDimension(const std::string& string);
+bool isDimension(const std::u32string& string);
 
 /**
  * @brief Retrieves the dimension @c string holds
@@ -44,7 +44,7 @@ bool isDimension(const std::string& string);
  * 		   in the string and whether it is a percentage or length.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_Dimension, parseDimension)
  */
-Dimension parseDimension(const std::string& string);
+Dimension parseDimension(const std::u32string& string);
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

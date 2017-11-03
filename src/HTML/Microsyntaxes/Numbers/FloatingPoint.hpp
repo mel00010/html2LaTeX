@@ -33,7 +33,7 @@ namespace Numbers {
  * 		   @c false if it does not.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_FloatingPoint, isFloatingPoint)
  */
-bool isFloatingPoint(const std::string& string);
+bool isFloatingPoint(const std::u32string& string);
 
 /**
  * @brief Retrieves the floating point number contained in @c string.
@@ -41,7 +41,7 @@ bool isFloatingPoint(const std::string& string);
  * @return Returns the floating point number contained in @c string.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_FloatingPoint, parseFloatingPoint)
  */
-double parseFloatingPoint(const std::string& string);
+double parseFloatingPoint(const std::u32string& string);
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
 } /* namespace HTML */

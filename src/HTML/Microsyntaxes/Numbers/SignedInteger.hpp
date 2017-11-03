@@ -32,17 +32,17 @@ namespace Numbers {
  * @return Returns @c true if @c string represents a valid integer, @c false if it is not.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, isInteger)
  */
-bool isInteger(const std::string& string);
+bool isInteger(const std::u32string& string);
 
 /**
- * @brief Retrieves the integer a std::string holds
+ * @brief Retrieves the integer a std::u32string holds
  * @param string String to parse
  * @return Returns the integer the string holds.
  * @exception parseException The algorithm failed to parse @c string.
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_SignedInteger, parseInteger)
  */
-int parseInteger(const std::string& string);
+int parseInteger(const std::u32string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

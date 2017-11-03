@@ -5,21 +5,21 @@ target_sources(tokenization
 		States.cpp
 		Tokenize.cpp
 		TokenizationMisc.cpp
-		TokenizationTypes.cpp
 		${CMAKE_CURRENT_BINARY_DIR}/CharacterReferences.hpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/CharacterReference.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/States.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Tokenize.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TokenizationMisc.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/TokenizationTypes.hpp
 		
 )
 target_link_libraries(tokenization
 	PUBLIC
 		ascii
 		numbers
-		htmltypes	
+		htmltypes
+		tokenization_types
+		treeconstruction
 )
 target_include_directories(tokenization 
 	PUBLIC
@@ -30,4 +30,16 @@ add_custom_command(OUTPUT CharacterReferences.hpp
     				${CMAKE_CURRENT_SOURCE_DIR}/CharacterReferences.json 
     				${CMAKE_CURRENT_BINARY_DIR}/CharacterReferences.hpp
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/CharacterReferences.json
+)
+
+add_library(tokenization_types STATIC "")
+target_sources(tokenization_types
+	PRIVATE
+		TokenizationTypes.cpp
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/TokenizationTypes.hpp
+)
+target_link_libraries(tokenization_types
+	PUBLIC
+		htmltypes
 )

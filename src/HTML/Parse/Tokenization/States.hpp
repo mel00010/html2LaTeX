@@ -42,6 +42,7 @@ void tagNameState(StateData& data);
 void RCDATALessThanSignState(StateData& data);
 void RCDATAEndTagOpenState(StateData& data);
 void RCDATAEndTagNameState(StateData& data);
+void RAWTEXTLessThanSignState(StateData& data);
 void RAWTEXTEndTagOpenState(StateData& data);
 void RAWTEXTEndTagNameState(StateData& data);
 void scriptDataLessThanSignState(StateData& data);

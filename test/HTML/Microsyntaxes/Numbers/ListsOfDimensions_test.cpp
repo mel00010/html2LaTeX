@@ -31,53 +31,53 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, isListOfDimensions) {
-	EXPECT_TRUE(isListOfDimensions("1,1%,1*"));
-	EXPECT_TRUE(isListOfDimensions("1,1%,1*,"));
-	EXPECT_TRUE(isListOfDimensions("1"));
-	EXPECT_TRUE(isListOfDimensions("1,2,3,4,5,6,7,8,9,0"));
-	EXPECT_TRUE(isListOfDimensions("1.0,2.1,3.2,4.3,5.4,6.5,7.6,8.7,9.8,0.1"));
-	EXPECT_FALSE(isListOfDimensions("a"));
-	EXPECT_FALSE(isListOfDimensions(""));
-	EXPECT_FALSE(isListOfDimensions(","));
-	EXPECT_FALSE(isListOfDimensions(";"));
-	EXPECT_FALSE(isListOfDimensions("."));
-	EXPECT_FALSE(isListOfDimensions(" "));
-	EXPECT_FALSE(isListOfDimensions("%"));
-	EXPECT_FALSE(isListOfDimensions("*"));
-	EXPECT_FALSE(isListOfDimensions("1,2,a,3"));
-	EXPECT_FALSE(isListOfDimensions("1%,2%,a,3"));
-	EXPECT_FALSE(isListOfDimensions("a%"));
-	EXPECT_FALSE(isListOfDimensions("%a,a"));
-	EXPECT_FALSE(isListOfDimensions("1,%,2,3"));
-	EXPECT_FALSE(isListOfDimensions("1,*,2,3"));
-	EXPECT_FALSE(isListOfDimensions("1,%2,3"));
-	EXPECT_FALSE(isListOfDimensions("1,*2,3"));
-	EXPECT_FALSE(isListOfDimensions("1,.,2,3"));
-	EXPECT_FALSE(isListOfDimensions("1.2.3"));
-	EXPECT_FALSE(isListOfDimensions("1*2*3"));
+	EXPECT_TRUE(isListOfDimensions(U"1,1%,1*"));
+	EXPECT_TRUE(isListOfDimensions(U"1,1%,1*,"));
+	EXPECT_TRUE(isListOfDimensions(U"1"));
+	EXPECT_TRUE(isListOfDimensions(U"1,2,3,4,5,6,7,8,9,0"));
+	EXPECT_TRUE(isListOfDimensions(U"1.0,2.1,3.2,4.3,5.4,6.5,7.6,8.7,9.8,0.1"));
+	EXPECT_FALSE(isListOfDimensions(U"a"));
+	EXPECT_FALSE(isListOfDimensions(U""));
+	EXPECT_FALSE(isListOfDimensions(U","));
+	EXPECT_FALSE(isListOfDimensions(U";"));
+	EXPECT_FALSE(isListOfDimensions(U"."));
+	EXPECT_FALSE(isListOfDimensions(U" "));
+	EXPECT_FALSE(isListOfDimensions(U"%"));
+	EXPECT_FALSE(isListOfDimensions(U"*"));
+	EXPECT_FALSE(isListOfDimensions(U"1,2,a,3"));
+	EXPECT_FALSE(isListOfDimensions(U"1%,2%,a,3"));
+	EXPECT_FALSE(isListOfDimensions(U"a%"));
+	EXPECT_FALSE(isListOfDimensions(U"%a,a"));
+	EXPECT_FALSE(isListOfDimensions(U"1,%,2,3"));
+	EXPECT_FALSE(isListOfDimensions(U"1,*,2,3"));
+	EXPECT_FALSE(isListOfDimensions(U"1,%2,3"));
+	EXPECT_FALSE(isListOfDimensions(U"1,*2,3"));
+	EXPECT_FALSE(isListOfDimensions(U"1,.,2,3"));
+	EXPECT_FALSE(isListOfDimensions(U"1.2.3"));
+	EXPECT_FALSE(isListOfDimensions(U"1*2*3"));
 }
 
 TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, parseListOfDimensions) {
-	EXPECT_EQ(parseListOfDimensions(""), (std::list<Dimension> { }));
-	EXPECT_EQ(parseListOfDimensions(","), (std::list<Dimension> { }));
-	EXPECT_EQ(parseListOfDimensions("1,1%,1*"),
+	EXPECT_EQ(parseListOfDimensions(U""), (std::list<Dimension> {}));
+	EXPECT_EQ(parseListOfDimensions(U","), (std::list<Dimension> {}));
+	EXPECT_EQ(parseListOfDimensions(U"1,1%,1*"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(1, DimensionType::PERCENTAGE),
 					Dimension(1, DimensionType::RELATIVE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1,1%,1*,"),
+	EXPECT_EQ(parseListOfDimensions(U"1,1%,1*,"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(1, DimensionType::PERCENTAGE),
 					Dimension(1, DimensionType::RELATIVE)
 			}));
 
-	EXPECT_EQ(parseListOfDimensions("1"),
+	EXPECT_EQ(parseListOfDimensions(U"1"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1,2,3,4,5,6,7,8,9,0"),
+	EXPECT_EQ(parseListOfDimensions(U"1,2,3,4,5,6,7,8,9,0"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(2, DimensionType::ABSOLUTE),
@@ -90,7 +90,7 @@ TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, parseListOfDimensions) {
 					Dimension(9, DimensionType::ABSOLUTE),
 					Dimension(0, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1.0,2.1,3.2,4.3,5.4,6.5,7.6,8.7,9.8,0.9"),
+	EXPECT_EQ(parseListOfDimensions(U"1.0,2.1,3.2,4.3,5.4,6.5,7.6,8.7,9.8,0.9"),
 			(std::list<Dimension> {
 					Dimension(1.0, DimensionType::ABSOLUTE),
 					Dimension(2.1, DimensionType::ABSOLUTE),
@@ -103,7 +103,7 @@ TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, parseListOfDimensions) {
 					Dimension(9.8, DimensionType::ABSOLUTE),
 					Dimension(0.9, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1,2,a,3"),
+	EXPECT_EQ(parseListOfDimensions(U"1,2,a,3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(2, DimensionType::ABSOLUTE),
@@ -111,7 +111,7 @@ TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, parseListOfDimensions) {
 					Dimension(3, DimensionType::ABSOLUTE)
 			}));
 	EXPECT_EQ(
-			parseListOfDimensions("1%,2%,a,3"),
+	parseListOfDimensions(U"1%,2%,a,3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::PERCENTAGE),
 					Dimension(2, DimensionType::PERCENTAGE),
@@ -119,77 +119,77 @@ TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, parseListOfDimensions) {
 					Dimension(3, DimensionType::ABSOLUTE)
 			}));
 
-	EXPECT_EQ(parseListOfDimensions("1,%,2,3"),
+	EXPECT_EQ(parseListOfDimensions(U"1,%,2,3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(0, DimensionType::PERCENTAGE),
 					Dimension(2, DimensionType::ABSOLUTE),
 					Dimension(3, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1,*,2,3"),
+	EXPECT_EQ(parseListOfDimensions(U"1,*,2,3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(0, DimensionType::RELATIVE),
 					Dimension(2, DimensionType::ABSOLUTE),
 					Dimension(3, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1,%2,3"),
+	EXPECT_EQ(parseListOfDimensions(U"1,%2,3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(0, DimensionType::PERCENTAGE),
 					Dimension(3, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1,*2,3"),
+	EXPECT_EQ(parseListOfDimensions(U"1,*2,3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(0, DimensionType::RELATIVE),
 					Dimension(3, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1,.,2,3"),
+	EXPECT_EQ(parseListOfDimensions(U"1,.,2,3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::ABSOLUTE),
 					Dimension(0, DimensionType::ABSOLUTE),
 					Dimension(2, DimensionType::ABSOLUTE),
 					Dimension(3, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1.2.3"),
+	EXPECT_EQ(parseListOfDimensions(U"1.2.3"),
 			(std::list<Dimension> {
 					Dimension(1.2, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("1*2*3"),
+	EXPECT_EQ(parseListOfDimensions(U"1*2*3"),
 			(std::list<Dimension> {
 					Dimension(1, DimensionType::RELATIVE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("a"),
+	EXPECT_EQ(parseListOfDimensions(U"a"),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::ABSOLUTE)
 			}));
 
-	EXPECT_EQ(parseListOfDimensions(";"),
+	EXPECT_EQ(parseListOfDimensions(U";"),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("."),
+	EXPECT_EQ(parseListOfDimensions(U"."),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions(" "),
+	EXPECT_EQ(parseListOfDimensions(U" "),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("%"),
+	EXPECT_EQ(parseListOfDimensions(U"%"),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::PERCENTAGE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("*"),
+	EXPECT_EQ(parseListOfDimensions(U"*"),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::RELATIVE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("a%"),
+	EXPECT_EQ(parseListOfDimensions(U"a%"),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::ABSOLUTE)
 			}));
-	EXPECT_EQ(parseListOfDimensions("%a,a"),
+	EXPECT_EQ(parseListOfDimensions(U"%a,a"),
 			(std::list<Dimension> {
 					Dimension(0, DimensionType::PERCENTAGE),
 					Dimension(0, DimensionType::ABSOLUTE),

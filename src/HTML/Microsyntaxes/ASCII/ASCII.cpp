@@ -29,8 +29,18 @@
 namespace HTML {
 namespace Microsyntaxes {
 namespace ASCII {
+
 bool isWhitespace(const char& character) {
 	for (const char& i : ASCIIWhitespace) {
+		if (character == i) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool isWhitespace(const char32_t& character) {
+	for (const char32_t& i : ASCIIWhitespaceUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -47,13 +57,22 @@ bool isWhitespace(const std::string& string) {
 	return true;
 }
 
-bool isUnicodeWhitespace(const char& character __attribute__ ((unused))) {
+bool isWhitespace(const std::u32string& string) {
+	for (const char32_t& i : string) {
+		if (!isWhitespace(i)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+bool isUnicodeWhitespace(const char32_t& character __attribute__ ((unused))) {
 	//! @todo Finish function
 	return false;
 }
 
-bool isUnicodeWhitespace(const std::string& string) {
-	for (const char& i : string) {
+bool isUnicodeWhitespace(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isUnicodeWhitespace(i)) {
 			return false;
 		}
@@ -61,8 +80,8 @@ bool isUnicodeWhitespace(const std::string& string) {
 	return true;
 }
 
-bool isASCII(const char& character) {
-	for (const char& i : ASCII) {
+bool isASCII(const char32_t& character) {
+	for (const char32_t& i : ASCIIUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -70,8 +89,8 @@ bool isASCII(const char& character) {
 	return false;
 }
 
-bool isASCII(const std::string& string) {
-	for (const char& i : string) {
+bool isASCII(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCII(i)) {
 			return false;
 		}
@@ -79,8 +98,8 @@ bool isASCII(const std::string& string) {
 	return true;
 }
 
-bool isASCIIDigit(const char& character) {
-	for (const char& i : ASCIIDigit) {
+bool isASCIIDigit(const char32_t& character) {
+	for (const char32_t& i : ASCIIDigitsUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -88,8 +107,8 @@ bool isASCIIDigit(const char& character) {
 	return false;
 }
 
-bool isASCIIDigits(const std::string& string) {
-	for (const char& i : string) {
+bool isASCIIDigits(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCIIDigit(i)) {
 			return false;
 		}
@@ -97,8 +116,8 @@ bool isASCIIDigits(const std::string& string) {
 	return true;
 }
 
-bool isASCIIUpper(const char& character) {
-	for (const char& i : ASCIIUpper) {
+bool isASCIIUpper(const char32_t& character) {
+	for (const char32_t& i : ASCIIUpperUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -106,8 +125,8 @@ bool isASCIIUpper(const char& character) {
 	return false;
 }
 
-bool isASCIIUpper(const std::string& string) {
-	for (const char& i : string) {
+bool isASCIIUpper(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCIIUpper(i)) {
 			return false;
 		}
@@ -115,8 +134,8 @@ bool isASCIIUpper(const std::string& string) {
 	return true;
 }
 
-bool isASCIILower(const char& character) {
-	for (const char& i : ASCIILower) {
+bool isASCIILower(const char32_t& character) {
+	for (const char32_t& i : ASCIILowerUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -124,8 +143,8 @@ bool isASCIILower(const char& character) {
 	return false;
 }
 
-bool isASCIILower(const std::string& string) {
-	for (const char& i : string) {
+bool isASCIILower(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCIILower(i)) {
 			return false;
 		}
@@ -133,8 +152,8 @@ bool isASCIILower(const std::string& string) {
 	return true;
 }
 
-bool isAlphanumericASCII(const char& character) {
-	for (const char& i : ASCIIAlphanumeric) {
+bool isAlphanumericASCII(const char32_t& character) {
+	for (const char32_t& i : ASCIIAlphanumericUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -142,8 +161,8 @@ bool isAlphanumericASCII(const char& character) {
 	return false;
 }
 
-bool isAlphanumericASCII(const std::string& string) {
-	for (const char& i : string) {
+bool isAlphanumericASCII(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isAlphanumericASCII(i)) {
 			return false;
 		}
@@ -151,8 +170,8 @@ bool isAlphanumericASCII(const std::string& string) {
 	return true;
 }
 
-bool isASCIIHex(const char& character) {
-	for (const char& i : ASCIIHex) {
+bool isASCIIHex(const char32_t& character) {
+	for (const char32_t& i : ASCIIHexUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -160,8 +179,8 @@ bool isASCIIHex(const char& character) {
 	return false;
 }
 
-bool isASCIIHex(const std::string& string) {
-	for (const char& i : string) {
+bool isASCIIHex(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCIIHex(i)) {
 			return false;
 		}
@@ -169,8 +188,8 @@ bool isASCIIHex(const std::string& string) {
 	return true;
 }
 
-bool isASCIIHexUpper(const char& character) {
-	for (const char& i : ASCIIHexUpper) {
+bool isASCIIHexUpper(const char32_t& character) {
+	for (const char32_t& i : ASCIIHexUpperUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -178,8 +197,8 @@ bool isASCIIHexUpper(const char& character) {
 	return false;
 }
 
-bool isASCIIHexUpper(const std::string& string) {
-	for (const char& i : string) {
+bool isASCIIHexUpper(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCIIHexUpper(i)) {
 			return false;
 		}
@@ -187,8 +206,8 @@ bool isASCIIHexUpper(const std::string& string) {
 	return true;
 }
 
-bool isASCIIHexLower(const char& character) {
-	for (const char& i : ASCIIHexLower) {
+bool isASCIIHexLower(const char32_t& character) {
+	for (const char32_t& i : ASCIIHexLowerUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -196,8 +215,8 @@ bool isASCIIHexLower(const char& character) {
 	return false;
 }
 
-bool isASCIIHexLower(const std::string& string) {
-	for (const char& i : string) {
+bool isASCIIHexLower(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCIIHexLower(i)) {
 			return false;
 		}
@@ -205,8 +224,8 @@ bool isASCIIHexLower(const std::string& string) {
 	return true;
 }
 
-bool isASCIINonAlphanumeric(const char& character) {
-	for (const char& i : ASCIINonAlphanumeric) {
+bool isASCIINonAlphanumeric(const char32_t& character) {
+	for (const char32_t& i : ASCIINonAlphanumericUTF32) {
 		if (character == i) {
 			return true;
 		}
@@ -214,8 +233,8 @@ bool isASCIINonAlphanumeric(const char& character) {
 	return false;
 }
 
-bool isASCIINonAlphanumeric(const std::string& string) {
-	for (const char& i : string) {
+bool isASCIINonAlphanumeric(const std::u32string& string) {
+	for (const char32_t& i : string) {
 		if (!isASCIINonAlphanumeric(i)) {
 			return false;
 		}
@@ -223,19 +242,19 @@ bool isASCIINonAlphanumeric(const std::string& string) {
 	return true;
 }
 
-char toUpper(const char& character) {
-	for (size_t i = 0; i < sizeof(ASCIILower); i++) {
-		if (character == ASCIILower[i]) {
-			return ASCIIUpper[i];
+char32_t toUpper(const char32_t& character) {
+	for (size_t i = 0; i < sizeof(ASCIILowerUTF32) / 4; i++) {
+		if (character == ASCIILowerUTF32[i]) {
+			return ASCIIUpperUTF32[i];
 		}
 	}
 	return character;
 }
 
 
-std::string toUpper(const std::string& string) {
-	std::string converted;
-	for (const char& i : string) {
+std::u32string toUpper(const std::u32string& string) {
+	std::u32string converted;
+	for (const char32_t& i : string) {
 		if (isASCIILower(i)) {
 			converted += toUpper(i);
 		} else {
@@ -245,18 +264,18 @@ std::string toUpper(const std::string& string) {
 	return converted;
 }
 
-char toLower(const char& character) {
-	for (size_t i = 0; i < sizeof(ASCIIUpper); i++) {
-		if (character == ASCIIUpper[i]) {
-			return ASCIILower[i];
+char32_t toLower(const char32_t& character) {
+	for (size_t i = 0; i < sizeof(ASCIIUpperUTF32) / 4; i++) {
+		if (character == ASCIIUpperUTF32[i]) {
+			return ASCIILowerUTF32[i];
 		}
 	}
 	return character;
 }
 
-std::string toLower(const std::string& string) {
-	std::string converted;
-	for (const char& i : string) {
+std::u32string toLower(const std::u32string& string) {
+	std::u32string converted;
+	for (const char32_t& i : string) {
 		if (isASCIIUpper(i)) {
 			converted += toLower(i);
 		} else {
@@ -265,7 +284,7 @@ std::string toLower(const std::string& string) {
 	}
 	return converted;
 }
-bool caseInsensitiveMatch(const char& lhs, const char& rhs) {
+bool caseInsensitiveMatch(const char32_t& lhs, const char32_t& rhs) {
 	if (toUpper(lhs) == toUpper(rhs)) {
 		return true;
 	}
@@ -273,7 +292,7 @@ bool caseInsensitiveMatch(const char& lhs, const char& rhs) {
 }
 
 
-bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs) {
+bool caseInsensitiveMatch(const std::u32string& lhs, const std::u32string& rhs) {
 	if (toUpper(lhs) == toUpper(rhs)) {
 		return true;
 	}
@@ -282,11 +301,11 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs) {
 }
 
 std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions) {
-	uint8_t buf = '\0';
+	char buf = '\0';
 	try {
 		stream.exceptions(std::istream::eofbit);
-		while (isWhitespace(stream.peek())) {
-			stream.read(reinterpret_cast<char*>(&buf), 1);
+		while (isWhitespace((char) stream.peek())) {
+			stream.read(&buf, 1);
 		}
 		return stream;
 	}
@@ -300,7 +319,7 @@ std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions) {
 	return stream;
 }
 
-const std::string& skipWhitespace(const std::string& string, size_t& position) {
+const std::u32string& skipWhitespace(const std::u32string& string, size_t& position) {
 	for (; position < string.length(); position++) {
 		if (isWhitespace(string[position])) {
 			continue;

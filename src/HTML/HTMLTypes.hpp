@@ -42,7 +42,7 @@ namespace HTML {
  *
  * Derived from uint8_t.
  */
-typedef uint8_t Byte;
+typedef char Byte;
 
 enum class InsertionMode {
 	INITIAL,

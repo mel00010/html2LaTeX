@@ -33,7 +33,7 @@ namespace Numbers {
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, isNonNegativeInteger)
  */
-bool isNonNegativeInteger(const std::string& string);
+bool isNonNegativeInteger(const std::u32string& string);
 
 /**
  * @brief Tests if a string represents a valid hexadecimal non-negative integer
@@ -42,27 +42,27 @@ bool isNonNegativeInteger(const std::string& string);
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, isNonNegativeHexInteger)
  */
-bool isNonNegativeHexInteger(const std::string& string);
+bool isNonNegativeHexInteger(const std::u32string& string);
 
 /**
- * @brief Retrieves the non-negative integer a std::string holds
+ * @brief Retrieves the non-negative integer a std::u32string holds
  * @param string String to parse
  * @return Returns the non-negative integer the string holds.
  * @exception parseException The algorithm failed to parse @c string.
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeInteger)
  */
-unsigned long parseNonNegativeInteger(const std::string& string);
+unsigned long parseNonNegativeInteger(const std::u32string& string);
 
 /**
- * @brief Retrieves the hexadecimal non-negative integer a std::string holds
+ * @brief Retrieves the hexadecimal non-negative integer a std::u32string holds
  * @param string String to parse
  * @return Returns the non-negative hexadecimal integer the string holds.
  * @exception parseException The algorithm failed to parse @c string.
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeHexInteger)
  */
-unsigned long parseNonNegativeHexInteger(const std::string& string);
+unsigned long parseNonNegativeHexInteger(const std::u32string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

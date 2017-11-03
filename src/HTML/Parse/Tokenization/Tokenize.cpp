@@ -75,6 +75,9 @@ std::list<Token> tokenize(const std::u32string& string) {
 			case STATES::RCDATA_END_TAG_NAME:
 				States::RCDATAEndTagNameState(state_data);
 				break;
+			case STATES::RAWTEXT_LESS_THAN_SIGN:
+				States::RAWTEXTLessThanSignState(state_data);
+				break;
 			case STATES::RAWTEXT_END_TAG_OPEN:
 				States::RAWTEXTEndTagOpenState(state_data);
 				break;

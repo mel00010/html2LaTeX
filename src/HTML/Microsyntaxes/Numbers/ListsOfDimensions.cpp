@@ -35,13 +35,16 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-bool isListOfDimensions(const std::string& string) {
-	std::string str = (string[string.length() - 1] == ',') ? string.substr(0, string.length() - 1) : string;
+bool isListOfDimensions(const std::u32string& string) {
+	std::u32string str = (string[string.length() - 1] == ',') ? string.substr(0, string.length() - 1) : string;
 	if (str.empty()) {
 		return false;
 	}
 
-	boost::tokenizer<boost::char_separator<char>> raw_tokens(str, boost::char_separator<char>(","));
+	boost::tokenizer<
+			boost::char_separator<char32_t>,
+			std::u32string::const_iterator,
+			std::u32string> raw_tokens(str, boost::char_separator<char32_t>(U","));
 	for (const auto& token : raw_tokens) {
 		size_t i = 0;
 		bool started = false;
@@ -78,17 +81,20 @@ bool isListOfDimensions(const std::string& string) {
 	return true;
 }
 
-std::list<Dimension> parseListOfDimensions(const std::string& string) {
+std::list<Dimension> parseListOfDimensions(const std::u32string& string) {
 	std::list<Dimension> dimensions = { };
-	std::string processed_string;
+	std::u32string processed_string;
 	if (string[string.length() - 1] == ',') {
 		processed_string = string.substr(0, string.length() - 1);
 	} else {
 		processed_string = string;
 	}
 
-	boost::char_separator<char> sep(",");
-	boost::tokenizer<boost::char_separator<char>> raw_tokens(processed_string, sep);
+	boost::char_separator<char32_t> sep(U",");
+	boost::tokenizer<
+			boost::char_separator<char32_t>,
+			std::u32string::const_iterator,
+			std::u32string> raw_tokens(processed_string, sep);
 	for (const auto& token : raw_tokens) {
 		size_t i = 0;
 		Dimension dimension(0, DimensionType::ABSOLUTE);
@@ -98,7 +104,7 @@ std::list<Dimension> parseListOfDimensions(const std::string& string) {
 			continue;
 		}
 		if (ASCII::isASCIIDigit(token[i])) {
-			std::string digits = "";
+			std::u32string digits = U"";
 			for (; i < token.length(); i++) {
 				if (ASCII::isASCIIDigit(token[i])) {
 					digits += token[i];
@@ -114,7 +120,7 @@ std::list<Dimension> parseListOfDimensions(const std::string& string) {
 		}
 		if (token[i] == '.') {
 			i++;
-			std::string digitsAndSpaces = "";
+			std::u32string digitsAndSpaces = U"";
 			for (; i < token.length(); i++) {
 				if (ASCII::isASCIIDigit(token[i]) || token[i] == ' ') {
 					digitsAndSpaces += token[i];

@@ -29,37 +29,37 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 TEST(HTML_Microsyntaxes_Numbers_FloatingPoint, isFloatingPoint) {
-	EXPECT_TRUE(isFloatingPoint("123"));
-	EXPECT_TRUE(isFloatingPoint("123.456"));
-	EXPECT_TRUE(isFloatingPoint("123.456E7"));
-	EXPECT_TRUE(isFloatingPoint("123.456e7"));
-	EXPECT_TRUE(isFloatingPoint("-123.456e7"));
-	EXPECT_TRUE(isFloatingPoint("-123.456E7"));
-	EXPECT_TRUE(isFloatingPoint("-123e4"));
-	EXPECT_TRUE(isFloatingPoint("-123E4"));
-	EXPECT_TRUE(isFloatingPoint("123E4"));
-	EXPECT_TRUE(isFloatingPoint("123e4"));
-	EXPECT_TRUE(isFloatingPoint("-123e-4"));
-	EXPECT_FALSE(isFloatingPoint("   123e4"));
-	EXPECT_FALSE(isFloatingPoint("123-e4"));
-	EXPECT_FALSE(isFloatingPoint("Not a floating point number"));
-	EXPECT_FALSE(isFloatingPoint("-12-34"));
-	EXPECT_FALSE(isFloatingPoint("1e2e3"));
-	EXPECT_FALSE(isFloatingPoint("1..2"));
+	EXPECT_TRUE(isFloatingPoint(U"123"));
+	EXPECT_TRUE(isFloatingPoint(U"123.456"));
+	EXPECT_TRUE(isFloatingPoint(U"123.456E7"));
+	EXPECT_TRUE(isFloatingPoint(U"123.456e7"));
+	EXPECT_TRUE(isFloatingPoint(U"-123.456e7"));
+	EXPECT_TRUE(isFloatingPoint(U"-123.456E7"));
+	EXPECT_TRUE(isFloatingPoint(U"-123e4"));
+	EXPECT_TRUE(isFloatingPoint(U"-123E4"));
+	EXPECT_TRUE(isFloatingPoint(U"123E4"));
+	EXPECT_TRUE(isFloatingPoint(U"123e4"));
+	EXPECT_TRUE(isFloatingPoint(U"-123e-4"));
+	EXPECT_FALSE(isFloatingPoint(U"   123e4"));
+	EXPECT_FALSE(isFloatingPoint(U"123-e4"));
+	EXPECT_FALSE(isFloatingPoint(U"Not a floating point number"));
+	EXPECT_FALSE(isFloatingPoint(U"-12-34"));
+	EXPECT_FALSE(isFloatingPoint(U"1e2e3"));
+	EXPECT_FALSE(isFloatingPoint(U"1..2"));
 }
 
 TEST(HTML_Microsyntaxes_Numbers_FloatingPoint, parseFloatingPoint) {
-	EXPECT_DOUBLE_EQ(123.456l, parseFloatingPoint("123.456"));
-	EXPECT_DOUBLE_EQ(123.456e7l, parseFloatingPoint("123.456e7"));
-	EXPECT_DOUBLE_EQ(-123l, parseFloatingPoint("-123"));
-	EXPECT_DOUBLE_EQ(123l, parseFloatingPoint("123"));
-	EXPECT_DOUBLE_EQ(-123e-4l, parseFloatingPoint("-123e-4"));
-	EXPECT_DOUBLE_EQ(123E4l, parseFloatingPoint("123E4"));
-	EXPECT_THROW(parseFloatingPoint("123-e4"), parseException);
-	EXPECT_THROW(parseFloatingPoint("Not a floating point number"), parseException);
-	EXPECT_THROW(parseFloatingPoint("-12-34"), parseException);
-	EXPECT_THROW(parseFloatingPoint("1e2e3"), parseException);
-	EXPECT_THROW(parseFloatingPoint("1..2"), parseException);
+	EXPECT_DOUBLE_EQ(123.456l, parseFloatingPoint(U"123.456"));
+	EXPECT_DOUBLE_EQ(123.456e7l, parseFloatingPoint(U"123.456e7"));
+	EXPECT_DOUBLE_EQ(-123l, parseFloatingPoint(U"-123"));
+	EXPECT_DOUBLE_EQ(123l, parseFloatingPoint(U"123"));
+	EXPECT_DOUBLE_EQ(-123e-4l, parseFloatingPoint(U"-123e-4"));
+	EXPECT_DOUBLE_EQ(123E4l, parseFloatingPoint(U"123E4"));
+	EXPECT_THROW(parseFloatingPoint(U"123-e4"), parseException);
+	EXPECT_THROW(parseFloatingPoint(U"Not a floating point number"), parseException);
+	EXPECT_THROW(parseFloatingPoint(U"-12-34"), parseException);
+	EXPECT_THROW(parseFloatingPoint(U"1e2e3"), parseException);
+	EXPECT_THROW(parseFloatingPoint(U"1..2"), parseException);
 }
 
 } /* namespace Numbers */

@@ -26,7 +26,7 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-unsigned int ASCIIDigitToInt(const char& digit) {
+unsigned int ASCIIDigitToInt(const char32_t& digit) {
 	int returned = 0;
 	switch (digit) {
 		case '0':
@@ -64,7 +64,7 @@ unsigned int ASCIIDigitToInt(const char& digit) {
 	}
 	return returned;
 }
-unsigned int ASCIIHexDigitToInt(const char& digit) {
+unsigned int ASCIIHexDigitToInt(const char32_t& digit) {
 	int returned = 0x0;
 	switch (digit) {
 		case '0':

@@ -31,7 +31,7 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-bool isDimension(const std::string& string) {
+bool isDimension(const std::u32string& string) {
 	size_t position = 0;
 
 	if (position > string.length()) {
@@ -60,7 +60,7 @@ bool isDimension(const std::string& string) {
 		return false;
 	}
 
-	std::string digits = "";
+	std::u32string digits = U"";
 	for (; position < string.length(); position++) {
 		if (ASCII::isASCIIDigit(string[position])) {
 			digits += string[position];
@@ -126,7 +126,7 @@ bool isDimension(const std::string& string) {
 	}
 }
 
-Dimension parseDimension(const std::string& string) {
+Dimension parseDimension(const std::u32string& string) {
 	size_t position = 0;
 
 	Dimension dimension = Dimension(NAN, DimensionType::UNKNOWN);
@@ -159,7 +159,7 @@ Dimension parseDimension(const std::string& string) {
 		throw parseException();
 	}
 
-	std::string digits = "";
+	std::u32string digits = U"";
 	for (; position < string.length(); position++) {
 		if (ASCII::isASCIIDigit(string[position])) {
 			digits += string[position];

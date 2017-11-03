@@ -22,7 +22,14 @@
 
 #include "States.hpp"
 
+#include "CharacterReference.hpp"
+#include "TokenizationMisc.hpp"
 #include "TokenizationTypes.hpp"
+
+#include <list>
+
+#include <HTML/Parse/TreeConstruction/Dispatch.hpp>
+#include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 
 namespace HTML {
 namespace Parse {
@@ -30,98 +37,161 @@ namespace Tokenization {
 namespace States {
 
 void dataState(StateData& data) {
-	Token token;
-
 	if (data.pos >= data.string.length()) {
-		token.type = TokenType::CHARACTER;
-//		token.character_token.data = data.string[data.pos];
-		data.tokens.push_back(token);
-		data.pos++;
-		return;
+		TreeConstruction::dispatch(createEOFToken());
+	} else {
+		switch (data.string[data.pos]) {
+			case '&':
+				data.state = STATES::CHARACTER_REFERENCE_IN_DATA;
+				break;
+			case '<':
+				data.state = STATES::TAG_OPEN;
+				break;
+			case '\0':
+				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				break;
+			default:
+				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				break;
+		}
 	}
-	switch (data.string[data.pos]) {
-		case '&':
-			data.state = STATES::CHARACTER_REFERENCE_IN_DATA;
-			data.pos++;
-			break;
-		case '<':
-			data.state = STATES::TAG_OPEN;
-			data.pos++;
-			break;
-		case '\0':
-			token.type = TokenType::CHARACTER;
-//			token.character_token.data = data.string[data.pos];
-			data.tokens.push_back(token);
-			data.pos++;
-			break;
-
-		default:
-			token.type = TokenType::CHARACTER;
-//			token.character_token.data = data.string[data.pos];
-			data.tokens.push_back(token);
-			data.pos++;
-			break;
-	}
+	data.pos++;
+	return;
 }
 
 void characterReferenceInDataState(StateData& data) {
 	data.state = STATES::DATA;
-	//Consume a character reference, no additional allowed character
+
+	EmmittedTokens tokens = consumeCharacterReference(data);
+	if (tokens.first.type == TokenType::CHARACTER) {
+		TreeConstruction::dispatch(tokens.first);
+		if (tokens.second.type == TokenType::CHARACTER) {
+			TreeConstruction::dispatch(tokens.second);
+		}
+	} else {
+		TreeConstruction::dispatch(createCharacterToken('&'));
+	}
+	return;
 }
 
 void RCDATAState(StateData& data) {
-	Token token;
 	if (data.pos >= data.string.length()) {
-		token.type = TokenType::CHARACTER;
-//		token.character_token.data = data.string[data.pos];
-		data.tokens.push_back(token);
-		data.pos++;
-		return;
+		TreeConstruction::dispatch(createEOFToken());
+	} else {
+		switch (data.string[data.pos]) {
+			case '&':
+				data.state = STATES::CHARACTER_REFERENCE_IN_RCDATA;
+				break;
+			case '<':
+				data.state = STATES::RCDATA_LESS_THAN_SIGN;
+				break;
+			case '\0':
+				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
+				break;
+			default:
+				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				break;
+		}
 	}
-	switch (data.string[data.pos]) {
-		case '&':
-			data.state = STATES::CHARACTER_REFERENCE_IN_RCDATA;
-			data.pos++;
-			break;
-		case '<':
-			data.state = STATES::RCDATA_LESS_THAN_SIGN;
-			data.pos++;
-			break;
-		case '\0':
-			token.type = TokenType::CHARACTER;
-//			token.character_token.data = data.string[data.pos];
-			data.tokens.push_back(token);
-			data.pos++;
-			break;
-
-		default:
-			token.type = TokenType::CHARACTER;
-//			token.character_token.data = data.string[data.pos];
-			data.tokens.push_back(token);
-			data.pos++;
-			break;
-	}
+	data.pos++;
+	return;
 }
 
 void characterReferenceINRCDATAState(StateData& data) {
-	data.state = STATES::DATA;
-
+	data.state = STATES::RCDATA;
+	EmmittedTokens tokens = consumeCharacterReference(data);
+	if (tokens.first.type == TokenType::CHARACTER) {
+		TreeConstruction::dispatch(tokens.first);
+		if (tokens.second.type == TokenType::CHARACTER) {
+			TreeConstruction::dispatch(tokens.second);
+		}
+	} else {
+		TreeConstruction::dispatch(createCharacterToken('&'));
+	}
+	return;
 }
 
-void RAWTEXTState(__attribute__ ((unused)) StateData& data) {
-
+void RAWTEXTState(StateData& data) {
+	if (data.pos >= data.string.length()) {
+		TreeConstruction::dispatch(createEOFToken());
+	} else {
+		switch (data.string[data.pos]) {
+			case '<':
+				data.state = STATES::RAWTEXT_LESS_THAN_SIGN;
+				break;
+			case '\0':
+				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
+				data.pos++;
+				break;
+			default:
+				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				break;
+		}
+	}
+	data.pos++;
+	return;
 }
 
 void scriptDataState(__attribute__ ((unused)) StateData& data) {
-
+	if (data.pos >= data.string.length()) {
+		TreeConstruction::dispatch(createEOFToken());
+	} else {
+		switch (data.string[data.pos]) {
+			case '<':
+				data.state = STATES::SCRIPT_DATA_LESS_THAN_SIGN;
+				break;
+			case '\0':
+				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
+				data.pos++;
+				break;
+			default:
+				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				break;
+		}
+	}
+	data.pos++;
+	return;
 }
 
 void plainTextState(__attribute__ ((unused)) StateData& data) {
-
+	if (data.pos >= data.string.length()) {
+		TreeConstruction::dispatch(createEOFToken());
+	} else {
+		switch (data.string[data.pos]) {
+			case '\0':
+				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
+				data.pos++;
+				break;
+			default:
+				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				break;
+		}
+	}
+	data.pos++;
+	return;
 }
 
 void tagOpenState(__attribute__ ((unused)) StateData& data) {
+	if (data.pos >= data.string.length()) {
+		TreeConstruction::dispatch(createEOFToken());
+	} else {
+		if (Microsyntaxes::ASCII::isASCIIUpper(data.string[data.pos])) {
 
+		}
+		switch (data.string[data.pos]) {
+			case '!':
+				data.state = STATES::MARKUP_DECLARATION_OPEN;
+				break;
+			case '/':
+				data.state = STATES::END_TAG_OPEN;
+				break;
+			default:
+				TreeConstruction::dispatch(createCharacterToken(data.string[data.pos]));
+				break;
+		}
+	}
+	data.pos++;
+	return;
 }
 
 void endTagOpenState(__attribute__ ((unused)) StateData& data) {
@@ -141,6 +211,10 @@ void RCDATAEndTagOpenState(__attribute__ ((unused)) StateData& data) {
 }
 
 void RCDATAEndTagNameState(__attribute__ ((unused)) StateData& data) {
+
+}
+
+void RAWTEXTLessThanSignState(__attribute__ ((unused)) StateData& data) {
 
 }
 

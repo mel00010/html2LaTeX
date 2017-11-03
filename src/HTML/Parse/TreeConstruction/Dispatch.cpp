@@ -1,5 +1,5 @@
 /*******************************************************************************
- * NumbersMisc.hpp
+ * Dispatch.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,29 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_
-#define HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_
+
+#include "Dispatch.hpp"
 
 namespace HTML {
-namespace Microsyntaxes {
-namespace Numbers {
+namespace Parse {
+namespace TreeConstruction {
 
-/**
- * @brief Converts an ASCII digit to its numerical equivalent.
- * @param digit Digit to convert
- * @return Returns an unsigned int with a value in the range 0 to 9.
- * @exception parseException @c digit was not an ASCII digit
- *
- * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NumbersMisc, ASCIIDigitToInt)
- */
-unsigned int ASCIIDigitToInt(const char32_t& digit);
+void dispatch(Tokenization::Token token) {
 
-unsigned int ASCIIHexDigitToInt(const char32_t& digit);
+}
 
-} /* namespace Numbers */
-} /* namespace Microsyntaxes */
+} /* namespace TreeConstruction */
+} /* namespace Parse */
 } /* namespace HTML */
-
-
-
-#endif /* HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_ */

@@ -36,7 +36,7 @@ namespace Numbers {
  * 		   @c false if it does not.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, isListOfDimensions)
  */
-bool isListOfDimensions(const std::string& string);
+bool isListOfDimensions(const std::u32string& string);
 
 /**
  * @brief Retrieves a list of dimensions from @c string.
@@ -44,7 +44,7 @@ bool isListOfDimensions(const std::string& string);
  * @return Returns a std::list of Dimension objects retrieved from @c string.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_ListsOfDimensions, parseListOfDimensions)
  */
-std::list<Dimension> parseListOfDimensions(const std::string& string);
+std::list<Dimension> parseListOfDimensions(const std::u32string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
