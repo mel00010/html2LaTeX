@@ -33,16 +33,14 @@ namespace Parse {
 namespace Tokenization {
 
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token) {
-	os << "std::u32string name = " << (
+	os << "\"" << (
 			(doctype_token.name == U"\xFF\xFF\xFF\xFF") ?
-	"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.name)) << "\n";
-	os << "std::u32string public_identifier = ";
+	"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.name)) << "\":\"";
 	os << ((doctype_token.public_identifier == U"\xFF\xFF\xFF\xFF") ?
-			"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.public_identifier)) << "\n";
-	os << "std::u32string system_identifier = ";
+	"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.public_identifier)) << "\":\"";
 	os << ((doctype_token.system_identifier == U"\xFF\xFF\xFF\xFF") ?
-			"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.system_identifier)) << "\n";
-	os << "bool force_quirks = " << doctype_token.force_quirks;
+	"\\(EOF)" : std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(doctype_token.system_identifier)) << "\":";
+	os << (doctype_token.force_quirks ? "True" : "False");
 	return os;
 }
 bool operator==(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
@@ -62,13 +60,13 @@ bool operator==(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_token) {
-	os << "std::u32string tag_name = " << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(start_tag_token.tag_name) << "\n";
-	os << "bool self_closing = " << start_tag_token.self_closing << "\n";
-	os << "std::list<Attribute> attributes = ";
+	os << "\"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(start_tag_token.tag_name) << "\":";
+	os << (start_tag_token.self_closing ? "True" : "False") << ":";
+	os << "{";
 	for (auto v : start_tag_token.attributes) {
 		os << v << ", ";
 	}
-	return os;
+	return os << "}";
 }
 
 bool operator==(const StartTagToken& lhs, const StartTagToken& rhs) {
@@ -85,13 +83,13 @@ bool operator==(const StartTagToken& lhs, const StartTagToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_token) {
-	os << "std::u32string tag_name = " << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(end_tag_token.tag_name) << "\n";
-	os << "bool self_closing = " << end_tag_token.self_closing << "\n";
-	os << "std::list<Attribute> attributes = ";
+	os << "\"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(end_tag_token.tag_name) << "\":";
+	os << (end_tag_token.self_closing ? "True" : "False") << ":";
+	os << "{";
 	for (auto v : end_tag_token.attributes) {
 		os << v << ", ";
 	}
-	return os;
+	return os << "}";
 }
 
 bool operator==(const EndTagToken& lhs, const EndTagToken& rhs) {
@@ -108,8 +106,6 @@ bool operator==(const EndTagToken& lhs, const EndTagToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token) {
-	os << "char32_t data = ";
-
 	boost::io::ios_all_saver ias(os);
 
 	os.setf(os.hex, os.basefield);
@@ -129,7 +125,7 @@ bool operator==(const CharacterToken& lhs, const CharacterToken& rhs) {
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token) {
-	return os << "std::u32string data = \"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(comment_token.data) << "\"";
+	return os << "\"" << std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t>().to_bytes(comment_token.data) << "\"";
 }
 
 bool operator==(const CommentToken& lhs, const CommentToken& rhs) {
@@ -157,8 +153,7 @@ bool operator==(__attribute__ ((unused)) const NoToken& lhs, __attribute__ ((unu
 }
 
 ::std::ostream& operator<<(::std::ostream& os, const Token& token) {
-	os << "TokenType type = " << token.type << "\n";
-	os << "TokenVariant token = ";
+	os << token.type << ":";
 	return std::visit([&os](auto&& arg) {os << arg;}, token.token), os;
 }
 
@@ -175,25 +170,25 @@ bool operator==(const Token& lhs, const Token& rhs) {
 ::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type) {
 	switch (token_type) {
 		case TokenType::DOCTYPE:
-			os << "TokenType::DOCTYPE";
+			os << "DOCTYPE";
 			break;
 		case TokenType::START_TAG:
-			os << "TokenType::START_TAG";
+			os << "START_TAG";
 			break;
 		case TokenType::END_TAG:
-			os << "TokenType::END_TAG";
+			os << "END_TAG";
 			break;
 		case TokenType::COMMENT:
-			os << "TokenType::COMMENT";
+			os << "COMMENT";
 			break;
 		case TokenType::CHARACTER:
-			os << "TokenType::CHARACTER";
+			os << "CHARACTER";
 			break;
 		case TokenType::END_OF_FILE:
-			os << "TokenType::END_OF_FILE";
+			os << "END_OF_FILE";
 			break;
 		case TokenType::NO_TOKEN:
-			os << "TokenType::NO_TOKEN";
+			os << "NO_TOKEN";
 			break;
 		default:
 			os << "Error: Unknown TokenType!";
@@ -202,11 +197,10 @@ bool operator==(const Token& lhs, const Token& rhs) {
 	return os;
 }
 
-::std::ostream& operator<<(::std::ostream& os, const EmmittedTokens& tokens) {
-	return os << "Token first = " << tokens.first << std::endl
-			<< "Token second = " << tokens.second;
+::std::ostream& operator<<(::std::ostream& os, const TokenPair& tokens) {
+	return os << "{" << tokens.first << "}:{" << tokens.second << "}";
 }
-bool operator==(const EmmittedTokens& lhs, const EmmittedTokens& rhs) {
+bool operator==(const TokenPair& lhs, const TokenPair& rhs) {
 	if (lhs.first != rhs.first) {
 		return false;
 	}

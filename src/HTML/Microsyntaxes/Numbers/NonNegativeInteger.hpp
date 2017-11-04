@@ -52,7 +52,7 @@ bool isNonNegativeHexInteger(const std::u32string& string);
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeInteger)
  */
-unsigned long parseNonNegativeInteger(const std::u32string& string);
+uint32_t parseNonNegativeInteger(const std::u32string& string);
 
 /**
  * @brief Retrieves the hexadecimal non-negative integer a std::u32string holds
@@ -62,7 +62,7 @@ unsigned long parseNonNegativeInteger(const std::u32string& string);
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeHexInteger)
  */
-unsigned long parseNonNegativeHexInteger(const std::u32string& string);
+uint32_t parseNonNegativeHexInteger(const std::u32string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

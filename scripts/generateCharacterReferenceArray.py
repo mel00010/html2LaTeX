@@ -15,7 +15,7 @@ with open(sys.argv[1]) as json_file:
 			+'> characterReferences = {{\n')
 		for i in sorted(list(json_data.items()), key=(lambda x: len(x[0])), reverse=True):
 			output_file.write('\t\tstd::make_tuple( U"')
-			output_file.write(i[0])
+			output_file.write(i[0][1:])
 			output_file.write('", U\'\\U')
 			output_file.write('{:08X}'.format(i[1]["codepoints"][0]))
 			output_file.write('\', ')

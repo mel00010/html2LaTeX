@@ -135,13 +135,13 @@ inline bool operator!=(const Token& lhs, const Token& rhs) {
 	return !(lhs == rhs);
 }
 
-struct EmmittedTokens {
+struct TokenPair {
 		Token first;
 		Token second;
 };
-::std::ostream& operator<<(::std::ostream& os, const EmmittedTokens& tokens);
-bool operator==(const EmmittedTokens& lhs, const EmmittedTokens& rhs);
-inline bool operator!=(const EmmittedTokens& lhs, const EmmittedTokens& rhs) {
+::std::ostream& operator<<(::std::ostream& os, const TokenPair& tokens);
+bool operator==(const TokenPair& lhs, const TokenPair& rhs);
+inline bool operator!=(const TokenPair& lhs, const TokenPair& rhs) {
 	return !(lhs == rhs);
 }
 

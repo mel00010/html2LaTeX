@@ -23,6 +23,8 @@
 #include "NumbersMisc.hpp"
 #include "NumbersTypes.hpp"
 
+#include <cstdint>
+#include <limits>
 #include <stddef.h>
 
 #include "HTML/Microsyntaxes/ASCII/ASCII.hpp"
@@ -32,27 +34,21 @@ namespace Microsyntaxes {
 namespace Numbers {
 
 bool isNonNegativeInteger(const std::u32string& string) {
-	if (!string.empty() && ASCII::isASCIIDigits(string)) {
-		return true;
-	}
-	return false;
+	return !string.empty() && ASCII::isASCIIDigits(string);
 }
 bool isNonNegativeHexInteger(const std::u32string& string) {
-	if (!string.empty() && ASCII::isASCIIHex(string)) {
-		return true;
-	}
-	return false;
+	return !string.empty() && ASCII::isASCIIHex(string);
 }
 
-unsigned long parseNonNegativeInteger(const std::u32string& string) {
-	unsigned long accumulated = 0;
+uint32_t parseNonNegativeInteger(const std::u32string& string) {
+	uint32_t accumulated = 0;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
 		if (ASCII::isWhitespace(string[i]) && !started) {
 			continue;
 		} else if (ASCII::isASCIIDigit(string[i])) {
 			started = true;
-			int digit = ASCIIDigitToInt(string[i]);
+			uint8_t digit = ASCIIDigitToInt(string[i]);
 			accumulated = accumulated * 10 + digit;
 		} else if (started) {
 			break;
@@ -66,15 +62,15 @@ unsigned long parseNonNegativeInteger(const std::u32string& string) {
 	return accumulated;
 }
 
-unsigned long parseNonNegativeHexInteger(const std::u32string& string) {
-	unsigned long accumulated = 0;
+uint32_t parseNonNegativeHexInteger(const std::u32string& string) {
+	uint32_t accumulated = 0;
 	bool started = false;
 	for (size_t i = 0; i < string.length(); i++) {
 		if (ASCII::isWhitespace(string[i]) && !started) {
 			continue;
 		} else if (ASCII::isASCIIHex(string[i])) {
 			started = true;
-			int digit = ASCIIHexDigitToInt(string[i]);
+			uint8_t digit = ASCIIHexDigitToInt(string[i]);
 			accumulated = accumulated * 0x10 + digit;
 		} else if (started) {
 			break;

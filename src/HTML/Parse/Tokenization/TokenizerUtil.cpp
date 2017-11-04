@@ -21,250 +21,280 @@
 #include "Tokenizer.hpp"
 
 #include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
+#include <HTML/Parse/TreeConstruction/Dispatch.hpp>
 
 namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-void Tokenizer::changeState(STATES new_state) {
-	state = new_state;
-}
 
 char32_t Tokenizer::consume() {
-	return get_character_at_position(pos++);
+	return getCharacterAtPosition(pos++);
+}
+char32_t Tokenizer::consume(size_t& consume_counter) {
+	consume_counter++;
+	return getCharacterAtPosition(pos++);
 }
 
-char32_t Tokenizer::get_character_at_position(size_t position) {
+std::u32string Tokenizer::consume(const size_t& number_of_chars, size_t& consume_counter) {
+	std::u32string buffer = getCharactersAtPosition(pos, number_of_chars);
+	pos += buffer.length();
+	consume_counter += buffer.length();
+	return buffer;
+}
+
+void Tokenizer::emit(const Token& token) {
+	TreeConstruction::dispatch(token);
+}
+
+char32_t Tokenizer::getCharacterAtPosition(const size_t& position) {
 	if (position >= string.length()) {
 		return EOF32;
 	}
 	return string[position];
 }
 
+std::u32string Tokenizer::getCharactersAtPosition(const size_t& position, const size_t& number_of_chars) {
+	std::u32string characters = U"";
+	for(size_t i = 0; i < number_of_chars; i++) {
+		if (position + i >= string.length()) {
+			characters.push_back(EOF32);
+			break;
+		}
+		characters.push_back(string[position + i]);
+	}
+	return characters;
+}
 
 char32_t Tokenizer::peek() {
-	return get_character_at_position(pos + 1);
+	return getCharacterAtPosition(pos);
+}
+
+std::u32string Tokenizer::peek(const size_t& number_of_chars) {
+	return getCharactersAtPosition(pos, number_of_chars);
 }
 
 char32_t Tokenizer::reconsume() {
-	return get_character_at_position(pos);
+	return getCharacterAtPosition(pos - 1);
+}
+
+void Tokenizer::switchToState(const State& new_state) {
+	state = new_state;
 }
 
 void Tokenizer::unconsume() {
 	pos--;
 }
 
-void Tokenizer::unconsume(int n_chars) {
-	pos -= n_chars;
+void Tokenizer::unconsume(const size_t& number_of_chars) {
+	pos -= number_of_chars;
 }
 
-
-
-::std::ostream& operator<<(::std::ostream& os, const Tokenizer::STATES& state) {
+::std::ostream& operator<<(::std::ostream& os, const State& state) {
 	switch (state) {
-		case Tokenizer::STATES::NULL_STATE:
-			os << "STATES::NULL_STATE";
+		case NULL_STATE:
+			os << "NULL_STATE";
 			break;
-		case Tokenizer::STATES::DATA:
-			os << "STATES::DATA";
+		case DATA:
+			os << "DATA";
 			break;
-		case Tokenizer::STATES::CHARACTER_REFERENCE_IN_DATA:
-			os << "STATES::CHARACTER_REFERENCE_IN_DATA";
+		case CHARACTER_REFERENCE_IN_DATA:
+			os << "CHARACTER_REFERENCE_IN_DATA";
 			break;
-		case Tokenizer::STATES::RCDATA:
-			os << "STATES::RCDATA";
+		case RCDATA:
+			os << "RCDATA";
 			break;
-		case Tokenizer::STATES::CHARACTER_REFERENCE_IN_RCDATA:
-			os << "STATES::CHARACTER_REFERENCE_IN_RCDATA";
+		case CHARACTER_REFERENCE_IN_RCDATA:
+			os << "CHARACTER_REFERENCE_IN_RCDATA";
 			break;
-		case Tokenizer::STATES::RAWTEXT:
-			os << "STATES::RAWTEXT";
+		case RAWTEXT:
+			os << "RAWTEXT";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA:
-			os << "STATES::SCRIPT_DATA";
+		case SCRIPT_DATA:
+			os << "SCRIPT_DATA";
 			break;
-		case Tokenizer::STATES::PLAINTEXT:
-			os << "STATES::PLAINTEXT";
+		case PLAINTEXT:
+			os << "PLAINTEXT";
 			break;
-		case Tokenizer::STATES::TAG_OPEN:
-			os << "STATES::TAG_OPEN";
+		case TAG_OPEN:
+			os << "TAG_OPEN";
 			break;
-		case Tokenizer::STATES::END_TAG_OPEN:
-			os << "STATES::END_TAG_OPEN";
+		case END_TAG_OPEN:
+			os << "END_TAG_OPEN";
 			break;
-		case Tokenizer::STATES::TAG_NAME:
-			os << "STATES::TAG_NAME";
+		case TAG_NAME:
+			os << "TAG_NAME";
 			break;
-		case Tokenizer::STATES::RCDATA_LESS_THAN_SIGN:
-			os << "STATES::RCDATA_LESS_THAN_SIGN";
+		case RCDATA_LESS_THAN_SIGN:
+			os << "RCDATA_LESS_THAN_SIGN";
 			break;
-		case Tokenizer::STATES::RCDATA_END_TAG_OPEN:
-			os << "STATES::RCDATA_END_TAG_OPEN";
+		case RCDATA_END_TAG_OPEN:
+			os << "RCDATA_END_TAG_OPEN";
 			break;
-		case Tokenizer::STATES::RCDATA_END_TAG_NAME:
-			os << "STATES::RCDATA_END_TAG_NAME";
+		case RCDATA_END_TAG_NAME:
+			os << "RCDATA_END_TAG_NAME";
 			break;
-		case Tokenizer::STATES::RAWTEXT_END_TAG_OPEN:
-			os << "STATES::RAWTEXT_END_TAG_OPEN";
+		case RAWTEXT_END_TAG_OPEN:
+			os << "RAWTEXT_END_TAG_OPEN";
 			break;
-		case Tokenizer::STATES::RAWTEXT_END_TAG_NAME:
-			os << "STATES::RAWTEXT_END_TAG_NAME";
+		case RAWTEXT_END_TAG_NAME:
+			os << "RAWTEXT_END_TAG_NAME";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_LESS_THAN_SIGN:
-			os << "STATES::SCRIPT_DATA_LESS_THAN_SIGN";
+		case SCRIPT_DATA_LESS_THAN_SIGN:
+			os << "SCRIPT_DATA_LESS_THAN_SIGN";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_END_TAG_OPEN:
-			os << "STATES::SCRIPT_DATA_END_TAG_OPEN";
+		case SCRIPT_DATA_END_TAG_OPEN:
+			os << "SCRIPT_DATA_END_TAG_OPEN";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_END_TAG_NAME:
-			os << "STATES::SCRIPT_DATA_END_TAG_NAME";
+		case SCRIPT_DATA_END_TAG_NAME:
+			os << "SCRIPT_DATA_END_TAG_NAME";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_ESCAPE_START:
-			os << "STATES::SCRIPT_DATA_ESCAPE_START";
+		case SCRIPT_DATA_ESCAPE_START:
+			os << "SCRIPT_DATA_ESCAPE_START";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_ESCAPE_START_DASH:
-			os << "STATES::SCRIPT_DATA_ESCAPE_START_DASH";
+		case SCRIPT_DATA_ESCAPE_START_DASH:
+			os << "SCRIPT_DATA_ESCAPE_START_DASH";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_ESCAPED:
-			os << "STATES::SCRIPT_DATA_ESCAPED";
+		case SCRIPT_DATA_ESCAPED:
+			os << "SCRIPT_DATA_ESCAPED";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_ESCAPED_DASH:
-			os << "STATES::SCRIPT_DATA_ESCAPED_DASH";
+		case SCRIPT_DATA_ESCAPED_DASH:
+			os << "SCRIPT_DATA_ESCAPED_DASH";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_ESCAPED_DASH_DASH:
-			os << "STATES::SCRIPT_DATA_ESCAPED_DASH_DASH";
+		case SCRIPT_DATA_ESCAPED_DASH_DASH:
+			os << "SCRIPT_DATA_ESCAPED_DASH_DASH";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN:
-			os << "STATES::SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN";
+		case SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN:
+			os << "SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_ESCAPED_END_TAG_NAME:
-			os << "STATES::SCRIPT_DATA_ESCAPED_END_TAG_NAME";
+		case SCRIPT_DATA_ESCAPED_END_TAG_NAME:
+			os << "SCRIPT_DATA_ESCAPED_END_TAG_NAME";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_DOUBLE_ESCAPE_START:
-			os << "STATES::SCRIPT_DATA_DOUBLE_ESCAPE_START";
+		case SCRIPT_DATA_DOUBLE_ESCAPE_START:
+			os << "SCRIPT_DATA_DOUBLE_ESCAPE_START";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_DOUBLE_ESCAPED:
-			os << "STATES::SCRIPT_DATA_DOUBLE_ESCAPED";
+		case SCRIPT_DATA_DOUBLE_ESCAPED:
+			os << "SCRIPT_DATA_DOUBLE_ESCAPED";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_DOUBLE_ESCAPED_DASH:
-			os << "STATES::SCRIPT_DATA_DOUBLE_ESCAPED_DASH";
+		case SCRIPT_DATA_DOUBLE_ESCAPED_DASH:
+			os << "SCRIPT_DATA_DOUBLE_ESCAPED_DASH";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH:
-			os << "STATES::SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH";
+		case SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH:
+			os << "SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN:
-			os << "STATES::SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN";
+		case SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN:
+			os << "SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN";
 			break;
-		case Tokenizer::STATES::SCRIPT_DATA_DOUBLE_ESCAPE_END:
-			os << "STATES::SCRIPT_DATA_DOUBLE_ESCAPE_END";
+		case SCRIPT_DATA_DOUBLE_ESCAPE_END:
+			os << "SCRIPT_DATA_DOUBLE_ESCAPE_END";
 			break;
-		case Tokenizer::STATES::BEFORE_ATTRIBUTE:
-			os << "STATES::BEFORE_ATTRIBUTE";
+		case BEFORE_ATTRIBUTE:
+			os << "BEFORE_ATTRIBUTE";
 			break;
-		case Tokenizer::STATES::ATTRIBUTE_NAME:
-			os << "STATES::ATTRIBUTE_NAME";
+		case ATTRIBUTE_NAME:
+			os << "ATTRIBUTE_NAME";
 			break;
-		case Tokenizer::STATES::AFTER_ATTRIBUTE_NAME:
-			os << "STATES::AFTER_ATTRIBUTE_NAME";
+		case AFTER_ATTRIBUTE_NAME:
+			os << "AFTER_ATTRIBUTE_NAME";
 			break;
-		case Tokenizer::STATES::BEFORE_ATTRIBUTE_VALUE:
-			os << "STATES::BEFORE_ATTRIBUTE_VALUE";
+		case BEFORE_ATTRIBUTE_VALUE:
+			os << "BEFORE_ATTRIBUTE_VALUE";
 			break;
-		case Tokenizer::STATES::ATTRIBUTE_VALUE_DOUBLE_QUOTED:
-			os << "STATES::ATTRIBUTE_VALUE_DOUBLE_QUOTED";
+		case ATTRIBUTE_VALUE_DOUBLE_QUOTED:
+			os << "ATTRIBUTE_VALUE_DOUBLE_QUOTED";
 			break;
-		case Tokenizer::STATES::ATTRIBUTE_VALUE_SINGLE_QUOTED:
-			os << "STATES::ATTRIBUTE_VALUE_SINGLE_QUOTED";
+		case ATTRIBUTE_VALUE_SINGLE_QUOTED:
+			os << "ATTRIBUTE_VALUE_SINGLE_QUOTED";
 			break;
-		case Tokenizer::STATES::ATTRIBUTE_VALUE_UNQUOTED:
-			os << "STATES::ATTRIBUTE_VALUE_UNQUOTED";
+		case ATTRIBUTE_VALUE_UNQUOTED:
+			os << "ATTRIBUTE_VALUE_UNQUOTED";
 			break;
-		case Tokenizer::STATES::CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE:
-			os << "STATES::CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE";
+		case CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE:
+			os << "CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE";
 			break;
-		case Tokenizer::STATES::AFTER_ATTRIBUTE_QUOTED:
-			os << "STATES::AFTER_ATTRIBUTE_QUOTED";
+		case AFTER_ATTRIBUTE_QUOTED:
+			os << "AFTER_ATTRIBUTE_QUOTED";
 			break;
-		case Tokenizer::STATES::SELF_CLOSING_START_TAG:
-			os << "STATES::SELF_CLOSING_START_TAG";
+		case SELF_CLOSING_START_TAG:
+			os << "SELF_CLOSING_START_TAG";
 			break;
-		case Tokenizer::STATES::BOGUS_COMMENT:
-			os << "STATES::BOGUS_COMMENT";
+		case BOGUS_COMMENT:
+			os << "BOGUS_COMMENT";
 			break;
-		case Tokenizer::STATES::MARKUP_DECLARATION_OPEN:
-			os << "STATES::MARKUP_DECLARATION_OPEN";
+		case MARKUP_DECLARATION_OPEN:
+			os << "MARKUP_DECLARATION_OPEN";
 			break;
-		case Tokenizer::STATES::COMMENT_START:
-			os << "STATES::COMMENT_START";
+		case COMMENT_START:
+			os << "COMMENT_START";
 			break;
-		case Tokenizer::STATES::COMMENT_START_DASH:
-			os << "STATES::COMMENT_START_DASH";
+		case COMMENT_START_DASH:
+			os << "COMMENT_START_DASH";
 			break;
-		case Tokenizer::STATES::COMMENT:
-			os << "STATES::COMMENT";
+		case COMMENT:
+			os << "COMMENT";
 			break;
-		case Tokenizer::STATES::COMMENT_END_DASH:
-			os << "STATES::COMMENT_END_DASH";
+		case COMMENT_END_DASH:
+			os << "COMMENT_END_DASH";
 			break;
-		case Tokenizer::STATES::COMMENT_END:
-			os << "STATES::COMMENT_END";
+		case COMMENT_END:
+			os << "COMMENT_END";
 			break;
-		case Tokenizer::STATES::COMMENT_END_BANG:
-			os << "STATES::COMMENT_END_BANG";
+		case COMMENT_END_BANG:
+			os << "COMMENT_END_BANG";
 			break;
-		case Tokenizer::STATES::DOCTYPE:
-			os << "STATES::DOCTYPE";
+		case DOCTYPE:
+			os << "DOCTYPE";
 			break;
-		case Tokenizer::STATES::BEFORE_DOCTYPE_NAME:
-			os << "STATES::BEFORE_DOCTYPE_NAME";
+		case BEFORE_DOCTYPE_NAME:
+			os << "BEFORE_DOCTYPE_NAME";
 			break;
-		case Tokenizer::STATES::DOCTYPE_NAME:
-			os << "STATES::DOCTYPE_NAME";
+		case DOCTYPE_NAME:
+			os << "DOCTYPE_NAME";
 			break;
-		case Tokenizer::STATES::AFTER_DOCTYPE_NAME:
-			os << "STATES::AFTER_DOCTYPE_NAME";
+		case AFTER_DOCTYPE_NAME:
+			os << "AFTER_DOCTYPE_NAME";
 			break;
-		case Tokenizer::STATES::AFTER_DOCTYPE_PUBLIC_KEYWORD:
-			os << "STATES::AFTER_DOCTYPE_PUBLIC_KEYWORD";
+		case AFTER_DOCTYPE_PUBLIC_KEYWORD:
+			os << "AFTER_DOCTYPE_PUBLIC_KEYWORD";
 			break;
-		case Tokenizer::STATES::BEFORE_DOCTYPE_PUBLIC_IDENTIFIER:
-			os << "STATES::BEFORE_DOCTYPE_PUBLIC_IDENTIFIER";
+		case BEFORE_DOCTYPE_PUBLIC_IDENTIFIER:
+			os << "BEFORE_DOCTYPE_PUBLIC_IDENTIFIER";
 			break;
-		case Tokenizer::STATES::DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED:
-			os << "STATES::DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED";
+		case DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED:
+			os << "DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED";
 			break;
-		case Tokenizer::STATES::DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED:
-			os << "STATES::DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED";
+		case DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED:
+			os << "DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED";
 			break;
-		case Tokenizer::STATES::AFTER_DOCTYPE_PUBLIC_IDENTIFIER:
-			os << "STATES::AFTER_DOCTYPE_PUBLIC_IDENTIFIER";
+		case AFTER_DOCTYPE_PUBLIC_IDENTIFIER:
+			os << "AFTER_DOCTYPE_PUBLIC_IDENTIFIER";
 			break;
-		case Tokenizer::STATES::BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS:
-			os << "STATES::BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS";
+		case BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS:
+			os << "BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS";
 			break;
-		case Tokenizer::STATES::AFTER_DOCTYPE_SYSTEM_KEYWORD:
-			os << "STATES::AFTER_DOCTYPE_SYSTEM_KEYWORD";
+		case AFTER_DOCTYPE_SYSTEM_KEYWORD:
+			os << "AFTER_DOCTYPE_SYSTEM_KEYWORD";
 			break;
-		case Tokenizer::STATES::BEFORE_DOCTYPE_SYSTEM_IDENTIFIER:
-			os << "STATES::BEFORE_DOCTYPE_SYSTEM_IDENTIFIER";
+		case BEFORE_DOCTYPE_SYSTEM_IDENTIFIER:
+			os << "BEFORE_DOCTYPE_SYSTEM_IDENTIFIER";
 			break;
-		case Tokenizer::STATES::DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED:
-			os << "STATES::DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED";
+		case DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED:
+			os << "DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED";
 			break;
-		case Tokenizer::STATES::DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED:
-			os << "STATES::DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED";
+		case DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED:
+			os << "DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED";
 			break;
-		case Tokenizer::STATES::AFTER_DOCTYPE_SYSTEM_IDENTIFIER:
-			os << "STATES::AFTER_DOCTYPE_SYSTEM_IDENTIFIER";
+		case AFTER_DOCTYPE_SYSTEM_IDENTIFIER:
+			os << "AFTER_DOCTYPE_SYSTEM_IDENTIFIER";
 			break;
-		case Tokenizer::STATES::BOGUS_DOCTYPE:
-			os << "STATES::BOGUS_DOCTYPE";
+		case BOGUS_DOCTYPE:
+			os << "BOGUS_DOCTYPE";
 			break;
-		case Tokenizer::STATES::CDATA_SECTION:
-			os << "STATES::CDATA_SECTION";
+		case CDATA_SECTION:
+			os << "CDATA_SECTION";
 			break;
 		default:
-			os << "Error:  Unknown state in STATES!";
+			os << "Error:  Unknown state!";
 			break;
 	}
 	return os;

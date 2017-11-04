@@ -59,9 +59,9 @@ TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeInteger) {
 	EXPECT_THROW(parseNonNegativeInteger(std::u32string(U"")), parseException);
 }
 TEST(HTML_Microsyntaxes_Numbers_NonNegativeInteger, parseNonNegativeHexInteger) {
-	EXPECT_EQ(0x123456789u, parseNonNegativeHexInteger(std::u32string(U"   0123456789")));
-	EXPECT_EQ(0x123456789ABCDEFu, parseNonNegativeHexInteger(std::u32string(U"0123456789ABCDEF   ")));
-	EXPECT_EQ(0x123456789ABCDEFu, parseNonNegativeHexInteger(std::u32string(U"0123456789abcdef")));
+	EXPECT_EQ(0x12345678u, parseNonNegativeHexInteger(std::u32string(U"   012345678")));
+	EXPECT_EQ(0x89ABCDEFu, parseNonNegativeHexInteger(std::u32string(U"89ABCDEF   ")));
+	EXPECT_EQ(0x89ABCDEFu, parseNonNegativeHexInteger(std::u32string(U"89abcdef")));
 
 	EXPECT_EQ(0x123u, parseNonNegativeHexInteger(std::u32string(U"0123 4567 89 a b c d e f")));
 	EXPECT_EQ(0x0u, parseNonNegativeHexInteger(std::u32string(U"0-123456789abcdefABCDEF")));

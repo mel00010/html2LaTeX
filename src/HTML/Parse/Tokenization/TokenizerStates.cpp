@@ -27,7 +27,6 @@
 
 #include <list>
 
-#include <HTML/Parse/TreeConstruction/Dispatch.hpp>
 #include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 
 namespace HTML {
@@ -35,169 +34,135 @@ namespace Parse {
 namespace Tokenization {
 
 void Tokenizer::dataState() {
-	if (pos >= string.length()) {
-		TreeConstruction::dispatch(createEOFToken());
-	} else {
-		switch (string[pos]) {
-			case '&':
-				state = STATES::CHARACTER_REFERENCE_IN_DATA;
-				break;
-			case '<':
-				state = STATES::TAG_OPEN;
-				break;
-			case '\0':
-				TreeConstruction::dispatch(createCharacterToken(string[pos]));
-				break;
-			default:
-				TreeConstruction::dispatch(createCharacterToken(string[pos]));
-				break;
-		}
+	switch (char32_t buf = consume()) {
+		case '&':
+			switchToState(CHARACTER_REFERENCE_IN_DATA);
+			break;
+		case '<':
+			switchToState(TAG_OPEN);
+			break;
+		case '\0':
+			emit(createCharacterToken(buf));
+			break;
+		case EOF32:
+			emit(createEOFToken());
+			break;
+		default:
+			emit(createCharacterToken(buf));
+			break;
 	}
-	pos++;
-	return;
 }
 
 void Tokenizer::characterReferenceInDataState() {
-	state = STATES::DATA;
-
-	EmmittedTokens tokens = consumeCharacterReference();
-	if (tokens.first.type == TokenType::CHARACTER) {
-		TreeConstruction::dispatch(tokens.first);
-		if (tokens.second.type == TokenType::CHARACTER) {
-			TreeConstruction::dispatch(tokens.second);
-		}
-	} else {
-		TreeConstruction::dispatch(createCharacterToken('&'));
-	}
-	return;
+	switchToState(DATA);
+	TokenPair tokens = consumeCharacterReference();
+	if (tokens.first != Token()) emit(tokens.first);
+	if (tokens.second != Token()) emit(tokens.second);
+	if (tokens == TokenPair()) emit(createCharacterToken('&'));
 }
 
 void Tokenizer::RCDATAState() {
-	if (pos >= string.length()) {
-		TreeConstruction::dispatch(createEOFToken());
-	} else {
-		switch (string[pos]) {
-			case '&':
-				state = STATES::CHARACTER_REFERENCE_IN_RCDATA;
-				break;
-			case '<':
-				state = STATES::RCDATA_LESS_THAN_SIGN;
-				break;
-			case '\0':
-				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
-				break;
-			default:
-				TreeConstruction::dispatch(createCharacterToken(string[pos]));
-				break;
-		}
+	switch (char32_t buf = consume()) {
+		case '&':
+			switchToState(CHARACTER_REFERENCE_IN_RCDATA);
+			break;
+		case '<':
+			switchToState(RCDATA_LESS_THAN_SIGN);
+			break;
+		case '\0':
+			emit(createCharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emit(createEOFToken());
+			break;
+		default:
+			emit(createCharacterToken(buf));
+			break;
 	}
-	pos++;
-	return;
 }
 
 void Tokenizer::characterReferenceINRCDATAState() {
-	state = STATES::RCDATA;
-	EmmittedTokens tokens = consumeCharacterReference();
-	if (tokens.first.type == TokenType::CHARACTER) {
-		TreeConstruction::dispatch(tokens.first);
-		if (tokens.second.type == TokenType::CHARACTER) {
-			TreeConstruction::dispatch(tokens.second);
-		}
-	} else {
-		TreeConstruction::dispatch(createCharacterToken('&'));
-	}
-	return;
+	switchToState(RCDATA);
+	TokenPair tokens = consumeCharacterReference();
+	if (tokens.first != Token()) emit(tokens.first);
+	if (tokens.second != Token()) emit(tokens.second);
+	if (tokens == TokenPair()) emit(createCharacterToken('&'));
 }
 
 void Tokenizer::RAWTEXTState() {
-	if (pos >= string.length()) {
-		TreeConstruction::dispatch(createEOFToken());
-	} else {
-		switch (string[pos]) {
-			case '<':
-				state = STATES::RAWTEXT_LESS_THAN_SIGN;
-				break;
-			case '\0':
-				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
-				pos++;
-				break;
-			default:
-				TreeConstruction::dispatch(createCharacterToken(string[pos]));
-				break;
-		}
+	switch (char32_t buf = consume()) {
+		case '<':
+			switchToState(RAWTEXT_LESS_THAN_SIGN);
+			break;
+		case '\0':
+			emit(createCharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emit(createEOFToken());
+			break;
+		default:
+			emit(createCharacterToken(buf));
+			break;
 	}
-	pos++;
-	return;
 }
 
 void Tokenizer::scriptDataState() {
-	if (pos >= string.length()) {
-		TreeConstruction::dispatch(createEOFToken());
-	} else {
-		switch (string[pos]) {
-			case '<':
-				state = STATES::SCRIPT_DATA_LESS_THAN_SIGN;
-				break;
-			case '\0':
-				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
-				pos++;
-				break;
-			default:
-				TreeConstruction::dispatch(createCharacterToken(string[pos]));
-				break;
-		}
+	switch (char32_t buf = consume()) {
+		case '<':
+			switchToState(SCRIPT_DATA_LESS_THAN_SIGN);
+			break;
+		case '\0':
+			emit(createCharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emit(createEOFToken());
+			break;
+		default:
+			emit(createCharacterToken(buf));
+			break;
 	}
-	pos++;
-	return;
 }
 
 void Tokenizer::plainTextState() {
-	if (pos >= string.length()) {
-		TreeConstruction::dispatch(createEOFToken());
-	} else {
-		switch (string[pos]) {
-			case '\0':
-				TreeConstruction::dispatch(createCharacterToken(U'\U0000FFFD'));
-				pos++;
-				break;
-			default:
-				TreeConstruction::dispatch(createCharacterToken(string[pos]));
-				break;
-		}
+	switch (char32_t buf = consume()) {
+		case '\0':
+			emit(createCharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emit(createEOFToken());
+			break;
+		default:
+			emit(createCharacterToken(buf));
+			break;
 	}
-	pos++;
-	return;
 }
 
 void Tokenizer::tagOpenState() {
-	if (pos >= string.length()) {
-		TreeConstruction::dispatch(createEOFToken());
-	} else {
-		if (Microsyntaxes::ASCII::isASCIIUpper(string[pos])) {
-			token_buffer = createStartTagToken(Microsyntaxes::ASCII::toLower(std::u32string(&string[pos])), false, { });
-			/* Create new start tag token */
-		} else if (Microsyntaxes::ASCII::isASCIILower(string[pos])) {
-			token_buffer = createStartTagToken(std::u32string(&string[pos]), false, { });
-		}
-		switch (string[pos]) {
-			case '!':
-				state = STATES::MARKUP_DECLARATION_OPEN;
-				break;
-			case '/':
-				state = STATES::END_TAG_OPEN;
-				break;
-			case '?':
-				state = STATES::BOGUS_COMMENT;
-				break;
-			default:
-				state = STATES::DATA;
-				TreeConstruction::dispatch(createCharacterToken('>'));
-				pos--;
-				break;
-		}
+	switch (char32_t buf = consume()) {
+		case '!':
+			switchToState(MARKUP_DECLARATION_OPEN);
+			break;
+		case '/':
+			switchToState(END_TAG_OPEN);
+			break;
+		case ASCII_UPPER_CASE_LETTER:
+			token_buffer = createStartTagToken();
+			std::get<StartTagToken>(token_buffer.token).tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
+			switchToState(TAG_NAME);
+			break;
+		case ASCII_LOWER_CASE_LETTER:
+			token_buffer = createStartTagToken();
+			std::get<StartTagToken>(token_buffer.token).tag_name.push_back(buf);
+			switchToState(TAG_NAME);
+			break;
+		case '?':
+			switchToState(BOGUS_COMMENT);
+			break;
+		default:
+			switchToState(DATA);
+			emit(createCharacterToken('<'));
+			break;
 	}
-	pos++;
-	return;
 }
 
 void Tokenizer::endTagOpenState() {

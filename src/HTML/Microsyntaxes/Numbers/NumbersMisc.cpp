@@ -22,109 +22,81 @@
 
 #include "NumbersTypes.hpp"
 
+#include <cstdint>
+
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-unsigned int ASCIIDigitToInt(const char32_t& digit) {
-	int returned = 0;
+uint8_t ASCIIDigitToInt(const char32_t& digit) {
 	switch (digit) {
 		case '0':
-			returned = 0;
-			break;
+			return 0;
 		case '1':
-			returned = 1;
-			break;
+			return 1;
 		case '2':
-			returned = 2;
-			break;
+			return 2;
 		case '3':
-			returned = 3;
-			break;
+			return 3;
 		case '4':
-			returned = 4;
-			break;
+			return 4;
 		case '5':
-			returned = 5;
-			break;
+			return 5;
 		case '6':
-			returned = 6;
-			break;
+			return 6;
 		case '7':
-			returned = 7;
-			break;
+			return 7;
 		case '8':
-			returned = 8;
-			break;
+			return 8;
 		case '9':
-			returned = 9;
-			break;
+			return 9;
 		default:
 			throw parseException();
 	}
-	return returned;
 }
-unsigned int ASCIIHexDigitToInt(const char32_t& digit) {
-	int returned = 0x0;
+uint8_t ASCIIHexDigitToInt(const char32_t& digit) {
 	switch (digit) {
 		case '0':
-			returned = 0x0;
-			break;
+			return 0;
 		case '1':
-			returned = 0x1;
-			break;
+			return 1;
 		case '2':
-			returned = 0x2;
-			break;
+			return 2;
 		case '3':
-			returned = 0x3;
-			break;
+			return 3;
 		case '4':
-			returned = 0x4;
-			break;
+			return 4;
 		case '5':
-			returned = 0x5;
-			break;
+			return 5;
 		case '6':
-			returned = 0x6;
-			break;
+			return 6;
 		case '7':
-			returned = 0x7;
-			break;
+			return 7;
 		case '8':
-			returned = 0x8;
-			break;
+			return 8;
 		case '9':
-			returned = 0x9;
-			break;
+			return 9;
 		case 'a':
 		case 'A':
-			returned = 0xA;
-			break;
+			return 10;
 		case 'b':
 		case 'B':
-			returned = 0xB;
-			break;
+			return 11;
 		case 'c':
 		case 'C':
-			returned = 0xC;
-			break;
+			return 12;
 		case 'd':
 		case 'D':
-			returned = 0xD;
-			break;
+			return 13;
 		case 'e':
 		case 'E':
-			returned = 0xE;
-			break;
+			return 14;
 		case 'f':
 		case 'F':
-			returned = 0xF;
-			break;
+			return 15;
 		default:
 			throw parseException();
 	}
-	return returned;
 }
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
