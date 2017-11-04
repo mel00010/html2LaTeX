@@ -23,27 +23,27 @@
 #include <list>
 #include <string>
 
-#include <HTML/Parse/Tokenization/CharacterReference.hpp>
+#include <HTML/Parse/Tokenization/Tokenizer.hpp>
 #include <HTML/Parse/Tokenization/TokenizationTypes.hpp>
 #include <HTML/Parse/Tokenization/TokenizationMisc.hpp>
 
 #define EXPECT_NULL_TOKENS(test_string, expected_position) \
 	{ \
-		StateData test; \
+		Tokenizer tokenizer(test_string, Tokenizer::STATES::DATA); \
 		EmmittedTokens tokens = EmmittedTokens{ Token(), Token() }; \
-		EXPECT_EQ(tokens, consumeCharacterReference(test = StateData { STATES::DATA, test_string } )); \
-		EXPECT_EQ(expected_position, (long) test.pos); \
+		EXPECT_EQ(tokens, tokenizer.consumeCharacterReference()); \
+		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 
 #define EXPECT_CHARACTER_TOKENS(first_character, second_character, test_string, expected_position) \
 	{ \
-		StateData test; \
+		Tokenizer tokenizer(test_string, Tokenizer::STATES::DATA); \
 		EmmittedTokens tokens = EmmittedTokens{ \
 					Token { TokenType::CHARACTER, CharacterToken { (char32_t) first_character } }, \
 					Token { TokenType::CHARACTER, CharacterToken { (char32_t) second_character } } \
 		}; \
-		EXPECT_EQ(tokens, consumeCharacterReference(test = StateData { STATES::DATA, test_string } )); \
-		EXPECT_EQ(expected_position, (long) test.pos); \
+		EXPECT_EQ(tokens, tokenizer.consumeCharacterReference()); \
+		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 
 namespace HTML {

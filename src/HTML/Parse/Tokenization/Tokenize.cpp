@@ -18,9 +18,8 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include "Tokenize.hpp"
+#include "Tokenizer.hpp"
 
-#include "States.hpp"
 #include "TokenizationTypes.hpp"
 
 #include <list>
@@ -30,221 +29,216 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-std::list<Token> tokenize(const std::u32string& string) {
-	StateData state_data;
-	state_data.string = string;
-
-	while (state_data.pos < state_data.string.length()) {
-		switch (state_data.state) {
+std::list<Token> Tokenizer::tokenize() {
+	changeState(STATES::DATA);
+	while (pos < string.length()) {
+		switch (state) {
 			case STATES::DATA:
-				States::dataState(state_data);
+				dataState();
 				break;
 			case STATES::CHARACTER_REFERENCE_IN_DATA:
-				States::characterReferenceInDataState(state_data);
+				characterReferenceInDataState();
 				break;
 			case STATES::RCDATA:
-				States::RCDATAState(state_data);
+				RCDATAState();
 				break;
 			case STATES::CHARACTER_REFERENCE_IN_RCDATA:
-				States::characterReferenceINRCDATAState(state_data);
+				characterReferenceINRCDATAState();
 				break;
 			case STATES::RAWTEXT:
-				States::RAWTEXTState(state_data);
+				RAWTEXTState();
 				break;
 			case STATES::SCRIPT_DATA:
-				States::scriptDataState(state_data);
+				scriptDataState();
 				break;
 			case STATES::PLAINTEXT:
-				States::plainTextState(state_data);
+				plainTextState();
 				break;
 			case STATES::TAG_OPEN:
-				States::tagOpenState(state_data);
+				tagOpenState();
 				break;
 			case STATES::END_TAG_OPEN:
-				States::endTagOpenState(state_data);
+				endTagOpenState();
 				break;
 			case STATES::TAG_NAME:
-				States::tagNameState(state_data);
+				tagNameState();
 				break;
 			case STATES::RCDATA_LESS_THAN_SIGN:
-				States::RCDATALessThanSignState(state_data);
+				RCDATALessThanSignState();
 				break;
 			case STATES::RCDATA_END_TAG_OPEN:
-				States::RCDATAEndTagOpenState(state_data);
+				RCDATAEndTagOpenState();
 				break;
 			case STATES::RCDATA_END_TAG_NAME:
-				States::RCDATAEndTagNameState(state_data);
+				RCDATAEndTagNameState();
 				break;
 			case STATES::RAWTEXT_LESS_THAN_SIGN:
-				States::RAWTEXTLessThanSignState(state_data);
+				RAWTEXTLessThanSignState();
 				break;
 			case STATES::RAWTEXT_END_TAG_OPEN:
-				States::RAWTEXTEndTagOpenState(state_data);
+				RAWTEXTEndTagOpenState();
 				break;
 			case STATES::RAWTEXT_END_TAG_NAME:
-				States::RAWTEXTEndTagNameState(state_data);
+				RAWTEXTEndTagNameState();
 				break;
 			case STATES::SCRIPT_DATA_LESS_THAN_SIGN:
-				States::scriptDataLessThanSignState(state_data);
+				scriptDataLessThanSignState();
 				break;
 			case STATES::SCRIPT_DATA_END_TAG_OPEN:
-				States::scriptDataEndTagOpenState(state_data);
+				scriptDataEndTagOpenState();
 				break;
 			case STATES::SCRIPT_DATA_END_TAG_NAME:
-				States::scriptDataEndTagNameState(state_data);
+				scriptDataEndTagNameState();
 				break;
 			case STATES::SCRIPT_DATA_ESCAPE_START:
-				States::scriptDataEscapeStartState(state_data);
+				scriptDataEscapeStartState();
 				break;
 			case STATES::SCRIPT_DATA_ESCAPE_START_DASH:
-				States::scriptDataEscapeStartDashState(state_data);
+				scriptDataEscapeStartDashState();
 				break;
 			case STATES::SCRIPT_DATA_ESCAPED:
-				States::scriptDataEscapedState(state_data);
+				scriptDataEscapedState();
 				break;
 			case STATES::SCRIPT_DATA_ESCAPED_DASH:
-				States::scriptDataEscapedDashState(state_data);
+				scriptDataEscapedDashState();
 				break;
 			case STATES::SCRIPT_DATA_ESCAPED_DASH_DASH:
-				States::scriptDataEscapedDashDashState(state_data);
+				scriptDataEscapedDashDashState();
 				break;
 			case STATES::SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN:
-				States::scriptDataEscapedLessThanSignState(state_data);
+				scriptDataEscapedLessThanSignState();
 				break;
 			case STATES::SCRIPT_DATA_ESCAPED_END_TAG_NAME:
-				States::scriptDataEscapedEndTagNameState(state_data);
+				scriptDataEscapedEndTagNameState();
 				break;
 			case STATES::SCRIPT_DATA_DOUBLE_ESCAPE_START:
-				States::scriptDataDoubleEscapeStartState(state_data);
+				scriptDataDoubleEscapeStartState();
 				break;
 			case STATES::SCRIPT_DATA_DOUBLE_ESCAPED:
-				States::scriptDataDoubleEscapedState(state_data);
+				scriptDataDoubleEscapedState();
 				break;
 			case STATES::SCRIPT_DATA_DOUBLE_ESCAPED_DASH:
-				States::scriptDataDoubleEscapedDashState(state_data);
+				scriptDataDoubleEscapedDashState();
 				break;
 			case STATES::SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH:
-				States::scriptDataDoubleEscapedDashDashState(state_data);
+				scriptDataDoubleEscapedDashDashState();
 				break;
 			case STATES::SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN:
-				States::scriptDataDoubleEscapedLessThanSignState(state_data);
+				scriptDataDoubleEscapedLessThanSignState();
 				break;
 			case STATES::SCRIPT_DATA_DOUBLE_ESCAPE_END:
-				States::scriptDataDoubleEscapeEndState(state_data);
+				scriptDataDoubleEscapeEndState();
 				break;
 			case STATES::BEFORE_ATTRIBUTE:
-				States::beforeAttributeState(state_data);
+				beforeAttributeState();
 				break;
 			case STATES::ATTRIBUTE_NAME:
-				States::attributeNameState(state_data);
+				attributeNameState();
 				break;
 			case STATES::AFTER_ATTRIBUTE_NAME:
-				States::afterAttributeNameState(state_data);
+				afterAttributeNameState();
 				break;
 			case STATES::BEFORE_ATTRIBUTE_VALUE:
-				States::beforeAttributeValueState(state_data);
+				beforeAttributeValueState();
 				break;
 			case STATES::ATTRIBUTE_VALUE_DOUBLE_QUOTED:
-				States::attributeValueDoubleQuotedState(state_data);
+				attributeValueDoubleQuotedState();
 				break;
 			case STATES::ATTRIBUTE_VALUE_SINGLE_QUOTED:
-				States::attributeValueSingleQuotedState(state_data);
+				attributeValueSingleQuotedState();
 				break;
 			case STATES::ATTRIBUTE_VALUE_UNQUOTED:
-				States::attributeValueUnquotedState(state_data);
+				attributeValueUnquotedState();
 				break;
 			case STATES::CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE:
-				States::characterReferenceInAttributeValueState(state_data);
+				characterReferenceInAttributeValueState();
 				break;
 			case STATES::AFTER_ATTRIBUTE_QUOTED:
-				States::afterAttributeQuotedState(state_data);
+				afterAttributeQuotedState();
 				break;
 			case STATES::SELF_CLOSING_START_TAG:
-				States::selfClosingStartTagState(state_data);
+				selfClosingStartTagState();
 				break;
 			case STATES::BOGUS_COMMENT:
-				States::bogusCommentState(state_data);
+				bogusCommentState();
 				break;
 			case STATES::MARKUP_DECLARATION_OPEN:
-				States::markupDeclarationOpenState(state_data);
+				markupDeclarationOpenState();
 				break;
 			case STATES::COMMENT_START:
-				States::commentStartState(state_data);
+				commentStartState();
 				break;
 			case STATES::COMMENT_START_DASH:
-				States::commentStartDashState(state_data);
+				commentStartDashState();
 				break;
 			case STATES::COMMENT:
-				States::commentState(state_data);
+				commentState();
 				break;
 			case STATES::COMMENT_END_DASH:
-				States::commentEndDashState(state_data);
+				commentEndDashState();
 				break;
 			case STATES::COMMENT_END:
-				States::commentEndState(state_data);
+				commentEndState();
 				break;
 			case STATES::COMMENT_END_BANG:
-				States::commentEndBangState(state_data);
+				commentEndBangState();
 				break;
 			case STATES::DOCTYPE:
-				States::DOCTYPEState(state_data);
+				DOCTYPEState();
 				break;
 			case STATES::BEFORE_DOCTYPE_NAME:
-				States::beforeDOCTYPENameState(state_data);
+				beforeDOCTYPENameState();
 				break;
 			case STATES::DOCTYPE_NAME:
-				States::DOCTYPENameState(state_data);
+				DOCTYPENameState();
 				break;
 			case STATES::AFTER_DOCTYPE_NAME:
-				States::afterDOCTYPENameState(state_data);
+				afterDOCTYPENameState();
 				break;
 			case STATES::AFTER_DOCTYPE_PUBLIC_KEYWORD:
-				States::afterDOCTYPEPublicKeywordState(state_data);
+				afterDOCTYPEPublicKeywordState();
 				break;
 			case STATES::BEFORE_DOCTYPE_PUBLIC_IDENTIFIER:
-				States::beforeDOCTYPEPublicIdentifierState(state_data);
+				beforeDOCTYPEPublicIdentifierState();
 				break;
 			case STATES::DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED:
-				States::DOCTYPEPublicIdentifierDoubleQuotedState(state_data);
+				DOCTYPEPublicIdentifierDoubleQuotedState();
 				break;
 			case STATES::DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED:
-				States::DOCTYPEPublicIdentifierSingleQuotedState(state_data);
+				DOCTYPEPublicIdentifierSingleQuotedState();
 				break;
 			case STATES::AFTER_DOCTYPE_PUBLIC_IDENTIFIER:
-				States::afterDOCTYPEPublicIdentifierState(state_data);
+				afterDOCTYPEPublicIdentifierState();
 				break;
 			case STATES::BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS:
-				States::betweenDOCTYPEPublicAndSystemIdentifiersState(state_data);
+				betweenDOCTYPEPublicAndSystemIdentifiersState();
 				break;
 			case STATES::AFTER_DOCTYPE_SYSTEM_KEYWORD:
-				States::afterDOCTYPESystemKeywordState(state_data);
+				afterDOCTYPESystemKeywordState();
 				break;
 			case STATES::BEFORE_DOCTYPE_SYSTEM_IDENTIFIER:
-				States::beforeDOCTYPESystemIdentifierState(state_data);
+				beforeDOCTYPESystemIdentifierState();
 				break;
 			case STATES::DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED:
-				States::DOCTYPESystemIdentifierDoubleQuotedState(state_data);
+				DOCTYPESystemIdentifierDoubleQuotedState();
 				break;
 			case STATES::DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED:
-				States::DOCTYPESystemIdentifierSingleQuotedState(state_data);
+				DOCTYPESystemIdentifierSingleQuotedState();
 				break;
 			case STATES::AFTER_DOCTYPE_SYSTEM_IDENTIFIER:
-				States::afterDOCTYPESystemIdentifierState(state_data);
+				afterDOCTYPESystemIdentifierState();
 				break;
 			case STATES::BOGUS_DOCTYPE:
-				States::bogusDOCTYPEState(state_data);
+				bogusDOCTYPEState();
 				break;
 			case STATES::CDATA_SECTION:
-				States::CDATASectionState(state_data);
+				CDATASectionState();
 				break;
-//			case STATES::TOKENIZING_CHARACTER_REFERENCES:
-//				States::tokenizingCharacterReferences(state_data);
-//				break;
 			default:
 				break;
 		}
 	}
-	return state_data.tokens;
+	return tokens;
 }
 
 } /* Tokenization */

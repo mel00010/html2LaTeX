@@ -18,7 +18,7 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include "CharacterReference.hpp"
+#include "Tokenizer.hpp"
 
 #include "TokenizationMisc.hpp"
 #include "TokenizationTypes.hpp"
@@ -47,9 +47,9 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-EmmittedTokens consumeCharacterReference(StateData& data) {
+EmmittedTokens Tokenizer::consumeCharacterReference() {
 	EmmittedTokens tokens;
-	size_t original_position = data.pos;
+	size_t original_position = pos;
 	static constexpr char32_t notACharacterReferenceChars[] {
 			'\t',
 			'\n',
@@ -60,42 +60,42 @@ EmmittedTokens consumeCharacterReference(StateData& data) {
 	};
 
 	for (auto i : notACharacterReferenceChars) {
-		if (data.string[data.pos + 1] == i) {
+		if (string[pos + 1] == i) {
 			return tokens;
 		}
 	}
-	if (data.pos + 1 >= data.string.length()) {
+	if (pos + 1 >= string.length()) {
 		return tokens;
 	}
 
-	if (data.string[data.pos + 1] == '#') {
-		data.pos++;
+	if (string[pos + 1] == '#') {
+		pos++;
 
 		bool (*isDigit)(const char32_t&) = &Microsyntaxes::ASCII::isASCIIDigit;
 		unsigned long (*parseInteger)(const std::u32string&) = &Microsyntaxes::Numbers::parseNonNegativeInteger;
-		if (data.string[data.pos + 1] == 'x' || data.string[data.pos + 1] == 'X') {
-			data.pos++;
+		if (string[pos + 1] == 'x' || string[pos + 1] == 'X') {
+			pos++;
 			isDigit = &Microsyntaxes::ASCII::isASCIIHex;
 			parseInteger = &Microsyntaxes::Numbers::parseNonNegativeHexInteger;
 
 		}
 
 		std::u32string digits = U"";
-		for (; data.pos < data.string.length(); data.pos++) {
-			if (isDigit(data.string[data.pos])) {
-				digits += data.string[data.pos];
+		for (; pos < string.length(); pos++) {
+			if (isDigit(string[pos])) {
+				digits += string[pos];
 			}
 		}
 
 		if (digits.empty()) {
-			data.pos = original_position;
+			pos = original_position;
 			return tokens;
 		}
 
 		unsigned long id = parseInteger(digits);
 
-		if (data.string[data.pos] == ';') {
-			data.pos++;
+		if (string[pos] == ';') {
+			pos++;
 		}
 
 
@@ -187,25 +187,25 @@ EmmittedTokens consumeCharacterReference(StateData& data) {
 
 		return EmmittedTokens { createCharacterToken(static_cast<unsigned int>(id)), createCharacterToken(EOF) };
 	} else {
-		std::u32string characters = data.string.substr(data.pos, std::u32string(std::get<0>(characterReferences.front())).length());
+		std::u32string characters = string.substr(pos, std::u32string(std::get<0>(characterReferences.front())).length());
 		for (auto i : characterReferences) {
 			if (characters.find(std::u32string(std::get<0>(i))) == 0) {
-				data.pos += std::u32string(std::get<0>(i)).length();
+				pos += std::u32string(std::get<0>(i)).length();
 				return EmmittedTokens { createCharacterToken(std::get<1>(i)), createCharacterToken(std::get<2>(i)) };
 			}
 		}
 	}
-	data.pos = original_position;
+	pos = original_position;
 	return tokens;
 
 }
 
-EmmittedTokens consumeCharacterReference(StateData& data, const char32_t& additional_allowed_character) {
+EmmittedTokens Tokenizer::consumeCharacterReference(const char32_t& additional_allowed_character) {
 	EmmittedTokens tokens;
-	if (data.string[data.pos + 1] == additional_allowed_character) {
+	if (string[pos + 1] == additional_allowed_character) {
 		return tokens;
 	}
-	return consumeCharacterReference(data);
+	return consumeCharacterReference();
 }
 
 } /* namespace Tokenization */

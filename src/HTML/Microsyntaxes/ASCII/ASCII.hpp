@@ -25,6 +25,11 @@
 
 namespace HTML {
 namespace Microsyntaxes {
+
+#define EOF32 ((char32_t) 0xFFFFFFFF)
+#define EOF16 ((char16_t) 0xFFFF)
+#define EOF8  ((char) 0xFF)
+
 /**
  * @brief Holds functions related to parsing and manipulating ASCII text.
  */
@@ -145,6 +150,47 @@ constexpr char ASCIILetters[52] = {
 		'y',
 		'z'
 };
+
+/**
+ * Expands to a sequence of case statements from A to Z, for use in a switch statement.
+ *
+ * Example usage:
+ * switch(a) {
+ * 		// Beginning of switch block
+ * 		case ASCII_UPPER_CASE_LETTER:
+ * 			break;
+ * 		// Rest of switch block
+ * }
+ */
+#define ASCII_UPPER_CASE_LETTER \
+	'A':                        \
+	case 'B':                   \
+	case 'C':                   \
+	case 'D':                   \
+	case 'E':                   \
+	case 'F':                   \
+	case 'G':                   \
+	case 'H':                   \
+	case 'I':                   \
+	case 'J':                   \
+	case 'K':                   \
+	case 'L':                   \
+	case 'M':                   \
+	case 'N':                   \
+	case 'O':                   \
+	case 'P':                   \
+	case 'Q':                   \
+	case 'R':                   \
+	case 'S':                   \
+	case 'T':                   \
+	case 'U':                   \
+	case 'V':                   \
+	case 'W':                   \
+	case 'X':                   \
+	case 'Y':                   \
+	case 'Z'
+
+
 /**
  * @brief An array containing all of the ASCII upper case letters
  * @showinitializer
@@ -210,6 +256,45 @@ constexpr char ASCIIUpper[26] = {
 		'Y',
 		'Z'
 };
+
+/**
+ * Expands to a sequence of case statements from a to z, for use in a switch statement.
+ *
+ * Example usage:
+ * switch(a) {
+ * 		// Beginning of switch block
+ * 		case ASCII_LOWER_CASE_LETTER:
+ * 			break;
+ * 		// Rest of switch block
+ * }
+ */
+#define ASCII_LOWER_CASE_LETTER \
+	'A':                        \
+	case 'B':                   \
+	case 'C':                   \
+	case 'D':                   \
+	case 'E':                   \
+	case 'F':                   \
+	case 'G':                   \
+	case 'H':                   \
+	case 'I':                   \
+	case 'J':                   \
+	case 'K':                   \
+	case 'L':                   \
+	case 'M':                   \
+	case 'N':                   \
+	case 'O':                   \
+	case 'P':                   \
+	case 'Q':                   \
+	case 'R':                   \
+	case 'S':                   \
+	case 'T':                   \
+	case 'U':                   \
+	case 'V':                   \
+	case 'W':                   \
+	case 'X':                   \
+	case 'Y':                   \
+	case 'Z'
 
 /**
  * @brief An array containing all of the ASCII lower case letters
@@ -729,6 +814,29 @@ constexpr char32_t ASCIIDigitsUTF32[10] = {
 		'8',
 		'9'
 };
+
+/**
+ * Expands to a sequence of case statements from 0 to 9, for use in a switch statement.
+ *
+ * Example usage:
+ * switch(a) {
+ * 		// Beginning of switch block
+ * 		case ASCII_DIGIT:
+ * 			break;
+ * 		// Rest of switch block
+ * }
+ */
+#define ASCII_DIGIT \
+	'0':            \
+	case '1':       \
+	case '2':       \
+	case '3':       \
+	case '4':       \
+	case '5':       \
+	case '6':       \
+	case '7':       \
+	case '8':       \
+	case '9'
 
 /**
  * @brief An array containing all of the ASCII numerals
