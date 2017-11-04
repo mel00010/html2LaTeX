@@ -129,8 +129,8 @@ void Tokenizer::tokenize() {
 			case SCRIPT_DATA_DOUBLE_ESCAPE_END:
 				scriptDataDoubleEscapeEndState();
 				break;
-			case BEFORE_ATTRIBUTE:
-				beforeAttributeState();
+			case BEFORE_ATTRIBUTE_NAME:
+				beforeAttributeNameState();
 				break;
 			case ATTRIBUTE_NAME:
 				attributeNameState();

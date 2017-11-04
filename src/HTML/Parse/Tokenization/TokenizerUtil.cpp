@@ -188,7 +188,7 @@ void Tokenizer::unconsume(const size_t& number_of_chars) {
 		case SCRIPT_DATA_DOUBLE_ESCAPE_END:
 			os << "SCRIPT_DATA_DOUBLE_ESCAPE_END";
 			break;
-		case BEFORE_ATTRIBUTE:
+		case BEFORE_ATTRIBUTE_NAME:
 			os << "BEFORE_ATTRIBUTE";
 			break;
 		case ATTRIBUTE_NAME:

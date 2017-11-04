@@ -166,11 +166,68 @@ void Tokenizer::tagOpenState() {
 }
 
 void Tokenizer::endTagOpenState() {
-
+	switch (char32_t buf = consume()) {
+		case ASCII_UPPER_CASE_LETTER:
+			token_buffer = createEndTagToken();
+			std::get<EndTagToken>(token_buffer.token).tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
+			switchToState(TAG_NAME);
+			break;
+		case ASCII_LOWER_CASE_LETTER:
+			token_buffer = createEndTagToken();
+			std::get<EndTagToken>(token_buffer.token).tag_name.push_back(buf);
+			switchToState(TAG_NAME);
+			break;
+		case '>':
+			switchToState(DATA);
+			break;
+		case EOF32:
+			switchToState(DATA);
+			emit(createCharacterToken('>'));
+			emit(createCharacterToken('/'));
+			unconsume();
+			break;
+		default:
+			switchToState(BOGUS_COMMENT);
+			break;
+	}
 }
 
 void Tokenizer::tagNameState() {
-
+	std::u32string tag_name = U"";
+	if(token_buffer.type == TokenType::START_TAG) {
+		tag_name = std::get<StartTagToken>(token_buffer.token).tag_name;
+	} else if (token_buffer.type == TokenType::END_TAG){
+		tag_name = std::get<EndTagToken>(token_buffer.token).tag_name;
+	}
+	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\r':
+		case '\f':
+		case ' ':
+			switchToState(BEFORE_ATTRIBUTE_NAME);
+			break;
+		case '/':
+			switchToState(SELF_CLOSING_START_TAG);
+			break;
+		case ASCII_UPPER_CASE_LETTER:
+			tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
+			break;
+		case '\0':
+			tag_name.push_back(U'\U0000FFFD');
+			break;
+		case EOF32:
+			switchToState(DATA);
+			unconsume();
+			break;
+		default:
+			tag_name.push_back(buf);
+			break;
+	}
+	if(token_buffer.type == TokenType::START_TAG) {
+		std::get<StartTagToken>(token_buffer.token).tag_name = tag_name;
+	} else if (token_buffer.type == TokenType::END_TAG){
+		std::get<EndTagToken>(token_buffer.token).tag_name = tag_name;
+	}
 }
 
 void Tokenizer::RCDATALessThanSignState() {
@@ -260,7 +317,7 @@ void Tokenizer::scriptDataDoubleEscapeEndState() {
 
 }
 
-void Tokenizer::beforeAttributeState() {
+void Tokenizer::beforeAttributeNameState() {
 
 }
 

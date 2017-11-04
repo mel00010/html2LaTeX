@@ -63,7 +63,7 @@ enum State {
 	SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH,
 	SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN,
 	SCRIPT_DATA_DOUBLE_ESCAPE_END,
-	BEFORE_ATTRIBUTE,
+	BEFORE_ATTRIBUTE_NAME,
 	ATTRIBUTE_NAME,
 	AFTER_ATTRIBUTE_NAME,
 	BEFORE_ATTRIBUTE_VALUE,
@@ -174,7 +174,7 @@ class Tokenizer {
 		void scriptDataDoubleEscapedDashDashState();
 		void scriptDataDoubleEscapedLessThanSignState();
 		void scriptDataDoubleEscapeEndState();
-		void beforeAttributeState();
+		void beforeAttributeNameState();
 		void attributeNameState();
 		void beforeAttributeValueState();
 		void afterAttributeNameState();
