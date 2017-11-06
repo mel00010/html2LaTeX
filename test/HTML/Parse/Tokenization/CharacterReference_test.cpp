@@ -39,7 +39,7 @@
 	{ \
 		Tokenizer tokenizer(test_string, 1, DATA); \
 		TokenPair tokens = TokenPair { \
-					createCharacterToken((char32_t) first_character), \
+					Token(CharacterToken((char32_t) first_character)), \
 					Token() \
 		}; \
 		EXPECT_EQ(tokens, tokenizer.consumeCharacterReference()); \
@@ -50,8 +50,8 @@
 	{ \
 		Tokenizer tokenizer(test_string, 1, DATA); \
 		TokenPair tokens = TokenPair { \
-					createCharacterToken((char32_t) first_character), \
-					createCharacterToken((char32_t) second_character) \
+					Token(CharacterToken((char32_t) first_character)), \
+					Token(CharacterToken((char32_t) second_character)) \
 		}; \
 		EXPECT_EQ(tokens, tokenizer.consumeCharacterReference()); \
 		EXPECT_EQ(expected_position, (long) tokenizer.pos); \

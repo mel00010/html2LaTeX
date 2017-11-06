@@ -43,9 +43,28 @@ std::u32string Tokenizer::consume(const size_t& number_of_chars, size_t& consume
 	return buffer;
 }
 
-void Tokenizer::emit(const Token& token) {
-	TreeConstruction::dispatch(token);
+void Tokenizer::emit(const DOCTYPEToken& token) {
+	TreeConstruction::dispatch(Token(token));
 }
+void Tokenizer::emit(const StartTagToken& token) {
+	TreeConstruction::dispatch(Token(token));
+}
+void Tokenizer::emit(const EndTagToken& token) {
+	TreeConstruction::dispatch(Token(token));
+}
+void Tokenizer::emit(const CommentToken& token) {
+	TreeConstruction::dispatch(Token(token));
+}
+void Tokenizer::emit(const CharacterToken& token) {
+	TreeConstruction::dispatch(Token(token));
+}
+void Tokenizer::emit(const EOFToken& token) {
+	TreeConstruction::dispatch(Token(token));
+}
+
+void Tokenizer::emitParseError(const ParseError& error) {
+}
+
 
 char32_t Tokenizer::getCharacterAtPosition(const size_t& position) {
 	if (position >= string.length()) {

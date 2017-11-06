@@ -127,12 +127,12 @@ TokenPair Tokenizer::consumeCharacterReferenceCodepointHelper() {
 	};
 	for (auto i : conversionArray) {
 		if (id == i.first) {
-			return TokenPair { createCharacterToken(i.second), Token() };
+			return TokenPair { Token(CharacterToken(i.second)), Token() };
 		}
 	}
 
 	if (id > 0x10FFFF || (0xD800 <= id && id <= 0xDFFF)) {
-		return TokenPair { createCharacterToken(U'\U0000FFFD'), Token() };
+		return TokenPair { Token(CharacterToken(U'\U0000FFFD')), Token() };
 	}
 
 	if ((0x0001 <= id && id <= 0x0008) || (0x000D <= id && id <= 0x001F) || (0x007F <= id && id <= 0x009F) || (0xFDD0 <= id && id <= 0xFDEF)) {
@@ -181,7 +181,7 @@ TokenPair Tokenizer::consumeCharacterReferenceCodepointHelper() {
 		}
 	}
 
-	return TokenPair { createCharacterToken(id), Token() };
+	return TokenPair { Token(CharacterToken(id)), Token() };
 }
 
 TokenPair Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
@@ -191,9 +191,9 @@ TokenPair Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
 		if (characters.find(std::u32string(std::get<0>(i))) == 0) {
 			consume(std::u32string(std::get<0>(i)).length(), chars_consumed);
 			if (std::get<2>(i) != EOF32) {
-				return TokenPair { createCharacterToken(std::get<1>(i)), createCharacterToken(std::get<2>(i)) };
+				return TokenPair { Token(CharacterToken((std::get<1>(i)))), Token(CharacterToken((std::get<2>(i)))) };
 			}
-			return TokenPair { createCharacterToken(std::get<1>(i)), Token() };
+			return TokenPair { Token(CharacterToken(std::get<1>(i))), Token() };
 		}
 	}
 	return TokenPair();

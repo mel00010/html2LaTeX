@@ -31,29 +31,8 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-Token createDOCTYPEToken(const std::u32string& name = U"\0xFF",
-const std::u32string& public_id = U"\0xFF",
-const std::u32string& system_identifier = U"\0xFF",
-const bool system_id = false);
-
-Token createStartTagToken(const std::u32string& tag_name = U"",
-		const bool self_closing = false,
-		const std::list<Attribute>& attributes = { });
-Token createEndTagToken(const std::u32string& tag_name = U"",
-		const bool self_closing = false,
-		const std::list<Attribute>& attributes = { });
-Token createCharacterToken(const char32_t& data);
-Token createCharacterToken(const uint32_t& data);
-Token createCharacterToken(const int& data);
-
-Token createCommentToken(const std::u32string& data = U"");
-Token createEOFToken();
-
-
 } /* namespace Tokenization */
 } /* namespace Parse */
 } /* namespace HTML */
-
-
 
 #endif /* SRC_HTML_PARSE_TOKENIZATION_TOKENIZATIONMISC_HPP_ */

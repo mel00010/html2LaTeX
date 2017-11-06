@@ -20,14 +20,17 @@
 #ifndef SRC_HTML_PARSE_TOKENIZATION_TOKENIZATIONTYPES_HPP_
 #define SRC_HTML_PARSE_TOKENIZATION_TOKENIZATIONTYPES_HPP_
 
-
-
 #include <list>
 #include <string>
 #include <variant>
 
 #include <HTML/HTMLTypes.hpp>
 
+#define EOF32 ((char32_t) 0xFFFFFFFF)
+#define EOF16 ((char16_t) 0xFFFF)
+#define EOF8  ((char) 0xFF)
+
+#define EOF32STRING U"\xFF\xFF\xFF\xFF"
 
 namespace HTML {
 namespace Parse {
@@ -35,10 +38,15 @@ namespace Tokenization {
 
 class DOCTYPEToken {
 	public:
-		std::u32string name = U"\xFF\xFF\xFF\xFF";
-		std::u32string public_identifier = U"\xFF\xFF\xFF\xFF";
-		std::u32string system_identifier = U"\xFF\xFF\xFF\xFF";
-		bool force_quirks = false;
+		explicit DOCTYPEToken(const std::u32string& name = EOF32STRING, const std::u32string& public_identifier = EOF32STRING,
+				const std::u32string& system_identifier = EOF32STRING, const bool& force_quirks = false) :
+				name(name), public_identifier(public_identifier), system_identifier(system_identifier), force_quirks(force_quirks) {
+		}
+	public:
+		std::u32string name;
+		std::u32string public_identifier;
+		std::u32string system_identifier;
+		bool force_quirks;
 };
 ::std::ostream& operator<<(::std::ostream& os, const DOCTYPEToken& doctype_token);
 bool operator==(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs);
@@ -46,11 +54,37 @@ inline bool operator!=(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class StartTagToken {
+class TagToken {
 	public:
-		std::u32string tag_name = U"";
-		bool self_closing = false;
-		std::list<Attribute> attributes = { };
+		enum class TagType {
+			NONE,
+			START,
+			END
+		};
+
+	public:
+		TagToken():
+				type(TagType::NONE), tag_name(U""), self_closing(false), attributes( {}) {
+		}
+		explicit TagToken(const TagType& type, const std::u32string& tag_name = U"", const bool& self_closing = false, const std::list<Attribute>& attributes= {}):
+				type(type), tag_name(tag_name), self_closing(self_closing), attributes(attributes) {
+		}
+
+	public:
+		TagType type;
+		std::u32string tag_name;
+		bool self_closing;
+		std::list<Attribute> attributes;
+};
+
+class StartTagToken: public TagToken {
+	public:
+		StartTagToken() :
+				TagToken() {
+		}
+		explicit StartTagToken(const std::u32string& tag_name, const bool& self_closing, const std::list<Attribute>& attributes) :
+				TagToken(TagType::START, tag_name, self_closing, attributes) {
+		}
 };
 ::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_Token);
 bool operator==(const StartTagToken& lhs, const StartTagToken& rhs);
@@ -58,11 +92,14 @@ inline bool operator!=(const StartTagToken& lhs, const StartTagToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class EndTagToken {
+class EndTagToken: public TagToken {
 	public:
-		std::u32string tag_name = U"";
-		bool self_closing = false;
-		std::list<Attribute> attributes = { };
+		EndTagToken() :
+				TagToken() {
+		}
+		explicit EndTagToken(const std::u32string& tag_name, const bool& self_closing, const std::list<Attribute>& attributes) :
+				TagToken(TagType::END, tag_name, self_closing, attributes) {
+		}
 };
 ::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_Token);
 bool operator==(const EndTagToken& lhs, const EndTagToken& rhs);
@@ -72,7 +109,12 @@ inline bool operator!=(const EndTagToken& lhs, const EndTagToken& rhs) {
 
 class CharacterToken {
 	public:
-		char32_t data = EOF;
+		CharacterToken(const char32_t& data = EOF32) :
+				data(data) {
+		}
+
+	public:
+		char32_t data;
 };
 ::std::ostream& operator<<(::std::ostream& os, const CharacterToken& character_token);
 bool operator==(const CharacterToken& lhs, const CharacterToken& rhs);
@@ -82,8 +124,11 @@ inline bool operator!=(const CharacterToken& lhs, const CharacterToken& rhs) {
 
 class CommentToken {
 	public:
-		std::u32string data = U"";
-};
+		CommentToken(const std::u32string& data = U"") : data(data) {}
+
+		public:
+		std::u32string data;
+	};
 ::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token);
 bool operator==(const CommentToken& lhs, const CommentToken& rhs);
 inline bool operator!=(const CommentToken& lhs, const CommentToken& rhs) {
@@ -125,9 +170,33 @@ typedef std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, Characte
 
 class Token {
 	public:
-		TokenType type = TokenType::NO_TOKEN;
-		TokenVariant token = NoToken();
-
+		Token(const NoToken& token) :
+				type(TokenType::NO_TOKEN), token(token) {
+		}
+		Token(const DOCTYPEToken& token) :
+				type(TokenType::DOCTYPE), token(token) {
+		}
+		Token(const StartTagToken& token) :
+				type(TokenType::START_TAG), token(token) {
+		}
+		Token(const EndTagToken& token) :
+				type(TokenType::END_TAG), token(token) {
+		}
+		Token(const CommentToken& token) :
+				type(TokenType::COMMENT), token(token) {
+		}
+		Token(const CharacterToken& token) :
+				type(TokenType::CHARACTER), token(token) {
+		}
+		Token(const EOFToken& token) :
+				type(TokenType::END_OF_FILE), token(token) {
+		}
+		Token() :
+				type(TokenType::NO_TOKEN), token(NoToken()) {
+		}
+	public:
+		TokenType type;
+		TokenVariant token;
 };
 ::std::ostream& operator<<(::std::ostream& os, const Token& token);
 bool operator==(const Token& lhs, const Token& rhs);
@@ -148,7 +217,5 @@ inline bool operator!=(const TokenPair& lhs, const TokenPair& rhs) {
 } /* namespace Tokenization */
 } /* namespace Parse */
 } /* namespace HTML */
-
-
 
 #endif /* SRC_HTML_PARSE_TOKENIZATION_TOKENIZATIONTYPES_HPP_ */

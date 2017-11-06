@@ -130,7 +130,14 @@ class Tokenizer {
 		char32_t consume();
 		char32_t consume(size_t& consume_counter);
 		std::u32string consume(const size_t& number_of_chars, size_t& consume_counter);
+		void emit(const DOCTYPEToken& token);
+		void emit(const StartTagToken& token);
+		void emit(const EndTagToken& token);
+		void emit(const CommentToken& token);
+		void emit(const CharacterToken& token);
+		void emit(const EOFToken& token);
 		void emit(const Token& token);
+		void emitParseError(const ParseError& error);
 		char32_t getCharacterAtPosition(const size_t& position);
 		std::u32string getCharactersAtPosition(const size_t& position, const size_t& number_of_chars);
 		char32_t peek();
@@ -215,12 +222,12 @@ class Tokenizer {
 		size_t pos;
 
 	private:
-		State state = State::NULL_STATE;
+		State state;
 
-		bool parser_pause_flag = false;
-		size_t script_nesting_level = 0;
+		bool parser_pause_flag;
+		size_t script_nesting_level;
 
-		Token token_buffer = Token();
+		TagToken tag_token_buffer;
 };
 
 /* Implemented in TokenizerUtil.cpp */

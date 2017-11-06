@@ -131,6 +131,14 @@ class ContentType {
 		CharEncoding char_encoding = CharEncoding::UNKNOWN; /**<	@brief Holds the character encoding of the document. */
 		Confidence confidence = Confidence::IRRELEVANT; /**<	@brief Holds the confidence of the guess at the character encoding. */
 };
+/**
+ * @brief Holds a list of parse errors.
+ *
+ * These parse errors represent those defined in the W3C HTML5 standard.
+ */
+enum class ParseError {
+		OTHER
+};
 
 /**
  * @brief Describes the formatting properties of an HTML element.

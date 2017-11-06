@@ -42,13 +42,13 @@ void Tokenizer::dataState() {
 			switchToState(TAG_OPEN);
 			break;
 		case '\0':
-			emit(createCharacterToken(buf));
+			emit(CharacterToken(buf));
 			break;
 		case EOF32:
-			emit(createEOFToken());
+			emit(EOFToken());
 			break;
 		default:
-			emit(createCharacterToken(buf));
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -56,9 +56,15 @@ void Tokenizer::dataState() {
 void Tokenizer::characterReferenceInDataState() {
 	switchToState(DATA);
 	TokenPair tokens = consumeCharacterReference();
-	if (tokens.first != Token()) emit(tokens.first);
-	if (tokens.second != Token()) emit(tokens.second);
-	if (tokens == TokenPair()) emit(createCharacterToken('&'));
+	if (tokens.first != Token()) {
+		emit(tokens.first);
+	}
+	if (tokens.second != Token()) {
+		emit(tokens.second);
+	}
+	if (tokens == TokenPair()) {
+		emit(CharacterToken('&'));
+	}
 }
 
 void Tokenizer::RCDATAState() {
@@ -70,13 +76,13 @@ void Tokenizer::RCDATAState() {
 			switchToState(RCDATA_LESS_THAN_SIGN);
 			break;
 		case '\0':
-			emit(createCharacterToken(U'\U0000FFFD'));
+			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
-			emit(createEOFToken());
+			emit(EOFToken());
 			break;
 		default:
-			emit(createCharacterToken(buf));
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -84,9 +90,15 @@ void Tokenizer::RCDATAState() {
 void Tokenizer::characterReferenceINRCDATAState() {
 	switchToState(RCDATA);
 	TokenPair tokens = consumeCharacterReference();
-	if (tokens.first != Token()) emit(tokens.first);
-	if (tokens.second != Token()) emit(tokens.second);
-	if (tokens == TokenPair()) emit(createCharacterToken('&'));
+	if (tokens.first != Token()) {
+		emit(tokens.first);
+	}
+	if (tokens.second != Token()) {
+		emit(tokens.second);
+	}
+	if (tokens == TokenPair()) {
+		emit(CharacterToken('&'));
+	}
 }
 
 void Tokenizer::RAWTEXTState() {
@@ -95,13 +107,13 @@ void Tokenizer::RAWTEXTState() {
 			switchToState(RAWTEXT_LESS_THAN_SIGN);
 			break;
 		case '\0':
-			emit(createCharacterToken(U'\U0000FFFD'));
+			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
-			emit(createEOFToken());
+			emit(EOFToken());
 			break;
 		default:
-			emit(createCharacterToken(buf));
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -112,13 +124,13 @@ void Tokenizer::scriptDataState() {
 			switchToState(SCRIPT_DATA_LESS_THAN_SIGN);
 			break;
 		case '\0':
-			emit(createCharacterToken(U'\U0000FFFD'));
+			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
-			emit(createEOFToken());
+			emit(EOFToken());
 			break;
 		default:
-			emit(createCharacterToken(buf));
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -126,13 +138,13 @@ void Tokenizer::scriptDataState() {
 void Tokenizer::plainTextState() {
 	switch (char32_t buf = consume()) {
 		case '\0':
-			emit(createCharacterToken(U'\U0000FFFD'));
+			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
-			emit(createEOFToken());
+			emit(EOFToken());
 			break;
 		default:
-			emit(createCharacterToken(buf));
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -146,13 +158,13 @@ void Tokenizer::tagOpenState() {
 			switchToState(END_TAG_OPEN);
 			break;
 		case ASCII_UPPER_CASE_LETTER:
-			token_buffer = createStartTagToken();
-			std::get<StartTagToken>(token_buffer.token).tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
+			tag_token_buffer = StartTagToken();
+			tag_token_buffer.tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
 			switchToState(TAG_NAME);
 			break;
 		case ASCII_LOWER_CASE_LETTER:
-			token_buffer = createStartTagToken();
-			std::get<StartTagToken>(token_buffer.token).tag_name.push_back(buf);
+			tag_token_buffer = StartTagToken();
+			tag_token_buffer.tag_name.push_back(buf);
 			switchToState(TAG_NAME);
 			break;
 		case '?':
@@ -160,7 +172,7 @@ void Tokenizer::tagOpenState() {
 			break;
 		default:
 			switchToState(DATA);
-			emit(createCharacterToken('<'));
+			emit(CharacterToken('<'));
 			break;
 	}
 }
@@ -168,13 +180,13 @@ void Tokenizer::tagOpenState() {
 void Tokenizer::endTagOpenState() {
 	switch (char32_t buf = consume()) {
 		case ASCII_UPPER_CASE_LETTER:
-			token_buffer = createEndTagToken();
-			std::get<EndTagToken>(token_buffer.token).tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
+			tag_token_buffer = EndTagToken();
+			tag_token_buffer.tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
 			switchToState(TAG_NAME);
 			break;
 		case ASCII_LOWER_CASE_LETTER:
-			token_buffer = createEndTagToken();
-			std::get<EndTagToken>(token_buffer.token).tag_name.push_back(buf);
+			tag_token_buffer = EndTagToken();
+			tag_token_buffer.tag_name.push_back(buf);
 			switchToState(TAG_NAME);
 			break;
 		case '>':
@@ -182,8 +194,8 @@ void Tokenizer::endTagOpenState() {
 			break;
 		case EOF32:
 			switchToState(DATA);
-			emit(createCharacterToken('>'));
-			emit(createCharacterToken('/'));
+			emit(CharacterToken('>'));
+			emit(CharacterToken('/'));
 			unconsume();
 			break;
 		default:
@@ -193,12 +205,6 @@ void Tokenizer::endTagOpenState() {
 }
 
 void Tokenizer::tagNameState() {
-	std::u32string tag_name = U"";
-	if(token_buffer.type == TokenType::START_TAG) {
-		tag_name = std::get<StartTagToken>(token_buffer.token).tag_name;
-	} else if (token_buffer.type == TokenType::END_TAG){
-		tag_name = std::get<EndTagToken>(token_buffer.token).tag_name;
-	}
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\r':
@@ -210,23 +216,18 @@ void Tokenizer::tagNameState() {
 			switchToState(SELF_CLOSING_START_TAG);
 			break;
 		case ASCII_UPPER_CASE_LETTER:
-			tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
+			tag_token_buffer.tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
 			break;
 		case '\0':
-			tag_name.push_back(U'\U0000FFFD');
+			tag_token_buffer.tag_name.push_back(U'\U0000FFFD');
 			break;
 		case EOF32:
 			switchToState(DATA);
 			unconsume();
 			break;
 		default:
-			tag_name.push_back(buf);
+			tag_token_buffer.tag_name.push_back(buf);
 			break;
-	}
-	if(token_buffer.type == TokenType::START_TAG) {
-		std::get<StartTagToken>(token_buffer.token).tag_name = tag_name;
-	} else if (token_buffer.type == TokenType::END_TAG){
-		std::get<EndTagToken>(token_buffer.token).tag_name = tag_name;
 	}
 }
 
