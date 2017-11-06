@@ -103,13 +103,13 @@ enum State {
 class Tokenizer {
 	public:
 		Tokenizer(const std::u32string& string) :
-				string(string), pos(0) {
+				string(string), pos(0), state(NULL_STATE), parser_pause_flag(false), script_nesting_level(0) {
 		}
 		Tokenizer(const std::u32string& string, const size_t& pos) :
-				string(string), pos(pos) {
+				string(string), pos(pos), state(NULL_STATE), parser_pause_flag(false), script_nesting_level(0) {
 		}
 		Tokenizer(const std::u32string& string, const size_t& pos,  const State& state) :
-				string(string), pos(pos), state(state) {
+				string(string), pos(pos), state(state), parser_pause_flag(false), script_nesting_level(0) {
 		}
 
 		/* Implemented in Tokenize.cpp */
