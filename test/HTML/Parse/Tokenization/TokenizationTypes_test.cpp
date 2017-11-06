@@ -108,9 +108,7 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, NoToken) {
 TEST(HTML_Parse_Tokenization_TokenizationTypes, Token) {
 	EXPECT_EQ(Token(), Token());
 	EXPECT_EQ(Token(EOFToken()), Token(EOFToken()));
-	EXPECT_NE(Token(EOFToken()), Token(EOFToken()));
 	EXPECT_NE(Token(EOFToken()), Token(NoToken()));
-	EXPECT_NE(Token(EOFToken()), Token(EOFToken()));
 	EXPECT_NE(Token(EOFToken()), Token());
 }
 

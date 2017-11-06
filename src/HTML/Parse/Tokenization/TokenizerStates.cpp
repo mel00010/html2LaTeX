@@ -22,7 +22,6 @@
 
 #include "Tokenizer.hpp"
 
-#include "TokenizationMisc.hpp"
 #include "TokenizationTypes.hpp"
 
 #include <list>

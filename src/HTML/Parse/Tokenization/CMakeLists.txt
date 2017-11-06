@@ -4,13 +4,10 @@ target_sources(tokenization
 		ConsumeCharacterReference.cpp
 		${CMAKE_CURRENT_BINARY_DIR}/CharacterReferences.hpp
 		TokenizerStates.cpp
-		TokenizationMisc.cpp
 		Tokenize.cpp
 		TokenizerUtil.cpp
 	PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/Tokenizer.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/TokenizationMisc.hpp
-		
+		${CMAKE_CURRENT_SOURCE_DIR}/Tokenizer.hpp		
 )
 target_link_libraries(tokenization
 	PUBLIC

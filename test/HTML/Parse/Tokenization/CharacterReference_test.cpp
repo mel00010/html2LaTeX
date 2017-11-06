@@ -25,7 +25,6 @@
 
 #include <HTML/Parse/Tokenization/Tokenizer.hpp>
 #include <HTML/Parse/Tokenization/TokenizationTypes.hpp>
-#include <HTML/Parse/Tokenization/TokenizationMisc.hpp>
 
 #define EXPECT_NO_TOKENS(test_string, expected_position) \
 	{ \
