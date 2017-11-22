@@ -46,6 +46,7 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
+// Section 8.2.4.69
 TokenPair Tokenizer::consumeCharacterReference() {
 	switch (peek()) {
 		case '\t':
@@ -198,6 +199,7 @@ TokenPair Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
 	return TokenPair();
 }
 
+// Section 8.2.4.69
 TokenPair Tokenizer::consumeCharacterReference(const char32_t& additional_allowed_character) {
 	if (peek() == additional_allowed_character) {
 		return TokenPair();

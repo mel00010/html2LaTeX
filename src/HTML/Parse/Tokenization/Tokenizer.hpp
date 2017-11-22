@@ -29,75 +29,80 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
+/**
+ * @brief Enum specifying the states in the tokenizer state machine
+ * @details Section 8.2.4 in the W3C HTML5 specification
+ */
 enum State {
-	NULL_STATE,
-	DATA,
-	CHARACTER_REFERENCE_IN_DATA,
-	RCDATA,
-	CHARACTER_REFERENCE_IN_RCDATA,
-	RAWTEXT,
-	SCRIPT_DATA,
-	PLAINTEXT,
-	TAG_OPEN,
-	END_TAG_OPEN,
-	TAG_NAME,
-	RCDATA_LESS_THAN_SIGN,
-	RCDATA_END_TAG_OPEN,
-	RCDATA_END_TAG_NAME,
-	RAWTEXT_LESS_THAN_SIGN,
-	RAWTEXT_END_TAG_OPEN,
-	RAWTEXT_END_TAG_NAME,
-	SCRIPT_DATA_LESS_THAN_SIGN,
-	SCRIPT_DATA_END_TAG_OPEN,
-	SCRIPT_DATA_END_TAG_NAME,
-	SCRIPT_DATA_ESCAPE_START,
-	SCRIPT_DATA_ESCAPE_START_DASH,
-	SCRIPT_DATA_ESCAPED,
-	SCRIPT_DATA_ESCAPED_DASH,
-	SCRIPT_DATA_ESCAPED_DASH_DASH,
-	SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN,
-	SCRIPT_DATA_ESCAPED_END_TAG_NAME,
-	SCRIPT_DATA_DOUBLE_ESCAPE_START,
-	SCRIPT_DATA_DOUBLE_ESCAPED,
-	SCRIPT_DATA_DOUBLE_ESCAPED_DASH,
-	SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH,
-	SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN,
-	SCRIPT_DATA_DOUBLE_ESCAPE_END,
-	BEFORE_ATTRIBUTE_NAME,
-	ATTRIBUTE_NAME,
-	AFTER_ATTRIBUTE_NAME,
-	BEFORE_ATTRIBUTE_VALUE,
-	ATTRIBUTE_VALUE_DOUBLE_QUOTED,
-	ATTRIBUTE_VALUE_SINGLE_QUOTED,
-	ATTRIBUTE_VALUE_UNQUOTED,
-	CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE,
-	AFTER_ATTRIBUTE_QUOTED,
-	SELF_CLOSING_START_TAG,
-	BOGUS_COMMENT,
-	MARKUP_DECLARATION_OPEN,
-	COMMENT_START,
-	COMMENT_START_DASH,
-	COMMENT,
-	COMMENT_END_DASH,
-	COMMENT_END,
-	COMMENT_END_BANG,
-	DOCTYPE,
-	BEFORE_DOCTYPE_NAME,
-	DOCTYPE_NAME,
-	AFTER_DOCTYPE_NAME,
-	AFTER_DOCTYPE_PUBLIC_KEYWORD,
-	BEFORE_DOCTYPE_PUBLIC_IDENTIFIER,
-	DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED,
-	DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED,
-	AFTER_DOCTYPE_PUBLIC_IDENTIFIER,
-	BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS,
-	AFTER_DOCTYPE_SYSTEM_KEYWORD,
-	BEFORE_DOCTYPE_SYSTEM_IDENTIFIER,
-	DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED,
-	DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED,
-	AFTER_DOCTYPE_SYSTEM_IDENTIFIER,
-	BOGUS_DOCTYPE,
-	CDATA_SECTION
+	NULL_STATE,                                   //!< NULL_STATE @brief Used to indicate a null state
+	DATA,                                         //!< DATA @brief Section 8.2.4.1 in the W3C HTML5 specification
+	CHARACTER_REFERENCE_IN_DATA,                  //!< CHARACTER_REFERENCE_IN_DATA @brief Section 8.2.4.2 in the W3C HTML5 specification
+	RCDATA,                                       //!< RCDATA @brief Section 8.2.4.3 in the W3C HTML5 specification
+	CHARACTER_REFERENCE_IN_RCDATA,                //!< CHARACTER_REFERENCE_IN_RCDATA @brief Section 8.2.4.4 in the W3C HTML5 specification
+	RAWTEXT,                                      //!< RAWTEXT @brief Section 8.2.4.5 in the W3C HTML5 specification
+	SCRIPT_DATA,                                  //!< SCRIPT_DATA @brief Section 8.2.4.6 in the W3C HTML5 specification
+	PLAINTEXT,                                    //!< PLAINTEXT @brief Section 8.2.4.7 in the W3C HTML5 specification
+	TAG_OPEN,                                     //!< TAG_OPEN @brief Section 8.2.4.8 in the W3C HTML5 specification
+	END_TAG_OPEN,                                 //!< END_TAG_OPEN @brief Section 8.2.4.9 in the W3C HTML5 specification
+	TAG_NAME,                                     //!< TAG_NAME @brief Section 8.2.4.10 in the W3C HTML5 specification
+	RCDATA_LESS_THAN_SIGN,                        //!< RCDATA_LESS_THAN_SIGN @brief Section 8.2.4.11 in the W3C HTML5 specification
+	RCDATA_END_TAG_OPEN,                          //!< RCDATA_END_TAG_OPEN @brief Section 8.2.4.12 in the W3C HTML5 specification
+	RCDATA_END_TAG_NAME,                          //!< RCDATA_END_TAG_NAME @brief Section 8.2.4.13 in the W3C HTML5 specification
+	RAWTEXT_LESS_THAN_SIGN,                       //!< RAWTEXT_LESS_THAN_SIGN @brief Section 8.2.4.14 in the W3C HTML5 specification
+	RAWTEXT_END_TAG_OPEN,                         //!< RAWTEXT_END_TAG_OPEN @brief Section 8.2.4.15 in the W3C HTML5 specification
+	RAWTEXT_END_TAG_NAME,                         //!< RAWTEXT_END_TAG_NAME @brief Section 8.2.4.16 in the W3C HTML5 specification
+	SCRIPT_DATA_LESS_THAN_SIGN,                   //!< SCRIPT_DATA_LESS_THAN_SIGN @brief Section 8.2.4.17 in the W3C HTML5 specification
+	SCRIPT_DATA_END_TAG_OPEN,                     //!< SCRIPT_DATA_END_TAG_OPEN @brief Section 8.2.4.18 in the W3C HTML5 specification
+	SCRIPT_DATA_END_TAG_NAME,                     //!< SCRIPT_DATA_END_TAG_NAME @brief Section 8.2.4.19 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPE_START,                     //!< SCRIPT_DATA_ESCAPE_START @brief Section 8.2.4.20 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPE_START_DASH,                //!< SCRIPT_DATA_ESCAPE_START_DASH @brief Section 8.2.4.21 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPED,                          //!< SCRIPT_DATA_ESCAPED @brief Section 8.2.4.22 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPED_DASH,                     //!< SCRIPT_DATA_ESCAPED_DASH @brief Section 8.2.4.23 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPED_DASH_DASH,                //!< SCRIPT_DATA_ESCAPED_DASH_DASH @brief Section 8.2.4.24 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN,           //!< SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN @brief Section 8.2.4.25 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPED_END_TAG_OPEN,             //!< SCRIPT_DATA_ESCAPED_END_TAG_NAME @brief Section 8.2.4.26 in the W3C HTML5 specification
+	SCRIPT_DATA_ESCAPED_END_TAG_NAME,             //!< SCRIPT_DATA_ESCAPED_END_TAG_NAME @brief Section 8.2.4.27 in the W3C HTML5 specification
+	SCRIPT_DATA_DOUBLE_ESCAPE_START,              //!< SCRIPT_DATA_DOUBLE_ESCAPE_START @brief Section 8.2.4.28 in the W3C HTML5 specification
+	SCRIPT_DATA_DOUBLE_ESCAPED,                   //!< SCRIPT_DATA_DOUBLE_ESCAPED @brief Section 8.2.4.29 in the W3C HTML5 specification
+	SCRIPT_DATA_DOUBLE_ESCAPED_DASH,              //!< SCRIPT_DATA_DOUBLE_ESCAPED_DASH @brief Section 8.2.4.30 in the W3C HTML5 specification
+	SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH,         //!< SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH @brief Section 8.2.4.31 in the W3C HTML5 specification
+	SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN,    //!< SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN @brief Section 8.2.4.32 in the W3C HTML5 specification
+	SCRIPT_DATA_DOUBLE_ESCAPE_END,                //!< SCRIPT_DATA_DOUBLE_ESCAPE_END @brief Section 8.2.4.33 in the W3C HTML5 specification
+	BEFORE_ATTRIBUTE_NAME,                        //!< BEFORE_ATTRIBUTE_NAME @brief Section 8.2.4.34 in the W3C HTML5 specification
+	ATTRIBUTE_NAME,                               //!< ATTRIBUTE_NAME @brief Section 8.2.4.35 in the W3C HTML5 specification
+	AFTER_ATTRIBUTE_NAME,                         //!< AFTER_ATTRIBUTE_NAME @brief Section 8.2.4.36 in the W3C HTML5 specification
+	BEFORE_ATTRIBUTE_VALUE,                       //!< BEFORE_ATTRIBUTE_VALUE @brief Section 8.2.4.37 in the W3C HTML5 specification
+	ATTRIBUTE_VALUE_DOUBLE_QUOTED,                //!< ATTRIBUTE_VALUE_DOUBLE_QUOTED @brief Section 8.2.4.38 in the W3C HTML5 specification
+	ATTRIBUTE_VALUE_SINGLE_QUOTED,                //!< ATTRIBUTE_VALUE_SINGLE_QUOTED @brief Section 8.2.4.39 in the W3C HTML5 specification
+	ATTRIBUTE_VALUE_UNQUOTED,                     //!< ATTRIBUTE_VALUE_UNQUOTED @brief Section 8.2.4.40 in the W3C HTML5 specification
+	CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE,       //!< CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE @brief Section 8.2.4.41 in the W3C HTML5 specification
+	AFTER_ATTRIBUTE_QUOTED,                       //!< AFTER_ATTRIBUTE_QUOTED @brief Section 8.2.4.42 in the W3C HTML5 specification
+	SELF_CLOSING_START_TAG,                       //!< SELF_CLOSING_START_TAG @brief Section 8.2.4.43 in the W3C HTML5 specification
+	BOGUS_COMMENT,                                //!< BOGUS_COMMENT @brief Section 8.2.4.44 in the W3C HTML5 specification
+	MARKUP_DECLARATION_OPEN,                      //!< MARKUP_DECLARATION_OPEN @brief Section 8.2.4.45 in the W3C HTML5 specification
+	COMMENT_START,                                //!< COMMENT_START @brief Section 8.2.4.46 in the W3C HTML5 specification
+	COMMENT_START_DASH,                           //!< COMMENT_START_DASH @brief Section 8.2.4.47 in the W3C HTML5 specification
+	COMMENT,                                      //!< COMMENT @brief Section 8.2.4.48 in the W3C HTML5 specification
+	COMMENT_END_DASH,                             //!< COMMENT_END_DASH @brief Section 8.2.4.49 in the W3C HTML5 specification
+	COMMENT_END,                                  //!< COMMENT_END @brief Section 8.2.4.50 in the W3C HTML5 specification
+	COMMENT_END_BANG,                             //!< COMMENT_END_BANG @brief Section 8.2.4.51 in the W3C HTML5 specification
+	DOCTYPE,                                      //!< DOCTYPE @brief Section 8.2.4.52 in the W3C HTML5 specification
+	BEFORE_DOCTYPE_NAME,                          //!< BEFORE_DOCTYPE_NAME @brief Section 8.2.4.53 in the W3C HTML5 specification
+	DOCTYPE_NAME,                                 //!< DOCTYPE_NAME @brief Section 8.2.4.54 in the W3C HTML5 specification
+	AFTER_DOCTYPE_NAME,                           //!< AFTER_DOCTYPE_NAME @brief Section 8.2.4.55 in the W3C HTML5 specification
+	AFTER_DOCTYPE_PUBLIC_KEYWORD,                 //!< AFTER_DOCTYPE_PUBLIC_KEYWORD @brief Section 8.2.4.56 in the W3C HTML5 specification
+	BEFORE_DOCTYPE_PUBLIC_IDENTIFIER,             //!< BEFORE_DOCTYPE_PUBLIC_IDENTIFIER @brief Section 8.2.4.57 in the W3C HTML5 specification
+	DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED,      //!< DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED @brief Section 8.2.4.58 in the W3C HTML5 specification
+	DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED,      //!< DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED @brief Section 8.2.4.59 in the W3C HTML5 specification
+	AFTER_DOCTYPE_PUBLIC_IDENTIFIER,              //!< AFTER_DOCTYPE_PUBLIC_IDENTIFIER @brief Section 8.2.4.60 in the W3C HTML5 specification
+	BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS,//!< BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS @brief Section 8.2.4.61 in the W3C HTML5 specification
+	AFTER_DOCTYPE_SYSTEM_KEYWORD,                 //!< AFTER_DOCTYPE_SYSTEM_KEYWORD @brief Section 8.2.4.62 in the W3C HTML5 specification
+	BEFORE_DOCTYPE_SYSTEM_IDENTIFIER,             //!< BEFORE_DOCTYPE_SYSTEM_IDENTIFIER @brief Section 8.2.4.63 in the W3C HTML5 specification
+	DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED,      //!< DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED @brief Section 8.2.4.64 in the W3C HTML5 specification
+	DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED,      //!< DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED @brief Section 8.2.4.65 in the W3C HTML5 specification
+	AFTER_DOCTYPE_SYSTEM_IDENTIFIER,              //!< AFTER_DOCTYPE_SYSTEM_IDENTIFIER @brief Section 8.2.4.66 in the W3C HTML5 specification
+	BOGUS_DOCTYPE,                                //!< BOGUS_DOCTYPE @brief Section 8.2.4.67 in the W3C HTML5 specification
+	CDATA_SECTION                                 //!< CDATA_SECTION @brief Section 8.2.4.68 in the W3C HTML5 specification
 };
 
 class Tokenizer {
@@ -118,10 +123,31 @@ class Tokenizer {
 
 		/* Implemented in ConsumeCharacterReference.cpp */
 	public:
+		/**
+		 * @brief Consumes a character reference
+		 * @details Described in section 8.2.4.69 in the W3C HTML5 specification
+		 * @return Returns a TokenPair object containing the decoded characters
+		 */
 		TokenPair consumeCharacterReference();
+		/**
+		 * @brief Consumes a character reference with an additional allowed character
+		 * @details Described in section 8.2.4.69 in the W3C HTML5 specification
+		 * @param The additional allowed character
+		 * @return Returns a TokenPair object containing the decoded characters
+		 */
 		TokenPair consumeCharacterReference(const char32_t& additional_allowed_character);
 	private:
+		/**
+		 * @brief Helper function for consumeCharacterReference()
+		 * @details Handles a manually specified Unicode codepoint
+		 * @return Returns a TokenPair object containing the decoded characters
+		 */
 		TokenPair consumeCharacterReferenceCodepointHelper();
+		/**
+		 * @brief Helper function for consumeCharacterReference()
+		 * @details Handles a named character reference
+		 * @return Returns a TokenPair object containing the decoded characters
+		 */
 		TokenPair consumeCharacterReferenceNamedCharacterReferenceHelper();
 
 		/* Implemented in TokenizerUtil.cpp */
@@ -149,73 +175,74 @@ class Tokenizer {
 
 		/* Implemented in TokenizerStates.cpp */
 	private:
-		void dataState();
-		void characterReferenceInDataState();
-		void RCDATAState();
-		void characterReferenceINRCDATAState();
-		void RAWTEXTState();
-		void scriptDataState();
-		void plainTextState();
-		void tagOpenState();
-		void endTagOpenState();
-		void tagNameState();
-		void RCDATALessThanSignState();
-		void RCDATAEndTagOpenState();
-		void RCDATAEndTagNameState();
-		void RAWTEXTLessThanSignState();
-		void RAWTEXTEndTagOpenState();
-		void RAWTEXTEndTagNameState();
-		void scriptDataLessThanSignState();
-		void scriptDataEndTagOpenState();
-		void scriptDataEndTagNameState();
-		void scriptDataEscapeStartState();
-		void scriptDataEscapeStartDashState();
-		void scriptDataEscapedState();
-		void scriptDataEscapedDashState();
-		void scriptDataEscapedDashDashState();
-		void scriptDataEscapedLessThanSignState();
-		void scriptDataEscapedEndTagNameState();
-		void scriptDataDoubleEscapeStartState();
-		void scriptDataDoubleEscapedState();
-		void scriptDataDoubleEscapedDashState();
-		void scriptDataDoubleEscapedDashDashState();
-		void scriptDataDoubleEscapedLessThanSignState();
-		void scriptDataDoubleEscapeEndState();
-		void beforeAttributeNameState();
-		void attributeNameState();
-		void beforeAttributeValueState();
-		void afterAttributeNameState();
-		void attributeValueDoubleQuotedState();
-		void attributeValueSingleQuotedState();
-		void attributeValueUnquotedState();
-		void characterReferenceInAttributeValueState();
-		void afterAttributeQuotedState();
-		void selfClosingStartTagState();
-		void bogusCommentState();
-		void markupDeclarationOpenState();
-		void commentStartState();
-		void commentStartDashState();
-		void commentState();
-		void commentEndDashState();
-		void commentEndState();
-		void commentEndBangState();
-		void DOCTYPEState();
-		void beforeDOCTYPENameState();
-		void DOCTYPENameState();
-		void afterDOCTYPENameState();
-		void afterDOCTYPEPublicKeywordState();
-		void beforeDOCTYPEPublicIdentifierState();
-		void DOCTYPEPublicIdentifierDoubleQuotedState();
-		void DOCTYPEPublicIdentifierSingleQuotedState();
-		void afterDOCTYPEPublicIdentifierState();
-		void betweenDOCTYPEPublicAndSystemIdentifiersState();
-		void afterDOCTYPESystemKeywordState();
-		void beforeDOCTYPESystemIdentifierState();
-		void DOCTYPESystemIdentifierDoubleQuotedState();
-		void DOCTYPESystemIdentifierSingleQuotedState();
-		void afterDOCTYPESystemIdentifierState();
-		void bogusDOCTYPEState();
-		void CDATASectionState();
+		void dataState(); // Section 8.2.4.1
+		void characterReferenceInDataState(); // Section 8.2.4.2
+		void RCDATAState(); // Section 8.2.4.3
+		void characterReferenceINRCDATAState(); // Section 8.2.4.4
+		void RAWTEXTState(); // Section 8.2.4.5
+		void scriptDataState(); // Section 8.2.4.6
+		void plainTextState(); // Section 8.2.4.7
+		void tagOpenState(); // Section 8.2.4.8
+		void endTagOpenState(); // Section 8.2.4.9
+		void tagNameState(); // Section 8.2.4.10
+		void RCDATALessThanSignState(); // Section 8.2.4.11
+		void RCDATAEndTagOpenState(); // Section 8.2.4.12
+		void RCDATAEndTagNameState(); // Section 8.2.4.13
+		void RAWTEXTLessThanSignState(); // Section 8.2.4.14
+		void RAWTEXTEndTagOpenState(); // Section 8.2.4.15
+		void RAWTEXTEndTagNameState(); // Section 8.2.4.16
+		void scriptDataLessThanSignState(); // Section 8.2.4.17
+		void scriptDataEndTagOpenState(); // Section 8.2.4.18
+		void scriptDataEndTagNameState(); // Section 8.2.4.19
+		void scriptDataEscapeStartState(); // Section 8.2.4.20
+		void scriptDataEscapeStartDashState(); // Section 8.2.4.21
+		void scriptDataEscapedState(); // Section 8.2.4.22
+		void scriptDataEscapedDashState(); // Section 8.2.4.23
+		void scriptDataEscapedDashDashState(); // Section 8.2.4.24
+		void scriptDataEscapedLessThanSignState(); // Section 8.2.4.25
+		void scriptDataEscapedEndTagOpenState(); // Section 8.2.4.26
+		void scriptDataEscapedEndTagNameState(); // Section 8.2.4.27
+		void scriptDataDoubleEscapeStartState(); // Section 8.2.4.28
+		void scriptDataDoubleEscapedState(); // Section 8.2.4.29
+		void scriptDataDoubleEscapedDashState(); // Section 8.2.4.30
+		void scriptDataDoubleEscapedDashDashState(); // Section 8.2.4.31
+		void scriptDataDoubleEscapedLessThanSignState(); // Section 8.2.4.32
+		void scriptDataDoubleEscapeEndState(); // Section 8.2.4.33
+		void beforeAttributeNameState(); // Section 8.2.4.34
+		void attributeNameState(); // Section 8.2.4.35
+		void beforeAttributeValueState(); // Section 8.2.4.36
+		void afterAttributeNameState(); // Section 8.2.4.37
+		void attributeValueDoubleQuotedState(); // Section 8.2.4.38
+		void attributeValueSingleQuotedState(); // Section 8.2.4.39
+		void attributeValueUnquotedState(); // Section 8.2.4.40
+		void characterReferenceInAttributeValueState(); // Section 8.2.4.41
+		void afterAttributeQuotedState(); // Section 8.2.4.42
+		void selfClosingStartTagState(); // Section 8.2.4.43
+		void bogusCommentState(); // Section 8.2.4.44
+		void markupDeclarationOpenState(); // Section 8.2.4.45
+		void commentStartState(); // Section 8.2.4.46
+		void commentStartDashState(); // Section 8.2.4.47
+		void commentState(); // Section 8.2.4.48
+		void commentEndDashState(); // Section 8.2.4.49
+		void commentEndState(); // Section 8.2.4.50
+		void commentEndBangState(); // Section 8.2.4.51
+		void DOCTYPEState(); // Section 8.2.4.52
+		void beforeDOCTYPENameState(); // Section 8.2.4.53
+		void DOCTYPENameState(); // Section 8.2.4.54
+		void afterDOCTYPENameState(); // Section 8.2.4.55
+		void afterDOCTYPEPublicKeywordState(); // Section 8.2.4.56
+		void beforeDOCTYPEPublicIdentifierState(); // Section 8.2.4.57
+		void DOCTYPEPublicIdentifierDoubleQuotedState(); // Section 8.2.4.58
+		void DOCTYPEPublicIdentifierSingleQuotedState(); // Section 8.2.4.59
+		void afterDOCTYPEPublicIdentifierState(); // Section 8.2.4.60
+		void betweenDOCTYPEPublicAndSystemIdentifiersState(); // Section 8.2.4.61
+		void afterDOCTYPESystemKeywordState(); // Section 8.2.4.62
+		void beforeDOCTYPESystemIdentifierState(); // Section 8.2.4.63
+		void DOCTYPESystemIdentifierDoubleQuotedState(); // Section 8.2.4.64
+		void DOCTYPESystemIdentifierSingleQuotedState(); // Section 8.2.4.65
+		void afterDOCTYPESystemIdentifierState(); // Section 8.2.4.66
+		void bogusDOCTYPEState(); // Section 8.2.4.67
+		void CDATASectionState(); // Section 8.2.4.68
 
 	public:
 		const std::u32string string;
