@@ -47,7 +47,7 @@ namespace Parse {
 namespace Tokenization {
 
 // Section 8.2.4.69
-TokenPair Tokenizer::consumeCharacterReference() {
+size_t Tokenizer::consumeCharacterReference() {
 	switch (peek()) {
 		case '\t':
 		case '\n':
@@ -56,7 +56,7 @@ TokenPair Tokenizer::consumeCharacterReference() {
 		case '<':
 		case '&':
 		case EOF32:
-			return TokenPair(); // Not a character reference.  Return nothing
+			return 0; // Not a character reference.
 		case '#': {
 			return consumeCharacterReferenceCodepointHelper();
 		}
@@ -67,7 +67,7 @@ TokenPair Tokenizer::consumeCharacterReference() {
 
 }
 
-TokenPair Tokenizer::consumeCharacterReferenceCodepointHelper() {
+size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 	size_t chars_consumed = 0;
 
 	consume(chars_consumed);
@@ -87,7 +87,7 @@ TokenPair Tokenizer::consumeCharacterReferenceCodepointHelper() {
 	}
 	if (digits.empty()) {
 		unconsume(chars_consumed);
-		return TokenPair();
+		return 0;
 	}
 	uint32_t id = parseInteger(digits);
 
@@ -127,16 +127,18 @@ TokenPair Tokenizer::consumeCharacterReferenceCodepointHelper() {
 	};
 	for (auto i : conversionArray) {
 		if (id == i.first) {
-			return TokenPair { Token(CharacterToken(i.second)), Token() };
+			token_stack.push(Token(CharacterToken(i.second)));
+			return 1;
 		}
 	}
 
 	if (id > 0x10FFFF || (0xD800 <= id && id <= 0xDFFF)) {
-		return TokenPair { Token(CharacterToken(U'\U0000FFFD')), Token() };
+		token_stack.push(Token(CharacterToken(U'\U0000FFFD')));
+		return 1;
 	}
 
 	if ((0x0001 <= id && id <= 0x0008) || (0x000D <= id && id <= 0x001F) || (0x007F <= id && id <= 0x009F) || (0xFDD0 <= id && id <= 0xFDEF)) {
-		return TokenPair();
+		return 0;
 	}
 	static constexpr uint32_t disallowedIDs[] {
 			0x000B,
@@ -177,32 +179,37 @@ TokenPair Tokenizer::consumeCharacterReferenceCodepointHelper() {
 	};
 	for (auto i : disallowedIDs) {
 		if (id == i) {
-			return TokenPair();
+			return 0;
 		}
 	}
 
-	return TokenPair { Token(CharacterToken(id)), Token() };
+	token_stack.push(Token(CharacterToken(id)));
+	return 1;
 }
 
-TokenPair Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
+size_t Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
 	size_t chars_consumed = 0;
 	std::u32string characters = peek(std::u32string(std::get<0>(characterReferences.front())).length());
 	for (auto i : characterReferences) {
 		if (characters.find(std::u32string(std::get<0>(i))) == 0) {
 			consume(std::u32string(std::get<0>(i)).length(), chars_consumed);
+
 			if (std::get<2>(i) != EOF32) {
-				return TokenPair { Token(CharacterToken((std::get<1>(i)))), Token(CharacterToken((std::get<2>(i)))) };
+				token_stack.push(Token(CharacterToken(std::get<2>(i))));
+				token_stack.push(Token(CharacterToken((std::get<1>(i)))));
+				return 2;
 			}
-			return TokenPair { Token(CharacterToken(std::get<1>(i))), Token() };
+			token_stack.push(Token(CharacterToken((std::get<1>(i)))));
+			return 1;
 		}
 	}
-	return TokenPair();
+	return 0;
 }
 
 // Section 8.2.4.69
-TokenPair Tokenizer::consumeCharacterReference(const char32_t& additional_allowed_character) {
+size_t Tokenizer::consumeCharacterReference(const char32_t& additional_allowed_character) {
 	if (peek() == additional_allowed_character) {
-		return TokenPair();
+		return 0;
 	}
 	return consumeCharacterReference();
 }

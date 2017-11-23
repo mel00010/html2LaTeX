@@ -29,30 +29,28 @@
 #define EXPECT_NO_TOKENS(test_string, expected_position) \
 	{ \
 		Tokenizer tokenizer(test_string, 1, DATA); \
-		TokenPair tokens = TokenPair(); \
-		EXPECT_EQ(tokens, tokenizer.consumeCharacterReference()); \
+		EXPECT_EQ(0u, tokenizer.consumeCharacterReference()); \
+		EXPECT_TRUE(tokenizer.get_token_stack().empty()); \
 		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 
 #define EXPECT_ONE_CHARACTER_TOKEN(first_character, test_string, expected_position) \
 	{ \
 		Tokenizer tokenizer(test_string, 1, DATA); \
-		TokenPair tokens = TokenPair { \
-					Token(CharacterToken((char32_t) first_character)), \
-					Token() \
-		}; \
-		EXPECT_EQ(tokens, tokenizer.consumeCharacterReference()); \
+		EXPECT_EQ(1u, tokenizer.consumeCharacterReference()); \
+		EXPECT_EQ(Token(CharacterToken((char32_t) first_character)), tokenizer.get_token_stack().top()); tokenizer.get_token_stack().pop(); \
+		EXPECT_TRUE(tokenizer.get_token_stack().empty()); \
 		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 
 #define EXPECT_TWO_CHARACTER_TOKENS(first_character, second_character, test_string, expected_position) \
 	{ \
 		Tokenizer tokenizer(test_string, 1, DATA); \
-		TokenPair tokens = TokenPair { \
-					Token(CharacterToken((char32_t) first_character)), \
-					Token(CharacterToken((char32_t) second_character)) \
-		}; \
-		EXPECT_EQ(tokens, tokenizer.consumeCharacterReference()); \
+		std::stack<Token> token_stack; \
+		EXPECT_EQ(2u, tokenizer.consumeCharacterReference()); \
+		EXPECT_EQ(Token(CharacterToken((char32_t) first_character)), tokenizer.get_token_stack().top()); tokenizer.get_token_stack().pop(); \
+		EXPECT_EQ(Token(CharacterToken((char32_t) second_character)), tokenizer.get_token_stack().top()); tokenizer.get_token_stack().pop(); \
+		EXPECT_TRUE(tokenizer.get_token_stack().empty()); \
 		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 

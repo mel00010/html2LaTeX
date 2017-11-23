@@ -36,7 +36,9 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-class DOCTYPEToken {
+class TokenBase {
+};
+class DOCTYPEToken: public TokenBase {
 	public:
 		explicit DOCTYPEToken(const std::u32string& name = EOF32STRING, const std::u32string& public_identifier = EOF32STRING,
 				const std::u32string& system_identifier = EOF32STRING, const bool& force_quirks = false) :
@@ -54,7 +56,7 @@ inline bool operator!=(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class TagToken {
+class TagToken: public TokenBase {
 	public:
 		enum class TagType {
 			NONE,
@@ -63,9 +65,7 @@ class TagToken {
 		};
 
 	public:
-		TagToken():
-				type(TagType::NONE), tag_name(U""), self_closing(false), attributes( {}) {
-		}
+		TagToken() : type(TagType::NONE), tag_name(U""), self_closing(false), attributes( {}) {}
 		explicit TagToken(const TagType& type, const std::u32string& tag_name = U"", const bool& self_closing = false, const std::list<Attribute>& attributes= {}):
 				type(type), tag_name(tag_name), self_closing(self_closing), attributes(attributes) {
 		}
@@ -107,7 +107,7 @@ inline bool operator!=(const EndTagToken& lhs, const EndTagToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class CharacterToken {
+class CharacterToken: public TokenBase {
 	public:
 		CharacterToken(const char32_t& data = EOF32) :
 				data(data) {
@@ -122,11 +122,11 @@ inline bool operator!=(const CharacterToken& lhs, const CharacterToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class CommentToken {
+class CommentToken: public TokenBase {
 	public:
 		CommentToken(const std::u32string& data = U"") : data(data) {}
 
-		public:
+	public:
 		std::u32string data;
 	};
 ::std::ostream& operator<<(::std::ostream& os, const CommentToken& comment_token);
@@ -135,7 +135,7 @@ inline bool operator!=(const CommentToken& lhs, const CommentToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class EOFToken {
+class EOFToken: public TokenBase {
 	public:
 		static constexpr char string[] = "\\(EOF)";
 };
@@ -145,7 +145,7 @@ inline bool operator!=(const EOFToken& lhs, const EOFToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class NoToken {
+class NoToken: public TokenBase {
 	public:
 		static constexpr char string[] = "No Token!";
 };

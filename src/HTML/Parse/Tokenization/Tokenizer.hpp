@@ -24,6 +24,7 @@
 
 #include <list>
 #include <string>
+#include <stack>
 
 namespace HTML {
 namespace Parse {
@@ -121,34 +122,38 @@ class Tokenizer {
 	public:
 		void tokenize();
 
+	public:
+		inline std::stack<Token>& get_token_stack() {
+			return token_stack;
+		}
 		/* Implemented in ConsumeCharacterReference.cpp */
 	public:
 		/**
 		 * @brief Consumes a character reference
 		 * @details Described in section 8.2.4.69 in the W3C HTML5 specification
-		 * @return Returns a TokenPair object containing the decoded characters
+		 * @return Returns the number of character tokens pushed to the token stack
 		 */
-		TokenPair consumeCharacterReference();
+		size_t consumeCharacterReference();
 		/**
 		 * @brief Consumes a character reference with an additional allowed character
 		 * @details Described in section 8.2.4.69 in the W3C HTML5 specification
 		 * @param The additional allowed character
 		 * @return Returns a TokenPair object containing the decoded characters
 		 */
-		TokenPair consumeCharacterReference(const char32_t& additional_allowed_character);
+		size_t consumeCharacterReference(const char32_t& additional_allowed_character);
 	private:
 		/**
 		 * @brief Helper function for consumeCharacterReference()
 		 * @details Handles a manually specified Unicode codepoint
 		 * @return Returns a TokenPair object containing the decoded characters
 		 */
-		TokenPair consumeCharacterReferenceCodepointHelper();
+		size_t consumeCharacterReferenceCodepointHelper();
 		/**
 		 * @brief Helper function for consumeCharacterReference()
 		 * @details Handles a named character reference
 		 * @return Returns a TokenPair object containing the decoded characters
 		 */
-		TokenPair consumeCharacterReferenceNamedCharacterReferenceHelper();
+		size_t consumeCharacterReferenceNamedCharacterReferenceHelper();
 
 		/* Implemented in TokenizerUtil.cpp */
 	private:
@@ -159,6 +164,7 @@ class Tokenizer {
 		void emit(const DOCTYPEToken& token);
 		void emit(const StartTagToken& token);
 		void emit(const EndTagToken& token);
+		void emit(const TagToken& token);
 		void emit(const CommentToken& token);
 		void emit(const CharacterToken& token);
 		void emit(const EOFToken& token);
@@ -166,12 +172,21 @@ class Tokenizer {
 		void emitParseError(const ParseError& error);
 		char32_t getCharacterAtPosition(const size_t& position);
 		std::u32string getCharactersAtPosition(const size_t& position, const size_t& number_of_chars);
+		bool isAppropriateEndTagToken();
 		char32_t peek();
 		std::u32string peek(const size_t& number_of_chars);
 		char32_t reconsume();
 		void switchToState(const State& state);
 		void unconsume();
 		void unconsume(const size_t& number_of_chars);
+
+
+	private:
+		template<class T>
+		void emitFromStack(std::stack<T> stack) {
+			emit(stack.top());
+			stack.pop();
+		}
 
 		/* Implemented in TokenizerStates.cpp */
 	private:
@@ -254,7 +269,11 @@ class Tokenizer {
 		bool parser_pause_flag;
 		size_t script_nesting_level;
 
-		TagToken tag_token_buffer;
+		std::stack<Token> token_stack;
+		TagToken current_tag;
+		std::u32string temporary_buffer;
+		std::stack<char32_t> char_stack;
+		StartTagToken last_start_tag_token_emitted;
 };
 
 /* Implemented in TokenizerUtil.cpp */

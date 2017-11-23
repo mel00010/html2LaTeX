@@ -47,10 +47,27 @@ void Tokenizer::emit(const DOCTYPEToken& token) {
 	TreeConstruction::dispatch(Token(token));
 }
 void Tokenizer::emit(const StartTagToken& token) {
+	last_start_tag_token_emitted = token;
 	TreeConstruction::dispatch(Token(token));
 }
 void Tokenizer::emit(const EndTagToken& token) {
 	TreeConstruction::dispatch(Token(token));
+}
+void Tokenizer::emit(const TagToken& token) {
+	switch(token.type) {
+		case TagToken::TagType::START:
+			emit(static_cast<const StartTagToken&>(token));
+			break;
+		case TagToken::TagType::END:
+			emit(static_cast<const EndTagToken&>(token));
+			break;
+		case TagToken::TagType::NONE:
+			emitParseError(ParseError::OTHER);
+			break;
+		default:
+			emitParseError(ParseError::OTHER);
+			break;
+	}
 }
 void Tokenizer::emit(const CommentToken& token) {
 	TreeConstruction::dispatch(Token(token));
@@ -61,7 +78,9 @@ void Tokenizer::emit(const CharacterToken& token) {
 void Tokenizer::emit(const EOFToken& token) {
 	TreeConstruction::dispatch(Token(token));
 }
-
+void Tokenizer::emit(const Token& token) {
+	TreeConstruction::dispatch(token);
+}
 void Tokenizer::emitParseError(const ParseError& error) {
 }
 
@@ -83,6 +102,16 @@ std::u32string Tokenizer::getCharactersAtPosition(const size_t& position, const 
 		characters.push_back(string[position + i]);
 	}
 	return characters;
+}
+
+bool Tokenizer::isAppropriateEndTagToken() {
+	if(current_tag.type != TagToken::TagType::END) {
+		return false;
+	}
+	if(last_start_tag_token_emitted.tag_name != current_tag.tag_name) {
+		return false;
+	}
+	return true;
 }
 
 char32_t Tokenizer::peek() {
