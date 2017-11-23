@@ -175,7 +175,7 @@ void Tokenizer::tagOpenState() {
 			break;
 		case ASCII_UPPER_CASE_LETTER:
 			current_tag = StartTagToken();
-			current_tag.tag_name.push_back(Microsyntaxes::ASCII::toLower(buf));
+			current_tag.tag_name.push_back(toLower(buf));
 			switchToState(TAG_NAME);
 			break;
 		case ASCII_LOWER_CASE_LETTER:
@@ -296,7 +296,7 @@ void Tokenizer::RCDATAEndTagNameState() {
 		case '\f':
 		case ' ':
 			if(!isAppropriateEndTagToken()) {
-				break; // Go to default case, which for brevity is outside the switch
+				break; // Go to default case, which for brevity is outside the switch block
 			}
 			switchToState(BEFORE_ATTRIBUTE_NAME);
 			return;
@@ -381,7 +381,7 @@ void Tokenizer::RAWTEXTEndTagNameState() {
 		case '\f':
 		case ' ':
 			if(!isAppropriateEndTagToken()) {
-				break; // Go to default case, which for brevity is outside the switch
+				break; // Go to default case, which for brevity is outside the switch block
 			}
 			switchToState(BEFORE_ATTRIBUTE_NAME);
 			return;
@@ -471,7 +471,7 @@ void Tokenizer::scriptDataEndTagNameState() {
 		case '\f':
 		case ' ':
 			if(!isAppropriateEndTagToken()) {
-				break; // Go to default case, which for brevity is outside the switch
+				break; // Go to default case, which for brevity is outside the switch block
 			}
 			switchToState(BEFORE_ATTRIBUTE_NAME);
 			return;
@@ -680,7 +680,7 @@ void Tokenizer::scriptDataEscapedEndTagNameState() {
 			case '\f':
 			case ' ':
 				if(!isAppropriateEndTagToken()) {
-					break; // Go to default case, which for brevity is outside the switch
+					break; // Go to default case, which for brevity is outside the switch block
 				}
 				switchToState(BEFORE_ATTRIBUTE_NAME);
 				return;
@@ -806,15 +806,46 @@ void Tokenizer::scriptDataDoubleEscapedDashState() {
 // Section 8.2.4.31
 void Tokenizer::scriptDataDoubleEscapedDashDashState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH);
+			emit(CharacterToken('-'));
+			break;
+		case '<':
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN);
+			emit(CharacterToken('<'));
+			break;
+		case '>':
+			switchToState(SCRIPT_DATA);
+			emit(CharacterToken('>'));
+			break;
+		case '\0':
+			emitParseError();
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			emit(CharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			emit(CharacterToken(buf));
 			break;
 	}
 }
 
 // Section 8.2.4.32
 void Tokenizer::scriptDataDoubleEscapedLessThanSignState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '/':
+			temporary_buffer = U"";
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPE_END);
+			emit(CharacterToken('/'));
+			break;
 		default:
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			unconsume();
 			break;
 	}
 }
@@ -822,7 +853,30 @@ void Tokenizer::scriptDataDoubleEscapedLessThanSignState() {
 // Section 8.2.4.33
 void Tokenizer::scriptDataDoubleEscapeEndState() {
 	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+		case '/':
+		case '>':
+			if(temporary_buffer == U"script") {
+				switchToState(SCRIPT_DATA_ESCAPED);
+			} else {
+				switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			}
+			emit(CharacterToken(buf));
+			break;
+		case ASCII_UPPER_CASE_LETTER:
+			temporary_buffer.push_back(toLower(buf));
+			emit(CharacterToken(buf));
+			break;
+		case ASCII_LOWER_CASE_LETTER:
+			temporary_buffer.push_back(buf);
+			emit(CharacterToken(buf));
+			break;
 		default:
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			unconsume();
 			break;
 	}
 }
@@ -830,15 +884,96 @@ void Tokenizer::scriptDataDoubleEscapeEndState() {
 // Section 8.2.4.34
 void Tokenizer::beforeAttributeNameState() {
 	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			break;
+		case '/':
+			switchToState(SELF_CLOSING_START_TAG);
+			break;
+		case '>':
+			switchToState(DATA);
+			emit(current_tag);
+			return;
+		case ASCII_UPPER_CASE_LETTER:
+			current_attribute = Attribute();
+			current_attribute.name.push_back(toLower(buf));
+			switchToState(ATTRIBUTE_NAME);
+			break;
+		case '\0':
+			emitParseError();
+			current_attribute = Attribute();
+			current_attribute.name.push_back(U'\U0000FFFD');
+			switchToState(ATTRIBUTE_NAME);
+			break;
+		case '"':
+		case '\'':
+		case '<':
+		case '=':
+			emitParseError();
+			current_attribute = Attribute();
+			current_attribute.name.push_back(buf);
+			switchToState(ATTRIBUTE_NAME);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			current_attribute = Attribute();
+			current_attribute.name.push_back(buf);
+			switchToState(ATTRIBUTE_NAME);
 			break;
 	}
+
 }
 
 // Section 8.2.4.35
 void Tokenizer::attributeNameState() {
 	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			isAttributeNameUnique();
+			switchToState(AFTER_ATTRIBUTE_NAME);
+			break;
+		case '/':
+			isAttributeNameUnique();
+			switchToState(SELF_CLOSING_START_TAG);
+			break;
+		case '=':
+			isAttributeNameUnique();
+			switchToState(BEFORE_ATTRIBUTE_VALUE);
+			break;
+		case '>':
+			isAttributeNameUnique();
+			switchToState(DATA);
+			emit(current_tag);
+			break;
+		case ASCII_UPPER_CASE_LETTER:
+			current_attribute.name.push_back(toLower(buf));
+			break;
+		case '\0':
+			emitParseError();
+			current_attribute.name.push_back(U'\U0000FFFD');
+			break;
+		case '"':
+		case '\'':
+		case '<':
+			emitParseError();
+			current_attribute.name.push_back(buf);
+			break;
+		case EOF32:
+			isAttributeNameUnique();
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			current_attribute.name.push_back(buf);
 			break;
 	}
 }
@@ -846,7 +981,47 @@ void Tokenizer::attributeNameState() {
 // Section 8.2.4.36
 void Tokenizer::afterAttributeNameState() {
 	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			break;
+		case '/':
+			switchToState(SELF_CLOSING_START_TAG);
+			break;
+		case '=':
+			switchToState(BEFORE_ATTRIBUTE_VALUE);
+			break;
+		case '>':
+			switchToState(DATA);
+			break;
+		case ASCII_UPPER_CASE_LETTER:
+			current_attribute = Attribute();
+			current_attribute.name.push_back(toLower(buf));
+			switchToState(ATTRIBUTE_NAME);
+			break;
+		case '\0':
+			emitParseError();
+			current_attribute = Attribute();
+			current_attribute.name.push_back(U'\U0000FFFD');
+			switchToState(ATTRIBUTE_NAME);
+			break;
+		case '"':
+		case '<':
+			emitParseError();
+			current_attribute = Attribute();
+			current_attribute.name.push_back(buf);
+			switchToState(ATTRIBUTE_NAME);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			current_attribute = Attribute();
+			current_attribute.name.push_back(buf);
+			switchToState(ATTRIBUTE_NAME);
 			break;
 	}
 }
@@ -854,7 +1029,46 @@ void Tokenizer::afterAttributeNameState() {
 // Section 8.2.4.37
 void Tokenizer::beforeAttributeValueState() {
 	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			break;
+		case '"':
+			switchToState(ATTRIBUTE_VALUE_DOUBLE_QUOTED);
+			break;
+		case '&':
+			switchToState(ATTRIBUTE_VALUE_UNQUOTED);
+			unconsume();
+			break;
+		case '\'':
+			switchToState(ATTRIBUTE_VALUE_SINGLE_QUOTED);
+			break;
+		case '\0':
+			emitParseError();
+			current_attribute.value.push_back(U'\U0000FFFD');
+			switchToState(ATTRIBUTE_VALUE_UNQUOTED);
+			break;
+		case '>':
+			emitParseError();
+			switchToState(DATA);
+			emit(current_tag);
+			break;
+		case '<':
+		case '=':
+		case '`':
+			emitParseError();
+			current_attribute.value.push_back(buf);
+			switchToState(ATTRIBUTE_VALUE_UNQUOTED);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			current_attribute.value.push_back(buf);
+			switchToState(ATTRIBUTE_VALUE_UNQUOTED);
 			break;
 	}
 }
@@ -862,7 +1076,24 @@ void Tokenizer::beforeAttributeValueState() {
 // Section 8.2.4.38
 void Tokenizer::attributeValueDoubleQuotedState() {
 	switch (char32_t buf = consume()) {
+		case '"':
+			switchToState(AFTER_ATTRIBUTE_QUOTED);
+			break;
+		case '&':
+			switchToState(CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE);
+			additional_allowed_character='"';
+			break;
+		case '\0':
+			emitParseError();
+			current_attribute.value.push_back(U'\U0000FFFD');
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			current_attribute.value.push_back(buf);
 			break;
 	}
 }
@@ -870,15 +1101,64 @@ void Tokenizer::attributeValueDoubleQuotedState() {
 // Section 8.2.4.39
 void Tokenizer::attributeValueSingleQuotedState() {
 	switch (char32_t buf = consume()) {
+		case '\'':
+			switchToState(AFTER_ATTRIBUTE_QUOTED);
+			break;
+		case '&':
+			switchToState(CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE);
+			additional_allowed_character='\'';
+			break;
+		case '\0':
+			emitParseError();
+			current_attribute.value.push_back(U'\U0000FFFD');
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			current_attribute.value.push_back(buf);
 			break;
 	}
 }
 
-// Section 8.2.4.30
+// Section 8.2.4.40
 void Tokenizer::attributeValueUnquotedState() {
 	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			switchToState(BEFORE_ATTRIBUTE_NAME);
+			break;
+		case '&':
+			switchToState(CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE);
+			additional_allowed_character='>';
+			break;
+		case '>':
+			switchToState(DATA);
+			emit(current_tag);
+			break;
+		case '\0':
+			emitParseError();
+			current_attribute.value.push_back(U'\U0000FFFD');
+			break;
+		case '"':
+		case '\'':
+		case '<':
+		case '=':
+		case '`':
+			emitParseError();
+			current_attribute.value.push_back(buf);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			current_attribute.value.push_back(buf);
 			break;
 	}
 }

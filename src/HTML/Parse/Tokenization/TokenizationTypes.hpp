@@ -20,9 +20,9 @@
 #ifndef SRC_HTML_PARSE_TOKENIZATION_TOKENIZATIONTYPES_HPP_
 #define SRC_HTML_PARSE_TOKENIZATION_TOKENIZATIONTYPES_HPP_
 
-#include <list>
 #include <string>
 #include <variant>
+#include <vector>
 
 #include <HTML/HTMLTypes.hpp>
 
@@ -31,6 +31,9 @@
 #define EOF8  ((char) 0xFF)
 
 #define EOF32STRING U"\xFF\xFF\xFF\xFF"
+
+#define NO_CHARACTER ((char32_t) 0xFFFFFFFE)
+
 
 namespace HTML {
 namespace Parse {
@@ -66,7 +69,7 @@ class TagToken: public TokenBase {
 
 	public:
 		TagToken() : type(TagType::NONE), tag_name(U""), self_closing(false), attributes( {}) {}
-		explicit TagToken(const TagType& type, const std::u32string& tag_name = U"", const bool& self_closing = false, const std::list<Attribute>& attributes= {}):
+		explicit TagToken(const TagType& type, const std::u32string& tag_name = U"", const bool& self_closing = false, const std::vector<Attribute>& attributes= {}):
 				type(type), tag_name(tag_name), self_closing(self_closing), attributes(attributes) {
 		}
 
@@ -74,7 +77,7 @@ class TagToken: public TokenBase {
 		TagType type;
 		std::u32string tag_name;
 		bool self_closing;
-		std::list<Attribute> attributes;
+		std::vector<Attribute> attributes;
 };
 
 class StartTagToken: public TagToken {
@@ -82,7 +85,7 @@ class StartTagToken: public TagToken {
 		StartTagToken() :
 				TagToken() {
 		}
-		explicit StartTagToken(const std::u32string& tag_name, const bool& self_closing, const std::list<Attribute>& attributes) :
+		explicit StartTagToken(const std::u32string& tag_name, const bool& self_closing, const std::vector<Attribute>& attributes) :
 				TagToken(TagType::START, tag_name, self_closing, attributes) {
 		}
 };
@@ -97,7 +100,7 @@ class EndTagToken: public TagToken {
 		EndTagToken() :
 				TagToken() {
 		}
-		explicit EndTagToken(const std::u32string& tag_name, const bool& self_closing, const std::list<Attribute>& attributes) :
+		explicit EndTagToken(const std::u32string& tag_name, const bool& self_closing, const std::vector<Attribute>& attributes) :
 				TagToken(TagType::END, tag_name, self_closing, attributes) {
 		}
 };

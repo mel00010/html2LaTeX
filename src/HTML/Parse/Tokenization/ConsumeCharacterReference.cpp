@@ -48,6 +48,10 @@ namespace Tokenization {
 
 // Section 8.2.4.69
 size_t Tokenizer::consumeCharacterReference() {
+	if(peek() == additional_allowed_character) {
+		return 0;
+	}
+	additional_allowed_character = NO_CHARACTER;
 	switch (peek()) {
 		case '\t':
 		case '\n':
@@ -204,14 +208,6 @@ size_t Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
 		}
 	}
 	return 0;
-}
-
-// Section 8.2.4.69
-size_t Tokenizer::consumeCharacterReference(const char32_t& additional_allowed_character) {
-	if (peek() == additional_allowed_character) {
-		return 0;
-	}
-	return consumeCharacterReference();
 }
 
 } /* namespace Tokenization */

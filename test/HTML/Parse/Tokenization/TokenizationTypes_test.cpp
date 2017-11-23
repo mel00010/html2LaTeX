@@ -25,9 +25,9 @@
 #include <HTML/HTMLTypes.hpp>
 
 #include <iostream>
-#include <list>
 #include <sstream>
 #include <string>
+#include <vector>
 
 namespace HTML {
 namespace Parse {
@@ -45,38 +45,38 @@ TEST(HTML_Parse_Tokenization_TokenizationTypes, DOCTYPEToken) {
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, StartTagToken) {
-	EXPECT_EQ(StartTagToken(U"tag_name", false, std::list<Attribute> {}),
-	StartTagToken(U"tag_name", false, std::list<Attribute> {}));
-	EXPECT_EQ(StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}),
-	StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"not the same", U"value")}),
-	StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"not the same")}),
-	StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"not the same", false, std::list<Attribute> {Attribute(U"name", U"value")}),
-	StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"tag_name", true, std::list<Attribute> {Attribute(U"name", U"value")}),
-	StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"not the same", true, std::list<Attribute> {}),
-	StartTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_EQ(StartTagToken(U"tag_name", false, std::vector<Attribute> {}),
+	StartTagToken(U"tag_name", false, std::vector<Attribute> {}));
+	EXPECT_EQ(StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
+	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"not the same", U"value")}),
+	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"not the same")}),
+	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(StartTagToken(U"not the same", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
+	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(StartTagToken(U"tag_name", true, std::vector<Attribute> {Attribute(U"name", U"value")}),
+	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(StartTagToken(U"not the same", true, std::vector<Attribute> {}),
+	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
 
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, EndTagToken) {
-	EXPECT_EQ(EndTagToken(U"tag_name", false, std::list<Attribute> {}),
-	EndTagToken(U"tag_name", false, std::list<Attribute> {}));
-	EXPECT_EQ(EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}),
-	EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"not the same", U"value")}),
-	EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"not the same")}),
-	EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"not the same", false, std::list<Attribute> {Attribute(U"name", U"value")}),
-	EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"tag_name", true, std::list<Attribute> {Attribute(U"name", U"value")}),
-	EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"not the same", true, std::list<Attribute> {}),
-	EndTagToken(U"tag_name", false, std::list<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_EQ(EndTagToken(U"tag_name", false, std::vector<Attribute> {}),
+	EndTagToken(U"tag_name", false, std::vector<Attribute> {}));
+	EXPECT_EQ(EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
+	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"not the same", U"value")}),
+	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"not the same")}),
+	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(EndTagToken(U"not the same", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
+	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(EndTagToken(U"tag_name", true, std::vector<Attribute> {Attribute(U"name", U"value")}),
+	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
+	EXPECT_NE(EndTagToken(U"not the same", true, std::vector<Attribute> {}),
+	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
 
 }
 

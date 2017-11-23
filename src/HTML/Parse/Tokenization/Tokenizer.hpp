@@ -134,13 +134,6 @@ class Tokenizer {
 		 * @return Returns the number of character tokens pushed to the token stack
 		 */
 		size_t consumeCharacterReference();
-		/**
-		 * @brief Consumes a character reference with an additional allowed character
-		 * @details Described in section 8.2.4.69 in the W3C HTML5 specification
-		 * @param The additional allowed character
-		 * @return Returns a TokenPair object containing the decoded characters
-		 */
-		size_t consumeCharacterReference(const char32_t& additional_allowed_character);
 	private:
 		/**
 		 * @brief Helper function for consumeCharacterReference()
@@ -173,6 +166,7 @@ class Tokenizer {
 		char32_t getCharacterAtPosition(const size_t& position);
 		std::u32string getCharactersAtPosition(const size_t& position, const size_t& number_of_chars);
 		bool isAppropriateEndTagToken();
+		bool isAttributeNameUnique();
 		char32_t peek();
 		std::u32string peek(const size_t& number_of_chars);
 		char32_t reconsume();
@@ -269,11 +263,17 @@ class Tokenizer {
 		bool parser_pause_flag;
 		size_t script_nesting_level;
 
-		std::stack<Token> token_stack;
 		TagToken current_tag;
+		Attribute current_attribute;
+
 		std::u32string temporary_buffer;
+
+		std::stack<Token> token_stack;
 		std::stack<char32_t> char_stack;
 		StartTagToken last_start_tag_token_emitted;
+
+		char32_t additional_allowed_character = NO_CHARACTER;
+		bool discard_current_attribute = false;
 };
 
 /* Implemented in TokenizerUtil.cpp */

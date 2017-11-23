@@ -54,12 +54,16 @@ void Tokenizer::emit(const EndTagToken& token) {
 	TreeConstruction::dispatch(Token(token));
 }
 void Tokenizer::emit(const TagToken& token) {
+	TagToken buf = token;
+	if(current_attribute != Attribute() && !discard_current_attribute) {
+		buf.attributes.push_back(current_attribute);
+	}
 	switch(token.type) {
 		case TagToken::TagType::START:
-			emit(static_cast<const StartTagToken&>(token));
+			emit(static_cast<const StartTagToken&>(buf));
 			break;
 		case TagToken::TagType::END:
-			emit(static_cast<const EndTagToken&>(token));
+			emit(static_cast<const EndTagToken&>(buf));
 			break;
 		case TagToken::TagType::NONE:
 			emitParseError();
@@ -81,7 +85,7 @@ void Tokenizer::emit(const EOFToken& token) {
 void Tokenizer::emit(const Token& token) {
 	TreeConstruction::dispatch(token);
 }
-void Tokenizer::emitParseError(const ParseError& error) {
+void Tokenizer::emitParseError(__attribute__ ((unused)) const ParseError& error) {
 }
 
 
@@ -111,6 +115,16 @@ bool Tokenizer::isAppropriateEndTagToken() {
 	if(last_start_tag_token_emitted.tag_name != current_tag.tag_name) {
 		return false;
 	}
+	return true;
+}
+bool Tokenizer::isAttributeNameUnique() {
+	for(const auto& i : current_tag.attributes) {
+		if(current_attribute == i.name) {
+			discard_current_attribute = true;
+			return false;
+		}
+	}
+	discard_current_attribute = false;
 	return true;
 }
 
