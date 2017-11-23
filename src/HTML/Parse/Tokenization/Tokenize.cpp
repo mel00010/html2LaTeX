@@ -33,205 +33,208 @@ void Tokenizer::tokenize() {
 	switchToState(DATA);
 	while (pos < string.length()) {
 		switch (state) {
-			case DATA:
+			case DATA: // Section 8.2.4.1
 				dataState();
 				break;
-			case CHARACTER_REFERENCE_IN_DATA:
+			case CHARACTER_REFERENCE_IN_DATA: // Section 8.2.4.2
 				characterReferenceInDataState();
 				break;
-			case RCDATA:
+			case RCDATA: // Section 8.2.4.3
 				RCDATAState();
 				break;
-			case CHARACTER_REFERENCE_IN_RCDATA:
+			case CHARACTER_REFERENCE_IN_RCDATA: // Section 8.2.4.4
 				characterReferenceINRCDATAState();
 				break;
-			case RAWTEXT:
+			case RAWTEXT: // Section 8.2.4.5
 				RAWTEXTState();
 				break;
-			case SCRIPT_DATA:
+			case SCRIPT_DATA: // Section 8.2.4.6
 				scriptDataState();
 				break;
-			case PLAINTEXT:
+			case PLAINTEXT: // Section 8.2.4.7
 				plainTextState();
 				break;
-			case TAG_OPEN:
+			case TAG_OPEN: // Section 8.2.4.8
 				tagOpenState();
 				break;
-			case END_TAG_OPEN:
+			case END_TAG_OPEN: // Section 8.2.4.9
 				endTagOpenState();
 				break;
-			case TAG_NAME:
+			case TAG_NAME: // Section 8.2.4.10
 				tagNameState();
 				break;
-			case RCDATA_LESS_THAN_SIGN:
+			case RCDATA_LESS_THAN_SIGN: // Section 8.2.4.11
 				RCDATALessThanSignState();
 				break;
-			case RCDATA_END_TAG_OPEN:
+			case RCDATA_END_TAG_OPEN: // Section 8.2.4.12
 				RCDATAEndTagOpenState();
 				break;
-			case RCDATA_END_TAG_NAME:
+			case RCDATA_END_TAG_NAME: // Section 8.2.4.13
 				RCDATAEndTagNameState();
 				break;
-			case RAWTEXT_LESS_THAN_SIGN:
+			case RAWTEXT_LESS_THAN_SIGN: // Section 8.2.4.14
 				RAWTEXTLessThanSignState();
 				break;
-			case RAWTEXT_END_TAG_OPEN:
+			case RAWTEXT_END_TAG_OPEN: // Section 8.2.4.15
 				RAWTEXTEndTagOpenState();
 				break;
-			case RAWTEXT_END_TAG_NAME:
+			case RAWTEXT_END_TAG_NAME: // Section 8.2.4.16
 				RAWTEXTEndTagNameState();
 				break;
-			case SCRIPT_DATA_LESS_THAN_SIGN:
+			case SCRIPT_DATA_LESS_THAN_SIGN: // Section 8.2.4.17
 				scriptDataLessThanSignState();
 				break;
-			case SCRIPT_DATA_END_TAG_OPEN:
+			case SCRIPT_DATA_END_TAG_OPEN: // Section 8.2.4.18
 				scriptDataEndTagOpenState();
 				break;
-			case SCRIPT_DATA_END_TAG_NAME:
+			case SCRIPT_DATA_END_TAG_NAME: // Section 8.2.4.19
 				scriptDataEndTagNameState();
 				break;
-			case SCRIPT_DATA_ESCAPE_START:
+			case SCRIPT_DATA_ESCAPE_START: // Section 8.2.4.20
 				scriptDataEscapeStartState();
 				break;
-			case SCRIPT_DATA_ESCAPE_START_DASH:
+			case SCRIPT_DATA_ESCAPE_START_DASH: // Section 8.2.4.21
 				scriptDataEscapeStartDashState();
 				break;
-			case SCRIPT_DATA_ESCAPED:
+			case SCRIPT_DATA_ESCAPED: // Section 8.2.4.22
 				scriptDataEscapedState();
 				break;
-			case SCRIPT_DATA_ESCAPED_DASH:
+			case SCRIPT_DATA_ESCAPED_DASH: // Section 8.2.4.23
 				scriptDataEscapedDashState();
 				break;
-			case SCRIPT_DATA_ESCAPED_DASH_DASH:
+			case SCRIPT_DATA_ESCAPED_DASH_DASH: // Section 8.2.4.24
 				scriptDataEscapedDashDashState();
 				break;
-			case SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN:
+			case SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN: // Section 8.2.4.25
 				scriptDataEscapedLessThanSignState();
 				break;
-			case SCRIPT_DATA_ESCAPED_END_TAG_NAME:
+			case SCRIPT_DATA_ESCAPED_END_TAG_OPEN: // Section 8.2.4.26
+				scriptDataEscapedEndTagOpenState();
+				break;
+			case SCRIPT_DATA_ESCAPED_END_TAG_NAME: // Section 8.2.4.27
 				scriptDataEscapedEndTagNameState();
 				break;
-			case SCRIPT_DATA_DOUBLE_ESCAPE_START:
+			case SCRIPT_DATA_DOUBLE_ESCAPE_START: // Section 8.2.4.28
 				scriptDataDoubleEscapeStartState();
 				break;
-			case SCRIPT_DATA_DOUBLE_ESCAPED:
+			case SCRIPT_DATA_DOUBLE_ESCAPED: // Section 8.2.4.29
 				scriptDataDoubleEscapedState();
 				break;
-			case SCRIPT_DATA_DOUBLE_ESCAPED_DASH:
+			case SCRIPT_DATA_DOUBLE_ESCAPED_DASH: // Section 8.2.4.30
 				scriptDataDoubleEscapedDashState();
 				break;
-			case SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH:
+			case SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH: // Section 8.2.4.31
 				scriptDataDoubleEscapedDashDashState();
 				break;
-			case SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN:
+			case SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN: // Section 8.2.4.32
 				scriptDataDoubleEscapedLessThanSignState();
 				break;
-			case SCRIPT_DATA_DOUBLE_ESCAPE_END:
+			case SCRIPT_DATA_DOUBLE_ESCAPE_END: // Section 8.2.4.33
 				scriptDataDoubleEscapeEndState();
 				break;
-			case BEFORE_ATTRIBUTE_NAME:
+			case BEFORE_ATTRIBUTE_NAME: // Section 8.2.4.34
 				beforeAttributeNameState();
 				break;
-			case ATTRIBUTE_NAME:
+			case ATTRIBUTE_NAME: // Section 8.2.4.35
 				attributeNameState();
 				break;
-			case AFTER_ATTRIBUTE_NAME:
+			case AFTER_ATTRIBUTE_NAME: // Section 8.2.4.36
 				afterAttributeNameState();
 				break;
-			case BEFORE_ATTRIBUTE_VALUE:
+			case BEFORE_ATTRIBUTE_VALUE: // Section 8.2.4.37
 				beforeAttributeValueState();
 				break;
-			case ATTRIBUTE_VALUE_DOUBLE_QUOTED:
+			case ATTRIBUTE_VALUE_DOUBLE_QUOTED: // Section 8.2.4.38
 				attributeValueDoubleQuotedState();
 				break;
-			case ATTRIBUTE_VALUE_SINGLE_QUOTED:
+			case ATTRIBUTE_VALUE_SINGLE_QUOTED: // Section 8.2.4.39
 				attributeValueSingleQuotedState();
 				break;
-			case ATTRIBUTE_VALUE_UNQUOTED:
+			case ATTRIBUTE_VALUE_UNQUOTED: // Section 8.2.4.40
 				attributeValueUnquotedState();
 				break;
-			case CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE:
+			case CHARACTER_REFERENCE_IN_ATTRIBUTE_VALUE: // Section 8.2.4.41
 				characterReferenceInAttributeValueState();
 				break;
-			case AFTER_ATTRIBUTE_QUOTED:
+			case AFTER_ATTRIBUTE_QUOTED: // Section 8.2.4.42
 				afterAttributeQuotedState();
 				break;
-			case SELF_CLOSING_START_TAG:
+			case SELF_CLOSING_START_TAG: // Section 8.2.4.43
 				selfClosingStartTagState();
 				break;
-			case BOGUS_COMMENT:
+			case BOGUS_COMMENT: // Section 8.2.4.44
 				bogusCommentState();
 				break;
-			case MARKUP_DECLARATION_OPEN:
+			case MARKUP_DECLARATION_OPEN: // Section 8.2.4.45
 				markupDeclarationOpenState();
 				break;
-			case COMMENT_START:
+			case COMMENT_START: // Section 8.2.4.46
 				commentStartState();
 				break;
-			case COMMENT_START_DASH:
+			case COMMENT_START_DASH: // Section 8.2.4.47
 				commentStartDashState();
 				break;
-			case COMMENT:
+			case COMMENT: // Section 8.2.4.48
 				commentState();
 				break;
-			case COMMENT_END_DASH:
+			case COMMENT_END_DASH: // Section 8.2.4.49
 				commentEndDashState();
 				break;
-			case COMMENT_END:
+			case COMMENT_END: // Section 8.2.4.50
 				commentEndState();
 				break;
-			case COMMENT_END_BANG:
+			case COMMENT_END_BANG: // Section 8.2.4.51
 				commentEndBangState();
 				break;
-			case DOCTYPE:
+			case DOCTYPE: // Section 8.2.4.52
 				DOCTYPEState();
 				break;
-			case BEFORE_DOCTYPE_NAME:
+			case BEFORE_DOCTYPE_NAME: // Section 8.2.4.53
 				beforeDOCTYPENameState();
 				break;
-			case DOCTYPE_NAME:
+			case DOCTYPE_NAME: // Section 8.2.4.54
 				DOCTYPENameState();
 				break;
-			case AFTER_DOCTYPE_NAME:
+			case AFTER_DOCTYPE_NAME: // Section 8.2.4.55
 				afterDOCTYPENameState();
 				break;
-			case AFTER_DOCTYPE_PUBLIC_KEYWORD:
+			case AFTER_DOCTYPE_PUBLIC_KEYWORD: // Section 8.2.4.56
 				afterDOCTYPEPublicKeywordState();
 				break;
-			case BEFORE_DOCTYPE_PUBLIC_IDENTIFIER:
+			case BEFORE_DOCTYPE_PUBLIC_IDENTIFIER: // Section 8.2.4.57
 				beforeDOCTYPEPublicIdentifierState();
 				break;
-			case DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED:
+			case DOCTYPE_PUBLIC_IDENTIFIER_DOUBLE_QUOTED: // Section 8.2.4.58
 				DOCTYPEPublicIdentifierDoubleQuotedState();
 				break;
-			case DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED:
+			case DOCTYPE_PUBLIC_IDENTIFIER_SINGLE_QUOTED: // Section 8.2.4.59
 				DOCTYPEPublicIdentifierSingleQuotedState();
 				break;
-			case AFTER_DOCTYPE_PUBLIC_IDENTIFIER:
+			case AFTER_DOCTYPE_PUBLIC_IDENTIFIER: // Section 8.2.4.60
 				afterDOCTYPEPublicIdentifierState();
 				break;
-			case BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS:
+			case BETWEEN_DOCTYPE_PUBLIC_AND_SYSTEM_IDENTIFIERS: // Section 8.2.4.61
 				betweenDOCTYPEPublicAndSystemIdentifiersState();
 				break;
-			case AFTER_DOCTYPE_SYSTEM_KEYWORD:
+			case AFTER_DOCTYPE_SYSTEM_KEYWORD: // Section 8.2.4.62
 				afterDOCTYPESystemKeywordState();
 				break;
-			case BEFORE_DOCTYPE_SYSTEM_IDENTIFIER:
+			case BEFORE_DOCTYPE_SYSTEM_IDENTIFIER: // Section 8.2.4.63
 				beforeDOCTYPESystemIdentifierState();
 				break;
-			case DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED:
+			case DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED: // Section 8.2.4.64
 				DOCTYPESystemIdentifierDoubleQuotedState();
 				break;
-			case DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED:
+			case DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED: // Section 8.2.4.65
 				DOCTYPESystemIdentifierSingleQuotedState();
 				break;
-			case AFTER_DOCTYPE_SYSTEM_IDENTIFIER:
+			case AFTER_DOCTYPE_SYSTEM_IDENTIFIER: // Section 8.2.4.66
 				afterDOCTYPESystemIdentifierState();
 				break;
-			case BOGUS_DOCTYPE:
+			case BOGUS_DOCTYPE: // Section 8.2.4.67
 				bogusDOCTYPEState();
 				break;
-			case CDATA_SECTION:
+			case CDATA_SECTION: // Section 8.2.4.68
 				CDATASectionState();
 				break;
 			default:
