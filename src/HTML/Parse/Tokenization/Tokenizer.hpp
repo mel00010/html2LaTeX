@@ -169,7 +169,7 @@ class Tokenizer {
 		void emit(const CharacterToken& token);
 		void emit(const EOFToken& token);
 		void emit(const Token& token);
-		void emitParseError(const ParseError& error);
+		void emitParseError(const ParseError& error = ParseError::OTHER);
 		char32_t getCharacterAtPosition(const size_t& position);
 		std::u32string getCharactersAtPosition(const size_t& position, const size_t& number_of_chars);
 		bool isAppropriateEndTagToken();

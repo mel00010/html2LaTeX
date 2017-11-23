@@ -336,7 +336,7 @@ void Tokenizer::RCDATAEndTagNameState() {
 
 // Section 8.2.4.14
 void Tokenizer::RAWTEXTLessThanSignState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
 		case '/':
 			temporary_buffer = U"";
 			switchToState(RAWTEXT_END_TAG_OPEN);
@@ -421,7 +421,7 @@ void Tokenizer::RAWTEXTEndTagNameState() {
 
 // Section 8.2.4.17
 void Tokenizer::scriptDataLessThanSignState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
 		case '/':
 			temporary_buffer = U"";
 			switchToState(SCRIPT_DATA_END_TAG_OPEN);
@@ -511,7 +511,7 @@ void Tokenizer::scriptDataEndTagNameState() {
 
 // Section 8.2.4.20
 void Tokenizer::scriptDataEscapeStartState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_ESCAPE_START_DASH);
 			emit(CharacterToken('-'));
@@ -525,8 +525,14 @@ void Tokenizer::scriptDataEscapeStartState() {
 
 // Section 8.2.4.21
 void Tokenizer::scriptDataEscapeStartDashState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '-':
+			switchToState(SCRIPT_DATA_ESCAPED_DASH_DASH);
+			emit(CharacterToken('-'));
+			break;
 		default:
+			switchToState(SCRIPT_DATA);
+			unconsume();
 			break;
 	}
 }
@@ -534,7 +540,24 @@ void Tokenizer::scriptDataEscapeStartDashState() {
 // Section 8.2.4.22
 void Tokenizer::scriptDataEscapedState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(SCRIPT_DATA_ESCAPED_DASH);
+			emit(CharacterToken('-'));
+			break;
+		case '<':
+			switchToState(SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN);
+			break;
+		case '\0':
+			emitParseError();
+			emit(CharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			switchToState(DATA);
+			emitParseError();
+			unconsume();
+			break;
 		default:
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -542,7 +565,26 @@ void Tokenizer::scriptDataEscapedState() {
 // Section 8.2.4.23
 void Tokenizer::scriptDataEscapedDashState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(SCRIPT_DATA_ESCAPED_DASH_DASH);
+			emit(CharacterToken('-'));
+			break;
+		case '<':
+			switchToState(SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN);
+			break;
+		case '\0':
+			emitParseError();
+			switchToState(SCRIPT_DATA_ESCAPED);
+			emit(CharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			switchToState(SCRIPT_DATA_ESCAPED);
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -550,7 +592,29 @@ void Tokenizer::scriptDataEscapedDashState() {
 // Section 8.2.4.24
 void Tokenizer::scriptDataEscapedDashDashState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			emit(CharacterToken('-'));
+			break;
+		case '<':
+			switchToState(SCRIPT_DATA_ESCAPED_LESS_THAN_SIGN);
+			break;
+		case '>':
+			switchToState(SCRIPT_DATA);
+			emit(CharacterToken('>'));
+			break;
+		case '\0':
+			emitParseError();
+			switchToState(SCRIPT_DATA_ESCAPED);
+			emit(CharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			switchToState(SCRIPT_DATA_ESCAPED);
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -558,7 +622,28 @@ void Tokenizer::scriptDataEscapedDashDashState() {
 // Section 8.2.4.25
 void Tokenizer::scriptDataEscapedLessThanSignState() {
 	switch (char32_t buf = consume()) {
+		case '/':
+			temporary_buffer = U"";
+			switchToState(SCRIPT_DATA_ESCAPED_END_TAG_OPEN);
+			break;
+		case ASCII_UPPER_CASE_LETTER:
+			temporary_buffer = U"";
+			temporary_buffer.push_back(toLower(buf));
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPE_START);
+			emit(CharacterToken('<'));
+			emit(CharacterToken(buf));
+			break;
+		case ASCII_LOWER_CASE_LETTER:
+			temporary_buffer = U"";
+			temporary_buffer.push_back(buf);
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPE_START);
+			emit(CharacterToken('<'));
+			emit(CharacterToken(buf));
+			break;
 		default:
+			switchToState(SCRIPT_DATA_ESCAPED);
+			emit(CharacterToken('<'));
+			unconsume();
 			break;
 	}
 }
@@ -566,7 +651,23 @@ void Tokenizer::scriptDataEscapedLessThanSignState() {
 // Section 8.2.4.26
 void Tokenizer::scriptDataEscapedEndTagOpenState() {
 	switch (char32_t buf = consume()) {
+		case ASCII_UPPER_CASE_LETTER:
+			current_tag = EndTagToken();
+			current_tag.tag_name.push_back(toLower(buf));
+			temporary_buffer.push_back(buf);
+			switchToState(SCRIPT_DATA_ESCAPED_END_TAG_NAME);
+			break;
+		case ASCII_LOWER_CASE_LETTER:
+			current_tag = EndTagToken();
+			current_tag.tag_name.push_back(buf);
+			temporary_buffer.push_back(buf);
+			switchToState(SCRIPT_DATA_ESCAPED_END_TAG_NAME);
+			break;
 		default:
+			switchToState(SCRIPT_DATA_ESCAPED);
+			emit(CharacterToken('<'));
+			emit(CharacterToken('/'));
+			unconsume();
 			break;
 	}
 }
@@ -574,15 +675,76 @@ void Tokenizer::scriptDataEscapedEndTagOpenState() {
 // Section 8.2.4.27
 void Tokenizer::scriptDataEscapedEndTagNameState() {
 	switch (char32_t buf = consume()) {
-		default:
-			break;
-	}
+			case '\t':
+			case '\n':
+			case '\f':
+			case ' ':
+				if(!isAppropriateEndTagToken()) {
+					break; // Go to default case, which for brevity is outside the switch
+				}
+				switchToState(BEFORE_ATTRIBUTE_NAME);
+				return;
+			case '/':
+				if(!isAppropriateEndTagToken()) {
+					break; // Go to default case
+				}
+				switchToState(SELF_CLOSING_START_TAG);
+				return;
+			case '>':
+				if(!isAppropriateEndTagToken()) {
+					break; // Go to default case
+				}
+				switchToState(DATA);
+				emit(current_tag);
+				current_tag = TagToken();
+				return;
+			case ASCII_UPPER_CASE_LETTER:
+				current_tag.tag_name.push_back(toLower(buf));
+				temporary_buffer.push_back(buf);
+				return;
+			case ASCII_LOWER_CASE_LETTER:
+				current_tag.tag_name.push_back(buf);
+				temporary_buffer.push_back(buf);
+				return;
+			default:
+				break; // Go to default case
+		}
+		switchToState(SCRIPT_DATA_ESCAPED);
+		emit(CharacterToken('<'));
+		emit(CharacterToken('/'));
+		for(auto& i : temporary_buffer) {
+			emit(CharacterToken(i));
+		}
+		unconsume();
 }
 
 // Section 8.2.4.28
 void Tokenizer::scriptDataDoubleEscapeStartState() {
 	switch (char32_t buf = consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+		case '/':
+		case '>':
+			if(temporary_buffer == U"script") {
+				switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			} else {
+				switchToState(SCRIPT_DATA_ESCAPED);
+			}
+			emit(CharacterToken(buf));
+			break;
+		case ASCII_UPPER_CASE_LETTER:
+			temporary_buffer.push_back(toLower(buf));
+			emit(CharacterToken(buf));
+			break;
+		case ASCII_LOWER_CASE_LETTER:
+			temporary_buffer.push_back(buf);
+			emit(CharacterToken(buf));
+			break;
 		default:
+			switchToState(SCRIPT_DATA_ESCAPED);
+			unconsume();
 			break;
 	}
 }
@@ -590,7 +752,25 @@ void Tokenizer::scriptDataDoubleEscapeStartState() {
 // Section 8.2.4.29
 void Tokenizer::scriptDataDoubleEscapedState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_DASH);
+			emit(CharacterToken('-'));
+			break;
+		case '<':
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN);
+			emit(CharacterToken('<'));
+			break;
+		case '\0':
+			emitParseError();
+			emit(CharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			emit(CharacterToken(buf));
 			break;
 	}
 }
@@ -598,7 +778,27 @@ void Tokenizer::scriptDataDoubleEscapedState() {
 // Section 8.2.4.30
 void Tokenizer::scriptDataDoubleEscapedDashState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH);
+			emit(CharacterToken('-'));
+			break;
+		case '<':
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_LESS_THAN_SIGN);
+			emit(CharacterToken('<'));
+			break;
+		case '\0':
+			emitParseError();
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			emit(CharacterToken(U'\U0000FFFD'));
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED);
+			emit(CharacterToken(buf));
 			break;
 	}
 }

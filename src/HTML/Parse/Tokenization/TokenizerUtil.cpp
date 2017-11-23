@@ -62,10 +62,10 @@ void Tokenizer::emit(const TagToken& token) {
 			emit(static_cast<const EndTagToken&>(token));
 			break;
 		case TagToken::TagType::NONE:
-			emitParseError(ParseError::OTHER);
+			emitParseError();
 			break;
 		default:
-			emitParseError(ParseError::OTHER);
+			emitParseError();
 			break;
 	}
 }
