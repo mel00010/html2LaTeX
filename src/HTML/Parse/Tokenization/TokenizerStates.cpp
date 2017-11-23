@@ -155,7 +155,7 @@ void Tokenizer::plainTextState() {
 	}
 }
 
-// Section 8.2.4.9=8
+// Section 8.2.4.8
 void Tokenizer::tagOpenState() {
 	switch (char32_t buf = consume()) {
 		case '!':
