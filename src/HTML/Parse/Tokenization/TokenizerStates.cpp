@@ -24,7 +24,7 @@
 
 #include "TokenizationTypes.hpp"
 
-#include <list>
+#include <vector>
 
 #include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 
@@ -60,11 +60,11 @@ void Tokenizer::characterReferenceInDataState() {
 	switchToState(DATA);
 	switch(consumeCharacterReference()) {
 		case 2:
-			emitFromStack(token_stack);
-			emitFromStack(token_stack);
+			emit(pop(char_tokens));
+			emit(pop(char_tokens));
 			break;
 		case 1:
-			emitFromStack(token_stack);
+			emit(pop(char_tokens));
 			break;
 		case 0:
 			emit(CharacterToken('&'));
@@ -98,12 +98,12 @@ void Tokenizer::characterReferenceINRCDATAState() {
 	switchToState(RCDATA);
 	switch(consumeCharacterReference()) {
 		case 2: {
-			emitFromStack(token_stack);
-			emitFromStack(token_stack);
+			emit(pop(char_tokens));
+			emit(pop(char_tokens));
 			break;
 		}
 		case 1: {
-			emitFromStack(token_stack);
+			emit(pop(char_tokens));
 			break;
 		}
 		case 0: {
@@ -1165,48 +1165,142 @@ void Tokenizer::attributeValueUnquotedState() {
 
 // Section 8.2.4.41
 void Tokenizer::characterReferenceInAttributeValueState() {
-	switch (char32_t buf = consume()) {
-		default:
+	switch(consumeCharacterReference()) {
+		case 2: {
+			current_attribute.value.push_back(pop(char_tokens).data);
+			current_attribute.value.push_back(pop(char_tokens).data);
 			break;
+		}
+		case 1: {
+			current_attribute.value.push_back(pop(char_tokens).data);
+			break;
+		}
+		case 0: {
+			current_attribute.value.push_back('&');
+			break;
+		}
 	}
+
 }
 
 // Section 8.2.4.42
 void Tokenizer::afterAttributeQuotedState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			switchToState(BEFORE_ATTRIBUTE_NAME);
+			break;
+		case '/':
+			switchToState(SELF_CLOSING_START_TAG);
+			break;
+		case '>':
+			emit(current_tag);
+			switchToState(DATA);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			emitParseError();
+			switchToState(BEFORE_ATTRIBUTE_NAME);
+			unconsume();
 			break;
 	}
 }
 
 // Section 8.2.4.43
 void Tokenizer::selfClosingStartTagState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '>':
+			current_tag.self_closing = true;
+			switchToState(DATA);
+			emit(current_tag);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			unconsume();
+			break;
 		default:
+			emitParseError();
+			switchToState(BEFORE_ATTRIBUTE_NAME);
+			unconsume();
 			break;
 	}
 }
 
 // Section 8.2.4.44
 void Tokenizer::bogusCommentState() {
-	switch (char32_t buf = consume()) {
-		default:
-			break;
+	current_comment_token = CommentToken();
+	while(char32_t buf = consume()) {
+		switch(buf) {
+			case '>':
+				emit(current_comment_token);
+				switchToState(DATA);
+				return;
+			case EOF32:
+				emit(current_comment_token);
+				switchToState(DATA);
+				unconsume();
+				return;
+			case '\0':
+				current_comment_token.data.push_back(U'\U0000FFFD');
+				break;
+			default:
+				current_comment_token.data.push_back(buf);
+				break;
+		}
 	}
 }
 
 // Section 8.2.4.45
 void Tokenizer::markupDeclarationOpenState() {
-	switch (char32_t buf = consume()) {
-		default:
-			break;
+	if(peek(2) == U"--") {
+		consume(2);
+		current_comment_token = CommentToken();
+		switchToState(COMMENT_START);
+	} else if (caseInsensitiveMatch(peek(7), U"DOCTYPE")) {
+		consume(7);
+		switchToState(DOCTYPE);
+	} else if (isAdjustedCurrentNode() && !currentNodeInHTMLNamespace() && peek(7) == U"[CDATA[") {
+		//TODO Replace dummy status functions that need the parse stage with real ones
+		consume(7);
+		switchToState(CDATA_SECTION);
+	} else {
+		emitParseError();
+		switchToState(BOGUS_COMMENT);
 	}
 }
 
 // Section 8.2.4.46
 void Tokenizer::commentStartState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(COMMENT_START_DASH);
+			break;
+		case '\0':
+			emitParseError();
+			current_comment_token.data.push_back(U'\U0000FFFD');
+			switchToState(COMMENT);
+			break;
+		case '>':
+			emitParseError();
+			switchToState(DATA);
+			emit(current_comment_token);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			emit(current_comment_token);
+			unconsume();
+			break;
 		default:
+			current_comment_token.data.push_back(buf);
+			switchToState(COMMENT);
 			break;
 	}
 }
@@ -1214,7 +1308,30 @@ void Tokenizer::commentStartState() {
 // Section 8.2.4.47
 void Tokenizer::commentStartDashState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(COMMENT_END);
+			break;
+		case '\0':
+			emitParseError();
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back(U'\U0000FFFD');
+			switchToState(COMMENT);
+			break;
+		case '>':
+			emitParseError();
+			switchToState(DATA);
+			emit(current_comment_token);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			emit(current_comment_token);
+			unconsume();
+			break;
 		default:
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back(buf);
+			switchToState(COMMENT);
 			break;
 	}
 }
@@ -1222,7 +1339,20 @@ void Tokenizer::commentStartDashState() {
 // Section 8.2.4.48
 void Tokenizer::commentState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(COMMENT_END_DASH);
+			break;
+		case '\0':
+			emitParseError();
+			current_comment_token.data.push_back(U'\U0000FFFD');
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			emit(current_comment_token);
+			break;
 		default:
+			current_comment_token.data.push_back(buf);
 			break;
 	}
 }
@@ -1230,7 +1360,25 @@ void Tokenizer::commentState() {
 // Section 8.2.4.49
 void Tokenizer::commentEndDashState() {
 	switch (char32_t buf = consume()) {
+		case '-':
+			switchToState(COMMENT_END);
+			break;
+		case '\0':
+			emitParseError();
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back(U'\U0000FFFD');
+			switchToState(COMMENT);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			emit(current_comment_token);
+			unconsume();
+			break;
 		default:
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back(buf);
+			switchToState(COMMENT);
 			break;
 	}
 }
@@ -1238,7 +1386,37 @@ void Tokenizer::commentEndDashState() {
 // Section 8.2.4.50
 void Tokenizer::commentEndState() {
 	switch (char32_t buf = consume()) {
+		case '>':
+			switchToState(DATA);
+			emit(current_comment_token);
+			break;
+		case '\0':
+			emitParseError();
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back(U'\U0000FFFD');
+			switchToState(COMMENT);
+			break;
+		case '!':
+			emitParseError();
+			switchToState(COMMENT_END_BANG);
+			break;
+		case '-':
+			emitParseError();
+			current_comment_token.data.push_back('-');
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			emit(current_comment_token);
+			unconsume();
+			break;
 		default:
+			emitParseError();
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back('-');
+			current_comment_token.data.push_back(buf);
+			switchToState(COMMENT);
 			break;
 	}
 }

@@ -29,14 +29,11 @@ namespace Tokenization {
 
 
 char32_t Tokenizer::consume() {
-	return getCharacterAtPosition(pos++);
-}
-char32_t Tokenizer::consume(size_t& consume_counter) {
 	consume_counter++;
 	return getCharacterAtPosition(pos++);
 }
 
-std::u32string Tokenizer::consume(const size_t& number_of_chars, size_t& consume_counter) {
+std::u32string Tokenizer::consume(const size_t& number_of_chars) {
 	std::u32string buffer = getCharactersAtPosition(pos, number_of_chars);
 	pos += buffer.length();
 	consume_counter += buffer.length();
@@ -126,6 +123,15 @@ bool Tokenizer::isAttributeNameUnique() {
 	}
 	discard_current_attribute = false;
 	return true;
+}
+bool Tokenizer::isAdjustedCurrentNode() {
+	//TODO Finish function.  See section 8.2.3.2 in the HTML5 spec
+	return false;
+}
+
+bool Tokenizer::currentNodeInHTMLNamespace() {
+	//TODO Finish function.  See section 8.2.3.2 in the HTML5 spec
+	return false;
 }
 
 char32_t Tokenizer::peek() {

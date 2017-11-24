@@ -20,7 +20,7 @@
 
 #include <gtest/gtest.h>
 
-#include <list>
+#include <vector>
 #include <string>
 
 #include <HTML/Parse/Tokenization/Tokenizer.hpp>
@@ -30,7 +30,7 @@
 	{ \
 		Tokenizer tokenizer(test_string, 1, DATA); \
 		EXPECT_EQ(0u, tokenizer.consumeCharacterReference()); \
-		EXPECT_TRUE(tokenizer.get_token_stack().empty()); \
+		EXPECT_TRUE(tokenizer.getCharTokenStack().empty()); \
 		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 
@@ -38,8 +38,8 @@
 	{ \
 		Tokenizer tokenizer(test_string, 1, DATA); \
 		EXPECT_EQ(1u, tokenizer.consumeCharacterReference()); \
-		EXPECT_EQ(Token(CharacterToken((char32_t) first_character)), tokenizer.get_token_stack().top()); tokenizer.get_token_stack().pop(); \
-		EXPECT_TRUE(tokenizer.get_token_stack().empty()); \
+		EXPECT_EQ((char32_t) first_character, tokenizer.pop(tokenizer.getCharTokenStack()).data); \
+		EXPECT_TRUE(tokenizer.getCharTokenStack().empty()); \
 		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 
@@ -48,9 +48,9 @@
 		Tokenizer tokenizer(test_string, 1, DATA); \
 		std::stack<Token> token_stack; \
 		EXPECT_EQ(2u, tokenizer.consumeCharacterReference()); \
-		EXPECT_EQ(Token(CharacterToken((char32_t) first_character)), tokenizer.get_token_stack().top()); tokenizer.get_token_stack().pop(); \
-		EXPECT_EQ(Token(CharacterToken((char32_t) second_character)), tokenizer.get_token_stack().top()); tokenizer.get_token_stack().pop(); \
-		EXPECT_TRUE(tokenizer.get_token_stack().empty()); \
+		EXPECT_EQ((char32_t) first_character, tokenizer.pop(tokenizer.getCharTokenStack()).data); \
+		EXPECT_EQ((char32_t) second_character, tokenizer.pop(tokenizer.getCharTokenStack()).data); \
+		EXPECT_TRUE(tokenizer.getCharTokenStack().empty()); \
 		EXPECT_EQ(expected_position, (long) tokenizer.pos); \
 	}
 

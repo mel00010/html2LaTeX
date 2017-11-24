@@ -72,14 +72,13 @@ size_t Tokenizer::consumeCharacterReference() {
 }
 
 size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
-	size_t chars_consumed = 0;
-
-	consume(chars_consumed);
+	consume_counter = 0;
+	consume();
 
 	bool (*isDigit)(const char32_t&) = &Microsyntaxes::ASCII::isASCIIDigit;
 	uint32_t (*parseInteger)(const std::u32string&) = &Microsyntaxes::Numbers::parseNonNegativeInteger;
 	if (peek() == 'x' || peek() == 'X') {
-		consume(chars_consumed);
+		consume();
 		isDigit = &Microsyntaxes::ASCII::isASCIIHex;
 		parseInteger = &Microsyntaxes::Numbers::parseNonNegativeHexInteger;
 
@@ -87,16 +86,16 @@ size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 
 	std::u32string digits = U"";
 	while (isDigit(peek())) {
-		digits += consume(chars_consumed);
+		digits += consume();
 	}
 	if (digits.empty()) {
-		unconsume(chars_consumed);
+		unconsume(consume_counter);
 		return 0;
 	}
 	uint32_t id = parseInteger(digits);
 
 	if (peek() == ';') {
-		consume(chars_consumed);
+		consume();
 	}
 
 	static constexpr std::pair<const uint32_t, const char32_t> conversionArray[] = {
@@ -131,13 +130,13 @@ size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 	};
 	for (auto i : conversionArray) {
 		if (id == i.first) {
-			token_stack.push(Token(CharacterToken(i.second)));
+			char_tokens.push(CharacterToken(i.second));
 			return 1;
 		}
 	}
 
 	if (id > 0x10FFFF || (0xD800 <= id && id <= 0xDFFF)) {
-		token_stack.push(Token(CharacterToken(U'\U0000FFFD')));
+		char_tokens.push(CharacterToken(U'\U0000FFFD'));
 		return 1;
 	}
 
@@ -187,23 +186,23 @@ size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 		}
 	}
 
-	token_stack.push(Token(CharacterToken(id)));
+	char_tokens.push(CharacterToken(id));
 	return 1;
 }
 
 size_t Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
-	size_t chars_consumed = 0;
+	consume_counter = 0;
 	std::u32string characters = peek(std::u32string(std::get<0>(characterReferences.front())).length());
 	for (auto i : characterReferences) {
 		if (characters.find(std::u32string(std::get<0>(i))) == 0) {
-			consume(std::u32string(std::get<0>(i)).length(), chars_consumed);
+			consume(std::u32string(std::get<0>(i)).length());
 
 			if (std::get<2>(i) != EOF32) {
-				token_stack.push(Token(CharacterToken(std::get<2>(i))));
-				token_stack.push(Token(CharacterToken((std::get<1>(i)))));
+				char_tokens.push(CharacterToken(std::get<2>(i)));
+				char_tokens.push(CharacterToken((std::get<1>(i))));
 				return 2;
 			}
-			token_stack.push(Token(CharacterToken((std::get<1>(i)))));
+			char_tokens.push(CharacterToken((std::get<1>(i))));
 			return 1;
 		}
 	}

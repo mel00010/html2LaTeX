@@ -123,9 +123,10 @@ class Tokenizer {
 		void tokenize();
 
 	public:
-		inline std::stack<Token>& get_token_stack() {
-			return token_stack;
+		inline std::stack<CharacterToken>& getCharTokenStack() {
+			return char_tokens;
 		}
+
 		/* Implemented in ConsumeCharacterReference.cpp */
 	public:
 		/**
@@ -152,8 +153,7 @@ class Tokenizer {
 	private:
 		bool atEOF();
 		char32_t consume();
-		char32_t consume(size_t& consume_counter);
-		std::u32string consume(const size_t& number_of_chars, size_t& consume_counter);
+		std::u32string consume(const size_t& number_of_chars);
 		void emit(const DOCTYPEToken& token);
 		void emit(const StartTagToken& token);
 		void emit(const EndTagToken& token);
@@ -167,6 +167,8 @@ class Tokenizer {
 		std::u32string getCharactersAtPosition(const size_t& position, const size_t& number_of_chars);
 		bool isAppropriateEndTagToken();
 		bool isAttributeNameUnique();
+		bool isAdjustedCurrentNode();
+		bool currentNodeInHTMLNamespace();
 		char32_t peek();
 		std::u32string peek(const size_t& number_of_chars);
 		char32_t reconsume();
@@ -175,12 +177,15 @@ class Tokenizer {
 		void unconsume(const size_t& number_of_chars);
 
 
-	private:
+	public:
 		template<class T>
-		void emitFromStack(std::stack<T> stack) {
-			emit(stack.top());
+		T pop(std::stack<T> stack) {
+			T copy = stack.top();
 			stack.pop();
+			return copy;
 		}
+
+
 
 		/* Implemented in TokenizerStates.cpp */
 	private:
@@ -264,16 +269,19 @@ class Tokenizer {
 		size_t script_nesting_level;
 
 		TagToken current_tag;
+		CommentToken current_comment_token;
 		Attribute current_attribute;
 
 		std::u32string temporary_buffer;
 
-		std::stack<Token> token_stack;
+		std::stack<CharacterToken> char_tokens;
 		std::stack<char32_t> char_stack;
 		StartTagToken last_start_tag_token_emitted;
 
 		char32_t additional_allowed_character = NO_CHARACTER;
 		bool discard_current_attribute = false;
+
+		size_t consume_counter = 0;
 };
 
 /* Implemented in TokenizerUtil.cpp */
