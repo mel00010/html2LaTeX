@@ -268,20 +268,21 @@ class Tokenizer {
 		bool parser_pause_flag;
 		size_t script_nesting_level;
 
-		TagToken current_tag;
-		CommentToken current_comment_token;
-		Attribute current_attribute;
+		TagToken tag;
+		CommentToken comment;
+		Attribute attribute;
+		DOCTYPEToken doctype;
 
 		std::u32string temporary_buffer;
 
 		std::stack<CharacterToken> char_tokens;
 		std::stack<char32_t> char_stack;
-		StartTagToken last_start_tag_token_emitted;
+		StartTagToken prev_start_tag;
 
 		char32_t additional_allowed_character = NO_CHARACTER;
-		bool discard_current_attribute = false;
+		bool discard_attribute = false;
 
-		size_t consume_counter = 0;
+		size_t chars_consumed = 0;
 };
 
 /* Implemented in TokenizerUtil.cpp */

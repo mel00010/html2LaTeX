@@ -29,14 +29,14 @@ namespace Tokenization {
 
 
 char32_t Tokenizer::consume() {
-	consume_counter++;
+	chars_consumed++;
 	return getCharacterAtPosition(pos++);
 }
 
 std::u32string Tokenizer::consume(const size_t& number_of_chars) {
 	std::u32string buffer = getCharactersAtPosition(pos, number_of_chars);
 	pos += buffer.length();
-	consume_counter += buffer.length();
+	chars_consumed += buffer.length();
 	return buffer;
 }
 
@@ -44,7 +44,7 @@ void Tokenizer::emit(const DOCTYPEToken& token) {
 	TreeConstruction::dispatch(Token(token));
 }
 void Tokenizer::emit(const StartTagToken& token) {
-	last_start_tag_token_emitted = token;
+	prev_start_tag = token;
 	TreeConstruction::dispatch(Token(token));
 }
 void Tokenizer::emit(const EndTagToken& token) {
@@ -52,8 +52,8 @@ void Tokenizer::emit(const EndTagToken& token) {
 }
 void Tokenizer::emit(const TagToken& token) {
 	TagToken buf = token;
-	if(current_attribute != Attribute() && !discard_current_attribute) {
-		buf.attributes.push_back(current_attribute);
+	if(attribute != Attribute() && !discard_attribute) {
+		buf.attributes.push_back(attribute);
 	}
 	switch(token.type) {
 		case TagToken::TagType::START:
@@ -106,22 +106,22 @@ std::u32string Tokenizer::getCharactersAtPosition(const size_t& position, const 
 }
 
 bool Tokenizer::isAppropriateEndTagToken() {
-	if(current_tag.type != TagToken::TagType::END) {
+	if(tag.type != TagToken::TagType::END) {
 		return false;
 	}
-	if(last_start_tag_token_emitted.tag_name != current_tag.tag_name) {
+	if(prev_start_tag.tag_name != tag.tag_name) {
 		return false;
 	}
 	return true;
 }
 bool Tokenizer::isAttributeNameUnique() {
-	for(const auto& i : current_tag.attributes) {
-		if(current_attribute == i.name) {
-			discard_current_attribute = true;
+	for(const auto& i : tag.attributes) {
+		if(attribute == i.name) {
+			discard_attribute = true;
 			return false;
 		}
 	}
-	discard_current_attribute = false;
+	discard_attribute = false;
 	return true;
 }
 bool Tokenizer::isAdjustedCurrentNode() {

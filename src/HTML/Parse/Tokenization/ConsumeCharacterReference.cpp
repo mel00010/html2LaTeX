@@ -72,7 +72,7 @@ size_t Tokenizer::consumeCharacterReference() {
 }
 
 size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
-	consume_counter = 0;
+	chars_consumed = 0;
 	consume();
 
 	bool (*isDigit)(const char32_t&) = &Microsyntaxes::ASCII::isASCIIDigit;
@@ -89,7 +89,7 @@ size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 		digits += consume();
 	}
 	if (digits.empty()) {
-		unconsume(consume_counter);
+		unconsume(chars_consumed);
 		return 0;
 	}
 	uint32_t id = parseInteger(digits);
@@ -191,7 +191,7 @@ size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 }
 
 size_t Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
-	consume_counter = 0;
+	chars_consumed = 0;
 	std::u32string characters = peek(std::u32string(std::get<0>(characterReferences.front())).length());
 	for (auto i : characterReferences) {
 		if (characters.find(std::u32string(std::get<0>(i))) == 0) {
