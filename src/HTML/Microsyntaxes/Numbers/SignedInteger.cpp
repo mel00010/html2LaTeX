@@ -32,7 +32,7 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-bool isInteger(const std::string& string) {
+bool isInteger(const std::u32string& string) {
 	if (string.empty()) {
 		return false;
 	}
@@ -44,7 +44,7 @@ bool isInteger(const std::string& string) {
 	return false;
 }
 
-int parseInteger(const std::string& string) {
+int parseInteger(const std::u32string& string) {
 	int accumulated = 0;
 	bool positive = true;
 	bool started = false;

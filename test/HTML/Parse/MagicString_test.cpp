@@ -39,9 +39,9 @@ namespace MagicString_Test {
 TEST(HTML_Parse_MagicString, MetaTag) {
 	HTML::Parse::MagicString::MetaTag MetaTag;
 
-	const HTML::Parse::Byte equal[6] = { 0x3C, 0x4D, 0x65, 0x54, 0x61, 0x0C };
-	const HTML::Parse::Byte almostEqual[6] = { 0x3C, 0x4D, 0x65, 0x53, 0x61, 0x0C };
-	const HTML::Parse::Byte notEqual[6] = { 0x09, 0x0A, 0x0C, 0x0D, 0x20, 0x2F };
+	const HTML::Parse::Byte equal[6] = { '\x3C', '\x4D', '\x65', '\x54', '\x61', '\x0C' };
+	const HTML::Parse::Byte almostEqual[6] = { '\x3C', '\x4D', '\x65', '\x53', '\x61', '\x0C' };
+	const HTML::Parse::Byte notEqual[6] = { '\x09', '\x0A', '\x0C', '\x0D', '\x20', '\x2F' };
 
 	EXPECT_EQ(MetaTag, equal);
 	EXPECT_NE(MetaTag, almostEqual);
@@ -52,9 +52,9 @@ TEST(HTML_Parse_MagicString, MetaTag) {
 TEST(HTML_Parse_MagicString, ASCIITag) {
 	HTML::Parse::MagicString::ASCIITag ASCIITag;
 
-	const HTML::Parse::Byte equal[2] = { 0x3C, 0x5A };
-	const HTML::Parse::Byte almostEqual[2] = { 0x3C, 0x8A };
-	const HTML::Parse::Byte notEqual[2] = { 0x24, 0x8A };
+	const HTML::Parse::Byte equal[2] = { '\x3C', '\x5A' };
+	const HTML::Parse::Byte almostEqual[2] = { '\x3C', '\x8A' };
+	const HTML::Parse::Byte notEqual[2] = { '\x24', '\x8A' };
 
 	EXPECT_EQ(ASCIITag, equal);
 	EXPECT_NE(ASCIITag, almostEqual);
@@ -66,9 +66,9 @@ TEST(HTML_Parse_MagicString, ASCIITag) {
 TEST(HTML_Parse_MagicString, ASCIIEndTag) {
 	HTML::Parse::MagicString::ASCIIEndTag ASCIIEndTag;
 
-	const HTML::Parse::Byte equal[3] = { 0x3C, 0x4D, 0x5A };
-	const HTML::Parse::Byte almostEqual[3] = { 0x3C, 0x4D, 0x8A };
-	const HTML::Parse::Byte notEqual[3] = { 0x24, 0x40, 0x8A };
+	const HTML::Parse::Byte equal[3] = { '\x3C', '\x4D', '\x5A' };
+	const HTML::Parse::Byte almostEqual[3] = { '\x3C', '\x4D', '\x8A' };
+	const HTML::Parse::Byte notEqual[3] = { '\x24', '\x40', '\x8A' };
 	EXPECT_EQ(ASCIIEndTag, equal);
 	EXPECT_NE(ASCIIEndTag, almostEqual);
 	EXPECT_NE(ASCIIEndTag, notEqual);
@@ -79,11 +79,11 @@ TEST(HTML_Parse_MagicString, ASCIIEndTag) {
 TEST(HTML_Parse_MagicString, PunctuationTag) {
 	HTML::Parse::MagicString::PunctuationTag PunctuationTag;
 
-	const HTML::Parse::Byte exclamationPointEqual[2] = { 0x3C, 0x21 };
-	const HTML::Parse::Byte forwardSlashEqual[2] = { 0x3C, 0x2F };
-	const HTML::Parse::Byte questionMarkEqual[2] = { 0x3C, 0x3F };
-	const HTML::Parse::Byte almostEqual[2] = { 0x3C, 0x20 };
-	const HTML::Parse::Byte notEqual[2] = { 0x24, 0x20 };
+	const HTML::Parse::Byte exclamationPointEqual[2] = { '\x3C', '\x21' };
+	const HTML::Parse::Byte forwardSlashEqual[2] = { '\x3C', '\x2F' };
+	const HTML::Parse::Byte questionMarkEqual[2] = { '\x3C', '\x3F' };
+	const HTML::Parse::Byte almostEqual[2] = { '\x3C', '\x20' };
+	const HTML::Parse::Byte notEqual[2] = { '\x24', '\x20' };
 
 	EXPECT_EQ(PunctuationTag, exclamationPointEqual);
 	EXPECT_EQ(PunctuationTag, forwardSlashEqual);

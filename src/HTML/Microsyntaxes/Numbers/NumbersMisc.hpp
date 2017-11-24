@@ -20,6 +20,8 @@
 #ifndef HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_
 #define HTML_MICROSYNTAXES_NUMBERS_NUMBERSMISC_HPP_
 
+#include <cstdint>
+
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
@@ -27,12 +29,14 @@ namespace Numbers {
 /**
  * @brief Converts an ASCII digit to its numerical equivalent.
  * @param digit Digit to convert
- * @return Returns an unsigned int with a value in the range 0 to 9.
+ * @return Returns an uint8_t with a value in the range 0 to 9.
  * @exception parseException @c digit was not an ASCII digit
  *
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_NumbersMisc, ASCIIDigitToInt)
  */
-unsigned int ASCIIDigitToInt(const char& digit);
+uint8_t ASCIIDigitToInt(const char32_t& digit);
+
+uint8_t ASCIIHexDigitToInt(const char32_t& digit);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

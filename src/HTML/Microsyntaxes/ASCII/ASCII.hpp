@@ -25,10 +25,73 @@
 
 namespace HTML {
 namespace Microsyntaxes {
+
+#define EOF32 ((char32_t) 0xFFFFFFFF)
+#define EOF16 ((char16_t) 0xFFFF)
+#define EOF8  ((char) 0xFF)
+
 /**
  * @brief Holds functions related to parsing and manipulating ASCII text.
  */
 namespace ASCII {
+/**
+ * @brief An array containing all of the ASCII letters
+ * @showinitializer
+ */
+constexpr char32_t ASCIILettersUTF32[52] = {
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'H',
+		'I',
+		'J',
+		'K',
+		'L',
+		'M',
+		'N',
+		'O',
+		'P',
+		'Q',
+		'R',
+		'S',
+		'T',
+		'U',
+		'V',
+		'W',
+		'X',
+		'Y',
+		'Z',
+		'a',
+		'b',
+		'c',
+		'd',
+		'e',
+		'f',
+		'g',
+		'h',
+		'i',
+		'j',
+		'k',
+		'l',
+		'm',
+		'n',
+		'o',
+		'p',
+		'q',
+		'r',
+		's',
+		't',
+		'u',
+		'v',
+		'w',
+		'x',
+		'y',
+		'z'
+};
 /**
  * @brief An array containing all of the ASCII letters
  * @showinitializer
@@ -89,6 +152,79 @@ constexpr char ASCIILetters[52] = {
 };
 
 /**
+ * Expands to a sequence of case statements from A to Z, for use in a switch statement.
+ *
+ * Example usage:
+ * switch(a) {
+ * 		// Beginning of switch block
+ * 		case ASCII_UPPER_CASE_LETTER:
+ * 			break;
+ * 		// Rest of switch block
+ * }
+ */
+#define ASCII_UPPER_CASE_LETTER \
+	'A':                        \
+	case 'B':                   \
+	case 'C':                   \
+	case 'D':                   \
+	case 'E':                   \
+	case 'F':                   \
+	case 'G':                   \
+	case 'H':                   \
+	case 'I':                   \
+	case 'J':                   \
+	case 'K':                   \
+	case 'L':                   \
+	case 'M':                   \
+	case 'N':                   \
+	case 'O':                   \
+	case 'P':                   \
+	case 'Q':                   \
+	case 'R':                   \
+	case 'S':                   \
+	case 'T':                   \
+	case 'U':                   \
+	case 'V':                   \
+	case 'W':                   \
+	case 'X':                   \
+	case 'Y':                   \
+	case 'Z'
+
+
+/**
+ * @brief An array containing all of the ASCII upper case letters
+ * @showinitializer
+ */
+constexpr char32_t ASCIIUpperUTF32[26] = {
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'H',
+		'I',
+		'J',
+		'K',
+		'L',
+		'M',
+		'N',
+		'O',
+		'P',
+		'Q',
+		'R',
+		'S',
+		'T',
+		'U',
+		'V',
+		'W',
+		'X',
+		'Y',
+		'Z'
+};
+
+/**
  * @brief An array containing all of the ASCII upper case letters
  * @showinitializer
  */
@@ -122,6 +258,78 @@ constexpr char ASCIIUpper[26] = {
 };
 
 /**
+ * Expands to a sequence of case statements from a to z, for use in a switch statement.
+ *
+ * Example usage:
+ * switch(a) {
+ * 		// Beginning of switch block
+ * 		case ASCII_LOWER_CASE_LETTER:
+ * 			break;
+ * 		// Rest of switch block
+ * }
+ */
+#define ASCII_LOWER_CASE_LETTER \
+	'a':                        \
+	case 'b':                   \
+	case 'c':                   \
+	case 'd':                   \
+	case 'e':                   \
+	case 'f':                   \
+	case 'g':                   \
+	case 'h':                   \
+	case 'i':                   \
+	case 'j':                   \
+	case 'k':                   \
+	case 'l':                   \
+	case 'm':                   \
+	case 'n':                   \
+	case 'o':                   \
+	case 'p':                   \
+	case 'q':                   \
+	case 'r':                   \
+	case 's':                   \
+	case 't':                   \
+	case 'u':                   \
+	case 'v':                   \
+	case 'w':                   \
+	case 'x':                   \
+	case 'y':                   \
+	case 'z'
+
+/**
+ * @brief An array containing all of the ASCII lower case letters
+ * @showinitializer
+ */
+constexpr char32_t ASCIILowerUTF32[26] = {
+		'a',
+		'b',
+		'c',
+		'd',
+		'e',
+		'f',
+		'g',
+		'h',
+		'i',
+		'j',
+		'k',
+		'l',
+		'm',
+		'n',
+		'o',
+		'p',
+		'q',
+		'r',
+		's',
+		't',
+		'u',
+		'v',
+		'w',
+		'x',
+		'y',
+		'z'
+};
+
+/**
  * @brief An array containing all of the ASCII lower case letters
  * @showinitializer
  */
@@ -152,6 +360,75 @@ constexpr char ASCIILower[26] = {
 		'x',
 		'y',
 		'z'
+};
+
+/**
+ * @brief An array containing all of the ASCII upper case, lower case, and numeric characters
+ * @showinitializer
+ */
+constexpr char32_t ASCIIAlphanumericUTF32[62] = {
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'H',
+		'I',
+		'J',
+		'K',
+		'L',
+		'M',
+		'N',
+		'O',
+		'P',
+		'Q',
+		'R',
+		'S',
+		'T',
+		'U',
+		'V',
+		'W',
+		'X',
+		'Y',
+		'Z',
+		'a',
+		'b',
+		'c',
+		'd',
+		'e',
+		'f',
+		'g',
+		'h',
+		'i',
+		'j',
+		'k',
+		'l',
+		'm',
+		'n',
+		'o',
+		'p',
+		'q',
+		'r',
+		's',
+		't',
+		'u',
+		'v',
+		'w',
+		'x',
+		'y',
+		'z',
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9'
 };
 
 /**
@@ -227,6 +504,35 @@ constexpr char ASCIIAlphanumeric[62] = {
  * @brief An array containing all of the ASCII numerals and the upper and lower case letters A through F
  * @showinitializer
  */
+constexpr char32_t ASCIIHexUTF32[22] = {
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F',
+		'a',
+		'b',
+		'c',
+		'd',
+		'e',
+		'f'
+};
+
+/**
+ * @brief An array containing all of the ASCII numerals and the upper and lower case letters A through F
+ * @showinitializer
+ */
 constexpr char ASCIIHex[22] = {
 		'0',
 		'1',
@@ -256,6 +562,29 @@ constexpr char ASCIIHex[22] = {
  * @brief An array containing all of the ASCII numerals and the uppercase letters A through F
  * @showinitializer
  */
+constexpr char32_t ASCIIHexUpperUTF32[16] = {
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F'
+};
+
+/**
+ * @brief An array containing all of the ASCII numerals and the uppercase letters A through F
+ * @showinitializer
+ */
 constexpr char ASCIIHexUpper[16] = {
 		'0',
 		'1',
@@ -273,6 +602,30 @@ constexpr char ASCIIHexUpper[16] = {
 		'D',
 		'E',
 		'F'
+};
+
+/**
+ * @brief An array containing all of the ASCII numerals and the lowercase letters A through F
+ * @showinitializer
+ */
+constexpr char32_t ASCIIHexLowerUTF32[16] = {
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		'a',
+		'b',
+		'c',
+		'd',
+		'e',
+		'f'
+
 };
 
 /**
@@ -297,6 +650,79 @@ constexpr char ASCIIHexLower[16] = {
 		'e',
 		'f'
 
+};
+
+/**
+ * @brief An array holding all of the ASCII characters that are not alphanumeric.
+ * @showinitializer
+ */
+constexpr char32_t ASCIINonAlphanumericUTF32[66] = {
+		'\x00',
+		'\x01',
+		'\x02',
+		'\x03',
+		'\x04',
+		'\x05',
+		'\x06',
+		'\a',
+		'\b',
+		'\t',
+		'\n',
+		'\v',
+		'\f',
+		'\r',
+		'\x0E',
+		'\x0F',
+		'\x10',
+		'\x11',
+		'\x12',
+		'\x13',
+		'\x14',
+		'\x15',
+		'\x16',
+		'\x17',
+		'\x18',
+		'\x19',
+		'\x1A',
+		'\x1B',
+		'\x1C',
+		'\x1D',
+		'\x1E',
+		'\x1F',
+		' ',
+		'!',
+		'"',
+		'#',
+		'$',
+		'%',
+		'&',
+		'\'',
+		'(',
+		')',
+		'*',
+		'+',
+		',',
+		'-',
+		'.',
+		'/',
+		':',
+		';',
+		'<',
+		'=',
+		'>',
+		'?',
+		'@',
+		'[',
+		'\\',
+		']',
+		'^',
+		'_',
+		'`',
+		'{',
+		'|',
+		'}',
+		'~',
+		'\x7F'
 };
 
 /**
@@ -371,11 +797,52 @@ constexpr char ASCIINonAlphanumeric[66] = {
 		'~',
 		'\x7F'
 };
+
 /**
  * @brief An array containing all of the ASCII numerals
  * @showinitializer
  */
-constexpr char ASCIIDigit[10] = {
+constexpr char32_t ASCIIDigitsUTF32[10] = {
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9'
+};
+
+/**
+ * Expands to a sequence of case statements from 0 to 9, for use in a switch statement.
+ *
+ * Example usage:
+ * switch(a) {
+ * 		// Beginning of switch block
+ * 		case ASCII_DIGIT:
+ * 			break;
+ * 		// Rest of switch block
+ * }
+ */
+#define ASCII_DIGIT \
+	'0':            \
+	case '1':       \
+	case '2':       \
+	case '3':       \
+	case '4':       \
+	case '5':       \
+	case '6':       \
+	case '7':       \
+	case '8':       \
+	case '9'
+
+/**
+ * @brief An array containing all of the ASCII numerals
+ * @showinitializer
+ */
+constexpr char ASCIIDigits[10] = {
 		'0',
 		'1',
 		'2',
@@ -394,12 +861,158 @@ constexpr char ASCIIDigit[10] = {
  * The space characters are U+0020 SPACE, "tab" (U+0009), "LF" (U+000A), "FF" (U+000C), and "CR" (U+000D).
  * @showinitializer
  */
+constexpr char32_t ASCIIWhitespaceUTF32[5] = {
+		' ',
+		'\t',
+		'\n',
+		'\f',
+		'\r'
+};
+
+/**
+ * @brief An array containing all of the space characters
+ *
+ * The space characters are U+0020 SPACE, "tab" (U+0009), "LF" (U+000A), "FF" (U+000C), and "CR" (U+000D).
+ * @showinitializer
+ */
 constexpr char ASCIIWhitespace[5] = {
 		' ',
 		'\t',
 		'\n',
 		'\f',
 		'\r'
+};
+
+/**
+ * @brief An array containing all of ASCII
+ * @showinitializer
+ */
+constexpr char32_t ASCIIUTF32[128] = {
+		'\x00',
+		'\x01',
+		'\x02',
+		'\x03',
+		'\x04',
+		'\x05',
+		'\x06',
+		'\n',
+		'\t',
+		'\f',
+		'\r',
+		'\x0E',
+		'\x0F',
+		'\x10',
+		'\x11',
+		'\x12',
+		'\x13',
+		'\x14',
+		'\x15',
+		'\x16',
+		'\x17',
+		'\x18',
+		'\x19',
+		'\x1A',
+		'\x1B',
+		'\x1C',
+		'\x1D',
+		'\x1E',
+		'\x1F',
+		' ',
+		'!',
+		'"',
+		'#',
+		'$',
+		'%',
+		'&',
+		'\'',
+		'(',
+		')',
+		'*',
+		'+',
+		',',
+		'-',
+		'.',
+		'/',
+		'0',
+		'1',
+		'2',
+		'3',
+		'4',
+		'5',
+		'6',
+		'7',
+		'8',
+		'9',
+		':',
+		';',
+		'<',
+		'=',
+		'>',
+		'?',
+		'@',
+		'A',
+		'B',
+		'C',
+		'D',
+		'E',
+		'F',
+		'G',
+		'H',
+		'I',
+		'J',
+		'K',
+		'L',
+		'M',
+		'N',
+		'O',
+		'P',
+		'Q',
+		'R',
+		'S',
+		'T',
+		'U',
+		'V',
+		'W',
+		'X',
+		'Y',
+		'Z',
+		'[',
+		'\\',
+		']',
+		'^',
+		'_',
+		'`',
+		'a',
+		'b',
+		'c',
+		'd',
+		'e',
+		'f',
+		'g',
+		'h',
+		'i',
+		'j',
+		'k',
+		'l',
+		'm',
+		'n',
+		'o',
+		'p',
+		'q',
+		'r',
+		's',
+		't',
+		'u',
+		'v',
+		'w',
+		'x',
+		'y',
+		'z',
+		'{',
+		'|',
+		'}',
+		'~',
+		'\x7F'
 };
 
 /**
@@ -534,7 +1147,6 @@ constexpr char ASCII[128] = {
 		'\x7F'
 };
 
-
 /**
  * @brief Tests if a character is whitespace
  * @param character Character to test
@@ -544,6 +1156,16 @@ constexpr char ASCII[128] = {
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isWhitespace)
  */
 bool isWhitespace(const char& character);
+
+/**
+ * @brief Tests if a character is whitespace
+ * @param character Character to test
+ * @return Returns @c true if character is whitespace, @c false if it is not.
+ * @see ASCIIWhitespace
+ *
+ * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isWhitespace)
+ */
+bool isWhitespace(const char32_t& character);
 
 /**
  * @brief Tests if a string is whitespace
@@ -556,13 +1178,23 @@ bool isWhitespace(const char& character);
 bool isWhitespace(const std::string& string);
 
 /**
+ * @brief Tests if a string is whitespace
+ * @param string String to test
+ * @return Returns @c true if string is whitespace, @c false if it is not.
+ * @see ASCIIWhitespace
+ *
+ * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isWhitespace)
+ */
+bool isWhitespace(const std::u32string& string);
+
+/**
  * @brief Tests if a character is unicode whitespace
  * @param character Character to test
  * @return Returns @c true if character is unicode whitespace, @c false if it is not.
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isUnicodeWhitespace)
  */
-bool isUnicodeWhitespace(const char& character);
+bool isUnicodeWhitespace(const char32_t& character);
 
 /**
  * @brief Tests if a string is unicode whitespace
@@ -571,7 +1203,7 @@ bool isUnicodeWhitespace(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isUnicodeWhitespace)
  */
-bool isUnicodeWhitespace(const std::string& string);
+bool isUnicodeWhitespace(const std::u32string& string);
 
 /**
  * @brief Tests if a character is ASCII
@@ -580,7 +1212,7 @@ bool isUnicodeWhitespace(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCII)
  */
-bool isASCII(const char& character);
+bool isASCII(const char32_t& character);
 
 /**
  * @brief Tests if a string is ASCII
@@ -589,7 +1221,7 @@ bool isASCII(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCII)
  */
-bool isASCII(const std::string& string);
+bool isASCII(const std::u32string& string);
 
 /**
  * @brief Tests if a character is an ASCII digit
@@ -598,7 +1230,7 @@ bool isASCII(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIDigit)
  */
-bool isASCIIDigit(const char& character);
+bool isASCIIDigit(const char32_t& character);
 
 /**
  * @brief Tests if a string is ASCII digits
@@ -607,7 +1239,7 @@ bool isASCIIDigit(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIDigit)
  */
-bool isASCIIDigits(const std::string& string);
+bool isASCIIDigits(const std::u32string& string);
 
 /**
  * @brief Tests if a byte is an ASCII upper case letter
@@ -617,7 +1249,7 @@ bool isASCIIDigits(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper)
  */
-bool isASCIIUpper(const char& character);
+bool isASCIIUpper(const char32_t& character);
 
 /**
  * @brief Tests if a string is ASCII upper case
@@ -626,7 +1258,7 @@ bool isASCIIUpper(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIUpper)
  */
-bool isASCIIUpper(const std::string& string);
+bool isASCIIUpper(const std::u32string& string);
 
 /**
  * @brief Tests if a character is ASCII lower case
@@ -635,7 +1267,7 @@ bool isASCIIUpper(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIILower)
  */
-bool isASCIILower(const char& character);
+bool isASCIILower(const char32_t& character);
 
 /**
  * @brief Tests if a string is ASCII lower case
@@ -644,7 +1276,7 @@ bool isASCIILower(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIILower)
  */
-bool isASCIILower(const std::string& string);
+bool isASCIILower(const std::u32string& string);
 
 /**
  * @brief Tests if a character is alphanumeric ASCII
@@ -653,7 +1285,7 @@ bool isASCIILower(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII)
  */
-bool isAlphanumericASCII(const char& character);
+bool isAlphanumericASCII(const char32_t& character);
 
 /**
  * @brief Tests if a string is alphanumeric ASCII
@@ -662,7 +1294,7 @@ bool isAlphanumericASCII(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isAlphanumericASCII)
  */
-bool isAlphanumericASCII(const std::string& string);
+bool isAlphanumericASCII(const std::u32string& string);
 
 /**
  * @brief Tests if a character is ASCII hex
@@ -671,7 +1303,7 @@ bool isAlphanumericASCII(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIHex)
  */
-bool isASCIIHex(const char& character);
+bool isASCIIHex(const char32_t& character);
 
 /**
  * @brief Tests if a string is ASCII hex
@@ -680,7 +1312,7 @@ bool isASCIIHex(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIHex)
  */
-bool isASCIIHex(const std::string& string);
+bool isASCIIHex(const std::u32string& string);
 
 /**
  * @brief Tests if a character is ASCII hex upper case
@@ -689,7 +1321,7 @@ bool isASCIIHex(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper)
  */
-bool isASCIIHexUpper(const char& character);
+bool isASCIIHexUpper(const char32_t& character);
 
 /**
  * @brief Tests if a string is ASCII hex upper case
@@ -698,7 +1330,7 @@ bool isASCIIHexUpper(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexUpper)
  */
-bool isASCIIHexUpper(const std::string& string);
+bool isASCIIHexUpper(const std::u32string& string);
 
 /**
  * @brief Tests if a character is ASCII hex lower case
@@ -707,7 +1339,7 @@ bool isASCIIHexUpper(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower)
  */
-bool isASCIIHexLower(const char& character);
+bool isASCIIHexLower(const char32_t& character);
 
 /**
  * @brief Tests if a string is ASCII hex lower case
@@ -716,7 +1348,7 @@ bool isASCIIHexLower(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIIHexLower)
  */
-bool isASCIIHexLower(const std::string& string);
+bool isASCIIHexLower(const std::u32string& string);
 
 /**
  * @brief Tests if a character is an ASCII non-alphanumeric character
@@ -725,7 +1357,7 @@ bool isASCIIHexLower(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIINonAlphanumeric)
  */
-bool isASCIINonAlphanumeric(const char& character);
+bool isASCIINonAlphanumeric(const char32_t& character);
 
 /**
  * @brief Tests if a string consists of ASCII non-alphanumeric characters
@@ -734,7 +1366,7 @@ bool isASCIINonAlphanumeric(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, isASCIINonAlphanumeric)
  */
-bool isASCIINonAlphanumeric(const std::string& string);
+bool isASCIINonAlphanumeric(const std::u32string& string);
 
 /**
  * @brief Converts a character to its ASCII upper case equivalent
@@ -744,7 +1376,7 @@ bool isASCIINonAlphanumeric(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, toUpper)
  */
-char toUpper(const char& character);
+char32_t toUpper(const char32_t& character);
 
 /**
  * @brief Converts a string to ASCII upper case
@@ -754,7 +1386,7 @@ char toUpper(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, toUpper)
  */
-std::string toUpper(const std::string& string);
+std::u32string toUpper(const std::u32string& string);
 
 /**
  * @brief Converts a character to its ASCII lower case equivalent
@@ -764,7 +1396,7 @@ std::string toUpper(const std::string& string);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, toLower)
  */
-char toLower(const char& character);
+char32_t toLower(const char32_t& character);
 
 /**
  * @brief Converts a string to ASCII lower case
@@ -774,7 +1406,7 @@ char toLower(const char& character);
  *
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, toLower)
  */
-std::string toLower(const std::string& string);
+std::u32string toLower(const std::u32string& string);
 
 /**
  * @brief Compares two characters in an ASCII case-insensitive manner.
@@ -785,7 +1417,7 @@ std::string toLower(const std::string& string);
  *         Returns @c false if the characters do not match.
  *
  */
-bool caseInsensitiveMatch(const char& lhs, const char& rhs);
+bool caseInsensitiveMatch(const char32_t& lhs, const char32_t& rhs);
 
 /**
  * @brief Compares two strings in an ASCII case-insensitive manner.
@@ -797,7 +1429,7 @@ bool caseInsensitiveMatch(const char& lhs, const char& rhs);
  *
  * @test  HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, caseInsensitiveMatch)
  */
-bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs);
+bool caseInsensitiveMatch(const std::u32string& lhs, const std::u32string& rhs);
 
 /**
  * @brief Skips whitespace at the beginning of a stream
@@ -809,7 +1441,7 @@ bool caseInsensitiveMatch(const std::string& lhs, const std::string& rhs);
  * @return Returns a reference to @c stream
  * @exception std::istream::failure The input stream failed before a non whitespace character was found.
  *
- * @see isWhitespace(const char& character)
+ * @see isWhitespace(const char32_t& character)
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, istream_skipWhitespace)
  */
 std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions = false);
@@ -820,10 +1452,10 @@ std::istream& skipWhitespace(std::istream& stream, bool swallowExceptions = fals
  * @param string String to be read
  * @param position Position index
  * @return Returns a reference to @c string
- * @see isWhitespace(const char& character)
+ * @see isWhitespace(const char32_t& character)
  * @test HTML::Microsyntaxes::ASCII::TEST(HTML_Microsyntaxes_ASCII, string_skipWhitespace)
  */
-const std::string& skipWhitespace(const std::string& string, size_t& position);
+const std::u32string& skipWhitespace(const std::u32string& string, size_t& position);
 
 } /* namespace ASCII */
 } /* namespace Microsyntaxes */

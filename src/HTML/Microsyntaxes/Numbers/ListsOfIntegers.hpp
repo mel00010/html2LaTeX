@@ -34,7 +34,7 @@ namespace Numbers {
  * 		   @c false if it does not.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, isListOfIntegers)
  */
-bool isListOfIntegers(const std::string& string);
+bool isListOfIntegers(const std::u32string& string);
 
 /**
  * @brief Retrieves the list of integers from @c string
@@ -42,7 +42,7 @@ bool isListOfIntegers(const std::string& string);
  * @return Returns a std::list of integers retrieved from @c string.
  * @test HTML::Microsyntaxes::Numbers::TEST(HTML_Microsyntaxes_Numbers_ListsOfIntegers, parseListOfIntegers)
  */
-std::list<int> parseListOfIntegers(const std::string& string);
+std::list<int> parseListOfIntegers(const std::u32string& string);
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

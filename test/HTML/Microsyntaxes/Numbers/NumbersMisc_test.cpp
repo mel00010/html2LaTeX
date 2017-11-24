@@ -41,6 +41,31 @@ TEST(HTML_Microsyntaxes_Numbers_NumbersMisc, ASCIIDigitToInt) {
 
 	EXPECT_THROW(ASCIIDigitToInt('a'), parseException);
 }
+TEST(HTML_Microsyntaxes_Numbers_NumbersMisc, ASCIIHexDigitToInt) {
+	EXPECT_EQ(0x0u, ASCIIHexDigitToInt('0'));
+	EXPECT_EQ(0x1u, ASCIIHexDigitToInt('1'));
+	EXPECT_EQ(0x2u, ASCIIHexDigitToInt('2'));
+	EXPECT_EQ(0x3u, ASCIIHexDigitToInt('3'));
+	EXPECT_EQ(0x4u, ASCIIHexDigitToInt('4'));
+	EXPECT_EQ(0x5u, ASCIIHexDigitToInt('5'));
+	EXPECT_EQ(0x6u, ASCIIHexDigitToInt('6'));
+	EXPECT_EQ(0x7u, ASCIIHexDigitToInt('7'));
+	EXPECT_EQ(0x8u, ASCIIHexDigitToInt('8'));
+	EXPECT_EQ(0x9u, ASCIIHexDigitToInt('9'));
+	EXPECT_EQ(0xAu, ASCIIHexDigitToInt('a'));
+	EXPECT_EQ(0xAu, ASCIIHexDigitToInt('A'));
+	EXPECT_EQ(0xBu, ASCIIHexDigitToInt('b'));
+	EXPECT_EQ(0xBu, ASCIIHexDigitToInt('B'));
+	EXPECT_EQ(0xCu, ASCIIHexDigitToInt('c'));
+	EXPECT_EQ(0xCu, ASCIIHexDigitToInt('C'));
+	EXPECT_EQ(0xDu, ASCIIHexDigitToInt('d'));
+	EXPECT_EQ(0xDu, ASCIIHexDigitToInt('D'));
+	EXPECT_EQ(0xEu, ASCIIHexDigitToInt('e'));
+	EXPECT_EQ(0xEu, ASCIIHexDigitToInt('E'));
+	EXPECT_EQ(0xFu, ASCIIHexDigitToInt('f'));
+	EXPECT_EQ(0xFu, ASCIIHexDigitToInt('F'));
+	EXPECT_THROW(ASCIIHexDigitToInt('g'), parseException);
+}
 
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */

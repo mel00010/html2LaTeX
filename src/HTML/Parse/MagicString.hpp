@@ -38,7 +38,7 @@
 namespace HTML {
 namespace Parse {
 
-typedef uint8_t Byte;
+typedef char Byte;
 
 /**
  * @brief A namespace holding constants and magic strings.
@@ -50,12 +50,12 @@ namespace MagicString {
  * @showinitializer
  */
 constexpr Byte ATTRIBUTE_SKIP_CHARS[6] = {
-		0x09,
-		0x0A,
-		0x0C,
-		0x0D,
-		0x20,
-		0x2F
+		'\x09',
+		'\x0A',
+		'\x0C',
+		'\x0D',
+		'\x20',
+		'\x2F'
 };
 
 
@@ -73,16 +73,16 @@ bool isCharset(const Byte (&string)[7]);
  * @brief Holds the Unicode Byte Order Marking strings
  */
 namespace UnicodeBOM {
-constexpr Byte UTF_16_BE[2] = { 0xFE, 0xFF }; /**<	@brief Holds the BOM for the UTF-16 big endian encoding */
-constexpr Byte UTF_16_LE[2] = { 0xFF, 0xFE }; /**<	@brief Holds the BOM for the UTF-16 little endian encoding */
-constexpr Byte UTF_8[3] = { 0xEF, 0xBB, 0xBF }; /**<	@brief Holds the BOM for the UTF-8 encoding */
+constexpr Byte UTF_16_BE[2] = { '\xFE', '\xFF' }; /**<	@brief Holds the BOM for the UTF-16 big endian encoding */
+constexpr Byte UTF_16_LE[2] = { '\xFF', '\xFE' }; /**<	@brief Holds the BOM for the UTF-16 little endian encoding */
+constexpr Byte UTF_8[3] = { '\xEF', '\xBB', '\xBF' }; /**<	@brief Holds the BOM for the UTF-8 encoding */
 };
 /**
  * @brief Holds the byte sequences indicating the start or end of an HTML comment tag.
  */
 namespace CommentTag {
-constexpr Byte start[4] = { 0x3C, 0x21, 0x2D, 0x2D }; /**< 	@brief Holds the byte sequence for the beginning of a comment tag */
-constexpr Byte end[3] = { 0x2D, 0x2D, 0x3E }; /**< 			@brief Holds the byte sequence for the end of a comment tag */
+constexpr Byte start[4] = { '\x3C', '\x21', '\x2D', '\x2D' }; /**< 	@brief Holds the byte sequence for the beginning of a comment tag */
+constexpr Byte end[3] = { '\x2D', '\x2D', '\x3E' }; /**< 			@brief Holds the byte sequence for the end of a comment tag */
 }
 
 //struct CommentTag {
@@ -91,7 +91,7 @@ constexpr Byte end[3] = { 0x2D, 0x2D, 0x3E }; /**< 			@brief Holds the byte sequ
 //};
 
 /**
- * @brief Holds the byte sequences indicating the start or end of an HTML tag starting with '!', '?', or '/'.
+ * @brief Holds the byte sequences indicating the start or end of an HTML tag starting with '!'', '?', or '/'.
  *
  * @test HTML::Parse::MagicString::MagicString_Test::TEST(HTML_Parse_MagicString, PunctuationTag)
  */
@@ -105,8 +105,8 @@ struct PunctuationTag {
 			SECOND = 1, /**< 	@brief 1 */
 		};
 
-		const Byte first[1] = { 0x3C }; /**< 				@brief An array holding all of the possibilities for the first character of the tag */
-		const Byte second[3] = { 0x21, 0x2F, 0x3F }; /**< 	@brief An array holding all of the possibilities for the second character of the tag*/
+		const Byte first[1] = { '\x3C' }; /**< 				@brief An array holding all of the possibilities for the first character of the tag */
+		const Byte second[3] = { '\x21', '\x2F', '\x3F' }; /**< 	@brief An array holding all of the possibilities for the second character of the tag*/
 
 		/**
 		 * @brief Defines array-like access to the struct.
@@ -214,12 +214,12 @@ struct MetaTag {
 			SIXTH = 5 /**< 		@brief 5 */
 		};
 
-		const Byte first[6] = { 0x3C, 0, 0, 0, 0, 0 }; /**< 				@brief An array holding all of the possibilities for the first character of the tag*/
-		const Byte second[6] = { 0x4D, 0x6D, 0, 0, 0, 0 }; /**< 			@brief An array holding all of the possibilities for the second character of the tag*/
-		const Byte third[6] = { 0x45, 0x65, 0, 0, 0, 0 }; /**< 				@brief An array holding all of the possibilities for the third character of the tag*/
-		const Byte fourth[6] = { 0x54, 0x74, 0, 0, 0, 0 }; /**< 			@brief An array holding all of the possibilities for the fourth character of the tag*/
-		const Byte fifth[6] = { 0x41, 0x61, 0, 0, 0, 0 }; /**< 				@brief An array holding all of the possibilities for the fifth character of the tag*/
-		const Byte sixth[6] = { 0x09, 0x0A, 0x0C, 0x0D, 0x20, 0x2F }; /**< 	@brief An array holding all of the possibilities for the sixth character of the tag*/
+		const Byte first[6] = { '\x3C', 0, 0, 0, 0, 0 }; /**< 				@brief An array holding all of the possibilities for the first character of the tag*/
+		const Byte second[6] = { '\x4D', '\x6D', 0, 0, 0, 0 }; /**< 			@brief An array holding all of the possibilities for the second character of the tag*/
+		const Byte third[6] = { '\x45', '\x65', 0, 0, 0, 0 }; /**< 				@brief An array holding all of the possibilities for the third character of the tag*/
+		const Byte fourth[6] = { '\x54', '\x74', 0, 0, 0, 0 }; /**< 			@brief An array holding all of the possibilities for the fourth character of the tag*/
+		const Byte fifth[6] = { '\x41', '\x61', 0, 0, 0, 0 }; /**< 				@brief An array holding all of the possibilities for the fifth character of the tag*/
+		const Byte sixth[6] = { '\x09', '\x0A', '\x0C', '\x0D', '\x20', '\x2F' }; /**< 	@brief An array holding all of the possibilities for the sixth character of the tag*/
 
 		/**
 		 * @brief Defines array-like access to the struct.
@@ -325,7 +325,7 @@ struct ASCIITag {
 			SECOND = 1 /**< 	@brief 1 */
 		};
 
-		const Byte first[1] = { 0x3C }; /**< 	@brief An array holding all of the possibilities for the first character of the tag*/
+		const Byte first[1] = { '\x3C' }; /**< 	@brief An array holding all of the possibilities for the first character of the tag*/
 
 		/**
 		 * @brief Defines array-like access to the struct.
@@ -429,8 +429,8 @@ struct ASCIIEndTag {
 			THIRD = 2 /**< 		@brief 2 */
 		};
 
-		const Byte first[1] = { 0x3C }; /**< 	@brief An array holding all of the possibilities for the first character of the tag*/
-		const Byte second[1] = { 0x4D }; /**< 	@brief An array holding all of the possibilities for the second character of the tag*/
+		const Byte first[1] = { '\x3C' }; /**< 	@brief An array holding all of the possibilities for the first character of the tag*/
+		const Byte second[1] = { '\x4D' }; /**< 	@brief An array holding all of the possibilities for the second character of the tag*/
 
 		/**
 		 * @brief Defines array-like access to the struct.

@@ -4,18 +4,16 @@ target_sources(html
 	PRIVATE
 		HTMLTree.cpp
 		HTMLTreeInterface.cpp
-		HTMLTreeElement.cpp
-		HTMLTreeElementInterface.cpp
+		HTMLTypes.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTree.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeElement.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeElementInterface.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTreeInterface.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLTypes.hpp
 )
 
 target_link_libraries(html
 	PUBLIC
+		elements
 		htmltypes
 		microsyntaxes
 		parse
@@ -33,5 +31,6 @@ target_include_directories(htmltypes
 		${PROJECT_SOURCE_DIR}/src
 )
 
+add_subdirectory(Elements)
 add_subdirectory(Microsyntaxes)
 add_subdirectory(Parse)

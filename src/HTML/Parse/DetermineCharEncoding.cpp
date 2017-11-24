@@ -51,13 +51,13 @@ ContentType DetermineCharEncoding::determineCharEncoding(std::istream& input) {
 
 	try {
 		encoding = tryUnicodeBOM(input);
-		if (encoding.charEncoding != UNKNOWN) {
+		if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 			input.seekg(0);
 			return encoding;
 		}
 
 		encoding = preScan(input);
-		if (encoding.charEncoding != UNKNOWN) {
+		if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 			input.seekg(0);
 			return encoding;
 		}
@@ -81,17 +81,17 @@ ContentType DetermineCharEncoding::tryUnicodeBOM(std::istream& input) {
 	input.clear();
 	input.seekg(0);
 	if ((buffer[0] == MagicString::UnicodeBOM::UTF_16_BE[0]) && (buffer[1] == MagicString::UnicodeBOM::UTF_16_BE[1])) {
-		encoding.charEncoding = UTF_16_BE;
-		encoding.confidence = CERTAIN;
+		encoding.char_encoding = CharEncoding::UTF_16_BE;
+		encoding.confidence = Confidence::CERTAIN;
 		return encoding;
 	} else if ((buffer[0] == MagicString::UnicodeBOM::UTF_16_LE[0]) && (buffer[1] == MagicString::UnicodeBOM::UTF_16_LE[1])) {
-		encoding.charEncoding = UTF_16_LE;
-		encoding.confidence = CERTAIN;
+		encoding.char_encoding = CharEncoding::UTF_16_LE;
+		encoding.confidence = Confidence::CERTAIN;
 		return encoding;
 	} else if ((buffer[0] == MagicString::UnicodeBOM::UTF_8[0]) && (buffer[1] == MagicString::UnicodeBOM::UTF_8[1])
 			&& (buffer[2] == MagicString::UnicodeBOM::UTF_8[2])) {
-		encoding.charEncoding = UTF_8;
-		encoding.confidence = CERTAIN;
+		encoding.char_encoding = CharEncoding::UTF_8;
+		encoding.confidence = Confidence::CERTAIN;
 		return encoding;
 	}
 	return encoding;
@@ -105,22 +105,22 @@ ContentType DetermineCharEncoding::preScan(std::istream& input) {
 		do {
 			input.seekg(1, input.cur);
 			encoding = commentTagAlgorithm(input);
-			if (encoding.charEncoding != UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 
 			encoding = metaTagAlgorithm(input);
-			if (encoding.charEncoding != UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 
 			encoding = asciiTagAlgorithm(input);
-			if (encoding.charEncoding != UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 
 			encoding = punctuationTagAlgorithm(input);
-			if (encoding.charEncoding != UNKNOWN) {
+			if (encoding.char_encoding != CharEncoding::UNKNOWN) {
 				return encoding;
 			}
 		} while (input.peek() != std::istream::eofbit);
@@ -196,12 +196,12 @@ ContentType DetermineCharEncoding::metaTagAlgorithm(std::istream& input) {
 	}
 
 	try {
-		std::vector<Attribute> attributeList;
+		std::vector<ASCIIAttribute> attributeList;
 		bool gotPragma = false;
-		TriBool needPragma = NONE;
-		CharEncoding charSet = NULL_ENC;
+		TriBool needPragma = TriBool::NONE;
+		CharEncoding charSet = CharEncoding::NULL_ENC;
 		while (true) {
-			Attribute attribute;
+			ASCIIAttribute attribute;
 			try {
 				attribute = getAttribute(input);
 			}
@@ -230,34 +230,34 @@ ContentType DetermineCharEncoding::metaTagAlgorithm(std::istream& input) {
 					}
 				} else if (attributeList.back().name == "content") {
 					CharEncoding enc = extractCharEncodingFromMetaTag(attributeList.back().value);
-					if ((enc != NULL_ENC) && charSet == NULL_ENC) {
-						needPragma = TRUE;
+					if ((enc != CharEncoding::NULL_ENC) && charSet == CharEncoding::NULL_ENC) {
+						needPragma = TriBool::TRUE;
 						charSet = enc;
 					}
 				} else if (attributeList.back().name == "charset") {
 					CharEncoding enc = getCharEncodingFromString(attributeList.back().value);
-					needPragma = FALSE;
+					needPragma = TriBool::FALSE;
 					charSet = enc;
 				}
 
 			}
 		}
-		if (needPragma == NONE) {
+		if (needPragma == TriBool::NONE) {
 			input.seekg(1, input.cur);
 			return encoding;
-		} else if ((needPragma == TRUE) && (gotPragma == false)) {
+		} else if ((needPragma == TriBool::TRUE) && (gotPragma == false)) {
 			input.seekg(1, input.cur);
 			return encoding;
-		} else if (charSet == UNKNOWN) {
+		} else if (charSet == CharEncoding::UNKNOWN) {
 			input.seekg(1, input.cur);
 			return encoding;
 		}
 
-		if ((charSet == UTF_16_LE) || (charSet == UTF_16_BE)) {
-			charSet = UTF_8;
+		if ((charSet == CharEncoding::UTF_16_LE) || (charSet == CharEncoding::UTF_16_BE)) {
+			charSet = CharEncoding::UTF_8;
 		}
-		encoding.charEncoding = charSet;
-		encoding.confidence = TENTATIVE;
+		encoding.char_encoding = charSet;
+		encoding.confidence = Confidence::TENTATIVE;
 		return encoding;
 	}
 	catch (...) {
@@ -319,8 +319,8 @@ ContentType DetermineCharEncoding::punctuationTagAlgorithm(std::istream & input)
 	return encoding;
 }
 
-Attribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallowExceptions) {
-	Attribute attribute;
+ASCIIAttribute DetermineCharEncoding::getAttribute(std::istream & input, bool swallowExceptions) {
+	ASCIIAttribute attribute;
 	attribute.name = "";
 	attribute.value = "";
 	input.exceptions(std::istream::eofbit);
@@ -435,7 +435,7 @@ std::string DetermineCharEncoding::quoteLoop(std::istream& input, Byte& buf, std
 }
 
 CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string & string) {
-	CharEncoding encoding = NULL_ENC;
+	CharEncoding encoding = CharEncoding::NULL_ENC;
 	std::stringstream input(string);
 	input.exceptions(std::istream::eofbit);
 	Byte buf = '\0';
@@ -527,15 +527,15 @@ CharEncoding DetermineCharEncoding::extractCharEncodingFromMetaTag(std::string &
 }
 
 CharEncoding DetermineCharEncoding::getCharEncodingFromString(std::string & input) {
-	CharEncoding encoding = NULL_ENC;
+	CharEncoding encoding = CharEncoding::NULL_ENC;
 	if ((input == "unicode-1-1-utf-8") || (input == "utf-8") || (input == "utf8")) {
-		encoding = UTF_8;
+		encoding = CharEncoding::UTF_8;
 		return encoding;
 	} else if (input == "utf-16be") {
-		encoding = UTF_16_BE;
+		encoding = CharEncoding::UTF_16_BE;
 		return encoding;
 	} else if ((input == "utf-16le") || (input == "utf-16")) {
-		encoding = UTF_16_LE;
+		encoding = CharEncoding::UTF_16_LE;
 		return encoding;
 	}
 	return encoding;

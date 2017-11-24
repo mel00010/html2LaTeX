@@ -42,7 +42,33 @@ namespace HTML {
  *
  * Derived from uint8_t.
  */
-typedef uint8_t Byte;
+typedef char Byte;
+
+enum class InsertionMode {
+	INITIAL,
+	BEFORE_HTML,
+	BEFORE_HEAD,
+	IN_HEAD,
+	IN_HEAD_NOSCRIPT,
+	AFTER_HEAD,
+	IN_BODY,
+	TEXT,
+	IN_TABLE,
+	IN_TABLE_TEXT,
+	IN_CAPTION,
+	IN_COLUMN_GROUP,
+	IN_TABLE_BODY,
+	IN_ROW,
+	IN_CELL,
+	IN_SELECT,
+	IN_SELECT_IN_TABLE,
+	IN_TEMPLATE,
+	AFTER_BODY,
+	IN_FRAMESET,
+	AFTER_FRAMESET,
+	AFTER_AFTER_BODY,
+	AFTER_AFTER_FRAMESET
+};
 
 enum class Alignment {
 	LEFT,
@@ -62,7 +88,7 @@ enum class HTMLHeadings {
 /**
  * @brief A three valued boolean logic type.
  */
-enum TriBool {
+enum class TriBool {
 	NONE, /**<	@brief Neither true nor false. @details Used to signify that the variable has not been explicitly set to be true or false. */
 	TRUE, /**<	@brief True */
 	FALSE /**<	@brief False */
@@ -73,7 +99,7 @@ enum TriBool {
  *
  * Defined by the W3C HTML5 standard
  */
-enum CharEncoding {
+enum class CharEncoding {
 	NULL_ENC, /**<	@brief Represents that the character encoding has not been set by the algorithm. */
 	UNKNOWN, /**<	@brief Represents an unknown character encoding. */
 	UTF_16_BE, /**<	@brief Represents the UTF-16 big endian character encoding. */
@@ -86,7 +112,7 @@ enum CharEncoding {
  *
  * Defined by the W3C HTML5 standard.
  */
-enum Confidence {
+enum class Confidence {
 	CERTAIN, /**<	@brief Indicates a definite match for the character encoding of the document.*/
 	TENTATIVE, /**<	@brief Indicates a tentative guess for the character encoding of the document. */
 	IRRELEVANT /**<	@brief Indicates that a guess could not be made. */
@@ -99,11 +125,19 @@ enum Confidence {
  */
 class ContentType {
 	public:
-		ContentType(CharEncoding charEncoding = UNKNOWN, Confidence confidence = IRRELEVANT) :
-				charEncoding(charEncoding), confidence(confidence) {
+		ContentType(CharEncoding char_encoding = CharEncoding::UNKNOWN, Confidence confidence = Confidence::IRRELEVANT) :
+				char_encoding(char_encoding), confidence(confidence) {
 		}
-		CharEncoding charEncoding = UNKNOWN; /**<	@brief Holds the character encoding of the document. */
-		Confidence confidence = IRRELEVANT; /**<	@brief Holds the confidence of the guess at the character encoding. */
+		CharEncoding char_encoding = CharEncoding::UNKNOWN; /**<	@brief Holds the character encoding of the document. */
+		Confidence confidence = Confidence::IRRELEVANT; /**<	@brief Holds the confidence of the guess at the character encoding. */
+};
+/**
+ * @brief Holds a list of parse errors.
+ *
+ * These parse errors represent those defined in the W3C HTML5 standard.
+ */
+enum class ParseError {
+		OTHER
 };
 
 /**
@@ -127,11 +161,11 @@ class Formatting {
  */
 class Attribute {
 	public:
-		Attribute(std::string name = "", std::string value = "") :
+		Attribute(std::u32string name = U"", std::u32string value = U"") :
 				name(name), value(value) {
 		}
-		std::string name = ""; /**<	@brief Holds the name of the attribute. */
-		std::string value = ""; /**<@brief Holds the value of the attribute. */
+		std::u32string name = U""; /**<	@brief Holds the name of the attribute. */
+		std::u32string value = U""; /**<@brief Holds the value of the attribute. */
 };
 
 /**
@@ -213,6 +247,96 @@ inline bool operator==(const Attribute& lhs, const bool& rhs) {
 }
 
 /**
+ * @brief Holds an HTML attribute.
+ */
+class ASCIIAttribute {
+	public:
+		ASCIIAttribute(std::string name = "", std::string value = "") :
+				name(name), value(value) {
+		}
+		std::string name = ""; /**<	@brief Holds the name of the attribute. */
+		std::string value = ""; /**<@brief Holds the value of the attribute. */
+};
+
+/**
+ * @brief Writes an ASCIIAttribute object to an output stream.
+ * @param os A reference to std::ostream object for the ASCIIAttribute object to be written to.
+ * @param attribute A reference to the ASCIIAttribute object to be displayed.
+ * @return A reference to the std::ostream object passed to the function.
+ */
+::std::ostream& operator<<(::std::ostream& os, const ASCIIAttribute& attribute);
+
+/**
+ * @brief Compares two ASCIIAttribute objects.
+ * @param rhs The ASCIIAttribute object on the right hand side of the expression
+ * @param lhs The ASCIIAttribute object on the left hand side of the expression
+ * @return Returns true if the attribute objects have the same name and value, otherwise returns false
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator==(const ASCIIAttribute& rhs, const ASCIIAttribute& lhs) {
+	if ((rhs.name == lhs.name) && (rhs.value == lhs.value)) {
+		return true;
+	}
+	return false;
+}
+/**
+ * @brief Compares two ASCIIAttribute objects.
+ * @param rhs The ASCIIAttribute object on the right hand side of the expression
+ * @param lhs The ASCIIAttribute object on the left hand side of the expression
+ * @return Returns true if the attribute objects do not have the same name and value, otherwise returns false
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator!=(const ASCIIAttribute& rhs, const ASCIIAttribute& lhs) {
+	if (!(rhs == lhs)) {
+		return true;
+	}
+	return false;
+}
+
+/**
+ * @brief Compares a bool and an ASCIIAttribute object
+ * @param rhs The bool being compared
+ * @param lhs The ASCIIAttribute object being compared
+ * @return If the bool evaluates to true, the function returns false
+ * 		   if either the ASCIIAttribute object's name or value fields are not empty,
+ * 		   otherwise it returns true. If the bool evaluates to false, then the
+ * 		   function returns the opposite values.
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator==(const bool& rhs, const ASCIIAttribute& lhs) {
+	if (lhs.name.empty() && lhs.value.empty()) {
+		if (rhs) {
+			return false;
+		} else {
+			return true;
+		}
+	} else {
+		if (rhs) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	return false;
+}
+
+/**
+ * @brief Compares an ASCIIAttribute object and a bool
+ * @see operator==(const bool& rhs, const ASCIIAttribute& lhs)
+ * @param lhs The ASCIIAttribute object being compared
+ * @param rhs The bool being compared
+ * @return Returns the result of comparing a bool and an ASCIIAttribute object
+ *
+ * @test TEST(HTMLTypes, ASCIIAttribute)
+ */
+inline bool operator==(const ASCIIAttribute& lhs, const bool& rhs) {
+	return (rhs == lhs);
+}
+
+/**
  * @brief Writes an CharEncoding object to an output stream
  * @param os A reference to std::ostream object for the CharEncoding object to be written to.
  * @param charEncoding A reference to the Attribute object to be displayed
@@ -246,7 +370,7 @@ inline bool operator==(const Attribute& lhs, const bool& rhs) {
  * @test TEST(HTMLTypes, ContentType)
  */
 inline bool operator==(const ContentType& rhs, const ContentType& lhs) {
-	if ((rhs.charEncoding == lhs.charEncoding) && (rhs.confidence == lhs.confidence)) {
+	if ((rhs.char_encoding == lhs.char_encoding) && (rhs.confidence == lhs.confidence)) {
 		return true;
 	}
 	return false;

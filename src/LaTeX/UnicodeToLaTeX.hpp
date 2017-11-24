@@ -39,7 +39,10 @@ class UnicodeToLaTeX: public UnicodeToLaTeXInterface {
 
 
 	protected:
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 #include <UnicodeToLaTeXConversionArray.ipp>
+#endif /* DOXYGEN_SHOULD_SKIP_THIS */
+
 		static constexpr size_t map_size = sizeof(unicodeToLaTeX) / sizeof(unicodeToLaTeX[0]);
 
 	protected:

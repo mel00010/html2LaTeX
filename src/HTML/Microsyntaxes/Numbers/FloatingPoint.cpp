@@ -33,7 +33,7 @@ namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-bool isFloatingPoint(const std::string& string) {
+bool isFloatingPoint(const std::u32string& string) {
 	if (string.empty()) {
 		return false;
 	}
@@ -81,7 +81,7 @@ bool isFloatingPoint(const std::string& string) {
 	return true;
 }
 
-double exponentStep(const std::string& string, size_t& position, double& value, double& exponent) {
+double exponentStep(const std::u32string& string, size_t& position, double& value, double& exponent) {
 	position++;
 	if (position > string.length()) {
 		return value;
@@ -103,7 +103,7 @@ double exponentStep(const std::string& string, size_t& position, double& value, 
 		throw parseException();
 	}
 
-	std::string digits = "";
+	std::u32string digits = U"";
 	for (; position < string.length(); position++) {
 		if (ASCII::isASCIIDigit(string[position])) {
 			digits += string[position];
@@ -121,7 +121,7 @@ double exponentStep(const std::string& string, size_t& position, double& value, 
 	return value;
 }
 
-double fractionStep(const std::string& string, size_t& position, double& value, double& divisor, double& exponent) {
+double fractionStep(const std::u32string& string, size_t& position, double& value, double& divisor, double& exponent) {
 	position++;
 	if (position > string.length()) {
 		return value;
@@ -153,7 +153,7 @@ double fractionStep(const std::string& string, size_t& position, double& value, 
 	return value;
 }
 
-double parseFloatingPoint(const std::string& string) {
+double parseFloatingPoint(const std::u32string& string) {
 	if (string.empty()) {
 		throw parseException("string is empty!");
 	}
@@ -190,7 +190,7 @@ double parseFloatingPoint(const std::string& string) {
 		throw(parseException("Unexpected non ASCII digit in floating point string!"));
 	}
 
-	std::string digits = "";
+	std::u32string digits = U"";
 	for (; position < string.length(); position++) {
 		if (ASCII::isASCIIDigit(string[position])) {
 			digits += string[position];

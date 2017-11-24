@@ -22,47 +22,81 @@
 
 #include "NumbersTypes.hpp"
 
+#include <cstdint>
+
 namespace HTML {
 namespace Microsyntaxes {
 namespace Numbers {
 
-unsigned int ASCIIDigitToInt(const char& digit) {
-	int returned = 0;
+uint8_t ASCIIDigitToInt(const char32_t& digit) {
 	switch (digit) {
 		case '0':
-			returned = 0;
-			break;
+			return 0;
 		case '1':
-			returned = 1;
-			break;
+			return 1;
 		case '2':
-			returned = 2;
-			break;
+			return 2;
 		case '3':
-			returned = 3;
-			break;
+			return 3;
 		case '4':
-			returned = 4;
-			break;
+			return 4;
 		case '5':
-			returned = 5;
-			break;
+			return 5;
 		case '6':
-			returned = 6;
-			break;
+			return 6;
 		case '7':
-			returned = 7;
-			break;
+			return 7;
 		case '8':
-			returned = 8;
-			break;
+			return 8;
 		case '9':
-			returned = 9;
-			break;
+			return 9;
 		default:
 			throw parseException();
 	}
-	return returned;
+}
+uint8_t ASCIIHexDigitToInt(const char32_t& digit) {
+	switch (digit) {
+		case '0':
+			return 0;
+		case '1':
+			return 1;
+		case '2':
+			return 2;
+		case '3':
+			return 3;
+		case '4':
+			return 4;
+		case '5':
+			return 5;
+		case '6':
+			return 6;
+		case '7':
+			return 7;
+		case '8':
+			return 8;
+		case '9':
+			return 9;
+		case 'a':
+		case 'A':
+			return 10;
+		case 'b':
+		case 'B':
+			return 11;
+		case 'c':
+		case 'C':
+			return 12;
+		case 'd':
+		case 'D':
+			return 13;
+		case 'e':
+		case 'E':
+			return 14;
+		case 'f':
+		case 'F':
+			return 15;
+		default:
+			throw parseException();
+	}
 }
 } /* namespace Numbers */
 } /* namespace Microsyntaxes */
