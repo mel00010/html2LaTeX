@@ -22,7 +22,7 @@
 
 #include "TokenizationTypes.hpp"
 
-#include <list>
+#include <vector>
 #include <string>
 #include <stack>
 
@@ -179,7 +179,7 @@ class Tokenizer {
 
 	public:
 		template<class T>
-		T pop(std::stack<T> stack) {
+		T pop(std::stack<T>& stack) {
 			T copy = stack.top();
 			stack.pop();
 			return copy;

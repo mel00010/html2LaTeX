@@ -48,6 +48,7 @@ namespace Tokenization {
 
 // Section 8.2.4.69
 size_t Tokenizer::consumeCharacterReference() {
+	chars_consumed = 0;
 	if(peek() == additional_allowed_character) {
 		return 0;
 	}
@@ -72,7 +73,6 @@ size_t Tokenizer::consumeCharacterReference() {
 }
 
 size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
-	chars_consumed = 0;
 	consume();
 
 	bool (*isDigit)(const char32_t&) = &Microsyntaxes::ASCII::isASCIIDigit;
@@ -191,7 +191,6 @@ size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 }
 
 size_t Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
-	chars_consumed = 0;
 	std::u32string characters = peek(std::u32string(std::get<0>(characterReferences.front())).length());
 	for (auto i : characterReferences) {
 		if (characters.find(std::u32string(std::get<0>(i))) == 0) {
@@ -199,10 +198,10 @@ size_t Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
 
 			if (std::get<2>(i) != EOF32) {
 				char_tokens.push(CharacterToken(std::get<2>(i)));
-				char_tokens.push(CharacterToken((std::get<1>(i))));
+				char_tokens.push(CharacterToken(std::get<1>(i)));
 				return 2;
 			}
-			char_tokens.push(CharacterToken((std::get<1>(i))));
+			char_tokens.push(CharacterToken(std::get<1>(i)));
 			return 1;
 		}
 	}

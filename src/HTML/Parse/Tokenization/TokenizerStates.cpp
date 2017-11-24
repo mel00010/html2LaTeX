@@ -1982,7 +1982,8 @@ void Tokenizer::bogusDOCTYPEState() {
 void Tokenizer::CDATASectionState() {
 	std::u32string characters;
 	switchToState(DATA);
-	while(std::u32string buf = consume()+peek(2)) {
+	while(true) {
+		std::u32string buf = consume()+peek(2);
 		if(buf == U"]]>") {
 			consume(2);
 			for(auto& i : characters) {
