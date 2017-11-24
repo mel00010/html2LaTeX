@@ -1731,7 +1731,7 @@ void Tokenizer::DOCTYPEPublicIdentifierSingleQuotedState() {
 
 // Section 8.2.4.60
 void Tokenizer::afterDOCTYPEPublicIdentifierState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
 		case '\t':
 		case '\n':
 		case '\f':
@@ -1768,24 +1768,112 @@ void Tokenizer::afterDOCTYPEPublicIdentifierState() {
 
 // Section 8.2.4.61
 void Tokenizer::betweenDOCTYPEPublicAndSystemIdentifiersState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			break;
+		case '>':
+			switchToState(DATA);
+			emit(doctype);
+			break;
+		case '"':
+			doctype.system_identifier = U"";
+			switchToState(DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED);
+			break;
+		case '\'':
+			doctype.system_identifier = U"";
+			switchToState(DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			doctype.force_quirks = true;
+			emit(doctype);
+			unconsume();
+			break;
 		default:
+			emitParseError();
+			doctype.force_quirks = true;
+			switchToState(BOGUS_DOCTYPE);
 			break;
 	}
 }
 
 // Section 8.2.4.62
 void Tokenizer::afterDOCTYPESystemKeywordState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			switchToState(BEFORE_DOCTYPE_SYSTEM_IDENTIFIER);
+			break;
+		case '"':
+			emitParseError();
+			doctype.system_identifier = U"";
+			switchToState(DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED);
+			break;
+		case '\'':
+			emitParseError();
+			doctype.system_identifier = U"";
+			switchToState(DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED);
+			break;
+		case '>':
+			emitParseError();
+			doctype.force_quirks = true;
+			switchToState(DATA);
+			emit(doctype);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			doctype.force_quirks = true;
+			emit(doctype);
+			unconsume();
+			break;
 		default:
+			emitParseError();
+			doctype.force_quirks = true;
+			switchToState(BOGUS_DOCTYPE);
 			break;
 	}
 }
 
 // Section 8.2.4.63
 void Tokenizer::beforeDOCTYPESystemIdentifierState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			break;
+		case '"':
+			doctype.system_identifier = U"";
+			switchToState(DOCTYPE_SYSTEM_IDENTIFIER_DOUBLE_QUOTED);
+			break;
+		case '\'':
+			doctype.system_identifier = U"";
+			switchToState(DOCTYPE_SYSTEM_IDENTIFIER_SINGLE_QUOTED);
+			break;
+		case '>':
+			emitParseError();
+			doctype.force_quirks = true;
+			switchToState(DATA);
+			emit(doctype);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			doctype.force_quirks = true;
+			emit(doctype);
+			unconsume();
+			break;
 		default:
+			emitParseError();
+			doctype.force_quirks = true;
+			switchToState(BOGUS_DOCTYPE);
 			break;
 	}
 }
@@ -1793,7 +1881,28 @@ void Tokenizer::beforeDOCTYPESystemIdentifierState() {
 // Section 8.2.4.64
 void Tokenizer::DOCTYPESystemIdentifierDoubleQuotedState() {
 	switch (char32_t buf = consume()) {
+		case '"':
+			switchToState(AFTER_DOCTYPE_SYSTEM_IDENTIFIER);
+			break;
+		case '\0':
+			emitParseError();
+			doctype.system_identifier.push_back(U'\U0000FFFD');
+			break;
+		case '>':
+			emitParseError();
+			doctype.force_quirks = true;
+			switchToState(DATA);
+			emit(doctype);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			doctype.force_quirks = true;
+			emit(doctype);
+			unconsume();
+			break;
 		default:
+			doctype.system_identifier.push_back(buf);
 			break;
 	}
 }
@@ -1801,22 +1910,69 @@ void Tokenizer::DOCTYPESystemIdentifierDoubleQuotedState() {
 // Section 8.2.4.65
 void Tokenizer::DOCTYPESystemIdentifierSingleQuotedState() {
 	switch (char32_t buf = consume()) {
+		case '\'':
+			switchToState(AFTER_DOCTYPE_SYSTEM_IDENTIFIER);
+			break;
+		case '\0':
+			emitParseError();
+			doctype.system_identifier.push_back(U'\U0000FFFD');
+			break;
+		case '>':
+			emitParseError();
+			doctype.force_quirks = true;
+			switchToState(DATA);
+			emit(doctype);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			doctype.force_quirks = true;
+			emit(doctype);
+			unconsume();
+			break;
 		default:
+			doctype.system_identifier.push_back(buf);
 			break;
 	}
 }
 
 // Section 8.2.4.66
 void Tokenizer::afterDOCTYPESystemIdentifierState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '\t':
+		case '\n':
+		case '\f':
+		case ' ':
+			break;
+		case '>':
+			switchToState(DATA);
+			break;
+		case EOF32:
+			emitParseError();
+			switchToState(DATA);
+			doctype.force_quirks = true;
+			emit(doctype);
+			unconsume();
+			break;
 		default:
+			emitParseError();
+			switchToState(BOGUS_DOCTYPE);
 			break;
 	}
 }
 
 // Section 8.2.4.67
 void Tokenizer::bogusDOCTYPEState() {
-	switch (char32_t buf = consume()) {
+	switch (consume()) {
+		case '>':
+			switchToState(DATA);
+			emit(doctype);
+			break;
+		case EOF32:
+			switchToState(DATA);
+			emit(doctype);
+			unconsume();
+			break;
 		default:
 			break;
 	}
@@ -1824,9 +1980,24 @@ void Tokenizer::bogusDOCTYPEState() {
 
 // Section 8.2.4.68
 void Tokenizer::CDATASectionState() {
-	switch (char32_t buf = consume()) {
-		default:
+	std::u32string characters;
+	switchToState(DATA);
+	while(std::u32string buf = consume()+peek(2)) {
+		if(buf == U"]]>") {
+			consume(2);
+			for(auto& i : characters) {
+				emit(CharacterToken(i));
+			}
 			break;
+		} else if (buf.front() == EOF32) {
+			for(auto& i : characters) {
+				emit(CharacterToken(i));
+			}
+			unconsume();
+			break;
+		} else {
+			characters.push_back(buf.front());
+		}
 	}
 }
 
