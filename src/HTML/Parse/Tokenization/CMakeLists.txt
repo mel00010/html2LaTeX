@@ -1,11 +1,11 @@
 add_library(tokenization STATIC "")
 target_sources(tokenization
 	PRIVATE
-		ConsumeCharacterReference.cpp
+		ConsumeCharacterReference.tpp
 		${CMAKE_CURRENT_BINARY_DIR}/CharacterReferences.hpp
-		TokenizerStates.cpp
-		Tokenize.cpp
-		TokenizerUtil.cpp
+		TokenizerStates.tpp
+		Tokenize.tpp
+		TokenizerUtil.tpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/Tokenizer.hpp		
 )

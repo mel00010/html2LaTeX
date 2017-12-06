@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Tokenize.cpp
+ * Tokenize.tpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,8 +18,6 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include "Tokenizer.hpp"
-
 #include "TokenizationTypes.hpp"
 
 #include <list>
@@ -29,7 +27,7 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-void Tokenizer::tokenize() {
+template <class T> void Tokenizer<T>::tokenize() {
 	switchToState(DATA);
 	while (pos < string.length()) {
 		switch (state) {
