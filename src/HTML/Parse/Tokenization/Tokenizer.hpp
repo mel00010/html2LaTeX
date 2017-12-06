@@ -51,7 +51,7 @@ class Tokenizer {
 		void tokenize();
 
 	public:
-		inline State getCurrentState() {
+		inline State getCurrentState() const {
 			return state;
 		};
 		inline std::stack<CharacterToken>& getCharTokenStack() {
@@ -117,7 +117,7 @@ class Tokenizer {
 		}
 
 		/* Implemented in TokenizerStates.tpp */
-	private:
+	public:
 		void dataState(); // Section 8.2.4.1
 		void characterReferenceInDataState(); // Section 8.2.4.2
 		void RCDATAState(); // Section 8.2.4.3

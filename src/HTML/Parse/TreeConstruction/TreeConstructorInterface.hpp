@@ -28,7 +28,8 @@ namespace TreeConstruction {
 
 class TreeConstructor {
 	public:
-		void dispatch(Tokenization::Token token);
+		void dispatch(const Tokenization::Token& token);
+		void dispatchParseError(const ParseError& error);
 };
 
 } /* namespace TreeConstruction */

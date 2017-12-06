@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CharacterReference_test.cpp
+ * ConsumeCharacterReference_test.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -32,7 +32,7 @@
 #define EXPECT_NO_TOKENS(test_string, expected_position) \
 	{ \
 		MockTreeConstructor tree_constructor; \
-		Tokenizer tokenizer(test_string, 1, DATA, tree_constructor); \
+		Tokenizer<MockTreeConstructor> tokenizer(test_string, 1, DATA, tree_constructor); \
 		EXPECT_EQ(0u, tokenizer.consumeCharacterReference()); \
 		std::stack<CharacterToken>& stack = tokenizer.getCharTokenStack(); \
 		EXPECT_TRUE(stack.empty()); \
@@ -42,7 +42,7 @@
 #define EXPECT_ONE_CHARACTER_TOKEN(first_character, test_string, expected_position) \
 	{ \
 		MockTreeConstructor tree_constructor; \
-		Tokenizer tokenizer(test_string, 1, DATA, tree_constructor); \
+		Tokenizer<MockTreeConstructor> tokenizer(test_string, 1, DATA, tree_constructor); \
 		EXPECT_EQ(1u, tokenizer.consumeCharacterReference()); \
 		std::stack<CharacterToken>& stack = tokenizer.getCharTokenStack(); \
 		EXPECT_EQ((char32_t) first_character, tokenizer.pop(stack).data); \
@@ -53,7 +53,7 @@
 #define EXPECT_TWO_CHARACTER_TOKENS(first_character, second_character, test_string, expected_position) \
 	{ \
 		MockTreeConstructor tree_constructor; \
-		Tokenizer tokenizer(test_string, 1, DATA, tree_constructor); \
+		Tokenizer<MockTreeConstructor> tokenizer(test_string, 1, DATA, tree_constructor); \
 		EXPECT_EQ(2u, tokenizer.consumeCharacterReference()); \
 		std::stack<CharacterToken>& stack = tokenizer.getCharTokenStack(); \
 		EXPECT_EQ((char32_t) first_character, tokenizer.pop(stack).data); \

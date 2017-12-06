@@ -40,6 +40,7 @@ template <class T> void Tokenizer<T>::dataState() {
 			switchToState(TAG_OPEN);
 			break;
 		case '\0':
+			emitParseError();
 			emit(CharacterToken(buf));
 			break;
 		case EOF32:
@@ -78,6 +79,7 @@ template <class T> void Tokenizer<T>::RCDATAState() {
 			switchToState(RCDATA_LESS_THAN_SIGN);
 			break;
 		case '\0':
+			emitParseError();
 			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
@@ -116,6 +118,7 @@ template <class T> void Tokenizer<T>::RAWTEXTState() {
 			switchToState(RAWTEXT_LESS_THAN_SIGN);
 			break;
 		case '\0':
+			emitParseError();
 			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
@@ -134,6 +137,7 @@ template <class T> void Tokenizer<T>::scriptDataState() {
 			switchToState(SCRIPT_DATA_LESS_THAN_SIGN);
 			break;
 		case '\0':
+			emitParseError();
 			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
@@ -149,6 +153,7 @@ template <class T> void Tokenizer<T>::scriptDataState() {
 template <class T> void Tokenizer<T>::plainTextState() {
 	switch (char32_t buf = consume()) {
 		case '\0':
+			emitParseError();
 			emit(CharacterToken(U'\U0000FFFD'));
 			break;
 		case EOF32:
@@ -180,9 +185,11 @@ template <class T> void Tokenizer<T>::tagOpenState() {
 			switchToState(TAG_NAME);
 			break;
 		case '?':
+			emitParseError();
 			switchToState(BOGUS_COMMENT);
 			break;
 		default:
+			emitParseError();
 			switchToState(DATA);
 			emit(CharacterToken('<'));
 			break;
@@ -203,15 +210,18 @@ template <class T> void Tokenizer<T>::endTagOpenState() {
 			switchToState(TAG_NAME);
 			break;
 		case '>':
+			emitParseError();
 			switchToState(DATA);
 			break;
 		case EOF32:
+			emitParseError();
 			switchToState(DATA);
 			emit(CharacterToken('>'));
 			emit(CharacterToken('/'));
 			unconsume();
 			break;
 		default:
+			emitParseError();
 			switchToState(BOGUS_COMMENT);
 			break;
 	}
@@ -233,9 +243,11 @@ template <class T> void Tokenizer<T>::tagNameState() {
 			tag.tag_name.push_back(toLower(buf));
 			break;
 		case '\0':
+			emitParseError();
 			tag.tag_name.push_back(U'\U0000FFFD');
 			break;
 		case EOF32:
+			emitParseError();
 			switchToState(DATA);
 			unconsume();
 			break;

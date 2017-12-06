@@ -18,6 +18,8 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+#include "Tokenizer.hpp"
+
 #include "TokenizationTypes.hpp"
 
 #include <list>

@@ -18,7 +18,7 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-//#include "Tokenizer.hpp"
+#include "Tokenizer.hpp"
 
 #include <HTML/Microsyntaxes/ASCII/ASCII.hpp>
 
@@ -82,6 +82,7 @@ template <class T> void Tokenizer<T>::emit(const Token& token) {
 	tree_constructor.dispatch(token);
 }
 template <class T> void Tokenizer<T>::emitParseError(__attribute__ ((unused)) const ParseError& error) {
+	tree_constructor.dispatchParseError(error);
 }
 
 

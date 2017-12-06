@@ -194,6 +194,9 @@ class Token {
 		Token(const EOFToken& token) :
 				type(TokenType::END_OF_FILE), token(token) {
 		}
+		Token(const Token& token) :
+				type(token.type), token(token.token) {
+		}
 		Token() :
 				type(TokenType::NO_TOKEN), token(NoToken()) {
 		}

@@ -27,6 +27,9 @@ namespace TreeConstruction {
 void TreeConstructor::dispatch(Tokenization::Token token) {
 
 }
+void dispatchParseError(ParseError error) {
+
+}
 
 } /* namespace TreeConstruction */
 } /* namespace Parse */
