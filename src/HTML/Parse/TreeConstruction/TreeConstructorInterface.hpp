@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Dispatch.hpp
+ * TreeConstructor.hpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_PARSE_TREECONSTRUCTION_DISPATCH_HPP_
-#define SRC_HTML_PARSE_TREECONSTRUCTION_DISPATCH_HPP_
+#ifndef TEST_HTML_PARSE_TREECONSTRUCTION_TREECONSTRUCTIONINTERFACE_HPP_
+#define TEST_HTML_PARSE_TREECONSTRUCTION_TREECONSTRUCTIONINTERFACE_HPP_
 
 #include <HTML/Parse/Tokenization/TokenizationTypes.hpp>
 
@@ -26,7 +26,10 @@ namespace HTML {
 namespace Parse {
 namespace TreeConstruction {
 
-void dispatch(Tokenization::Token token);
+class TreeConstructor {
+	public:
+		void dispatch(Tokenization::Token token);
+};
 
 } /* namespace TreeConstruction */
 } /* namespace Parse */
@@ -34,4 +37,4 @@ void dispatch(Tokenization::Token token);
 
 
 
-#endif /* SRC_HTML_PARSE_TREECONSTRUCTION_DISPATCH_HPP_ */
+#endif /* TEST_HTML_PARSE_TREECONSTRUCTION_TREECONSTRUCTIONINTERFACE_HPP_ */
