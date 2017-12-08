@@ -31,7 +31,7 @@ namespace Tokenization {
 
 template <class T> void Tokenizer<T>::tokenize() {
 	switchToState(DATA);
-	while (pos < string.length()) {
+	while (pos <= string.length()) {
 		switch (state) {
 			case DATA: // Section 8.2.4.1
 				dataState();
@@ -43,7 +43,7 @@ template <class T> void Tokenizer<T>::tokenize() {
 				RCDATAState();
 				break;
 			case CHARACTER_REFERENCE_IN_RCDATA: // Section 8.2.4.4
-				characterReferenceINRCDATAState();
+				characterReferenceInRCDATAState();
 				break;
 			case RAWTEXT: // Section 8.2.4.5
 				RAWTEXTState();

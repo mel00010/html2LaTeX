@@ -121,7 +121,7 @@ class Tokenizer {
 		void dataState(); // Section 8.2.4.1
 		void characterReferenceInDataState(); // Section 8.2.4.2
 		void RCDATAState(); // Section 8.2.4.3
-		void characterReferenceINRCDATAState(); // Section 8.2.4.4
+		void characterReferenceInRCDATAState(); // Section 8.2.4.4
 		void RAWTEXTState(); // Section 8.2.4.5
 		void scriptDataState(); // Section 8.2.4.6
 		void plainTextState(); // Section 8.2.4.7

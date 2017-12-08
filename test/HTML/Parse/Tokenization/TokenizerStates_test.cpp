@@ -67,27 +67,43 @@ TEST(HTML_Parse_Tokenization_States, dataState) {
 }
 
 TEST(HTML_Parse_Tokenization_States, characterReferenceInDataState) {
-
+	TEST_STATE_FUNCTION_1(characterReferenceInDataState, U"\t"s, CHARACTER_REFERENCE_IN_DATA, DATA, CharacterToken('&'));
+	TEST_STATE_FUNCTION_1(characterReferenceInDataState, U"Aacute;"s, CHARACTER_REFERENCE_IN_DATA, DATA, CharacterToken(U'\U000000C1'));
+	TEST_STATE_FUNCTION_2(characterReferenceInDataState, U"acE;"s, CHARACTER_REFERENCE_IN_DATA, DATA, CharacterToken(U'\U0000223E'), CharacterToken(U'\U00000333'));
 }
 
 TEST(HTML_Parse_Tokenization_States, RCDATAState) {
-
+	TEST_STATE_FUNCTION_0(RCDATAState, U"&"s, RCDATA, CHARACTER_REFERENCE_IN_RCDATA);
+	TEST_STATE_FUNCTION_0(RCDATAState, U"<"s, RCDATA, RCDATA_LESS_THAN_SIGN);
+	TEST_STATE_FUNCTION_PARSE_ERROR_1(RCDATAState, U"\0"s, RCDATA, RCDATA, CharacterToken(U'\U0000FFFD'));
+	TEST_STATE_FUNCTION_1(RCDATAState, U""s, RCDATA, RCDATA, EOFToken());
+	TEST_STATE_FUNCTION_1(RCDATAState, U"\U12345678"s, RCDATA, RCDATA, CharacterToken(U'\U12345678'));
 }
 
-TEST(HTML_Parse_Tokenization_States, characterReferenceINRCDATAState) {
-
+TEST(HTML_Parse_Tokenization_States, characterReferenceInRCDATAState) {
+	TEST_STATE_FUNCTION_1(characterReferenceInRCDATAState, U"\t"s, CHARACTER_REFERENCE_IN_RCDATA, RCDATA, CharacterToken('&'));
+	TEST_STATE_FUNCTION_1(characterReferenceInRCDATAState, U"Aacute;"s, CHARACTER_REFERENCE_IN_RCDATA, RCDATA, CharacterToken(U'\U000000C1'));
+	TEST_STATE_FUNCTION_2(characterReferenceInRCDATAState, U"acE;"s, CHARACTER_REFERENCE_IN_RCDATA, RCDATA, CharacterToken(U'\U0000223E'), CharacterToken(U'\U00000333'));
 }
 
 TEST(HTML_Parse_Tokenization_States, RAWTEXTState) {
-
+	TEST_STATE_FUNCTION_0(RAWTEXTState, U"<"s, RAWTEXT, RAWTEXT_LESS_THAN_SIGN);
+	TEST_STATE_FUNCTION_PARSE_ERROR_1(RAWTEXTState, U"\0"s, RAWTEXT, RAWTEXT, CharacterToken(U'\U0000FFFD'));
+	TEST_STATE_FUNCTION_1(RAWTEXTState, U""s, RAWTEXT, RAWTEXT, EOFToken());
+	TEST_STATE_FUNCTION_1(RAWTEXTState, U"\U12345678"s, RAWTEXT, RAWTEXT, CharacterToken(U'\U12345678'));
 }
 
 TEST(HTML_Parse_Tokenization_States, scriptDataState) {
-
+	TEST_STATE_FUNCTION_0(scriptDataState, U"<", SCRIPT_DATA, SCRIPT_DATA_LESS_THAN_SIGN);
+	TEST_STATE_FUNCTION_PARSE_ERROR_1(scriptDataState, U"\0"s, SCRIPT_DATA, SCRIPT_DATA, CharacterToken(U'\U0000FFFD'));
+	TEST_STATE_FUNCTION_1(scriptDataState, U""s, SCRIPT_DATA, SCRIPT_DATA, EOFToken());
+	TEST_STATE_FUNCTION_1(scriptDataState, U"\U12345678"s, SCRIPT_DATA, SCRIPT_DATA, CharacterToken(U'\U12345678'));
 }
 
 TEST(HTML_Parse_Tokenization_States, plainTextState) {
-
+	TEST_STATE_FUNCTION_PARSE_ERROR_1(plainTextState, U"\0"s, PLAINTEXT, PLAINTEXT, CharacterToken(U'\U0000FFFD'));
+	TEST_STATE_FUNCTION_1(plainTextState, U""s, PLAINTEXT, PLAINTEXT, EOFToken());
+	TEST_STATE_FUNCTION_1(plainTextState, U"\U12345678"s, PLAINTEXT, PLAINTEXT, CharacterToken(U'\U12345678'));
 }
 
 TEST(HTML_Parse_Tokenization_States, tagOpenState) {

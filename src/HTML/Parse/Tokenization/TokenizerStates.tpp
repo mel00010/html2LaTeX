@@ -92,7 +92,7 @@ template <class T> void Tokenizer<T>::RCDATAState() {
 }
 
 // Section 8.2.4.4
-template <class T> void Tokenizer<T>::characterReferenceINRCDATAState() {
+template <class T> void Tokenizer<T>::characterReferenceInRCDATAState() {
 	switchToState(RCDATA);
 	switch(consumeCharacterReference()) {
 		case 2: {
