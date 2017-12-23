@@ -1,11 +1,11 @@
-add_library(microsyntaxes_test INTERFACE)
+add_library(Microsyntaxes_test INTERFACE)
 
-target_link_libraries(microsyntaxes_test
+target_link_libraries(Microsyntaxes_test
 	INTERFACE
-		microsyntaxes
-		ascii_test
-		dates_test
-		numbers_test
+		Microsyntaxes
+		ASCII_test
+		Dates_test
+		Numbers_test
 )
 add_subdirectory(ASCII)
 add_subdirectory(Dates)

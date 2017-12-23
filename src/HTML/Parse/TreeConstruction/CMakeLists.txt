@@ -1,14 +1,16 @@
-add_library(treeconstruction STATIC "")
-target_sources(treeconstruction
+add_library(TreeConstruction STATIC "")
+target_sources(TreeConstruction
 	PRIVATE
 		TreeConstructor.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/TreeConstructor.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TreeConstructorInterface.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/TreeConstructionTypes.hpp
 )
-target_link_libraries(treeconstruction
+target_link_libraries(TreeConstruction
 	PUBLIC
-		ascii
-		htmltypes
-		tokenization_types
+		ASCII
+		Elements
+		HTML_types
+		Tokenization_types
 )

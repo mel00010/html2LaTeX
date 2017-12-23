@@ -10,8 +10,8 @@ target_sources(html2LaTeX
 
 target_link_libraries (html2LaTeX
 	boost_program_options
-	html
-	latex
+	HTML
+	LaTeX
 	pthread
 )
 

@@ -1,5 +1,5 @@
-add_library(rawtext STATIC "")
-target_sources(rawtext
+add_library(RawText STATIC "")
+target_sources(RawText
 	PRIVATE
 		RawText.cpp
 		Script.cpp
@@ -9,7 +9,7 @@ target_sources(rawtext
 		${CMAKE_CURRENT_SOURCE_DIR}/Script.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Style.hpp
 )
-target_link_libraries(rawtext
+target_link_libraries(RawText
 	PUBLIC
-		htmltypes
+		HTML_types
 )

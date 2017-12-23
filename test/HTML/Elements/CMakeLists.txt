@@ -1,22 +1,22 @@
-add_library(elements_test INTERFACE)
+add_library(Elements_test INTERFACE)
 
-target_sources(elements_test
+target_sources(Elements_test
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/Element_test.cpp
 )
-target_link_libraries(elements_test
+target_link_libraries(Elements_test
 	INTERFACE
-		elements
-		escapablerawtext
-		escapablerawtext_test
-		foreign
-		foreign_test
-		normal
-		normal_test
-		rawtext
-		rawtext_test
-		void
-		void_test
+		Elements
+		EscapableRawText
+		EscapableRawText_test
+		Foreign
+		Foreign_test
+		Normal
+		Normal_test
+		RawText
+		RawText_test
+		Void
+		Void_test
 )
 add_subdirectory(EscapableRawText)
 add_subdirectory(Foreign)

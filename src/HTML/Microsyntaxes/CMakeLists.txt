@@ -1,13 +1,13 @@
-add_library(microsyntaxes STATIC "")
+add_library(Microsyntaxes STATIC "")
 
 #target_sources(microsyntaxes
 #)
 
-target_link_libraries(microsyntaxes
+target_link_libraries(Microsyntaxes
 	PUBLIC
-		ascii
-		dates
-		numbers
+		ASCII
+		Dates
+		Numbers
 )
 
 #target_include_directories(microsyntaxes

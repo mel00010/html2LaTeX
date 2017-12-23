@@ -1,5 +1,5 @@
-add_library(latex STATIC "")
-target_sources(latex
+add_library(LaTeX STATIC "")
+target_sources(LaTeX
 	PRIVATE
 		${CMAKE_CURRENT_BINARY_DIR}/UnicodeToLaTeXConversionArray.ipp
 		GenerateLaTeX.cpp
@@ -20,7 +20,7 @@ add_custom_command(OUTPUT UnicodeToLaTeXConversionArray.ipp
     				${CMAKE_CURRENT_BINARY_DIR}/UnicodeToLaTeXConversionArray.ipp
     DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/UnicodeToLaTeXConversionArray.json
 )
-target_include_directories(latex 
+target_include_directories(LaTeX 
 	PUBLIC
 		${CMAKE_CURRENT_BINARY_DIR}
 )

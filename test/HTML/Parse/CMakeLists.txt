@@ -1,6 +1,6 @@
-add_library(parse_test INTERFACE)
+add_library(Parse_test INTERFACE)
 
-target_sources(parse_test
+target_sources(Parse_test
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/DetermineCharEncoding_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MagicString_test.cpp
@@ -8,12 +8,12 @@ target_sources(parse_test
 		${CMAKE_CURRENT_SOURCE_DIR}/ParseTypes_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ParseUnicode_test.cpp
 )
-target_link_libraries(parse_test
+target_link_libraries(Parse_test
 	INTERFACE
-		parse
-		htmltypes
-		tokenization_test
-		treeconstruction_test
+		Parse
+		HTML_types
+		Tokenization_test
+		TreeConstruction_test
 )
 
 add_subdirectory(Tokenization)

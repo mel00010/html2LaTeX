@@ -66,10 +66,10 @@ target_include_directories(tests
 )
 
 target_link_libraries(tests
-	html_test
-	latex_test
-	html
-	latex
+	HTML_test
+	LaTeX_test
+	HTML
+	LaTeX
 	gtest
 	gmock
 	gmock_main

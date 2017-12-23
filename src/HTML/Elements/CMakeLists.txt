@@ -1,18 +1,18 @@
-add_library(elements STATIC "")
-target_sources(elements
+add_library(Elements STATIC "")
+target_sources(Elements
 	PRIVATE
 		Element.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/Element.hpp
 )
-target_link_libraries(elements
+target_link_libraries(Elements
 	PUBLIC
-		escapablerawtext
-		foreign
-		htmltypes
-		normal
-		rawtext
-		void
+		EscapableRawText
+		Foreign
+		HTML_types
+		Normal
+		RawText
+		Void
 )
 add_subdirectory(EscapableRawText)
 add_subdirectory(Foreign)

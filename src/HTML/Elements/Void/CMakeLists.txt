@@ -1,5 +1,5 @@
-add_library(void STATIC "")
-target_sources(void
+add_library(Void STATIC "")
+target_sources(Void
 	PRIVATE
 		Area.cpp
 		Base.cpp
@@ -36,7 +36,7 @@ target_sources(void
 		${CMAKE_CURRENT_SOURCE_DIR}/Wbr.hpp
 		
 )
-target_link_libraries(void
+target_link_libraries(Void
 	PUBLIC
-		htmltypes
+		HTML_types
 )

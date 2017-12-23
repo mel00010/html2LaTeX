@@ -1,6 +1,6 @@
-add_library(dates STATIC "")
+add_library(Dates STATIC "")
 
-target_sources(dates
+target_sources(Dates
 	PRIVATE
 		Dates.cpp
 		Durations.cpp
@@ -24,6 +24,6 @@ target_sources(dates
 		${CMAKE_CURRENT_SOURCE_DIR}/Weeks.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/YearlessDates.hpp
 )
-target_link_libraries(dates
+target_link_libraries(Dates
 	PUBLIC
 )

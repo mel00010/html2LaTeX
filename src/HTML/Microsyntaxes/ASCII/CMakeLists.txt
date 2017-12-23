@@ -1,12 +1,12 @@
-add_library(ascii STATIC "")
+add_library(ASCII STATIC "")
 
-target_sources(ascii
+target_sources(ASCII
 	PRIVATE
 		ASCII.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ASCII.hpp
 )
-target_link_libraries(ascii
+target_link_libraries(ASCII
 	PUBLIC
-		htmltypes
+		HTML_types
 )

@@ -1,6 +1,6 @@
-add_library(parse STATIC "")
+add_library(Parse STATIC "")
 
-target_sources(parse
+target_sources(Parse
 	PRIVATE
 		DetermineCharEncoding.cpp
 		MagicString.cpp
@@ -14,12 +14,12 @@ target_sources(parse
 		${CMAKE_CURRENT_SOURCE_DIR}/ParseTypes.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ParseUnicode.hpp
 )
-target_link_libraries(parse
+target_link_libraries(Parse
 	PUBLIC
-		ascii
-		htmltypes
-		tokenization
-		treeconstruction
+		ASCII
+		HTML_types
+		Tokenization
+		TreeConstruction
 )
 add_subdirectory(Tokenization)
 add_subdirectory(TreeConstruction)

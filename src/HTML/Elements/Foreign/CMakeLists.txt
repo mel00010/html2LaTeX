@@ -1,11 +1,11 @@
-add_library(foreign STATIC "")
-target_sources(foreign
+add_library(Foreign STATIC "")
+target_sources(Foreign
 	PRIVATE
 		Foreign.cpp
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/Foreign.hpp
 )
-target_link_libraries(foreign
+target_link_libraries(Foreign
 	PUBLIC
-		htmltypes
+		HTML_types
 )

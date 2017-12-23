@@ -1,6 +1,6 @@
-add_library(numbers_test INTERFACE)
+add_library(Numbers_test INTERFACE)
 
-target_sources(numbers_test
+target_sources(Numbers_test
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/Dimension_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/FloatingPoint_test.cpp
@@ -11,7 +11,7 @@ target_sources(numbers_test
 		${CMAKE_CURRENT_SOURCE_DIR}/NumbersMisc_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/SignedInteger_test.cpp
 )
-target_link_libraries(numbers_test
+target_link_libraries(Numbers_test
 	INTERFACE
-		numbers
+		Numbers
 )

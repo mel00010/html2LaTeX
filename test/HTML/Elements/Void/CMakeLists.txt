@@ -1,6 +1,6 @@
-add_library(void_test INTERFACE)
+add_library(Void_test INTERFACE)
 
-target_sources(void_test
+target_sources(Void_test
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/Area_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Base_test.cpp
@@ -19,7 +19,7 @@ target_sources(void_test
 		${CMAKE_CURRENT_SOURCE_DIR}/Void_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Wbr_test.cpp
 )
-target_link_libraries(void_test
+target_link_libraries(Void_test
 	INTERFACE
-		void
+		Void
 )

@@ -1,6 +1,6 @@
-add_library(normal_test INTERFACE)
+add_library(Normal_test INTERFACE)
 
-target_sources(normal_test
+target_sources(Normal_test
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/A_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Abbr_test.cpp
@@ -92,7 +92,7 @@ target_sources(normal_test
 		${CMAKE_CURRENT_SOURCE_DIR}/Var_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Video_test.cpp
 )
-target_link_libraries(normal_test
+target_link_libraries(Normal_test
 	INTERFACE
-		normal
+		Normal
 )

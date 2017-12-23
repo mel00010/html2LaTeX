@@ -1,5 +1,5 @@
-add_library(normal STATIC "")
-target_sources(normal
+add_library(Normal STATIC "")
+target_sources(Normal
 	PRIVATE
 		A.cpp
 		Abbr.cpp
@@ -181,7 +181,7 @@ target_sources(normal
 		${CMAKE_CURRENT_SOURCE_DIR}/Var.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Video.hpp
 )
-target_link_libraries(normal
+target_link_libraries(Normal
 	PUBLIC
-		htmltypes
+		HTML_types
 )

@@ -1,6 +1,6 @@
-add_library(numbers STATIC "")
+add_library(Numbers STATIC "")
 
-target_sources(numbers
+target_sources(Numbers
 	PRIVATE
 		Dimension.cpp
 		FloatingPoint.cpp
@@ -20,8 +20,8 @@ target_sources(numbers
 		${CMAKE_CURRENT_SOURCE_DIR}/NumbersTypes.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/SignedInteger.hpp
 )
-target_link_libraries(numbers
+target_link_libraries(Numbers
 	PUBLIC
-		ascii
-		htmltypes
+		ASCII
+		HTML_types
 )

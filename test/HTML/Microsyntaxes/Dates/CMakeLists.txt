@@ -1,6 +1,6 @@
-add_library(dates_test INTERFACE)
+add_library(Dates_test INTERFACE)
 
-target_sources(dates_test
+target_sources(Dates_test
 	INTERFACE
 		${CMAKE_CURRENT_SOURCE_DIR}/Dates_test.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Durations_test.cpp
@@ -14,7 +14,7 @@ target_sources(dates_test
 		${CMAKE_CURRENT_SOURCE_DIR}/YearlessDates_test.cpp
 	
 )
-target_link_libraries(dates_test
+target_link_libraries(Dates_test
 	INTERFACE
-		dates
+		Dates
 )
