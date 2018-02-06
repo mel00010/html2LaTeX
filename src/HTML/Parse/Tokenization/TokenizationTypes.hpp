@@ -39,14 +39,27 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-class TokenBase {
+class Token;
+
+enum class TokenType {
+	NO_TOKEN,
+	DOCTYPE,
+	START_TAG,
+	END_TAG,
+	COMMENT,
+	CHARACTER,
+	END_OF_FILE
 };
-class DOCTYPEToken: public TokenBase {
+::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type);
+
+
+class DOCTYPEToken {
 	public:
 		explicit DOCTYPEToken(const std::u32string& name = EOF32STRING, const std::u32string& public_identifier = EOF32STRING,
 				const std::u32string& system_identifier = EOF32STRING, const bool& force_quirks = false) :
 				name(name), public_identifier(public_identifier), system_identifier(system_identifier), force_quirks(force_quirks) {
 		}
+		operator Token();
 	public:
 		std::u32string name;
 		std::u32string public_identifier;
@@ -59,7 +72,7 @@ inline bool operator!=(const DOCTYPEToken& lhs, const DOCTYPEToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class TagToken: public TokenBase {
+class TagToken {
 	public:
 		enum class TagType {
 			NONE,
@@ -72,7 +85,7 @@ class TagToken: public TokenBase {
 		explicit TagToken(const TagType& type, const std::u32string& tag_name = U"", const bool& self_closing = false, const std::vector<Attribute>& attributes= {}):
 				type(type), tag_name(tag_name), self_closing(self_closing), attributes(attributes) {
 		}
-
+		operator Token();
 	public:
 		TagType type;
 		std::u32string tag_name;
@@ -88,6 +101,7 @@ class StartTagToken: public TagToken {
 		explicit StartTagToken(const std::u32string& tag_name, const bool& self_closing, const std::vector<Attribute>& attributes) :
 				TagToken(TagType::START, tag_name, self_closing, attributes) {
 		}
+		operator Token();
 };
 ::std::ostream& operator<<(::std::ostream& os, const StartTagToken& start_tag_Token);
 bool operator==(const StartTagToken& lhs, const StartTagToken& rhs);
@@ -103,6 +117,7 @@ class EndTagToken: public TagToken {
 		explicit EndTagToken(const std::u32string& tag_name, const bool& self_closing, const std::vector<Attribute>& attributes) :
 				TagToken(TagType::END, tag_name, self_closing, attributes) {
 		}
+		operator Token();
 };
 ::std::ostream& operator<<(::std::ostream& os, const EndTagToken& end_tag_Token);
 bool operator==(const EndTagToken& lhs, const EndTagToken& rhs);
@@ -110,12 +125,12 @@ inline bool operator!=(const EndTagToken& lhs, const EndTagToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class CharacterToken: public TokenBase {
+class CharacterToken {
 	public:
 		CharacterToken(const char32_t& data = EOF32) :
 				data(data) {
 		}
-
+		operator Token();
 	public:
 		char32_t data;
 };
@@ -125,10 +140,10 @@ inline bool operator!=(const CharacterToken& lhs, const CharacterToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class CommentToken: public TokenBase {
+class CommentToken {
 	public:
 		CommentToken(const std::u32string& data = U"") : data(data) {}
-
+		operator Token();
 	public:
 		std::u32string data;
 	};
@@ -138,7 +153,9 @@ inline bool operator!=(const CommentToken& lhs, const CommentToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class EOFToken: public TokenBase {
+class EOFToken {
+	public:
+		operator Token();
 	public:
 		static constexpr char string[] = "\\(EOF)";
 };
@@ -148,7 +165,9 @@ inline bool operator!=(const EOFToken& lhs, const EOFToken& rhs) {
 	return !(lhs == rhs);
 }
 
-class NoToken: public TokenBase {
+class NoToken {
+	public:
+		operator Token();
 	public:
 		static constexpr char string[] = "No Token!";
 };
@@ -157,17 +176,6 @@ bool operator==(const NoToken& lhs, const NoToken& rhs);
 inline bool operator!=(const NoToken& lhs, const NoToken& rhs) {
 	return !(lhs == rhs);
 }
-
-enum class TokenType {
-	NO_TOKEN,
-	DOCTYPE,
-	START_TAG,
-	END_TAG,
-	COMMENT,
-	CHARACTER,
-	END_OF_FILE
-};
-::std::ostream& operator<<(::std::ostream& os, const TokenType& token_type);
 
 typedef std::variant<NoToken, DOCTYPEToken, StartTagToken, EndTagToken, CharacterToken, CommentToken, EOFToken> TokenVariant;
 
@@ -197,6 +205,30 @@ class Token {
 		Token(const Token& token) :
 				type(token.type), token(token.token) {
 		}
+		Token(NoToken* token) :
+				type(TokenType::NO_TOKEN), token(*token) {
+		}
+		Token(DOCTYPEToken* token) :
+				type(TokenType::DOCTYPE), token(*token) {
+		}
+		Token(StartTagToken* token) :
+				type(TokenType::START_TAG), token(*token) {
+		}
+		Token(EndTagToken* token) :
+				type(TokenType::END_TAG), token(*token) {
+		}
+		Token(CommentToken* token) :
+				type(TokenType::COMMENT), token(*token) {
+		}
+		Token(CharacterToken* token) :
+				type(TokenType::CHARACTER), token(*token) {
+		}
+		Token(EOFToken* token) :
+				type(TokenType::END_OF_FILE), token(*token) {
+		}
+		Token(const TokenType& type, const TokenVariant& token) : type(type), token(token) {
+
+		}
 		Token() :
 				type(TokenType::NO_TOKEN), token(NoToken()) {
 		}
@@ -210,14 +242,34 @@ inline bool operator!=(const Token& lhs, const Token& rhs) {
 	return !(lhs == rhs);
 }
 
-struct TokenPair {
-		Token first;
-		Token second;
-};
-::std::ostream& operator<<(::std::ostream& os, const TokenPair& tokens);
-bool operator==(const TokenPair& lhs, const TokenPair& rhs);
-inline bool operator!=(const TokenPair& lhs, const TokenPair& rhs) {
-	return !(lhs == rhs);
+inline DOCTYPEToken::operator Token() {
+	return Token(*this);
+}
+inline TagToken::operator Token() {
+	if(type == TagType::START) {
+		return Token(*static_cast<StartTagToken*>(this));
+	} else if(type == TagType::END) {
+		return Token(*static_cast<EndTagToken*>(this));
+	}
+	return Token();
+}
+inline StartTagToken::operator Token() {
+	return Token(this);
+}
+inline EndTagToken::operator Token() {
+	return Token(this);
+}
+inline CharacterToken::operator Token() {
+	return Token(this);
+}
+inline CommentToken::operator Token() {
+	return Token(this);
+}
+inline EOFToken::operator Token() {
+	return Token(this);
+}
+inline NoToken::operator Token() {
+	return Token(this);
 }
 
 /**

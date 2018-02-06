@@ -1,5 +1,5 @@
 /*******************************************************************************
- * ConsumeCharacterReference.tpp
+ * ConsumeCharacterReference.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,7 +18,7 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-//#include "Tokenizer.hpp"
+#include "Tokenizer.hpp"
 
 #include "TokenizationTypes.hpp"
 
@@ -47,7 +47,7 @@ namespace Parse {
 namespace Tokenization {
 
 // Section 8.2.4.69
-template <class T> size_t Tokenizer<T>::consumeCharacterReference() {
+size_t Tokenizer::consumeCharacterReference() {
 	chars_consumed = 0;
 	if(peek() == additional_allowed_character) {
 		return 0;
@@ -72,7 +72,7 @@ template <class T> size_t Tokenizer<T>::consumeCharacterReference() {
 
 }
 
-template <class T> size_t Tokenizer<T>::consumeCharacterReferenceCodepointHelper() {
+size_t Tokenizer::consumeCharacterReferenceCodepointHelper() {
 	consume();
 
 	bool (*isDigit)(const char32_t&) = &Microsyntaxes::ASCII::isASCIIDigit;
@@ -190,7 +190,7 @@ template <class T> size_t Tokenizer<T>::consumeCharacterReferenceCodepointHelper
 	return 1;
 }
 
-template <class T> size_t Tokenizer<T>::consumeCharacterReferenceNamedCharacterReferenceHelper() {
+size_t Tokenizer::consumeCharacterReferenceNamedCharacterReferenceHelper() {
 	std::u32string characters = peek(std::u32string(std::get<0>(characterReferences.front())).length());
 	for (auto i : characterReferences) {
 		if (characters.find(std::u32string(std::get<0>(i))) == 0) {

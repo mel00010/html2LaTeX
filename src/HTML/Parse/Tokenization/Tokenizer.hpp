@@ -20,7 +20,10 @@
 #ifndef SRC_HTML_PARSE_TOKENIZATION_TOKENIZER_HPP_
 #define SRC_HTML_PARSE_TOKENIZATION_TOKENIZER_HPP_
 
+#include "Tokenizer.hpp"
+
 #include "TokenizationTypes.hpp"
+#include <HTML/Parse/TreeConstruction/TreeConstructorInterface.hpp>
 
 #include <vector>
 #include <string>
@@ -30,18 +33,19 @@ namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
-template <class T>
 class Tokenizer {
 	public:
-		Tokenizer(const std::u32string& string, T& tree_constructor) :
+		using StateFunction = void (HTML::Parse::Tokenization::Tokenizer::*)();
+	public:
+		Tokenizer(const std::u32string& string, TreeConstruction::TreeConstructorInterface& tree_constructor) :
 				string(string), pos(0), state(NULL_STATE), tree_constructor{tree_constructor}, parser_pause_flag(false),
 				script_nesting_level(0) {
 		}
-		Tokenizer(const std::u32string& string, const size_t& pos, T& tree_constructor) :
+		Tokenizer(const std::u32string& string, const size_t& pos, TreeConstruction::TreeConstructorInterface& tree_constructor) :
 				string(string), pos(pos), state(NULL_STATE), tree_constructor{tree_constructor}, parser_pause_flag(false),
 				script_nesting_level(0)	{
 		}
-		Tokenizer(const std::u32string& string, const size_t& pos,  const State& state, T& tree_constructor) :
+		Tokenizer(const std::u32string& string, const size_t& pos, const State& state, TreeConstruction::TreeConstructorInterface& tree_constructor) :
 				string(string), pos(pos), state(state), tree_constructor{tree_constructor}, parser_pause_flag(false),
 				script_nesting_level(0) {
 		}
@@ -49,11 +53,11 @@ class Tokenizer {
 		/* Implemented in Tokenize.tpp */
 	public:
 		void tokenize();
-
+		static StateFunction getStateFunction(const State& state);
 	public:
 		inline State getCurrentState() const {
 			return state;
-		};
+		}
 		inline std::stack<CharacterToken>& getCharTokenStack() {
 			return char_tokens;
 		}
@@ -193,7 +197,7 @@ class Tokenizer {
 
 	private:
 		State state;
-		T& tree_constructor;
+		TreeConstruction::TreeConstructorInterface& tree_constructor;
 
 		bool parser_pause_flag;
 		size_t script_nesting_level;
@@ -218,10 +222,5 @@ class Tokenizer {
 } /* namespace Tokenization */
 } /* namespace Parse */
 } /* namespace HTML */
-
-#include "ConsumeCharacterReference.tpp"
-#include "Tokenize.tpp"
-#include "TokenizerStates.tpp"
-#include "TokenizerUtil.tpp"
 
 #endif /* SRC_HTML_PARSE_TOKENIZATION_TOKENIZER_HPP_ */

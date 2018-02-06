@@ -24,10 +24,10 @@ namespace HTML {
 namespace Parse {
 namespace TreeConstruction {
 
-void TreeConstructor::dispatch(Tokenization::Token token) {
+void TreeConstructor::dispatch(__attribute__ ((unused)) Tokenization::Token token) {
 
 }
-void dispatchParseError(ParseError error) {
+void dispatchParseError(__attribute__ ((unused)) ParseError error) {
 
 }
 

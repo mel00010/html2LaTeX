@@ -26,10 +26,6 @@
 
 #include "HTML/Microsyntaxes/ASCII/ASCII.hpp"
 
-#ifndef DOXYGEN_SHOULD_SKIP_THIS
-#include <gtest/gtest.h>
-#endif /* DOXYGEN_SHOULD_SKIP_THIS */
-
 /**
  * @file  HTML/Parse/MagicString.hpp
  * @brief Holds many constants and magic strings relating to determining the character encoding of a document,

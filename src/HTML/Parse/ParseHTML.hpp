@@ -20,7 +20,6 @@
 #ifndef HTML_PARSE_PARSEHTML_HPP_
 #define HTML_PARSE_PARSEHTML_HPP_
 
-//#include <gtest/gtest.h>
 
 /**
  * @dir src/HTML/Parse

@@ -1,0 +1,41 @@
+add_library(DOM STATIC "")
+target_sources(DOM
+	PUBLIC
+		${CMAKE_CURRENT_SOURCE_DIR}/AbortController.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/AbortSignal.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Attr.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CDataSection.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CharacterData.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ChildNode.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Comment.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CustomEvent.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Document.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DocumentFragment.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DocumentType.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMImplementation.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMString.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMTokenList.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Event.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/EventTarget.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/HTMLCollection.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MutationObserver.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MutationRecord.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/NamedNodeMap.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Node.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/NodeFilter.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/NodeIterator.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/NodeList.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/NonDocumentTypeChildNode.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/NonElementParentNode.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ParentNode.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ProcessingInstruction.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Range.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ShadowRoot.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Slotable.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Text.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/TreeWalker.hpp
+)
+target_link_libraries(DOM
+	PUBLIC	
+)
+set_target_properties(DOM PROPERTIES LINKER_LANGUAGE CXX)

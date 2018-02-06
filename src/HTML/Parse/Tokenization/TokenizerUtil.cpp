@@ -1,5 +1,5 @@
 /*******************************************************************************
- * TokenizerUtil.tpp
+ * TokenizerUtil.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -27,29 +27,29 @@ namespace Parse {
 namespace Tokenization {
 
 
-template <class T> char32_t Tokenizer<T>::consume() {
+char32_t Tokenizer::consume() {
 	chars_consumed++;
 	return getCharacterAtPosition(pos++);
 }
 
-template <class T> std::u32string Tokenizer<T>::consume(const size_t& number_of_chars) {
+std::u32string Tokenizer::consume(const size_t& number_of_chars) {
 	std::u32string buffer = getCharactersAtPosition(pos, number_of_chars);
 	pos += buffer.length();
 	chars_consumed += buffer.length();
 	return buffer;
 }
 
-template <class T> void Tokenizer<T>::emit(const DOCTYPEToken& token) {
+void Tokenizer::emit(const DOCTYPEToken& token) {
 	tree_constructor.dispatch(Token(token));
 }
-template <class T> void Tokenizer<T>::emit(const StartTagToken& token) {
+void Tokenizer::emit(const StartTagToken& token) {
 	prev_start_tag = token;
 	tree_constructor.dispatch(Token(token));
 }
-template <class T> void Tokenizer<T>::emit(const EndTagToken& token) {
+void Tokenizer::emit(const EndTagToken& token) {
 	tree_constructor.dispatch(Token(token));
 }
-template <class T> void Tokenizer<T>::emit(const TagToken& token) {
+void Tokenizer::emit(const TagToken& token) {
 	TagToken buf = token;
 	if(attribute != Attribute() && !discard_attribute) {
 		buf.attributes.push_back(attribute);
@@ -69,31 +69,31 @@ template <class T> void Tokenizer<T>::emit(const TagToken& token) {
 			break;
 	}
 }
-template <class T> void Tokenizer<T>::emit(const CommentToken& token) {
+void Tokenizer::emit(const CommentToken& token) {
 	tree_constructor.dispatch(Token(token));
 }
-template <class T> void Tokenizer<T>::emit(const CharacterToken& token) {
+void Tokenizer::emit(const CharacterToken& token) {
 	tree_constructor.dispatch(Token(token));
 }
-template <class T> void Tokenizer<T>::emit(const EOFToken& token) {
+void Tokenizer::emit(const EOFToken& token) {
 	tree_constructor.dispatch(Token(token));
 }
-template <class T> void Tokenizer<T>::emit(const Token& token) {
-	tree_constructor.dispatch(token);
+void Tokenizer::emit(const Token& token) {
+	tree_constructor.dispatch(Token(token));
 }
-template <class T> void Tokenizer<T>::emitParseError(__attribute__ ((unused)) const ParseError& error) {
+void Tokenizer::emitParseError(__attribute__ ((unused)) const ParseError& error) {
 	tree_constructor.dispatchParseError(error);
 }
 
 
-template <class T> char32_t Tokenizer<T>::getCharacterAtPosition(const size_t& position) {
+char32_t Tokenizer::getCharacterAtPosition(const size_t& position) {
 	if (position >= string.length()) {
 		return EOF32;
 	}
 	return string[position];
 }
 
-template <class T> std::u32string Tokenizer<T>::getCharactersAtPosition(const size_t& position, const size_t& number_of_chars) {
+std::u32string Tokenizer::getCharactersAtPosition(const size_t& position, const size_t& number_of_chars) {
 	std::u32string characters = U"";
 	for(size_t i = 0; i < number_of_chars; i++) {
 		if (position + i >= string.length()) {
@@ -105,7 +105,7 @@ template <class T> std::u32string Tokenizer<T>::getCharactersAtPosition(const si
 	return characters;
 }
 
-template <class T> bool Tokenizer<T>::isAppropriateEndTagToken() {
+bool Tokenizer::isAppropriateEndTagToken() {
 	if(tag.type != TagToken::TagType::END) {
 		return false;
 	}
@@ -114,7 +114,7 @@ template <class T> bool Tokenizer<T>::isAppropriateEndTagToken() {
 	}
 	return true;
 }
-template <class T> bool Tokenizer<T>::isAttributeNameUnique() {
+bool Tokenizer::isAttributeNameUnique() {
 	for(const auto& i : tag.attributes) {
 		if(attribute == i.name) {
 			discard_attribute = true;
@@ -124,37 +124,37 @@ template <class T> bool Tokenizer<T>::isAttributeNameUnique() {
 	discard_attribute = false;
 	return true;
 }
-template <class T> bool Tokenizer<T>::isAdjustedCurrentNode() {
+bool Tokenizer::isAdjustedCurrentNode() {
 	//TODO Finish function.  See section 8.2.3.2 in the HTML5 spec
 	return false;
 }
 
-template <class T> bool Tokenizer<T>::currentNodeInHTMLNamespace() {
+bool Tokenizer::currentNodeInHTMLNamespace() {
 	//TODO Finish function.  See section 8.2.3.2 in the HTML5 spec
 	return false;
 }
 
-template <class T> char32_t Tokenizer<T>::peek() {
+char32_t Tokenizer::peek() {
 	return getCharacterAtPosition(pos);
 }
 
-template <class T> std::u32string Tokenizer<T>::peek(const size_t& number_of_chars) {
+std::u32string Tokenizer::peek(const size_t& number_of_chars) {
 	return getCharactersAtPosition(pos, number_of_chars);
 }
 
-template <class T> char32_t Tokenizer<T>::reconsume() {
+char32_t Tokenizer::reconsume() {
 	return getCharacterAtPosition(pos - 1);
 }
 
-template <class T> void Tokenizer<T>::switchToState(const State& new_state) {
+void Tokenizer::switchToState(const State& new_state) {
 	state = new_state;
 }
 
-template <class T> void Tokenizer<T>::unconsume() {
+void Tokenizer::unconsume() {
 	pos--;
 }
 
-template <class T> void Tokenizer<T>::unconsume(const size_t& number_of_chars) {
+void Tokenizer::unconsume(const size_t& number_of_chars) {
 	pos -= number_of_chars;
 }
 

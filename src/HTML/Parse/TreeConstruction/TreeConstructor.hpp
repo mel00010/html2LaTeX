@@ -20,16 +20,35 @@
 #ifndef SRC_HTML_PARSE_TREECONSTRUCTION_TREECONSTRUCTOR_HPP_
 #define SRC_HTML_PARSE_TREECONSTRUCTION_TREECONSTRUCTOR_HPP_
 
+#include "TreeConstructorInterface.hpp"
+
+#include <HTML/Elements/Element.hpp>
 #include <HTML/Parse/Tokenization/TokenizationTypes.hpp>
+
+#include <stack>
+
+using namespace HTML::Elements;
+
 
 namespace HTML {
 namespace Parse {
 namespace TreeConstruction {
 
-class TreeConstructor {
+class TreeConstructor : public TreeConstructorInterface {
 	public:
-		void dispatch(Tokenization::Token token);
-		void dispatchParseError(ParseError error);
+		virtual void dispatch(Tokenization::Token token);
+		virtual void dispatchParseError(ParseError error);
+
+	public:
+		void getAppropriatePlaceToInsertNode();
+		void resetInsertionModeAppropriately();
+
+	public:
+		Element& getCurrentNode();
+
+
+	private:
+		std::stack<Element> open_elements;
 
 };
 

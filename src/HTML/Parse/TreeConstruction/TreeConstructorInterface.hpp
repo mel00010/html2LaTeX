@@ -26,10 +26,13 @@ namespace HTML {
 namespace Parse {
 namespace TreeConstruction {
 
-class TreeConstructor {
+class TreeConstructorInterface {
 	public:
-		void dispatch(const Tokenization::Token& token);
-		void dispatchParseError(const ParseError& error);
+		virtual ~TreeConstructorInterface() {}
+
+	public:
+		virtual void dispatch(const Tokenization::Token& token) = 0;
+		virtual void dispatchParseError(const ParseError& error) = 0;
 };
 
 } /* namespace TreeConstruction */

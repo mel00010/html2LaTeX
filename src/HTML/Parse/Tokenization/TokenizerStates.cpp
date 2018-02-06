@@ -1,5 +1,5 @@
 /*******************************************************************************
- * TokenizerStates.tpp
+ * TokenizerStates.cpp
  * Copyright (C) 2017  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -18,6 +18,8 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
+#include "Tokenizer.hpp"
+
 #include "TokenizationTypes.hpp"
 
 #include <vector>
@@ -31,7 +33,7 @@ namespace Tokenization {
 using namespace Microsyntaxes::ASCII;
 
 // Section 8.2.4.1
-template <class T> void Tokenizer<T>::dataState() {
+void Tokenizer::dataState() {
 	switch (char32_t buf = consume()) {
 		case '&':
 			switchToState(CHARACTER_REFERENCE_IN_DATA);
@@ -53,7 +55,7 @@ template <class T> void Tokenizer<T>::dataState() {
 }
 
 // Section 8.2.4.2
-template <class T> void Tokenizer<T>::characterReferenceInDataState() {
+void Tokenizer::characterReferenceInDataState() {
 	switchToState(DATA);
 	switch(consumeCharacterReference()) {
 		case 2:
@@ -70,7 +72,7 @@ template <class T> void Tokenizer<T>::characterReferenceInDataState() {
 }
 
 // Section 8.2.4.3
-template <class T> void Tokenizer<T>::RCDATAState() {
+void Tokenizer::RCDATAState() {
 	switch (char32_t buf = consume()) {
 		case '&':
 			switchToState(CHARACTER_REFERENCE_IN_RCDATA);
@@ -92,7 +94,7 @@ template <class T> void Tokenizer<T>::RCDATAState() {
 }
 
 // Section 8.2.4.4
-template <class T> void Tokenizer<T>::characterReferenceInRCDATAState() {
+void Tokenizer::characterReferenceInRCDATAState() {
 	switchToState(RCDATA);
 	switch(consumeCharacterReference()) {
 		case 2: {
@@ -112,7 +114,7 @@ template <class T> void Tokenizer<T>::characterReferenceInRCDATAState() {
 }
 
 // Section 8.2.4.5
-template <class T> void Tokenizer<T>::RAWTEXTState() {
+void Tokenizer::RAWTEXTState() {
 	switch (char32_t buf = consume()) {
 		case '<':
 			switchToState(RAWTEXT_LESS_THAN_SIGN);
@@ -131,7 +133,7 @@ template <class T> void Tokenizer<T>::RAWTEXTState() {
 }
 
 // Section 8.2.4.6
-template <class T> void Tokenizer<T>::scriptDataState() {
+void Tokenizer::scriptDataState() {
 	switch (char32_t buf = consume()) {
 		case '<':
 			switchToState(SCRIPT_DATA_LESS_THAN_SIGN);
@@ -150,7 +152,7 @@ template <class T> void Tokenizer<T>::scriptDataState() {
 }
 
 // Section 8.2.4.7
-template <class T> void Tokenizer<T>::plainTextState() {
+void Tokenizer::plainTextState() {
 	switch (char32_t buf = consume()) {
 		case '\0':
 			emitParseError();
@@ -166,7 +168,7 @@ template <class T> void Tokenizer<T>::plainTextState() {
 }
 
 // Section 8.2.4.8
-template <class T> void Tokenizer<T>::tagOpenState() {
+void Tokenizer::tagOpenState() {
 	switch (char32_t buf = consume()) {
 		case '!':
 			switchToState(MARKUP_DECLARATION_OPEN);
@@ -197,7 +199,7 @@ template <class T> void Tokenizer<T>::tagOpenState() {
 }
 
 // Section 8.2.4.9
-template <class T> void Tokenizer<T>::endTagOpenState() {
+void Tokenizer::endTagOpenState() {
 	switch (char32_t buf = consume()) {
 		case ASCII_UPPER_CASE_LETTER:
 			tag = EndTagToken();
@@ -228,7 +230,7 @@ template <class T> void Tokenizer<T>::endTagOpenState() {
 }
 
 // Section 8.2.4.10
-template <class T> void Tokenizer<T>::tagNameState() {
+void Tokenizer::tagNameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\r':
@@ -258,7 +260,7 @@ template <class T> void Tokenizer<T>::tagNameState() {
 }
 
 // Section 8.2.4.11
-template <class T> void Tokenizer<T>::RCDATALessThanSignState() {
+void Tokenizer::RCDATALessThanSignState() {
 	switch (consume()) {
 		case '/':
 			temporary_buffer = U"";
@@ -273,7 +275,7 @@ template <class T> void Tokenizer<T>::RCDATALessThanSignState() {
 }
 
 // Section 8.2.4.12
-template <class T> void Tokenizer<T>::RCDATAEndTagOpenState() {
+void Tokenizer::RCDATAEndTagOpenState() {
 	switch (char32_t buf = consume()) {
 		case ASCII_UPPER_CASE_LETTER:
 			tag = EndTagToken();
@@ -297,7 +299,7 @@ template <class T> void Tokenizer<T>::RCDATAEndTagOpenState() {
 }
 
 // Section 8.2.4.13
-template <class T> void Tokenizer<T>::RCDATAEndTagNameState() {
+void Tokenizer::RCDATAEndTagNameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -343,7 +345,7 @@ template <class T> void Tokenizer<T>::RCDATAEndTagNameState() {
 }
 
 // Section 8.2.4.14
-template <class T> void Tokenizer<T>::RAWTEXTLessThanSignState() {
+void Tokenizer::RAWTEXTLessThanSignState() {
 	switch (consume()) {
 		case '/':
 			temporary_buffer = U"";
@@ -358,7 +360,7 @@ template <class T> void Tokenizer<T>::RAWTEXTLessThanSignState() {
 }
 
 // Section 8.2.4.15
-template <class T> void Tokenizer<T>::RAWTEXTEndTagOpenState() {
+void Tokenizer::RAWTEXTEndTagOpenState() {
 	switch (char32_t buf = consume()) {
 		case ASCII_UPPER_CASE_LETTER:
 			tag = EndTagToken();
@@ -382,7 +384,7 @@ template <class T> void Tokenizer<T>::RAWTEXTEndTagOpenState() {
 }
 
 // Section 8.2.4.16
-template <class T> void Tokenizer<T>::RAWTEXTEndTagNameState() {
+void Tokenizer::RAWTEXTEndTagNameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -428,7 +430,7 @@ template <class T> void Tokenizer<T>::RAWTEXTEndTagNameState() {
 }
 
 // Section 8.2.4.17
-template <class T> void Tokenizer<T>::scriptDataLessThanSignState() {
+void Tokenizer::scriptDataLessThanSignState() {
 	switch (consume()) {
 		case '/':
 			temporary_buffer = U"";
@@ -448,7 +450,7 @@ template <class T> void Tokenizer<T>::scriptDataLessThanSignState() {
 }
 
 // Section 8.2.4.18
-template <class T> void Tokenizer<T>::scriptDataEndTagOpenState() {
+void Tokenizer::scriptDataEndTagOpenState() {
 	switch (char32_t buf = consume()) {
 		case ASCII_UPPER_CASE_LETTER:
 			tag = EndTagToken();
@@ -472,7 +474,7 @@ template <class T> void Tokenizer<T>::scriptDataEndTagOpenState() {
 }
 
 // Section 8.2.4.19
-template <class T> void Tokenizer<T>::scriptDataEndTagNameState() {
+void Tokenizer::scriptDataEndTagNameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -518,7 +520,7 @@ template <class T> void Tokenizer<T>::scriptDataEndTagNameState() {
 }
 
 // Section 8.2.4.20
-template <class T> void Tokenizer<T>::scriptDataEscapeStartState() {
+void Tokenizer::scriptDataEscapeStartState() {
 	switch (consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_ESCAPE_START_DASH);
@@ -532,7 +534,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapeStartState() {
 }
 
 // Section 8.2.4.21
-template <class T> void Tokenizer<T>::scriptDataEscapeStartDashState() {
+void Tokenizer::scriptDataEscapeStartDashState() {
 	switch (consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_ESCAPED_DASH_DASH);
@@ -546,7 +548,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapeStartDashState() {
 }
 
 // Section 8.2.4.22
-template <class T> void Tokenizer<T>::scriptDataEscapedState() {
+void Tokenizer::scriptDataEscapedState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_ESCAPED_DASH);
@@ -571,7 +573,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapedState() {
 }
 
 // Section 8.2.4.23
-template <class T> void Tokenizer<T>::scriptDataEscapedDashState() {
+void Tokenizer::scriptDataEscapedDashState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_ESCAPED_DASH_DASH);
@@ -598,7 +600,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapedDashState() {
 }
 
 // Section 8.2.4.24
-template <class T> void Tokenizer<T>::scriptDataEscapedDashDashState() {
+void Tokenizer::scriptDataEscapedDashDashState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			emit(CharacterToken('-'));
@@ -628,7 +630,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapedDashDashState() {
 }
 
 // Section 8.2.4.25
-template <class T> void Tokenizer<T>::scriptDataEscapedLessThanSignState() {
+void Tokenizer::scriptDataEscapedLessThanSignState() {
 	switch (char32_t buf = consume()) {
 		case '/':
 			temporary_buffer = U"";
@@ -657,7 +659,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapedLessThanSignState() {
 }
 
 // Section 8.2.4.26
-template <class T> void Tokenizer<T>::scriptDataEscapedEndTagOpenState() {
+void Tokenizer::scriptDataEscapedEndTagOpenState() {
 	switch (char32_t buf = consume()) {
 		case ASCII_UPPER_CASE_LETTER:
 			tag = EndTagToken();
@@ -681,7 +683,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapedEndTagOpenState() {
 }
 
 // Section 8.2.4.27
-template <class T> void Tokenizer<T>::scriptDataEscapedEndTagNameState() {
+void Tokenizer::scriptDataEscapedEndTagNameState() {
 	switch (char32_t buf = consume()) {
 			case '\t':
 			case '\n':
@@ -727,7 +729,7 @@ template <class T> void Tokenizer<T>::scriptDataEscapedEndTagNameState() {
 }
 
 // Section 8.2.4.28
-template <class T> void Tokenizer<T>::scriptDataDoubleEscapeStartState() {
+void Tokenizer::scriptDataDoubleEscapeStartState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -758,7 +760,7 @@ template <class T> void Tokenizer<T>::scriptDataDoubleEscapeStartState() {
 }
 
 // Section 8.2.4.29
-template <class T> void Tokenizer<T>::scriptDataDoubleEscapedState() {
+void Tokenizer::scriptDataDoubleEscapedState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_DASH);
@@ -784,7 +786,7 @@ template <class T> void Tokenizer<T>::scriptDataDoubleEscapedState() {
 }
 
 // Section 8.2.4.30
-template <class T> void Tokenizer<T>::scriptDataDoubleEscapedDashState() {
+void Tokenizer::scriptDataDoubleEscapedDashState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH);
@@ -812,7 +814,7 @@ template <class T> void Tokenizer<T>::scriptDataDoubleEscapedDashState() {
 }
 
 // Section 8.2.4.31
-template <class T> void Tokenizer<T>::scriptDataDoubleEscapedDashDashState() {
+void Tokenizer::scriptDataDoubleEscapedDashDashState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(SCRIPT_DATA_DOUBLE_ESCAPED_DASH_DASH);
@@ -844,7 +846,7 @@ template <class T> void Tokenizer<T>::scriptDataDoubleEscapedDashDashState() {
 }
 
 // Section 8.2.4.32
-template <class T> void Tokenizer<T>::scriptDataDoubleEscapedLessThanSignState() {
+void Tokenizer::scriptDataDoubleEscapedLessThanSignState() {
 	switch (consume()) {
 		case '/':
 			temporary_buffer = U"";
@@ -859,7 +861,7 @@ template <class T> void Tokenizer<T>::scriptDataDoubleEscapedLessThanSignState()
 }
 
 // Section 8.2.4.33
-template <class T> void Tokenizer<T>::scriptDataDoubleEscapeEndState() {
+void Tokenizer::scriptDataDoubleEscapeEndState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -890,7 +892,7 @@ template <class T> void Tokenizer<T>::scriptDataDoubleEscapeEndState() {
 }
 
 // Section 8.2.4.34
-template <class T> void Tokenizer<T>::beforeAttributeNameState() {
+void Tokenizer::beforeAttributeNameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -939,7 +941,7 @@ template <class T> void Tokenizer<T>::beforeAttributeNameState() {
 }
 
 // Section 8.2.4.35
-template <class T> void Tokenizer<T>::attributeNameState() {
+void Tokenizer::attributeNameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -987,7 +989,7 @@ template <class T> void Tokenizer<T>::attributeNameState() {
 }
 
 // Section 8.2.4.36
-template <class T> void Tokenizer<T>::afterAttributeNameState() {
+void Tokenizer::afterAttributeNameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -1035,7 +1037,7 @@ template <class T> void Tokenizer<T>::afterAttributeNameState() {
 }
 
 // Section 8.2.4.37
-template <class T> void Tokenizer<T>::beforeAttributeValueState() {
+void Tokenizer::beforeAttributeValueState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -1082,7 +1084,7 @@ template <class T> void Tokenizer<T>::beforeAttributeValueState() {
 }
 
 // Section 8.2.4.38
-template <class T> void Tokenizer<T>::attributeValueDoubleQuotedState() {
+void Tokenizer::attributeValueDoubleQuotedState() {
 	switch (char32_t buf = consume()) {
 		case '"':
 			switchToState(AFTER_ATTRIBUTE_QUOTED);
@@ -1107,7 +1109,7 @@ template <class T> void Tokenizer<T>::attributeValueDoubleQuotedState() {
 }
 
 // Section 8.2.4.39
-template <class T> void Tokenizer<T>::attributeValueSingleQuotedState() {
+void Tokenizer::attributeValueSingleQuotedState() {
 	switch (char32_t buf = consume()) {
 		case '\'':
 			switchToState(AFTER_ATTRIBUTE_QUOTED);
@@ -1132,7 +1134,7 @@ template <class T> void Tokenizer<T>::attributeValueSingleQuotedState() {
 }
 
 // Section 8.2.4.40
-template <class T> void Tokenizer<T>::attributeValueUnquotedState() {
+void Tokenizer::attributeValueUnquotedState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -1172,7 +1174,7 @@ template <class T> void Tokenizer<T>::attributeValueUnquotedState() {
 }
 
 // Section 8.2.4.41
-template <class T> void Tokenizer<T>::characterReferenceInAttributeValueState() {
+void Tokenizer::characterReferenceInAttributeValueState() {
 	switch(consumeCharacterReference()) {
 		case 2: {
 			attribute.value.push_back(pop(char_tokens).data);
@@ -1192,7 +1194,7 @@ template <class T> void Tokenizer<T>::characterReferenceInAttributeValueState() 
 }
 
 // Section 8.2.4.42
-template <class T> void Tokenizer<T>::afterAttributeQuotedState() {
+void Tokenizer::afterAttributeQuotedState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1221,7 +1223,7 @@ template <class T> void Tokenizer<T>::afterAttributeQuotedState() {
 }
 
 // Section 8.2.4.43
-template <class T> void Tokenizer<T>::selfClosingStartTagState() {
+void Tokenizer::selfClosingStartTagState() {
 	switch (consume()) {
 		case '>':
 			tag.self_closing = true;
@@ -1242,7 +1244,7 @@ template <class T> void Tokenizer<T>::selfClosingStartTagState() {
 }
 
 // Section 8.2.4.44
-template <class T> void Tokenizer<T>::bogusCommentState() {
+void Tokenizer::bogusCommentState() {
 	comment = CommentToken();
 	while(char32_t buf = consume()) {
 		switch(buf) {
@@ -1266,7 +1268,7 @@ template <class T> void Tokenizer<T>::bogusCommentState() {
 }
 
 // Section 8.2.4.45
-template <class T> void Tokenizer<T>::markupDeclarationOpenState() {
+void Tokenizer::markupDeclarationOpenState() {
 	if(peek(2) == U"--") {
 		consume(2);
 		comment = CommentToken();
@@ -1285,7 +1287,7 @@ template <class T> void Tokenizer<T>::markupDeclarationOpenState() {
 }
 
 // Section 8.2.4.46
-template <class T> void Tokenizer<T>::commentStartState() {
+void Tokenizer::commentStartState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(COMMENT_START_DASH);
@@ -1314,7 +1316,7 @@ template <class T> void Tokenizer<T>::commentStartState() {
 }
 
 // Section 8.2.4.47
-template <class T> void Tokenizer<T>::commentStartDashState() {
+void Tokenizer::commentStartDashState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(COMMENT_END);
@@ -1345,7 +1347,7 @@ template <class T> void Tokenizer<T>::commentStartDashState() {
 }
 
 // Section 8.2.4.48
-template <class T> void Tokenizer<T>::commentState() {
+void Tokenizer::commentState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(COMMENT_END_DASH);
@@ -1366,7 +1368,7 @@ template <class T> void Tokenizer<T>::commentState() {
 }
 
 // Section 8.2.4.49
-template <class T> void Tokenizer<T>::commentEndDashState() {
+void Tokenizer::commentEndDashState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			switchToState(COMMENT_END);
@@ -1392,7 +1394,7 @@ template <class T> void Tokenizer<T>::commentEndDashState() {
 }
 
 // Section 8.2.4.50
-template <class T> void Tokenizer<T>::commentEndState() {
+void Tokenizer::commentEndState() {
 	switch (char32_t buf = consume()) {
 		case '>':
 			switchToState(DATA);
@@ -1430,7 +1432,7 @@ template <class T> void Tokenizer<T>::commentEndState() {
 }
 
 // Section 8.2.4.51
-template <class T> void Tokenizer<T>::commentEndBangState() {
+void Tokenizer::commentEndBangState() {
 	switch (char32_t buf = consume()) {
 		case '-':
 			comment.data.push_back('-');
@@ -1467,7 +1469,7 @@ template <class T> void Tokenizer<T>::commentEndBangState() {
 }
 
 // Section 8.2.4.52
-template <class T> void Tokenizer<T>::DOCTYPEState() {
+void Tokenizer::DOCTYPEState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1492,7 +1494,7 @@ template <class T> void Tokenizer<T>::DOCTYPEState() {
 }
 
 // Section 8.2.4.53
-template <class T> void Tokenizer<T>::beforeDOCTYPENameState() {
+void Tokenizer::beforeDOCTYPENameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -1536,7 +1538,7 @@ template <class T> void Tokenizer<T>::beforeDOCTYPENameState() {
 }
 
 // Section 8.2.4.54
-template <class T> void Tokenizer<T>::DOCTYPENameState() {
+void Tokenizer::DOCTYPENameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -1567,7 +1569,7 @@ template <class T> void Tokenizer<T>::DOCTYPENameState() {
 }
 
 // Section 8.2.4.55
-template <class T> void Tokenizer<T>::afterDOCTYPENameState() {
+void Tokenizer::afterDOCTYPENameState() {
 	switch (char32_t buf = consume()) {
 		case '\t':
 		case '\n':
@@ -1603,7 +1605,7 @@ template <class T> void Tokenizer<T>::afterDOCTYPENameState() {
 }
 
 // Section 8.2.4.56
-template <class T> void Tokenizer<T>::afterDOCTYPEPublicKeywordState() {
+void Tokenizer::afterDOCTYPEPublicKeywordState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1643,7 +1645,7 @@ template <class T> void Tokenizer<T>::afterDOCTYPEPublicKeywordState() {
 }
 
 // Section 8.2.4.57
-template <class T> void Tokenizer<T>::beforeDOCTYPEPublicIdentifierState() {
+void Tokenizer::beforeDOCTYPEPublicIdentifierState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1680,7 +1682,7 @@ template <class T> void Tokenizer<T>::beforeDOCTYPEPublicIdentifierState() {
 }
 
 // Section 8.2.4.58
-template <class T> void Tokenizer<T>::DOCTYPEPublicIdentifierDoubleQuotedState() {
+void Tokenizer::DOCTYPEPublicIdentifierDoubleQuotedState() {
 	switch (char32_t buf = consume()) {
 		case '"':
 			switchToState(AFTER_DOCTYPE_PUBLIC_IDENTIFIER);
@@ -1709,7 +1711,7 @@ template <class T> void Tokenizer<T>::DOCTYPEPublicIdentifierDoubleQuotedState()
 }
 
 // Section 8.2.4.59
-template <class T> void Tokenizer<T>::DOCTYPEPublicIdentifierSingleQuotedState() {
+void Tokenizer::DOCTYPEPublicIdentifierSingleQuotedState() {
 	switch (char32_t buf = consume()) {
 		case '\'':
 			switchToState(AFTER_DOCTYPE_PUBLIC_IDENTIFIER);
@@ -1738,7 +1740,7 @@ template <class T> void Tokenizer<T>::DOCTYPEPublicIdentifierSingleQuotedState()
 }
 
 // Section 8.2.4.60
-template <class T> void Tokenizer<T>::afterDOCTYPEPublicIdentifierState() {
+void Tokenizer::afterDOCTYPEPublicIdentifierState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1775,7 +1777,7 @@ template <class T> void Tokenizer<T>::afterDOCTYPEPublicIdentifierState() {
 }
 
 // Section 8.2.4.61
-template <class T> void Tokenizer<T>::betweenDOCTYPEPublicAndSystemIdentifiersState() {
+void Tokenizer::betweenDOCTYPEPublicAndSystemIdentifiersState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1810,7 +1812,7 @@ template <class T> void Tokenizer<T>::betweenDOCTYPEPublicAndSystemIdentifiersSt
 }
 
 // Section 8.2.4.62
-template <class T> void Tokenizer<T>::afterDOCTYPESystemKeywordState() {
+void Tokenizer::afterDOCTYPESystemKeywordState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1850,7 +1852,7 @@ template <class T> void Tokenizer<T>::afterDOCTYPESystemKeywordState() {
 }
 
 // Section 8.2.4.63
-template <class T> void Tokenizer<T>::beforeDOCTYPESystemIdentifierState() {
+void Tokenizer::beforeDOCTYPESystemIdentifierState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1887,7 +1889,7 @@ template <class T> void Tokenizer<T>::beforeDOCTYPESystemIdentifierState() {
 }
 
 // Section 8.2.4.64
-template <class T> void Tokenizer<T>::DOCTYPESystemIdentifierDoubleQuotedState() {
+void Tokenizer::DOCTYPESystemIdentifierDoubleQuotedState() {
 	switch (char32_t buf = consume()) {
 		case '"':
 			switchToState(AFTER_DOCTYPE_SYSTEM_IDENTIFIER);
@@ -1916,7 +1918,7 @@ template <class T> void Tokenizer<T>::DOCTYPESystemIdentifierDoubleQuotedState()
 }
 
 // Section 8.2.4.65
-template <class T> void Tokenizer<T>::DOCTYPESystemIdentifierSingleQuotedState() {
+void Tokenizer::DOCTYPESystemIdentifierSingleQuotedState() {
 	switch (char32_t buf = consume()) {
 		case '\'':
 			switchToState(AFTER_DOCTYPE_SYSTEM_IDENTIFIER);
@@ -1945,7 +1947,7 @@ template <class T> void Tokenizer<T>::DOCTYPESystemIdentifierSingleQuotedState()
 }
 
 // Section 8.2.4.66
-template <class T> void Tokenizer<T>::afterDOCTYPESystemIdentifierState() {
+void Tokenizer::afterDOCTYPESystemIdentifierState() {
 	switch (consume()) {
 		case '\t':
 		case '\n':
@@ -1970,7 +1972,7 @@ template <class T> void Tokenizer<T>::afterDOCTYPESystemIdentifierState() {
 }
 
 // Section 8.2.4.67
-template <class T> void Tokenizer<T>::bogusDOCTYPEState() {
+void Tokenizer::bogusDOCTYPEState() {
 	switch (consume()) {
 		case '>':
 			switchToState(DATA);
@@ -1987,7 +1989,7 @@ template <class T> void Tokenizer<T>::bogusDOCTYPEState() {
 }
 
 // Section 8.2.4.68
-template <class T> void Tokenizer<T>::CDATASectionState() {
+void Tokenizer::CDATASectionState() {
 	std::u32string characters;
 	switchToState(DATA);
 	while(true) {

@@ -14,6 +14,7 @@ target_sources(HTML
 target_link_libraries(HTML
 	PUBLIC
 		Elements
+		DOM
 		HTML_types
 		Microsyntaxes
 		Parse
@@ -31,7 +32,7 @@ target_include_directories(HTML_types
 		${PROJECT_SOURCE_DIR}/src
 )
 
-add_subdirectory(DOM_Interfaces)
+add_subdirectory(DOM)
 add_subdirectory(Elements)
 add_subdirectory(Microsyntaxes)
 add_subdirectory(Parse)

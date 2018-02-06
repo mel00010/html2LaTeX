@@ -197,19 +197,6 @@ bool operator==(const Token& lhs, const Token& rhs) {
 	return os;
 }
 
-::std::ostream& operator<<(::std::ostream& os, const TokenPair& tokens) {
-	return os << "{" << tokens.first << "}:{" << tokens.second << "}";
-}
-bool operator==(const TokenPair& lhs, const TokenPair& rhs) {
-	if (lhs.first != rhs.first) {
-		return false;
-	}
-	if (lhs.second != rhs.second) {
-		return false;
-	}
-	return true;
-}
-
 ::std::ostream& operator<<(::std::ostream& os, const State& state) {
 	switch (state) {
 		case NULL_STATE:
