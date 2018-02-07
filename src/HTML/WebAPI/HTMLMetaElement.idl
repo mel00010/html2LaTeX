@@ -1,0 +1,10 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLMetaElement : HTMLElement {
+  [CEReactions] attribute DOMString name;
+  [CEReactions] attribute DOMString httpEquiv;
+  [CEReactions] attribute DOMString content;
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString scheme;
+};

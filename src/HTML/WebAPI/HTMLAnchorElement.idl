@@ -1,0 +1,24 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLAnchorElement : HTMLElement {
+  [CEReactions] attribute DOMString target;
+  [CEReactions] attribute DOMString download;
+  [CEReactions] attribute USVString ping;
+  [CEReactions] attribute DOMString rel;
+  [SameObject, PutForwards=value] readonly attribute DOMTokenList relList;
+  [CEReactions] attribute DOMString hreflang;
+  [CEReactions] attribute DOMString type;
+
+  [CEReactions] attribute DOMString text;
+
+  [CEReactions] attribute DOMString referrerPolicy;
+  
+  [CEReactions] attribute DOMString coords;
+  [CEReactions] attribute DOMString charset;
+  [CEReactions] attribute DOMString name;
+  [CEReactions] attribute DOMString rev;
+  [CEReactions] attribute DOMString shape;
+
+  // also has obsolete members
+};
+HTMLAnchorElement includes HTMLHyperlinkElementUtils;

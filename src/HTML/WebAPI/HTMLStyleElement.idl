@@ -1,0 +1,9 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLStyleElement : HTMLElement {
+  [CEReactions] attribute DOMString media;
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString type;
+};
+HTMLStyleElement includes LinkStyle;

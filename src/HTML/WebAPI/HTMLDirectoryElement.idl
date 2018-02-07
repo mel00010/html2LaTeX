@@ -1,0 +1,5 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLDirectoryElement : HTMLElement {
+  [CEReactions] attribute boolean compact;
+};

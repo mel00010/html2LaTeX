@@ -1,0 +1,9 @@
+[Exposed=Window,
+ Constructor(DOMString type, optional DragEventInit eventInitDict)]
+interface DragEvent : MouseEvent {
+  readonly attribute DataTransfer? dataTransfer;
+};
+
+dictionary DragEventInit : MouseEventInit {
+  DataTransfer? dataTransfer = null;
+};

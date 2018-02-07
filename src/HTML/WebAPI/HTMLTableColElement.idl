@@ -1,0 +1,12 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLTableColElement : HTMLElement {
+  [CEReactions] attribute unsigned long span;
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString align;
+  [CEReactions] attribute DOMString ch;
+  [CEReactions] attribute DOMString chOff;
+  [CEReactions] attribute DOMString vAlign;
+  [CEReactions] attribute DOMString width;
+};

@@ -1,0 +1,13 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLBodyElement : HTMLElement {
+  // also has obsolete members
+  [CEReactions] attribute [TreatNullAs=EmptyString] DOMString text;
+  [CEReactions] attribute [TreatNullAs=EmptyString] DOMString link;
+  [CEReactions] attribute [TreatNullAs=EmptyString] DOMString vLink;
+  [CEReactions] attribute [TreatNullAs=EmptyString] DOMString aLink;
+  [CEReactions] attribute [TreatNullAs=EmptyString] DOMString bgColor;
+  [CEReactions] attribute DOMString background;
+};
+
+HTMLBodyElement includes WindowEventHandlers;

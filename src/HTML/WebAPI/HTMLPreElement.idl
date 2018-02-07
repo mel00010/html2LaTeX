@@ -1,0 +1,6 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLPreElement : HTMLElement {
+  // also has obsolete members
+  [CEReactions] attribute long width;
+};

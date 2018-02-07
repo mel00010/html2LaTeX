@@ -1,0 +1,7 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLUListElement : HTMLElement {
+  // also has obsolete members
+  [CEReactions] attribute boolean compact;
+  [CEReactions] attribute DOMString type;
+};

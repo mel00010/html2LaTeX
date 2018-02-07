@@ -1,0 +1,13 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLTableSectionElement : HTMLElement {
+  [SameObject] readonly attribute HTMLCollection rows;
+  HTMLElement insertRow(optional long index = -1);
+  [CEReactions] void deleteRow(long index);
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString align;
+  [CEReactions] attribute DOMString ch;
+  [CEReactions] attribute DOMString chOff;
+  [CEReactions] attribute DOMString vAlign;
+};

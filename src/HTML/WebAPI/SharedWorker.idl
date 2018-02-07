@@ -1,0 +1,6 @@
+[Constructor(USVString scriptURL, optional (DOMString or WorkerOptions) options),
+ Exposed=(Window,Worker)]
+interface SharedWorker : EventTarget {
+  readonly attribute MessagePort port;
+};
+SharedWorker includes AbstractWorker;

@@ -1,0 +1,9 @@
+[Exposed=Window]
+interface ImageBitmapRenderingContext {
+  readonly attribute HTMLCanvasElement canvas;
+  void transferFromImageBitmap(ImageBitmap? bitmap);
+};
+
+dictionary ImageBitmapRenderingContextSettings {
+  boolean alpha = true;
+};

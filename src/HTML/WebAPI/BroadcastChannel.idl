@@ -1,0 +1,8 @@
+[Constructor(DOMString name), Exposed=(Window,Worker)]
+interface BroadcastChannel : EventTarget {
+  readonly attribute DOMString name;
+  void postMessage(any message);
+  void close();
+  attribute EventHandler onmessage;
+  attribute EventHandler onmessageerror;
+};

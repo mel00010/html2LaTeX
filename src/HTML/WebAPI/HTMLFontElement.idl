@@ -1,0 +1,7 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLFontElement : HTMLElement {
+  [CEReactions] attribute [TreatNullAs=EmptyString] DOMString color;
+  [CEReactions] attribute DOMString face;
+  [CEReactions] attribute DOMString size; 
+};

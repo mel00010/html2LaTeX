@@ -1,0 +1,6 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLHtmlElement : HTMLElement {
+  // also has obsolete members
+  [CEReactions] attribute DOMString version;
+};

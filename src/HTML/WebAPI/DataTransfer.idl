@@ -1,0 +1,17 @@
+[Exposed=Window,
+ Constructor]
+  interface DataTransfer {
+  attribute DOMString dropEffect;
+  attribute DOMString effectAllowed;
+
+  [SameObject] readonly attribute DataTransferItemList items;
+
+  void setDragImage(Element image, long x, long y);
+
+  /* old interface */
+  readonly attribute FrozenArray<DOMString> types;
+  DOMString getData(DOMString format);
+  void setData(DOMString format, DOMString data);
+  void clearData(optional DOMString format);
+  [SameObject] readonly attribute FileList files;
+};

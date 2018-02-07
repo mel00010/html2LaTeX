@@ -1,0 +1,7 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLMenuElement : HTMLElement {
+
+  // also has obsolete members
+  [CEReactions] attribute boolean compact;
+};

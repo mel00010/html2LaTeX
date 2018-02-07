@@ -1,0 +1,10 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLParamElement : HTMLElement {
+  [CEReactions] attribute DOMString name;
+  [CEReactions] attribute DOMString value;
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString type;
+  [CEReactions] attribute DOMString valueType;
+};

@@ -1,0 +1,8 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLLIElement : HTMLElement {
+  [CEReactions] attribute long value;
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString type;
+};

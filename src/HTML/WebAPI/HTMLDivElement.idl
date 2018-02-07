@@ -1,0 +1,6 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLDivElement : HTMLElement {
+  // also has obsolete members
+  [CEReactions] attribute DOMString align;
+};

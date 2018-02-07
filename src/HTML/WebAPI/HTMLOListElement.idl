@@ -1,0 +1,10 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLOListElement : HTMLElement {
+  [CEReactions] attribute boolean reversed;
+  [CEReactions] attribute long start;
+  [CEReactions] attribute DOMString type;
+
+  // also has obsolete members
+  [CEReactions] attribute boolean compact;
+};

@@ -1,0 +1,5 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLTimeElement : HTMLElement {
+  [CEReactions] attribute DOMString dateTime;
+};

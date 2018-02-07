@@ -1,0 +1,24 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLTableCellElement : HTMLElement {
+  [CEReactions] attribute unsigned long colSpan;
+  [CEReactions] attribute unsigned long rowSpan;
+  [CEReactions] attribute DOMString headers;
+  readonly attribute long cellIndex;
+
+  [CEReactions] attribute DOMString scope; // only conforming for th elements
+  [CEReactions] attribute DOMString abbr;  // only conforming for th elements
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString align;
+  [CEReactions] attribute DOMString axis;
+  [CEReactions] attribute DOMString height;
+  [CEReactions] attribute DOMString width;
+
+  [CEReactions] attribute DOMString ch;
+  [CEReactions] attribute DOMString chOff;
+  [CEReactions] attribute boolean noWrap;
+  [CEReactions] attribute DOMString vAlign;
+
+  [CEReactions] attribute [TreatNullAs=EmptyString] DOMString bgColor;
+};

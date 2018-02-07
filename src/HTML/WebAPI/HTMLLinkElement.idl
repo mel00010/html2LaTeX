@@ -1,0 +1,21 @@
+[Exposed=Window,
+ HTMLConstructor]
+interface HTMLLinkElement : HTMLElement {
+  [CEReactions] attribute USVString href;
+  [CEReactions] attribute DOMString? crossOrigin;
+  [CEReactions] attribute DOMString rel;
+  [CEReactions] attribute DOMString as; // (default "")
+  [SameObject, PutForwards=value] readonly attribute DOMTokenList relList;
+  [CEReactions] attribute DOMString media;
+  [CEReactions] attribute DOMString integrity;
+  [CEReactions] attribute DOMString hreflang;
+  [CEReactions] attribute DOMString type;
+  [SameObject, PutForwards=value] readonly attribute DOMTokenList sizes;
+  [CEReactions] attribute DOMString referrerPolicy;
+
+  // also has obsolete members
+  [CEReactions] attribute DOMString charset;
+  [CEReactions] attribute DOMString rev;
+  [CEReactions] attribute DOMString target;
+};
+HTMLLinkElement includes LinkStyle;

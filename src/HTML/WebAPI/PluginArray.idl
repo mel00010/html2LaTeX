@@ -1,0 +1,8 @@
+[Exposed=Window,
+ LegacyUnenumerableNamedProperties]
+interface PluginArray {
+  void refresh(optional boolean reload = false);
+  readonly attribute unsigned long length;
+  getter Plugin? item(unsigned long index);
+  getter Plugin? namedItem(DOMString name);
+};
