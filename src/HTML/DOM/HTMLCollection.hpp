@@ -20,12 +20,14 @@
 #ifndef SRC_HTML_DOM_HTMLCOLLECTION_HPP_
 #define SRC_HTML_DOM_HTMLCOLLECTION_HPP_
 
+#include "DOMString.hpp"
+#include "Node.hpp"
+
 #include <stddef.h>
 #include <optional>
-#include "../DOM/DOMString.hpp"
-#include "../DOM/Node.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class HTMLCollection {
 	public:
@@ -34,6 +36,7 @@ class HTMLCollection {
 		std::optional<Element>& namedItem(DOMString& name); // getter
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

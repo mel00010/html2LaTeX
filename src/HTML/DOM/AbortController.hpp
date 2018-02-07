@@ -20,8 +20,19 @@
 #ifndef SRC_HTML_DOM_ABORTCONTROLLER_HPP_
 #define SRC_HTML_DOM_ABORTCONTROLLER_HPP_
 
+#include "AbortSignal.hpp"
 
+namespace HTML {
+namespace DOM {
 
+class AbortController {
+	public:
+		const AbortSignal signal;
+		void abort();
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 #endif /* SRC_HTML_DOM_ABORTCONTROLLER_HPP_ */

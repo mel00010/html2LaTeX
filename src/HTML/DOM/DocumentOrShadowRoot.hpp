@@ -20,6 +20,19 @@
 #ifndef SRC_HTML_DOM_DOCUMENTORSHADOWROOT_HPP_
 #define SRC_HTML_DOM_DOCUMENTORSHADOWROOT_HPP_
 
+namespace HTML {
+namespace DOM {
+
+class DocumentOrShadowRoot {
+};
+
+/* IDL Mixins
+Document includes DocumentOrShadowRoot;
+ShadowRoot includes DocumentOrShadowRoot;
+*/
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

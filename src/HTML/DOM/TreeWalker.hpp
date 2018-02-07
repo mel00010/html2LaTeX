@@ -20,8 +20,32 @@
 #ifndef SRC_HTML_DOM_TREEWALKER_HPP_
 #define SRC_HTML_DOM_TREEWALKER_HPP_
 
+#include "Node.hpp"
+#include "NodeFilter.hpp"
 
+#include <optional>
 
+namespace HTML {
+namespace DOM {
 
+class TreeWalker {
+		const unsigned long whatToShow;
+		const std::optional<NodeFilter> filter;
+		Node currentNode;
+
+		std::optional<Node> parentNode();
+		std::optional<Node> firstChild();
+		std::optional<Node> lastChild();
+		std::optional<Node> previousSibling();
+		std::optional<Node> nextSibling();
+		std::optional<Node> previousNode();
+		std::optional<Node> nextNode();
+
+	protected:
+		const Node root;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_TREEWALKER_HPP_ */

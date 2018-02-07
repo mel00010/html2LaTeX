@@ -20,13 +20,15 @@
 #ifndef SRC_HTML_DOM_DOCUMENTFRAGMENT_HPP_
 #define SRC_HTML_DOM_DOCUMENTFRAGMENT_HPP_
 
-#include "../DOM/Node.hpp"
+#include "Node.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class DocumentFragment : public Node {
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

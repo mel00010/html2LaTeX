@@ -20,8 +20,44 @@
 #ifndef SRC_HTML_DOM_EVENTTARGET_HPP_
 #define SRC_HTML_DOM_EVENTTARGET_HPP_
 
+#include "DOMString.hpp"
+#include "Event.hpp"
+
+#include <optional>
+#include <variant>
+
+namespace HTML {
+namespace DOM {
+
+class EventListener;
+struct EventListenerOptions;
+struct AddEventListenerOptions;
 
 
+class EventTarget {
+	public:
+		void addEventListener(DOMString type, std::optional<EventListener> callback, std::optional<std::variant<AddEventListenerOptions, bool>> options);
+		void removeEventListener(DOMString type, std::optional<EventListener> callback, std::optional<std::variant<EventListenerOptions, bool>> options);
+		bool dispatchEvent(Event event);
+};
 
+class EventListener {
+	public:
+		void handleEvent(Event event);
+};
+
+struct EventListenerOptions {
+	public:
+		bool capture = false;
+};
+
+struct AddEventListenerOptions : public EventListenerOptions {
+	bool passive = false;
+	bool once = false;
+};
+
+}
+/* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_EVENTTARGET_HPP_ */

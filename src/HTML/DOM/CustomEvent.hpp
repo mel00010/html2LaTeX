@@ -20,7 +20,27 @@
 #ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
 #define SRC_HTML_DOM_CUSTOMEVENT_HPP_
 
+#include "DOMString.hpp"
+#include "Event.hpp"
 
+#include <any>
+
+namespace HTML {
+namespace DOM {
+
+class CustomEvent : public Event {
+  const std::any detail;
+
+  void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
+};
+
+struct CustomEventInit : public EventInit {
+	public:
+		std::any detail = nullptr;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

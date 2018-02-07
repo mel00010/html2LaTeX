@@ -20,6 +20,26 @@
 #ifndef SRC_HTML_DOM_ATTR_HPP_
 #define SRC_HTML_DOM_ATTR_HPP_
 
+#include "Node.hpp"
+#include "DOMString.hpp"
+
+namespace HTML {
+namespace DOM {
+
+class Attr : public Node {
+  const std::optional<DOMString> namespaceURI;
+  const std::optional<DOMString> prefix;
+  const DOMString localName;
+  const DOMString name;
+  DOMString value;
+
+  const std::optional<Element> ownerElement;
+
+  const bool specified; // useless; always returns true
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

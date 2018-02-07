@@ -20,6 +20,22 @@
 #ifndef SRC_HTML_DOM_SHADOWROOT_HPP_
 #define SRC_HTML_DOM_SHADOWROOT_HPP_
 
+#include "DocumentFragment.hpp"
+#include "Node.hpp"
+
+namespace HTML {
+namespace DOM {
+
+class ShadowRoot : public DocumentFragment {
+	public:
+		const ShadowRootMode mode;
+		const Element host;
+};
+
+enum ShadowRootMode { "open", "closed" };
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

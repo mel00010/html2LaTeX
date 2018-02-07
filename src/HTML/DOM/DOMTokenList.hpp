@@ -20,6 +20,29 @@
 #ifndef SRC_HTML_DOM_DOMTOKENLIST_HPP_
 #define SRC_HTML_DOM_DOMTOKENLIST_HPP_
 
+#include "DOMString.hpp"
+
+#include <optional>
+
+namespace HTML {
+namespace DOM {
+
+class DOMTokenList {
+	public:
+		const unsigned long length;
+		std::optional<DOMString> item(unsigned long index); // getter
+		bool contains(DOMString token);
+		void add(DOMString... tokens);
+		void remove(DOMString... tokens);
+		bool toggle(DOMString token, std::optional<bool> force);
+		void replace(DOMString token, DOMString newToken);
+		bool supports(DOMString token);
+		DOMString value;
+//		iterable<DOMString>;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

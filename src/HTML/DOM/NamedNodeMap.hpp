@@ -20,8 +20,27 @@
 #ifndef SRC_HTML_DOM_NAMEDNODEMAP_HPP_
 #define SRC_HTML_DOM_NAMEDNODEMAP_HPP_
 
+#include "Attr.hpp"
+#include "DOMString.hpp"
 
+#include <optional>
 
+namespace HTML {
+namespace DOM {
 
+class NamedNodeMap {
+	public:
+		const unsigned long length;
+		std::optional<Attr> item(unsigned long index); // getter
+		std::optional<Attr> getNamedItem(DOMString qualifiedName); // getter
+		std::optional<Attr> getNamedItemNS(std::optional<DOMString> name_space, DOMString localName);
+		std::optional<Attr> setNamedItem(Attr attr);
+		std::optional<Attr> setNamedItemNS(Attr attr);
+		Attr removeNamedItem(DOMString qualifiedName);
+		Attr removeNamedItemNS(std::optional<DOMString> name_space, DOMString localName);
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_NAMEDNODEMAP_HPP_ */

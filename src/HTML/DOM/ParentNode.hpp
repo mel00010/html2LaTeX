@@ -20,8 +20,41 @@
 #ifndef SRC_HTML_DOM_PARENTNODE_HPP_
 #define SRC_HTML_DOM_PARENTNODE_HPP_
 
+#include "DOMString.hpp"
+#include "HTMLCollection.hpp"
+#include "Node.hpp"
+#include "NodeList.hpp"
 
+#include <optional>
+#include <variant>
+#include <vector>
 
+namespace HTML {
+namespace DOM {
 
+class ParentNode {
+	public:
+		const std::optional<Element> firstElementChild;
+		const std::optional<Element> lastElementChild;
+		const unsigned long childElementCount;
+
+		void prepend(std::vector<std::variant<Node, DOMString>> nodes);
+		void append(std::vector<std::variant<Node, DOMString>> nodes);
+
+		std::optional<Element> querySelector(DOMString selectors);
+		NodeList querySelectorAll(DOMString selectors);
+
+	protected:
+		const HTMLCollection children;
+};
+
+/* IDL Mixins
+ Document includes ParentNode;
+ DocumentFragment includes ParentNode;
+ Element includes ParentNode;
+ */
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_PARENTNODE_HPP_ */

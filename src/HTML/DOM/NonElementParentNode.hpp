@@ -20,8 +20,18 @@
 #ifndef SRC_HTML_DOM_NONELEMENTPARENTNODE_HPP_
 #define SRC_HTML_DOM_NONELEMENTPARENTNODE_HPP_
 
+namespace HTML {
+namespace DOM {
 
-
-
+class NonElementParentNode {
+	public:
+		std::optional<Element> getElementById(DOMString elementId);
+};
+/* IDL Mixins
+Document includes NonElementParentNode;
+DocumentFragment includes NonElementParentNode;
+*/
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_NONELEMENTPARENTNODE_HPP_ */

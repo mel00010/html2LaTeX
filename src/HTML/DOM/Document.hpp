@@ -20,19 +20,24 @@
 #ifndef SRC_HTML_DOM_DOCUMENT_HPP_
 #define SRC_HTML_DOM_DOCUMENT_HPP_
 
+#include "Comment.hpp"
+#include "DocumentFragment.hpp"
+#include "DocumentOrShadowRoot.hpp"
+#include "DocumentType.hpp"
+#include "DOMImplementation.hpp"
+#include "DOMString.hpp"
+#include "Event.hpp"
+#include "HTMLCollection.hpp"
+#include "Node.hpp"
+#include "ProcessingInstruction.hpp"
+#include "Text.hpp"
+
 #include <optional>
-#include "../DOM/Comment.hpp"
-#include "../DOM/DocumentFragment.hpp"
-#include "../DOM/DocumentType.hpp"
-#include "../DOM/DOMImplementation.hpp"
-#include "../DOM/DOMString.hpp"
-#include "../DOM/HTMLCollection.hpp"
-#include "../DOM/Node.hpp"
-#include "../DOM/Text.hpp"
 
 namespace HTML {
+namespace DOM {
 
-class Document : public Node {
+class Document : public Node, public DocumentOrShadowRoot {
 	public:
 		const DOMImplementation implementation;
 		const DOMString URL;
@@ -71,6 +76,7 @@ class XMLDocument : public Document {
 
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

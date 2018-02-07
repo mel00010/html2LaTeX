@@ -20,8 +20,21 @@
 #ifndef SRC_HTML_DOM_NODELIST_HPP_
 #define SRC_HTML_DOM_NODELIST_HPP_
 
+#include "Node.hpp"
 
+#include <optional>
 
+namespace HTML {
+namespace DOM {
 
+class NodeList {
+	public:
+		std::optional<Node> item(unsigned long index); //getter
+		const unsigned long length;
+//		iterable<Node> ;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_NODELIST_HPP_ */

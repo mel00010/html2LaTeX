@@ -20,10 +20,13 @@
 #ifndef SRC_HTML_DOM_CHARACTERDATA_HPP_
 #define SRC_HTML_DOM_CHARACTERDATA_HPP_
 
-#include "../DOM/DOMString.hpp"
-#include "../DOM/Node.hpp"
+#include "DOMString.hpp"
+#include "Node.hpp"
+
+#include <stddef.h>
 
 namespace HTML {
+namespace DOM {
 
 class CharacterData : public Node {
 	public:
@@ -36,6 +39,7 @@ class CharacterData : public Node {
 		void replaceData(size_t offset, size_t count, DOMString data);
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

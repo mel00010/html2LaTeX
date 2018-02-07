@@ -20,8 +20,23 @@
 #ifndef SRC_HTML_DOM_SLOTABLE_HPP_
 #define SRC_HTML_DOM_SLOTABLE_HPP_
 
+#include <optional>
 
+namespace HTML {
+namespace DOM {
 
+class Slotable {
+	public:
+		const std::optional<HTMLSlotElement> assignedSlot;
+};
 
+/* IDL Mixins
+ Element includes Slotable;
+ Text includes Slotable;
+ */
+
+}
+/* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_SLOTABLE_HPP_ */

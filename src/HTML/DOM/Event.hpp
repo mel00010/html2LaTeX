@@ -20,11 +20,12 @@
 #ifndef SRC_HTML_DOM_EVENT_HPP_
 #define SRC_HTML_DOM_EVENT_HPP_
 
-#include "Dictionary.hpp"
+#include "DOMString.hpp"
+
 #include <optional>
-#include "../DOM/DOMString.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class Event {
 	public:
@@ -55,13 +56,13 @@ class Event {
 		void initEvent(DOMString type, bool bubbles, bool cancelable);
 };
 
-class EventInit : public Dictionary {
+class EventInit {
 	public:
 		bool bubbles = false;
 		bool cancelable = false;
 };
 
-
+} /* namespace DOM */
 } /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_EVENT_HPP_ */

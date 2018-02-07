@@ -20,8 +20,33 @@
 #ifndef SRC_HTML_DOM_MUTATIONRECORD_HPP_
 #define SRC_HTML_DOM_MUTATIONRECORD_HPP_
 
+#include "DOMString.hpp"
+#include "Node.hpp"
 
+#include <optional>
 
+namespace HTML {
+namespace DOM {
 
+class MutationRecord {
+	public:
+		const DOMString type;
+		const std::optional<Node> previousSibling;
+		const std::optional<Node> nextSibling;
+		const std::optional<DOMString> attributeName;
+		const std::optional<DOMString> attributeNamespace;
+		const std::optional<DOMString> oldValue;
+
+	protected:
+		const Node target;
+		const NodeList addedNodes;
+		const NodeList removedNodes;
+
+	public:
+
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_MUTATIONRECORD_HPP_ */

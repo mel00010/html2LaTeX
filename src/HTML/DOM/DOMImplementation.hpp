@@ -20,13 +20,14 @@
 #ifndef SRC_HTML_DOM_DOMIMPLEMENTATION_HPP_
 #define SRC_HTML_DOM_DOMIMPLEMENTATION_HPP_
 
+#include "Document.hpp"
+#include "DocumentType.hpp"
+#include "DOMString.hpp"
+
 #include <optional>
-#include "../DOM/Document.hpp"
-#include "../DOM/DocumentType.hpp"
-#include "../DOM/DOMString.hpp"
-#include "../DOM/Node.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class DOMImplementation : public Node {
 	public:
@@ -39,6 +40,7 @@ class DOMImplementation : public Node {
 		bool hasFeature(); // useless; always returns true
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

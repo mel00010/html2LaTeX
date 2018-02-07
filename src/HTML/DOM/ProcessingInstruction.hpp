@@ -20,15 +20,17 @@
 #ifndef SRC_HTML_DOM_PROCESSINGINSTRUCTION_HPP_
 #define SRC_HTML_DOM_PROCESSINGINSTRUCTION_HPP_
 
-#include "../DOM/CharacterData.hpp"
-#include "../DOM/DOMString.hpp"
+#include "CharacterData.hpp"
+#include "DOMString.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class ProcessingInstruction : public CharacterData {
 	const DOMString target;
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

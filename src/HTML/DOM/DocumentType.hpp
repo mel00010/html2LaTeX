@@ -20,18 +20,21 @@
 #ifndef SRC_HTML_DOM_DOCUMENTTYPE_HPP_
 #define SRC_HTML_DOM_DOCUMENTTYPE_HPP_
 
-#include "../DOM/DOMString.hpp"
-#include "../DOM/Node.hpp"
+#include "ChildNode.hpp"
+#include "DOMString.hpp"
+#include "Node.hpp"
 
 namespace HTML {
+namespace DOM {
 
-class DocumentType : public Node {
+class DocumentType: public Node, public ChildNode {
 	public:
 		const DOMString name;
 		const DOMString publicId;
 		const DOMString systemId;
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_DOCUMENTTYPE_HPP_ */

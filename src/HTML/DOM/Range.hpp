@@ -20,7 +20,55 @@
 #ifndef SRC_HTML_DOM_RANGE_HPP_
 #define SRC_HTML_DOM_RANGE_HPP_
 
+#include "Node.hpp"
 
+
+namespace HTML {
+namespace DOM {
+
+class Range {
+  const Node startContainer;
+  const unsigned long startOffset;
+  const Node endContainer;
+  const unsigned long endOffset;
+  const bool collapsed;
+  const Node commonAncestorContainer;
+
+  void setStart(Node node, unsigned long offset);
+  void setEnd(Node node, unsigned long offset);
+  void setStartBefore(Node node);
+  void setStartAfter(Node node);
+  void setEndBefore(Node node);
+  void setEndAfter(Node node);
+  void collapse(bool toStart = false);
+  void selectNode(Node node);
+  void selectNodeContents(Node node);
+
+  const unsigned short START_TO_START = 0;
+  const unsigned short START_TO_END = 1;
+  const unsigned short END_TO_END = 2;
+  const unsigned short END_TO_START = 3;
+  short compareBoundaryPoints(unsigned short how, Range sourceRange);
+
+  void deleteContents();
+  DocumentFragment extractContents();
+  DocumentFragment cloneContents();
+  void insertNode(Node node);
+  void surroundContents(Node newParent);
+
+  Range cloneRange();
+  void detach();
+
+  bool isPointInRange(Node node, unsigned long offset);
+  short comparePoint(Node node, unsigned long offset);
+
+  bool intersectsNode(Node node);
+
+//  stringifier;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

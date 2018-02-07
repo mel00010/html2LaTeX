@@ -20,12 +20,14 @@
 #ifndef SRC_HTML_DOM_NODE_HPP_
 #define SRC_HTML_DOM_NODE_HPP_
 
+#include "Document.hpp"
+#include "DOMString.hpp"
+
 #include <list>
 #include <optional>
-#include "../DOM/Document.hpp"
-#include "../DOM/DOMString.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class Element;
 
@@ -90,6 +92,7 @@ class Node {
 		Node& removeChild(Node& child);
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

@@ -20,8 +20,31 @@
 #ifndef SRC_HTML_DOM_NODEITERATOR_HPP_
 #define SRC_HTML_DOM_NODEITERATOR_HPP_
 
+#include "Node.hpp"
+#include "NodeFilter.hpp"
 
+#include <optional>
 
+namespace HTML {
+namespace DOM {
 
+class NodeIterator {
+	public:
+		const Node referenceNode;
+		const bool pointerBeforeReferenceNode;
+		const unsigned long whatToShow;
+		const std::optional<NodeFilter> filter;
+
+		std::optional<Node> nextNode();
+		std::optional<Node> previousNode();
+
+		void detach();
+
+	protected:
+		const Node root;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_NODEITERATOR_HPP_ */

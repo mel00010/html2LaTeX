@@ -20,11 +20,13 @@
 #ifndef SRC_HTML_DOM_TEXT_HPP_
 #define SRC_HTML_DOM_TEXT_HPP_
 
+#include "CharacterData.hpp"
+#include "DOMString.hpp"
+
 #include <stddef.h>
-#include "../DOM/CharacterData.hpp"
-#include "../DOM/DOMString.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class Text : public CharacterData {
 	public:
@@ -32,6 +34,7 @@ class Text : public CharacterData {
 		const DOMString wholeText;
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_TEXT_HPP_ */

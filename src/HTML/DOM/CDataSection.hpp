@@ -20,6 +20,17 @@
 #ifndef SRC_HTML_DOM_CDATASECTION_HPP_
 #define SRC_HTML_DOM_CDATASECTION_HPP_
 
+#include "Text.hpp"
+
+namespace HTML {
+namespace DOM {
+
+class CDataSection : public Text {
+
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

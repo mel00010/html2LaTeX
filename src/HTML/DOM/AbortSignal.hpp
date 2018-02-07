@@ -20,6 +20,20 @@
 #ifndef SRC_HTML_DOM_ABORTSIGNAL_HPP_
 #define SRC_HTML_DOM_ABORTSIGNAL_HPP_
 
+#include "EventTarget.hpp"
+#include "EventHandler.hpp"
+
+namespace HTML {
+namespace DOM {
+
+class AbortSignal : public EventTarget {
+	public:
+		const bool aborted;
+		EventHandler onabort;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 

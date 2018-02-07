@@ -23,9 +23,11 @@
 #include <string>
 
 namespace HTML {
+namespace DOM {
 
 using DOMString = std::u32string;
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

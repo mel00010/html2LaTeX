@@ -20,8 +20,38 @@
 #ifndef SRC_HTML_DOM_MUTATIONOBSERVER_HPP_
 #define SRC_HTML_DOM_MUTATIONOBSERVER_HPP_
 
+#include "DOMString.hpp"
+#include "MutationRecord.hpp"
+#include "Node.hpp"
 
+#include <optional>
+#include <vector>
 
+namespace HTML {
+namespace DOM {
 
+struct MutationObserverInit;
+
+class MutationObserver {
+		void observe(Node target, std::optional<MutationObserverInit> options);
+		void disconnect();
+		std::vector<MutationRecord> takeRecords();
+};
+
+using MutationCallback = void (*)(std::vector<MutationRecord> mutations, MutationObserver observer);
+
+struct MutationObserverInit {
+	public:
+		bool childList = false;
+		bool attributes;
+		bool characterData;
+		bool subtree = false;
+		bool attributeOldValue;
+		bool characterDataOldValue;
+		std::vector<DOMString> attributeFilter;
+};
+
+} /* namespace DOM */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_MUTATIONOBSERVER_HPP_ */

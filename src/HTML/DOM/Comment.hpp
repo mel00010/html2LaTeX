@@ -20,13 +20,15 @@
 #ifndef SRC_HTML_DOM_COMMENT_HPP_
 #define SRC_HTML_DOM_COMMENT_HPP_
 
-#include "../DOM/CharacterData.hpp"
+#include "CharacterData.hpp"
 
 namespace HTML {
+namespace DOM {
 
 class Comment : public CharacterData {
 };
 
+} /* namespace DOM */
 } /* namespace HTML */
 
 

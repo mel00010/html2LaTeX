@@ -20,6 +20,25 @@
 #ifndef SRC_HTML_DOM_NONDOCUMENTTYPECHILDNODE_HPP_
 #define SRC_HTML_DOM_NONDOCUMENTTYPECHILDNODE_HPP_
 
+#include "Node.hpp"
+
+#include <optional>
+
+namespace HTML {
+namespace DOM {
+
+class NonDocumentTypeChildNode {
+	public:
+		const std::optional<Element> previousElementSibling;
+		const std::optional<Element> nextElementSibling;
+};
+
+/* IDL Mixins
+Element includes NonDocumentTypeChildNode;
+CharacterData includes NonDocumentTypeChildNode;
+*/
+} /* namespace DOM */
+} /* namespace HTML */
 
 
 
