@@ -20,7 +20,7 @@
 #ifndef SRC_HTML_DOM_NONDOCUMENTTYPECHILDNODE_HPP_
 #define SRC_HTML_DOM_NONDOCUMENTTYPECHILDNODE_HPP_
 
-#include "Node.hpp"
+#include "Element.hpp"
 
 #include <optional>
 

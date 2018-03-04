@@ -20,6 +20,7 @@
 #ifndef SRC_HTML_DOM_CHARACTERDATA_HPP_
 #define SRC_HTML_DOM_CHARACTERDATA_HPP_
 
+#include "ChildNode.hpp"
 #include "DOMString.hpp"
 #include "Node.hpp"
 
@@ -28,7 +29,7 @@
 namespace HTML {
 namespace DOM {
 
-class CharacterData : public Node {
+class CharacterData : public Node, public ChildNode {
 	public:
 		DOMString data = U"";
 		const size_t length;

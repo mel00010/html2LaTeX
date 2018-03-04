@@ -22,14 +22,13 @@
 
 #include "Document.hpp"
 #include "DOMString.hpp"
+#include "Element.hpp"
 
 #include <list>
 #include <optional>
 
 namespace HTML {
 namespace DOM {
-
-class Element;
 
 class Node {
 	public:

@@ -20,6 +20,11 @@
 #ifndef SRC_HTML_DOM_NONELEMENTPARENTNODE_HPP_
 #define SRC_HTML_DOM_NONELEMENTPARENTNODE_HPP_
 
+#include "DOMString.hpp"
+#include "Element.hpp"
+
+#include <optional>
+
 namespace HTML {
 namespace DOM {
 

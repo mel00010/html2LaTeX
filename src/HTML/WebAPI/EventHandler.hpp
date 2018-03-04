@@ -28,12 +28,12 @@
 namespace HTML {
 namespace WebAPI {
 
-using EventHandlerNonNull = std::any (*)(DOM::Event event);
+using EventHandlerNonNull = std::any (*) (DOM::Event event);
 typedef std::optional<EventHandlerNonNull> EventHandler;
 
 }
-}
-
-
+/* namespace WebAPI */
+} /* namespace HTML */
 
 #endif /* SRC_HTML_WEBAPI_EVENTHANDLER_HPP_ */
+

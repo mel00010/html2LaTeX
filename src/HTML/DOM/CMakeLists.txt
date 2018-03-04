@@ -36,6 +36,6 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/TreeWalker.hpp
 )
 target_link_libraries(DOM
-	PUBLIC	
+	PUBLIC
 )
 set_target_properties(DOM PROPERTIES LINKER_LANGUAGE CXX)

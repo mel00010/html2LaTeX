@@ -20,45 +20,46 @@
 #ifndef SRC_HTML_WEBAPI_HTMLELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLELEMENT_HPP_
 
-#include <optional>
-
-#include "../DOM/DOMString.hpp"
-#include "../DOM/Element.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-class HTMLElement: public DOM::Element, public GlobalEventHandlers, public DocumentAndElementEventHandlers, public ElementContentEditable, public NoncedElement {
-	public:
-		// metadata attributes
-		DOM::DOMString title;
-		DOM::DOMString lang;
-		bool translate;
-		DOM::DOMString dir;
 
+class HTMLElement : public Element {
+  // metadata attributes
+    DOM::DOMString title;
+    DOM::DOMString lang;
+    bool translate;
+    DOM::DOMString dir;
+  [SameObject] const DOM::DOMStringMap dataset;
 
-		// user interaction
-		bool hidden;
-		void click();
-		long tabIndex;
-		void focus(std::optional<FocusOptions> options);
-		void blur();
-		DOM::DOMString accessKey;
-		const DOM::DOMString accessKeyLabel;
-		bool draggable;
-		bool spellcheck;
-		DOM::DOMString autocapitalize;
+  // user interaction
+    bool hidden;
+  void click();
+    long tabIndex;
+  void focus(optional FocusOptions options);
+  void blur();
+    DOM::DOMString accessKey;
+  const DOM::DOMString accessKeyLabel;
+    bool draggable;
+    bool spellcheck;
+    DOM::DOMString autocapitalize;
 
-		DOM::DOMString innerText;
-
-	protected:
-		const DOMStringMap dataset;
+    [TreatNullAs=EmptyString] DOM::DOMString innerText;
 };
 
-class HTMLUnknownElement: public HTMLElement {
-};
+HTMLElement includes GlobalEventHandlers;
+HTMLElement includes DocumentAndElementEventHandlers;
+HTMLElement includes ElementContentEditable;
+HTMLElement includes NoncedElement;
+
+// Note: intentionally not [HTMLConstructor]
+
+class HTMLUnknownElement : HTMLElement { };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
 
+
 #endif /* SRC_HTML_WEBAPI_HTMLELEMENT_HPP_ */
+

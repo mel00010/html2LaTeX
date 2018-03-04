@@ -21,8 +21,8 @@
 #define SRC_HTML_DOM_PARENTNODE_HPP_
 
 #include "DOMString.hpp"
+#include "Element.hpp"
 #include "HTMLCollection.hpp"
-#include "Node.hpp"
 #include "NodeList.hpp"
 
 #include <optional>

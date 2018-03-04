@@ -21,11 +21,12 @@
 #define SRC_HTML_DOM_DOCUMENTFRAGMENT_HPP_
 
 #include "Node.hpp"
+#include "ParentNode.hpp"
 
 namespace HTML {
 namespace DOM {
 
-class DocumentFragment : public Node {
+class DocumentFragment : public Node, public ParentNode {
 };
 
 } /* namespace DOM */

@@ -32,22 +32,19 @@ namespace DOM {
 /* Mixin */
 class ChildNode {
 	public:
-		void before(std::vector<std::variant<Node,DOMString>> nodes);
-		void after(std::vector<std::variant<Node,DOMString>> nodes);
-		void replaceWith(std::vector<std::variant<Node,DOMString>> nodes);
+		void before(std::vector<std::variant<Node, DOMString>> nodes);
+		void after(std::vector<std::variant<Node, DOMString>> nodes);
+		void replaceWith(std::vector<std::variant<Node, DOMString>> nodes);
 		void remove();
 };
 
 /* IDL Mixins
-DocumentType includes ChildNode;
-Element includes ChildNode;
-CharacterData includes ChildNode;
-*/
+ DocumentType includes ChildNode;
+ Element includes ChildNode;
+ CharacterData includes ChildNode;
+ */
 
 } /* namespace DOM */
 } /* namespace HTML */
-
-
-
 
 #endif /* SRC_HTML_DOM_CHILDNODE_HPP_ */

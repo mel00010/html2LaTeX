@@ -22,6 +22,7 @@
 
 #include "DOMString.hpp"
 #include "Node.hpp"
+#include "NodeList.hpp"
 
 #include <optional>
 
@@ -41,9 +42,6 @@ class MutationRecord {
 		const Node target;
 		const NodeList addedNodes;
 		const NodeList removedNodes;
-
-	public:
-
 };
 
 } /* namespace DOM */

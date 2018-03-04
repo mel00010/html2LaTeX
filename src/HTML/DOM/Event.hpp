@@ -21,6 +21,7 @@
 #define SRC_HTML_DOM_EVENT_HPP_
 
 #include "DOMString.hpp"
+#include "EventTarget.hpp"
 
 #include <optional>
 

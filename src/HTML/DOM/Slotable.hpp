@@ -22,12 +22,14 @@
 
 #include <optional>
 
+#include "../WebAPI/HTMLSlotElement.hpp"
+
 namespace HTML {
 namespace DOM {
 
 class Slotable {
 	public:
-		const std::optional<HTMLSlotElement> assignedSlot;
+		const std::optional<WebAPI::HTMLSlotElement> assignedSlot;
 };
 
 /* IDL Mixins

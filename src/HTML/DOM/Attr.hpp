@@ -20,8 +20,10 @@
 #ifndef SRC_HTML_DOM_ATTR_HPP_
 #define SRC_HTML_DOM_ATTR_HPP_
 
-#include "Node.hpp"
 #include "DOMString.hpp"
+#include "Element.hpp"
+
+#include <optional>
 
 namespace HTML {
 namespace DOM {
