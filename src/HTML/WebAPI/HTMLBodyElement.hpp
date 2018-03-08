@@ -20,27 +20,27 @@
 #ifndef SRC_HTML_WEBAPI_HTMLBODYELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLBODYELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+#include "WindowEventHandlers.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLBodyElement : HTMLElement {
-  // also has obsolete members
-    [TreatNullAs=EmptyString] DOM::DOMString text;
-    [TreatNullAs=EmptyString] DOM::DOMString link;
-    [TreatNullAs=EmptyString] DOM::DOMString vLink;
-    [TreatNullAs=EmptyString] DOM::DOMString aLink;
-    [TreatNullAs=EmptyString] DOM::DOMString bgColor;
-    DOM::DOMString background;
+class HTMLBodyElement: public HTMLElement, public WindowEventHandlers {
+	public:
+		// also has obsolete members
+		DOM::DOMString text = "";
+		DOM::DOMString link = "";
+		DOM::DOMString vLink = "";
+		DOM::DOMString aLink = "";
+		DOM::DOMString bgColor = "";
+		DOM::DOMString background = "";
 };
-
-HTMLBodyElement includes WindowEventHandlers;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLBODYELEMENT_HPP_ */
 

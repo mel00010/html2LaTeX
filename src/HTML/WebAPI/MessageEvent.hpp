@@ -20,34 +20,56 @@
 #ifndef SRC_HTML_WEBAPI_MESSAGEEVENT_HPP_
 #define SRC_HTML_WEBAPI_MESSAGEEVENT_HPP_
 
+#include "MessagePort.hpp"
+
+#include <any>
+#include <list>
+#include <optional>
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Constructor(DOMString type, optional MessageEventInit eventInitDict), Exposed=(Window,Worker,AudioWorklet)]
-class MessageEvent : Event {
-  const any data;
-  const USVString origin;
-  const DOM::DOMString lastEventId;
-  const MessageEventSource? source;
-  const FrozenArray<MessagePort> ports;
+typedef std::variant<WindowProxy, MessagePort, ServiceWorker> MessageEventSource;
 
-  void initMessageEvent(DOMString type, optional bool bubbles = false, optional bool cancelable = false, optional any data = null, optional USVString origin = "", optional DOM::DOMString lastEventId = "", optional MessageEventSource? source = null, optional sequence<MessagePort> ports = []);
+struct MessageEventInit;
+
+class MessageEvent: public DOM::Event {
+	public:
+		MessageEvent(DOM::DOMString type);
+		MessageEvent(DOM::DOMString type, MessageEventInit eventInitDict);
+		const std::any data;
+		const DOM::USVString origin;
+		const DOM::DOMString lastEventId;
+		const std::optional<MessageEventSource> source;
+		const FrozenArray<MessagePort> ports;
+
+		void initMessageEvent(DOM::DOMString type,
+				std::optional<bool> bubbles = false,
+				std::optional<bool> cancelable = false,
+				std::optional<std::any> data = std::nullopt,
+				std::optional<DOM::USVString> origin = "",
+				std::optional<DOM::DOMString> lastEventId = "",
+				std::optional<MessageEventSource> source = std::nullopt,
+				std::optional<std::list<MessagePort>> ports = { });
 };
 
-dictionary MessageEventInit : EventInit {
-  any data = null;
-  USVString origin = "";
-  DOM::DOMString lastEventId = "";
-  MessageEventSource? source = null;
-  sequence<MessagePort> ports = [];
+struct MessageEventInit: public DOM::EventInit {
+	public:
+		std::any data = std::nullopt;
+		DOM::USVString origin = "";
+		DOM::DOMString lastEventId = "";
+		std::optional<MessageEventSource> source = std::nullopt;
+		std::list<MessagePort> ports = { };
 };
 
-typedef (WindowProxy or MessagePort or ServiceWorker) MessageEventSource;
-
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_MESSAGEEVENT_HPP_ */
 

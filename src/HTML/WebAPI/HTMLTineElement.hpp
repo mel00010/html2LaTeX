@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTINEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTINEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTimeElement : HTMLElement {
-    DOM::DOMString dateTime;
+class HTMLTimeElement: public HTMLElement {
+	public:
+		DOM::DOMString dateTime;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTINEELEMENT_HPP_ */
 

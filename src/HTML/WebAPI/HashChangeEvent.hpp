@@ -20,25 +20,31 @@
 #ifndef SRC_HTML_WEBAPI_HASHCHANGEEVENT_HPP_
 #define SRC_HTML_WEBAPI_HASHCHANGEEVENT_HPP_
 
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- Constructor(DOMString type, optional HashChangeEventInit eventInitDict)]
-class HashChangeEvent : Event {
-  const USVString oldURL;
-  const USVString newURL;
+struct HashChangeEventInit;
+
+class HashChangeEvent : public DOM::Event {
+	public:
+		HashChangeEvent(DOM::DOMString type);
+		HashChangeEvent(DOM::DOMString type, HashChangeEventInit eventInitDict);
+		const DOM::USVString oldURL;
+		const DOM::USVString newURL;
 };
 
-dictionary HashChangeEventInit : EventInit {
-  USVString oldURL = "";
-  USVString newURL = "";
+struct HashChangeEventInit : public DOM::EventInit {
+	DOM::USVString oldURL = "";
+	DOM::USVString newURL = "";
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HASHCHANGEEVENT_HPP_ */
 

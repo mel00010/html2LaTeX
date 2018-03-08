@@ -20,23 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_STORAGE_HPP_
 #define SRC_HTML_WEBAPI_STORAGE_HPP_
 
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
 class Storage {
-  const unsigned long length;
-  DOM::DOMString? key(unsigned long index);
-  getter DOM::DOMString? getItem(DOMString key);
-  setter void setItem(DOMString key, DOM::DOMString value);
-  deleter void removeItem(DOMString key);
-  void clear();
+	public:
+		const unsigned long length;
+		std::optional<DOM::DOMString> key(unsigned long index);
+		std::optional<DOM::DOMString> getItem(DOM::DOMString key);
+		void setItem(DOM::DOMString key, DOM::DOMString value);
+		void removeItem(DOM::DOMString key);
+		void clear();
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_STORAGE_HPP_ */
 

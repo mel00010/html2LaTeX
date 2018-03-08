@@ -20,26 +20,31 @@
 #ifndef SRC_HTML_WEBAPI_TEXTTRACKCUE_HPP_
 #define SRC_HTML_WEBAPI_TEXTTRACKCUE_HPP_
 
+#include "EventHandler.hpp"
+#include "TextTrack.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
+class TextTrackCue: public DOM::EventTarget {
+	public:
+		const std::optional<TextTrack> track;
 
-class TextTrackCue : EventTarget {
-  const TextTrack? track;
+		DOM::DOMString id;
+		double startTime;
+		double endTime;
+		bool pauseOnExit;
 
-   DOM::DOMString id;
-   double startTime;
-   double endTime;
-   bool pauseOnExit;
-
-   EventHandler onenter;
-   EventHandler onexit;
+		EventHandler onenter;
+		EventHandler onexit;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_TEXTTRACKCUE_HPP_ */
 

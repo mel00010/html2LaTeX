@@ -25,6 +25,7 @@
 #include "DOMTokenList.hpp"
 #include "HTMLCollection.hpp"
 #include "NamedNodeMap.hpp"
+#include "Node.hpp"
 #include "ShadowRoot.hpp"
 
 #include <optional>

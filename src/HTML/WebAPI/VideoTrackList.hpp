@@ -20,25 +20,31 @@
 #ifndef SRC_HTML_WEBAPI_VIDEOTRACKLIST_HPP_
 #define SRC_HTML_WEBAPI_VIDEOTRACKLIST_HPP_
 
+#include "EventHandler.hpp"
+#include "VideoTrack.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/EventTarget.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
+class VideoTrackList: public DOM::EventTarget {
+	public:
+		const unsigned long length;
+		VideoTrack getVideoTrack(unsigned long index);
+		std::optional<VideoTrack> getTrackById(DOM::DOMString id);
+		const long selectedIndex;
 
-class VideoTrackList : EventTarget {
-  const unsigned long length;
-  getter VideoTrack (unsigned long index);
-  VideoTrack? getTrackById(DOMString id);
-  const long selectedIndex;
-
-   EventHandler onchange;
-   EventHandler onaddtrack;
-   EventHandler onremovetrack;
+		EventHandler onchange;
+		EventHandler onaddtrack;
+		EventHandler onremovetrack;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_VIDEOTRACKLIST_HPP_ */
 

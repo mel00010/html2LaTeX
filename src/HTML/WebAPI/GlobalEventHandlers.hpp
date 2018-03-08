@@ -20,79 +20,80 @@
 #ifndef SRC_HTML_WEBAPI_GLOBALEVENTHANDLERS_HPP_
 #define SRC_HTML_WEBAPI_GLOBALEVENTHANDLERS_HPP_
 
+#include "EventHandler.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class GlobalEventHandlers {
-   EventHandler onabort;
-   EventHandler onauxclick;
-   EventHandler onblur;
-   EventHandler oncancel;
-   EventHandler oncanplay;
-   EventHandler oncanplaythrough;
-   EventHandler onchange;
-   EventHandler onclick;
-   EventHandler onclose;
-   EventHandler oncontextmenu;
-   EventHandler oncuechange;
-   EventHandler ondblclick;
-   EventHandler ondrag;
-   EventHandler ondragend;
-   EventHandler ondragenter;
-   EventHandler ondragexit;
-   EventHandler ondragleave;
-   EventHandler ondragover;
-   EventHandler ondragstart;
-   EventHandler ondrop;
-   EventHandler ondurationchange;
-   EventHandler onemptied;
-   EventHandler onended;
-   OnErrorEventHandler onerror;
-   EventHandler onfocus;
-   EventHandler oninput;
-   EventHandler oninvalid;
-   EventHandler onkeydown;
-   EventHandler onkeypress;
-   EventHandler onkeyup;
-   EventHandler onload;
-   EventHandler onloadeddata;
-   EventHandler onloadedmetadata;
-   EventHandler onloadend;
-   EventHandler onloadstart;
-   EventHandler onmousedown;
-  [LenientThis]  EventHandler onmouseenter;
-  [LenientThis]  EventHandler onmouseleave;
-   EventHandler onmousemove;
-   EventHandler onmouseout;
-   EventHandler onmouseover;
-   EventHandler onmouseup;
-   EventHandler onwheel;
-   EventHandler onpause;
-   EventHandler onplay;
-   EventHandler onplaying;
-   EventHandler onprogress;
-   EventHandler onratechange;
-   EventHandler onreset;
-   EventHandler onresize;
-   EventHandler onscroll;
-   EventHandler onsecuritypolicyviolation;
-   EventHandler onseeked;
-   EventHandler onseeking;
-   EventHandler onselect;
-   EventHandler onstalled;
-   EventHandler onsubmit;
-   EventHandler onsuspend;
-   EventHandler ontimeupdate;
-   EventHandler ontoggle;
-   EventHandler onvolumechange;
-   EventHandler onwaiting;
+	public:
+		EventHandler onabort;
+		EventHandler onauxclick;
+		EventHandler onblur;
+		EventHandler oncancel;
+		EventHandler oncanplay;
+		EventHandler oncanplaythrough;
+		EventHandler onchange;
+		EventHandler onclick;
+		EventHandler onclose;
+		EventHandler oncontextmenu;
+		EventHandler oncuechange;
+		EventHandler ondblclick;
+		EventHandler ondrag;
+		EventHandler ondragend;
+		EventHandler ondragenter;
+		EventHandler ondragexit;
+		EventHandler ondragleave;
+		EventHandler ondragover;
+		EventHandler ondragstart;
+		EventHandler ondrop;
+		EventHandler ondurationchange;
+		EventHandler onemptied;
+		EventHandler onended;
+		OnErrorEventHandler onerror;
+		EventHandler onfocus;
+		EventHandler oninput;
+		EventHandler oninvalid;
+		EventHandler onkeydown;
+		EventHandler onkeypress;
+		EventHandler onkeyup;
+		EventHandler onload;
+		EventHandler onloadeddata;
+		EventHandler onloadedmetadata;
+		EventHandler onloadend;
+		EventHandler onloadstart;
+		EventHandler onmousedown;
+		EventHandler onmouseenter;
+		EventHandler onmouseleave;
+		EventHandler onmousemove;
+		EventHandler onmouseout;
+		EventHandler onmouseover;
+		EventHandler onmouseup;
+		EventHandler onwheel;
+		EventHandler onpause;
+		EventHandler onplay;
+		EventHandler onplaying;
+		EventHandler onprogress;
+		EventHandler onratechange;
+		EventHandler onreset;
+		EventHandler onresize;
+		EventHandler onscroll;
+		EventHandler onsecuritypolicyviolation;
+		EventHandler onseeked;
+		EventHandler onseeking;
+		EventHandler onselect;
+		EventHandler onstalled;
+		EventHandler onsubmit;
+		EventHandler onsuspend;
+		EventHandler ontimeupdate;
+		EventHandler ontoggle;
+		EventHandler onvolumechange;
+		EventHandler onwaiting;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_GLOBALEVENTHANDLERS_HPP_ */
 

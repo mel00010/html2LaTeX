@@ -20,18 +20,17 @@
 #ifndef SRC_HTML_WEBAPI_NAVIGATORCOOKIES_HPP_
 #define SRC_HTML_WEBAPI_NAVIGATORCOOKIES_HPP_
 
-
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class NavigatorCookies {
-  const bool cookieEnabled;
+	public:
+		const bool cookieEnabled;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_NAVIGATORCOOKIES_HPP_ */
 

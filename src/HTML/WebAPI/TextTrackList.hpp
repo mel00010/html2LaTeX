@@ -20,24 +20,29 @@
 #ifndef SRC_HTML_WEBAPI_TEXTTRACKLIST_HPP_
 #define SRC_HTML_WEBAPI_TEXTTRACKLIST_HPP_
 
+#include "EventHandler.hpp"
+#include "TextTrack.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
+class TextTrackList: public DOM::EventTarget {
+	public:
+		const unsigned long length;
+		TextTrack getTextTrack(unsigned long index);
+		std::optional<TextTrack> getTrackById(DOM::DOMString id);
 
-class TextTrackList : EventTarget {
-  const unsigned long length;
-  getter TextTrack (unsigned long index);
-  TextTrack? getTrackById(DOMString id);
-
-   EventHandler onchange;
-   EventHandler onaddtrack;
-   EventHandler onremovetrack;
+		EventHandler onchange;
+		EventHandler onaddtrack;
+		EventHandler onremovetrack;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_TEXTTRACKLIST_HPP_ */
 

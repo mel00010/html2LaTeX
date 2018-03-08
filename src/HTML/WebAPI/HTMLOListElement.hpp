@@ -20,24 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLOLISTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLOLISTELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLOListElement : HTMLElement {
-    bool reversed;
-    long start;
-    DOM::DOMString type;
+class HTMLOListElement: public HTMLElement {
+	public:
+		bool reversed;
+		long start;
+		DOM::DOMString type;
 
-  // also has obsolete members
-    bool compact;
+		// also has obsolete members
+		bool compact;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLOLISTELEMENT_HPP_ */
 

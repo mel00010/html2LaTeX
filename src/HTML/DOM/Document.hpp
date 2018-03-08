@@ -28,7 +28,6 @@
 #include "DocumentType.hpp"
 #include "DOMImplementation.hpp"
 #include "DOMString.hpp"
-#include "Element.hpp"
 #include "Event.hpp"
 #include "HTMLCollection.hpp"
 #include "NodeFilter.hpp"
@@ -38,14 +37,16 @@
 #include "Range.hpp"
 #include "Text.hpp"
 #include "TreeWalker.hpp"
+#include "USVString.hpp"
 
 #include <list>
 #include <optional>
+#include <variant>
 
-#include "../WebAPI/DocumentAndElementEventHandlers.hpp"
 #include "../WebAPI/EventHandler.hpp"
-#include "../WebAPI/GlobalEventHandlers.hpp"
-#include "../WebAPI/HTMLElement.hpp"
+#include "../WebAPI/HTMLAllCollection.hpp"
+#include "../WebAPI/HTMLHeadElement.hpp"
+#include "../WebAPI/HTMLScriptElement.hpp"
 #include "../WebAPI/Location.hpp"
 
 namespace HTML {

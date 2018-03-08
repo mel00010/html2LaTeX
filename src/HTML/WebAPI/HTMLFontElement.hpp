@@ -20,21 +20,22 @@
 #ifndef SRC_HTML_WEBAPI_HTMLFONTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLFONTELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLFontElement : HTMLElement {
-    [TreatNullAs=EmptyString] DOM::DOMString color;
-    DOM::DOMString face;
-    DOM::DOMString size; 
+class HTMLFontElement: public HTMLElement {
+	public:
+		DOM::DOMString color = "";
+		DOM::DOMString face;
+		DOM::DOMString size;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLFONTELEMENT_HPP_ */
 

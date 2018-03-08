@@ -20,21 +20,19 @@
 #ifndef SRC_HTML_WEBAPI_HTMLMENUELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLMENUELEMENT_HPP_
 
+#include "HTMLElement.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLMenuElement : HTMLElement {
-
-  // also has obsolete members
-    bool compact;
+class HTMLMenuElement: public HTMLElement {
+	public:
+		// also has obsolete members
+		bool compact;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLMENUELEMENT_HPP_ */
 

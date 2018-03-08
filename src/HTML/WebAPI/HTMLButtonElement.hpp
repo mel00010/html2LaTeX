@@ -20,38 +20,44 @@
 #ifndef SRC_HTML_WEBAPI_HTMLBUTTONELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLBUTTONELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+#include "ValidityState.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/NodeList.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLButtonElement : HTMLElement {
-    bool autofocus;
-    bool disabled;
-  const HTMLFormElement? form;
-    USVString formAction;
-    DOM::DOMString formEnctype;
-    DOM::DOMString formMethod;
-    bool formNoValidate;
-    DOM::DOMString formTarget;
-    DOM::DOMString name;
-    DOM::DOMString type;
-    DOM::DOMString value;
+class HTMLButtonElement: public HTMLElement {
+	public:
+		bool autofocus;
+		bool disabled;
+		const std::optional<HTMLFormElement> form;
+		DOM::USVString formAction;
+		DOM::DOMString formEnctype;
+		DOM::DOMString formMethod;
+		bool formNoValidate;
+		DOM::DOMString formTarget;
+		DOM::DOMString name;
+		DOM::DOMString type;
+		DOM::DOMString value;
 
-  const bool willValidate;
-  const ValidityState validity;
-  const DOM::DOMString validationMessage;
-  bool checkValidity();
-  bool reportValidity();
-  void setCustomValidity(DOMString error);
+		const bool willValidate;
+		const ValidityState validity;
+		const DOM::DOMString validationMessage;
+		bool checkValidity();
+		bool reportValidity();
+		void setCustomValidity(DOM::DOMString error);
 
-  const NodeList labels;
+		const DOM::NodeList labels;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLBUTTONELEMENT_HPP_ */
 

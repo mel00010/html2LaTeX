@@ -20,36 +20,46 @@
 #ifndef SRC_HTML_WEBAPI_TEXTTRACK_HPP_
 #define SRC_HTML_WEBAPI_TEXTTRACK_HPP_
 
+#include "EventHandler.hpp"
+#include "TextTrackCue.hpp"
+#include "TextTrackCueList.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-enum TextTrackMode { "disabled",  "hidden",  "showing" };
-enum TextTrackKind { "subtitles",  "captions",  "descriptions",  "chapters",  "metadata" };
+enum TextTrackMode {
+	DISABLED, HIDDEN, SHOWING
+};
+enum TextTrackKind {
+	SUBTITLES, CAPTIONS, DESCRIPTIONS, CHAPTERS, METADATA
+};
 
+class TextTrack: public DOM::EventTarget {
+	public:
+		const TextTrackKind kind;
+		const DOM::DOMString label;
+		const DOM::DOMString language;
 
-class TextTrack : EventTarget {
-  const TextTrackKind kind;
-  const DOM::DOMString label;
-  const DOM::DOMString language;
+		const DOM::DOMString id;
+		const DOM::DOMString inBandMetadataTrackDispatchType;
 
-  const DOM::DOMString id;
-  const DOM::DOMString inBandMetadataTrackDispatchType;
+		TextTrackMode mode;
 
-   TextTrackMode mode;
+		const std::optional<TextTrackCueList> cues;
+		const std::optional<TextTrackCueList> activeCues;
 
-  const TextTrackCueList? cues;
-  const TextTrackCueList? activeCues;
+		void addCue(TextTrackCue cue);
+		void removeCue(TextTrackCue cue);
 
-  void addCue(TextTrackCue cue);
-  void removeCue(TextTrackCue cue);
-
-   EventHandler oncuechange;
+		EventHandler oncuechange;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_TEXTTRACK_HPP_ */
 

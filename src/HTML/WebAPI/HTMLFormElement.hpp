@@ -20,39 +20,45 @@
 #ifndef SRC_HTML_WEBAPI_HTMLFORMELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLFORMELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+#include "HTMLFormControlsCollection.hpp"
+
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- OverrideBuiltins,
- LegacyUnenumerableNamedProperties,
- HTMLConstructor]
-class HTMLFormElement : HTMLElement {
-    DOM::DOMString acceptCharset;
-    USVString action;
-    DOM::DOMString autocomplete;
-    DOM::DOMString enctype;
-    DOM::DOMString encoding;
-    DOM::DOMString method;
-    DOM::DOMString name;
-    bool noValidate;
-    DOM::DOMString target;
+class HTMLFormElement: public HTMLElement {
+	public:
+		DOM::DOMString acceptCharset;
+		DOM::USVString action;
+		DOM::DOMString autocomplete;
+		DOM::DOMString enctype;
+		DOM::DOMString encoding;
+		DOM::DOMString method;
+		DOM::DOMString name;
+		bool noValidate;
+		DOM::DOMString target;
 
-  [SameObject] const HTMLFormControlsCollection elements;
-  const unsigned long length;
-  getter Element (unsigned long index);
-  getter (RadioNodeList or Element) (DOMString name);
+	protected:
+		const HTMLFormControlsCollection elements;
 
-  void submit();
-   void reset();
-  bool checkValidity();
-  bool reportValidity();
+	public:
+		const unsigned long length;
+		DOM::Element getElement(unsigned long index);
+		std::variant<RadioNodeList,DOM::Element> getRadioNodeListOrElement(DOM::DOMString name);
+
+		void submit();
+		void reset();
+		bool checkValidity();
+		bool reportValidity();
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLFORMELEMENT_HPP_ */
 

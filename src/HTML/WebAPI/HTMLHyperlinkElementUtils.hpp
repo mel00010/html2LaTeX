@@ -20,28 +20,29 @@
 #ifndef SRC_HTML_WEBAPI_HTMLHYPERLINKELEMENTUTILS_HPP_
 #define SRC_HTML_WEBAPI_HTMLHYPERLINKELEMENTUTILS_HPP_
 
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class HTMLHyperlinkElementUtils {
-   stringifier  USVString href;
-  const USVString origin;
-    USVString protocol;
-    USVString username;
-    USVString password;
-    USVString host;
-    USVString hostname;
-    USVString port;
-    USVString pathname;
-    USVString search;
-    USVString hash;
+	public:
+		DOM::USVString href;
+		const DOM::USVString origin;
+		DOM::USVString protocol;
+		DOM::USVString username;
+		DOM::USVString password;
+		DOM::USVString host;
+		DOM::USVString hostname;
+		DOM::USVString port;
+		DOM::USVString pathname;
+		DOM::USVString search;
+		DOM::USVString hash;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLHYPERLINKELEMENTUTILS_HPP_ */
 

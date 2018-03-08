@@ -20,34 +20,43 @@
 #ifndef SRC_HTML_WEBAPI_HTMLOUTPUTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLOUTPUTELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+#include "ValidityState.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/DOMTokenList.hpp"
+#include "../DOM/NodeList.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLOutputElement : HTMLElement {
-  [SameObject, PutForwards=value] const DOMTokenList htmlFor;
-  const HTMLFormElement? form;
-    DOM::DOMString name;
+class HTMLOutputElement: public HTMLElement {
+	public:
+		const std::optional<HTMLFormElement> form;
+		DOM::DOMString name;
 
-  const DOM::DOMString type;
-    DOM::DOMString defaultValue;
-    DOM::DOMString value;
+		const DOM::DOMString type;
+		DOM::DOMString defaultValue;
+		DOM::DOMString value;
 
-  const bool willValidate;
-  const ValidityState validity;
-  const DOM::DOMString validationMessage;
-  bool checkValidity();
-  bool reportValidity();
-  void setCustomValidity(DOMString error);
+		const bool willValidate;
+		const ValidityState validity;
+		const DOM::DOMString validationMessage;
+		bool checkValidity();
+		bool reportValidity();
+		void setCustomValidity(DOM::DOMString error);
 
-  const NodeList labels;
+		const DOM::NodeList labels;
+
+	protected:
+		const DOM::DOMTokenList htmlFor;
+
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLOUTPUTELEMENT_HPP_ */
 

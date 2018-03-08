@@ -20,33 +20,30 @@
 #ifndef SRC_HTML_WEBAPI_OFFSCREENCANVASRENDERINGCONTEXT2D_HPP_
 #define SRC_HTML_WEBAPI_OFFSCREENCANVASRENDERINGCONTEXT2D_HPP_
 
+#include "CanvasRenderingContext2D.hpp"
+#include "OffscreenCanvas.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=(Window,Worker)]
-class OffscreenCanvasRenderingContext2D {
-  void commit();
-  const OffscreenCanvas canvas;
+class OffscreenCanvasRenderingContext2D: public CanvasState,
+		public CanvasTransform,
+		public CanvasCompositing,
+		public CanvasImageSmoothing,
+		public CanvasFillStrokeStyles,
+		public CanvasFilters,
+		public CanvasRect,
+		public CanvasDrawPath,
+		public CanvasDrawImage,
+		public CanvasPathDrawingStyles,
+		public CanvasPath {
+	public:
+		void commit();
+		const OffscreenCanvas canvas;
 };
-
-OffscreenCanvasRenderingContext2D includes CanvasState;
-OffscreenCanvasRenderingContext2D includes CanvasTransform;
-OffscreenCanvasRenderingContext2D includes CanvasCompositing;
-OffscreenCanvasRenderingContext2D includes CanvasImageSmoothing;
-OffscreenCanvasRenderingContext2D includes CanvasFillStrokeStyles;
-OffscreenCanvasRenderingContext2D includes CanvasShadowStyles;
-OffscreenCanvasRenderingContext2D includes CanvasFilters;
-OffscreenCanvasRenderingContext2D includes CanvasRect;
-OffscreenCanvasRenderingContext2D includes CanvasDrawPath;
-OffscreenCanvasRenderingContext2D includes CanvasDrawImage;
-OffscreenCanvasRenderingContext2D includes CanvasImageData;
-OffscreenCanvasRenderingContext2D includes CanvasPathDrawingStyles;
-OffscreenCanvasRenderingContext2D includes CanvasPath;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_OFFSCREENCANVASRENDERINGCONTEXT2D_HPP_ */
 

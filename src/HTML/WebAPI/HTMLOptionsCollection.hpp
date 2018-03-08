@@ -20,23 +20,30 @@
 #ifndef SRC_HTML_WEBAPI_HTMLOPTIONSCOLLECTION_HPP_
 #define SRC_HTML_WEBAPI_HTMLOPTIONSCOLLECTION_HPP_
 
+#include "HTMLOptGroupElement.hpp"
+#include "HTMLOptionElement.hpp"
+
+#include <optional>
+#include <variant>
+
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
-class HTMLOptionsCollection : HTMLCollection {
-  // inherits item(), namedItem()
-    unsigned long length; // shadows inherited length
-   setter void (unsigned long index, HTMLOptionElement? option);
-   void add((HTMLOptionElement or HTMLOptGroupElement) element, optional (HTMLElement or long)? before = null);
-   void remove(long index);
-   long selectedIndex;
+class HTMLOptionsCollection: public DOM::HTMLCollection {
+	public:
+		// inherits item(), namedItem()
+		unsigned long length; // shadows inherited length
+		void set(unsigned long index, std::optional<HTMLOptionElement> option);
+		void add(std::variant<HTMLOptionElement, HTMLOptGroupElement> element,
+				std::optional<std::variant<HTMLElement, long>> before = std::nullopt);
+		void remove(long index);
+		long selectedIndex;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLOPTIONSCOLLECTION_HPP_ */
 

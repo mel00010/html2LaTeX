@@ -20,25 +20,29 @@
 #ifndef SRC_HTML_WEBAPI_NAVIGATOR_HPP_
 #define SRC_HTML_WEBAPI_NAVIGATOR_HPP_
 
+#include "NavigatorConcurrentHardware.hpp"
+#include "NavigatorContentUtils.hpp"
+#include "NavigatorCookies.hpp"
+#include "NavigatorID.hpp"
+#include "NavigatorLanguage.hpp"
+#include "NavigatorOnLine.hpp"
+#include "NavigatorPlugins.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
-class Navigator {
-  // objects implementing this class also implement the interfaces given below
+class Navigator: public NavigatorID,
+		public NavigatorLanguage,
+		public NavigatorOnLine,
+		public NavigatorContentUtils,
+		public NavigatorCookies,
+		public NavigatorPlugins,
+		public NavigatorConcurrentHardware {
+		// objects implementing this class also implement the interfaces given below
 };
-Navigator includes NavigatorID;
-Navigator includes NavigatorLanguage;
-Navigator includes NavigatorOnLine;
-Navigator includes NavigatorContentUtils;
-Navigator includes NavigatorCookies;
-Navigator includes NavigatorPlugins;
-Navigator includes NavigatorConcurrentHardware;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_NAVIGATOR_HPP_ */
 

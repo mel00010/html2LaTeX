@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_NAVIGATORLANGUAGE_HPP_
 #define SRC_HTML_WEBAPI_NAVIGATORLANGUAGE_HPP_
 
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class NavigatorLanguage {
-  const DOM::DOMString language;
-  const FrozenArray<DOMString> languages;
+	public:
+		const DOM::DOMString language;
+		const FrozenArray<DOM::DOMString> languages;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_NAVIGATORLANGUAGE_HPP_ */
 

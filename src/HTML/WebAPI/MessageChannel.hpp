@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_MESSAGECHANNEL_HPP_
 #define SRC_HTML_WEBAPI_MESSAGECHANNEL_HPP_
 
+#include "MessagePort.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Constructor, Exposed=(Window,Worker)]
 class MessageChannel {
-  const MessagePort port1;
-  const MessagePort port2;
+	public:
+		MessageChannel();
+		const MessagePort port1;
+		const MessagePort port2;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_MESSAGECHANNEL_HPP_ */
 

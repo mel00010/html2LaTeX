@@ -20,25 +20,26 @@
 #ifndef SRC_HTML_WEBAPI_HTMLMETERELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLMETERELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/NodeList.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLMeterElement : HTMLElement {
-    double value;
-    double min;
-    double max;
-    double low;
-    double high;
-    double optimum;
-  const NodeList labels;
+class HTMLMeterElement: public HTMLElement {
+	public:
+		double value;
+		double min;
+		double max;
+		double low;
+		double high;
+		double optimum;
+		const DOM::NodeList labels;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLMETERELEMENT_HPP_ */
 

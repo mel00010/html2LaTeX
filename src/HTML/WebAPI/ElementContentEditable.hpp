@@ -20,24 +20,34 @@
 #ifndef SRC_HTML_WEBAPI_ELEMENTCONTENTEDITABLE_HPP_
 #define SRC_HTML_WEBAPI_ELEMENTCONTENTEDITABLE_HPP_
 
+#include "CustomElementRegistry.hpp"
+
+#include <any>
+#include <functional>
+#include <future>
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
+struct ElementDefinitionOptions;
 
 class CustomElementRegistry {
-   void define(DOMString name, Function constructor, optional ElementDefinitionOptions options);
-  any get(DOMString name);
-  Promise<void> whenDefined(DOMString name);
+	public:
+		void define(DOM::DOMString name, std::function constructor, std::optional<ElementDefinitionOptions> options);
+		std::any get(DOM::DOMString name);
+		std::promise<void> whenDefined(DOM::DOMString name);
 };
 
-dictionary ElementDefinitionOptions {
-  DOM::DOMString extends;
+struct ElementDefinitionOptions {
+	DOM::DOMString extends;
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_ELEMENTCONTENTEDITABLE_HPP_ */
 

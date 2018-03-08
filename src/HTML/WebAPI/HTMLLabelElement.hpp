@@ -20,21 +20,24 @@
 #ifndef SRC_HTML_WEBAPI_HTMLLABELELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLLABELELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLLabelElement : HTMLElement {
-  const HTMLFormElement? form;
-    DOM::DOMString htmlFor;
-  const HTMLElement? control;
+class HTMLLabelElement: public HTMLElement {
+	public:
+		const std::optional<HTMLFormElement> form;
+		DOM::DOMString htmlFor;
+		const std::optional<HTMLElement> control;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLLABELELEMENT_HPP_ */
 

@@ -20,16 +20,18 @@
 #ifndef SRC_HTML_WEBAPI_WORKERNAVIGATOR_HPP_
 #define SRC_HTML_WEBAPI_WORKERNAVIGATOR_HPP_
 
+#include "NavigatorConcurrentHardware.hpp"
+#include "NavigatorID.hpp"
+#include "NavigatorLanguage.hpp"
+#include "NavigatorOnLine.hpp"
+
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Worker]
-class WorkerNavigator {};
-WorkerNavigator includes NavigatorID;
-WorkerNavigator includes NavigatorLanguage;
-WorkerNavigator includes NavigatorOnLine;
-WorkerNavigator includes NavigatorConcurrentHardware;
+class WorkerNavigator : public NavigatorID, public NavigatorLanguage, public NavigatorOnLine, public NavigatorConcurrentHardware {
+
+};
 
 } /* namespace WebAPI */
 } /* namespace HTML */

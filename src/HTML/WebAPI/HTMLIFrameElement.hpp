@@ -20,40 +20,50 @@
 #ifndef SRC_HTML_WEBAPI_HTMLIFRAMEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLIFRAMEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include <optional>
+
+#include "../DOM/Document.hpp"
+#include "../DOM/DOMString.hpp"
+#include "../DOM/DOMTokenList.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLIFrameElement : HTMLElement {
-    USVString src;
-    DOM::DOMString srcdoc;
-    DOM::DOMString name;
-  [SameObject, PutForwards=value] const DOMTokenList sandbox;
-    bool allowFullscreen;
-    bool allowPaymentRequest;
-    bool allowUserMedia;
-    DOM::DOMString width;
-    DOM::DOMString height;
-    DOM::DOMString referrerPolicy;
-  const Document? contentDocument;
-  const WindowProxy? contentWindow;
-  Document? getSVGDocument();
+class HTMLIFrameElement: public HTMLElement {
+	public:
+		DOM::USVString src;
+		DOM::DOMString srcdoc;
+		DOM::DOMString name;
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString scrolling;
-    DOM::DOMString frameBorder;
-    USVString longDesc;
+	protected:
+		const DOM::DOMTokenList sandbox;
 
-    [TreatNullAs=EmptyString] DOM::DOMString marginHeight;
-    [TreatNullAs=EmptyString] DOM::DOMString marginWidth;
+	public:
+		bool allowFullscreen;
+		bool allowPaymentRequest;
+		bool allowUserMedia;
+		DOM::DOMString width;
+		DOM::DOMString height;
+		DOM::DOMString referrerPolicy;
+		const std::optional<DOM::Document> contentDocument;
+		const std::optional<WindowProxy> contentWindow;
+		std::optional<DOM::Document> getSVGDocument();
+
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString scrolling;
+		DOM::DOMString frameBorder;
+		DOM::USVString longDesc;
+
+		DOM::DOMString marginHeight = "";
+		DOM::DOMString marginWidth = "";
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLIFRAMEELEMENT_HPP_ */
 

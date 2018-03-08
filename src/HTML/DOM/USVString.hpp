@@ -1,5 +1,5 @@
 /*******************************************************************************
- * TreeWalker.hpp
+ * USVString.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,36 +17,17 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_TREEWALKER_HPP_
-#define SRC_HTML_DOM_TREEWALKER_HPP_
+#ifndef SRC_HTML_DOM_USVSTRING_HPP_
+#define SRC_HTML_DOM_USVSTRING_HPP_
 
-#include "Node.hpp"
-#include "NodeFilter.hpp"
-
-#include <optional>
+#include <string>
 
 namespace HTML {
 namespace DOM {
 
-class TreeWalker {
-	public:
-		const unsigned long whatToShow;
-		const std::optional<NodeFilter> filter;
-		Node currentNode;
-
-		std::optional<Node> parentNode();
-		std::optional<Node> firstChild();
-		std::optional<Node> lastChild();
-		std::optional<Node> previousSibling();
-		std::optional<Node> nextSibling();
-		std::optional<Node> previousNode();
-		std::optional<Node> nextNode();
-
-	protected:
-		const Node root;
-};
+using USVString = std::u32string;
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_TREEWALKER_HPP_ */
+#endif /* SRC_HTML_DOM_USVSTRING_HPP_ */

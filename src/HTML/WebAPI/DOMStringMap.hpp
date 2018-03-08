@@ -20,21 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_DOMSTRINGMAP_HPP_
 #define SRC_HTML_WEBAPI_DOMSTRINGMAP_HPP_
 
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- OverrideBuiltins]
-class DOM::DOMStringMap {
-  getter DOM::DOMString (DOMString name);
-   setter void (DOMString name, DOM::DOMString value);
-   deleter void (DOMString name);
+class DOMStringMap {
+	public:
+		DOM::DOMString get(DOM::DOMString name);
+		void set(DOM::DOMString name, DOM::DOMString value);
+		void del(DOM::DOMString name);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_DOMSTRINGMAP_HPP_ */
 

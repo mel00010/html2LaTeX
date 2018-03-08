@@ -20,38 +20,45 @@
 #ifndef SRC_HTML_WEBAPI_HTMLANCHORELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLANCHORELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+#include "HTMLHyperlinkElementUtils.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/DOMTokenList.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLAnchorElement : HTMLElement {
-    DOM::DOMString target;
-    DOM::DOMString download;
-    USVString ping;
-    DOM::DOMString rel;
-  [SameObject, PutForwards=value] const DOMTokenList relList;
-    DOM::DOMString hreflang;
-    DOM::DOMString type;
+class HTMLAnchorElement: public HTMLElement, public HTMLHyperlinkElementUtils {
+	public:
+		DOM::DOMString target;
+		DOM::DOMString download;
+		DOM::USVString ping;
+		DOM::DOMString rel;
 
-    DOM::DOMString text;
+	protected:
+		const DOM::DOMTokenList relList;
 
-    DOM::DOMString referrerPolicy;
-  
-    DOM::DOMString coords;
-    DOM::DOMString charset;
-    DOM::DOMString name;
-    DOM::DOMString rev;
-    DOM::DOMString shape;
+	public:
+		DOM::DOMString hreflang;
+		DOM::DOMString type;
 
-  // also has obsolete members
+		DOM::DOMString text;
+
+		DOM::DOMString referrerPolicy;
+
+		DOM::DOMString coords;
+		DOM::DOMString charset;
+		DOM::DOMString name;
+		DOM::DOMString rev;
+		DOM::DOMString shape;
+
+		// also has obsolete members
 };
-HTMLAnchorElement includes HTMLHyperlinkElementUtils;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLANCHORELEMENT_HPP_ */
 

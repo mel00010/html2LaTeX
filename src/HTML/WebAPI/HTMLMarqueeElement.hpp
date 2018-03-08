@@ -20,36 +20,38 @@
 #ifndef SRC_HTML_WEBAPI_HTMLMARQUEEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLMARQUEEELEMENT_HPP_
 
+#include "EventHandler.hpp"
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLMarqueeElement : HTMLElement {
-    DOM::DOMString behavior;
-    DOM::DOMString bgColor;
-    DOM::DOMString direction;
-    DOM::DOMString height;
-    unsigned long hspace;
-    long loop;
-    unsigned long scrollAmount;
-    unsigned long scrollDelay;
-    bool trueSpeed;
-    unsigned long vspace;
-    DOM::DOMString width;
+class HTMLMarqueeElement: public HTMLElement {
+	public:
+		DOM::DOMString behavior;
+		DOM::DOMString bgColor;
+		DOM::DOMString direction;
+		DOM::DOMString height;
+		unsigned long hspace;
+		long loop;
+		unsigned long scrollAmount;
+		unsigned long scrollDelay;
+		bool trueSpeed;
+		unsigned long vspace;
+		DOM::DOMString width;
 
-   EventHandler onbounce;
-   EventHandler onfinish;
-   EventHandler onstart;
+		EventHandler onbounce;
+		EventHandler onfinish;
+		EventHandler onstart;
 
-  void start();
-  void stop();
+		void start();
+		void stop();
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLMARQUEEELEMENT_HPP_ */
 

@@ -20,20 +20,24 @@
 #ifndef SRC_HTML_WEBAPI_TEXTTRACKCUELIST_HPP_
 #define SRC_HTML_WEBAPI_TEXTTRACKCUELIST_HPP_
 
+#include "TextTrackCue.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
 class TextTrackCueList {
-  const unsigned long length;
-  getter TextTrackCue (unsigned long index);
-  TextTrackCue? getCueById(DOMString id);
+	public:
+		const unsigned long length;
+		TextTrackCue getTextTrackCue(unsigned long index);
+		std::optional<TextTrackCue> getCueById(DOM::DOMString id);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_TEXTTRACKCUELIST_HPP_ */
 

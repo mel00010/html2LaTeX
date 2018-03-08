@@ -20,20 +20,22 @@
 #ifndef SRC_HTML_WEBAPI_HTMLBASEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLBASEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLBaseElement : HTMLElement {
-    USVString href;
-    DOM::DOMString target;
+class HTMLBaseElement: public HTMLElement {
+	public:
+		DOM::USVString href;
+		DOM::DOMString target;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLBASEELEMENT_HPP_ */
 

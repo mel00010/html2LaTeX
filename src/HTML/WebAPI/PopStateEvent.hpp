@@ -20,23 +20,32 @@
 #ifndef SRC_HTML_WEBAPI_POPSTATEEVENT_HPP_
 #define SRC_HTML_WEBAPI_POPSTATEEVENT_HPP_
 
+#include <any>
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- Constructor(DOMString type, optional PopStateEventInit eventInitDict)]
-class PopStateEvent : Event {
-  const any state;
+struct PopStateEventInit;
+
+class PopStateEvent: DOM::Event {
+	public:
+		PopStateEvent(DOM::DOMString type);
+		PopStateEvent(DOM::DOMString type, PopStateEventInit eventInitDict);
+		const std::any state;
 };
 
-dictionary PopStateEventInit : EventInit {
-  any state = null;
+struct PopStateEventInit: DOM::EventInit {
+	public:
+		std::any state = std::nullopt;
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_POPSTATEEVENT_HPP_ */
 

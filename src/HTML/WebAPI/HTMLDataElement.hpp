@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_HTMLDATAELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLDATAELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLDataElement : HTMLElement {
-    DOM::DOMString value;
+class HTMLDataElement: public HTMLElement {
+	public:
+		DOM::DOMString value;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLDATAELEMENT_HPP_ */
 

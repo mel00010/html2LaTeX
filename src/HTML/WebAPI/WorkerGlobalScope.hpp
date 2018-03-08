@@ -20,28 +20,36 @@
 #ifndef SRC_HTML_WEBAPI_WORKERGLOBALSCOPE_HPP_
 #define SRC_HTML_WEBAPI_WORKERGLOBALSCOPE_HPP_
 
+#include "EventHandler.hpp"
+#include "WindowOrWorkerGlobalScope.hpp"
+#include "WorkerLocation.hpp"
+#include "WorkerNavigator.hpp"
+
+#include <list>
+
+#include "../DOM/EventTarget.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Worker]
-class WorkerGlobalScope : EventTarget {
-  const WorkerGlobalScope self;
-  const WorkerLocation location;
-  const WorkerNavigator navigator;
-  void importScripts(USVString... urls);
+class WorkerGlobalScope: public DOM::EventTarget, public WindowOrWorkerGlobalScope {
+	public:WindowOrWorkerGlobalScope
+		const WorkerGlobalScope self;
+		const WorkerLocation location;
+		const WorkerNavigator navigator;
+		void importScripts(std::list<DOM::USVString> urls);
 
-   OnErrorEventHandler onerror;
-   EventHandler onlanguagechange;
-   EventHandler onoffline;
-   EventHandler ononline;
-   EventHandler onrejectionhandled;
-   EventHandler onunhandledrejection;
+		OnErrorEventHandler onerror;
+		EventHandler onlanguagechange;
+		EventHandler onoffline;
+		EventHandler ononline;
+		EventHandler onrejectionhandled;
+		EventHandler onunhandledrejection;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WORKERGLOBALSCOPE_HPP_ */
 

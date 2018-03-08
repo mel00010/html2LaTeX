@@ -20,17 +20,18 @@
 #ifndef SRC_HTML_WEBAPI_HTMLBRELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLBRELEMENT_HPP_
 
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-partial class HTMLBRElement {
-    DOM::DOMString clear;
+class HTMLBRElement {
+	public:
+		DOM::DOMString clear;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLBRELEMENT_HPP_ */
 

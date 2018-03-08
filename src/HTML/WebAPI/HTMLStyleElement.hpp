@@ -20,23 +20,23 @@
 #ifndef SRC_HTML_WEBAPI_HTMLSTYLEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLSTYLEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLStyleElement : HTMLElement {
-    DOM::DOMString media;
+class HTMLStyleElement: public HTMLElement, public LinkStyle {
+	public:
+		DOM::DOMString media;
 
-  // also has obsolete members
-    DOM::DOMString type;
+		// also has obsolete members
+		DOM::DOMString type;
 };
-HTMLStyleElement includes LinkStyle;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLSTYLEELEMENT_HPP_ */
 

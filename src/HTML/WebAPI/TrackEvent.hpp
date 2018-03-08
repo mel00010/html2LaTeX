@@ -20,23 +20,37 @@
 #ifndef SRC_HTML_WEBAPI_TRACKEVENT_HPP_
 #define SRC_HTML_WEBAPI_TRACKEVENT_HPP_
 
+#include "AudioTrack.hpp"
+#include "TextTrack.hpp"
+#include "VideoTrack.hpp"
+
+#include <optional>
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- Constructor(DOMString type, optional TrackEventInit eventInitDict)]
-class TrackEvent : Event {
-  const (VideoTrack or AudioTrack or TextTrack)? track;
+struct TrackEventInit;
+
+class TrackEvent: public DOM::Event {
+	public:
+		TrackEvent(DOM::DOMString type);
+		TrackEvent(DOM::DOMString type, TrackEventInit eventInitDict);
+
+		std::optional<std::variant<VideoTrack, AudioTrack, TextTrack>> track;
 };
 
-dictionary TrackEventInit : EventInit {
-  (VideoTrack or AudioTrack or TextTrack)? track = null;
+struct TrackEventInit: public DOM::EventInit {
+	public:
+		std::optional<std::variant<VideoTrack, AudioTrack, TextTrack>> track = std::nullopt;
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_TRACKEVENT_HPP_ */
 

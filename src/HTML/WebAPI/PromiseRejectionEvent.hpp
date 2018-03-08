@@ -20,24 +20,32 @@
 #ifndef SRC_HTML_WEBAPI_PROMISEREJECTIONEVENT_HPP_
 #define SRC_HTML_WEBAPI_PROMISEREJECTIONEVENT_HPP_
 
+#include <any>
+#include <future>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Constructor(DOMString type, PromiseRejectionEventInit eventInitDict), Exposed=(Window,Worker)]
-class PromiseRejectionEvent : Event {
-  const Promise<any> promise;
-  const any reason;
+struct PromiseRejectionEventInit;
+
+class PromiseRejectionEvent: public DOM::Event {
+	public:
+		PromiseRejectionEvent(DOM::DOMString type, PromiseRejectionEventInit eventInitDict);
+		const std::promise<std::any> promise;
+		const std::any reason;
 };
 
-dictionary PromiseRejectionEventInit : EventInit {
-  required Promise<any> promise;
-  any reason;
+struct PromiseRejectionEventInit: public DOM::EventInit {
+	public:
+		std::promise<std::any> promise;
+		std::any reason;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_PROMISEREJECTIONEVENT_HPP_ */
 

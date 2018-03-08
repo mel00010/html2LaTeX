@@ -20,15 +20,11 @@
 #ifndef SRC_HTML_WEBAPI_SHAREDWORKERGLOBALSCOPE_HPP_
 #define SRC_HTML_WEBAPI_SHAREDWORKERGLOBALSCOPE_HPP_
 
-
 namespace HTML {
 namespace WebAPI {
 
-
-
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_SHAREDWORKERGLOBALSCOPE_HPP_ */
 

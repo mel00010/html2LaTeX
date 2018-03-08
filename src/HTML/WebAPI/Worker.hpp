@@ -20,32 +20,44 @@
 #ifndef SRC_HTML_WEBAPI_WORKER_HPP_
 #define SRC_HTML_WEBAPI_WORKER_HPP_
 
+#include "AbstractWorker.hpp"
+#include "EventHandler.hpp"
+
+#include <any>
+#include <list>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Constructor(USVString scriptURL, optional WorkerOptions options), Exposed=(Window,Worker)]
-class Worker : EventTarget {
-  void terminate();
+struct WorkerOptions;
 
-  void postMessage(any message, optional sequence<object> transfer = []);
-   EventHandler onmessage;
-   EventHandler onmessageerror;
+enum class WorkerType {
+	CLASSIC, MODULE
 };
 
-dictionary WorkerOptions {
-  WorkerType type = "classic";
-  RequestCredentials credentials = "omit"; // credentials is only used if type is "module"
-  DOM::DOMString name = "";
+class Worker: public DOM::EventTarget, public AbstractWorker {
+	public:
+		Worker(DOM::USVString scriptURL);
+		Worker(DOM::USVString scriptURL, WorkerOptions options);
+
+		void terminate();
+
+		void postMessage(std::any message, std::list<std::any> transfer = { });
+		EventHandler onmessage;
+		EventHandler onmessageerror;
 };
 
-enum WorkerType { "classic", "module" };
-
-Worker includes AbstractWorker;
+struct WorkerOptions {
+		WorkerType type = WorkerType::CLASSIC;
+		RequestCredentials credentials = RequestCredentials::OMIT; // credentials is only used if type is "module"
+		DOM::DOMString name = "";
+};
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WORKER_HPP_ */
 

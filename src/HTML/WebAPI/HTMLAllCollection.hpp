@@ -20,24 +20,29 @@
 #ifndef SRC_HTML_WEBAPI_HTMLALLCOLLECTION_HPP_
 #define SRC_HTML_WEBAPI_HTMLALLCOLLECTION_HPP_
 
+#include <optional>
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Element.hpp"
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- LegacyUnenumerableNamedProperties]
 class HTMLAllCollection {
-  const unsigned long length;
-  getter Element? (unsigned long index);
-  getter (HTMLCollection or Element)? namedItem(DOMString name);
-  (HTMLCollection or Element)? item(optional DOM::DOMString nameOrIndex);
+	public:
+		const unsigned long length;
+		std::optional<DOM::Element> get(unsigned long index);
+		std::optional<std::variant<DOM::HTMLCollection,DOM::Element>> getNamedItem(DOM::DOMString name);
+		std::optional<std::variant<DOM::HTMLCollection,DOM::Element>> item();
+		std::optional<std::variant<DOM::HTMLCollection,DOM::Element>> item(DOM::DOMString nameOrIndex);
 
-  // Note: HTMLAllCollection objects have a custom [[Call]] internal method and an [[IsHTMLDDA]] internal slot.
+		// Note: HTMLAllCollection objects have a custom [[Call]] internal method and an [[IsHTMLDDA]] internal slot.
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLALLCOLLECTION_HPP_ */
 

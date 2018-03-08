@@ -21,6 +21,7 @@
 #define SRC_HTML_WEBAPI_DEDICATEDWORKERGLOBALSCOPE_HPP_
 
 #include "EventHandler.hpp"
+#include "WorkerGlobalScope.hpp"
 
 #include <any>
 #include <list>
@@ -34,7 +35,7 @@ class DedicatedWorkerGlobalScope: public WorkerGlobalScope {
 	public:
 		const DOM::DOMString name;
 
-		void postMessage(std::any message, std::list<object> transfer);
+		void postMessage(std::any message, std::list<std::any> transfer);
 
 		void close();
 

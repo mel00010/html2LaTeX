@@ -20,22 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_PLUGINARRAY_HPP_
 #define SRC_HTML_WEBAPI_PLUGINARRAY_HPP_
 
+#include "Plugin.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- LegacyUnenumerableNamedProperties]
 class PluginArray {
-  void refresh(optional bool reload = false);
-  const unsigned long length;
-  getter Plugin? item(unsigned long index);
-  getter Plugin? namedItem(DOMString name);
+	public:
+		void refresh(bool reload = false);
+		const unsigned long length;
+		std::optional<Plugin> getItem(unsigned long index);
+		std::optional<Plugin> getNamedItem(DOM::DOMString name);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_PLUGINARRAY_HPP_ */
 

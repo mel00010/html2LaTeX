@@ -20,54 +20,60 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTEXTAREAELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTEXTAREAELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+#include "ValidityState.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/NodeList.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTextAreaElement : HTMLElement {
-    DOM::DOMString autocomplete;
-    bool autofocus;
-    unsigned long cols;
-    DOM::DOMString dirName;
-    bool disabled;
-  const HTMLFormElement? form;
-    long maxLength;
-    long minLength;
-    DOM::DOMString name;
-    DOM::DOMString placeholder;
-    bool readOnly;
-    bool required;
-    unsigned long rows;
-    DOM::DOMString wrap;
+class HTMLTextAreaElement: public HTMLElement {
+	public:
+		DOM::DOMString autocomplete;
+		bool autofocus;
+		unsigned long cols;
+		DOM::DOMString dirName;
+		bool disabled;
+		const std::optional<HTMLFormElement> form;
+		long maxLength;
+		long minLength;
+		DOM::DOMString name;
+		DOM::DOMString placeholder;
+		bool readOnly;
+		bool required;
+		unsigned long rows;
+		DOM::DOMString wrap;
 
-  const DOM::DOMString type;
-    DOM::DOMString defaultValue;
-    [TreatNullAs=EmptyString] DOM::DOMString value;
-  const unsigned long textLength;
+		const DOM::DOMString type;
+		DOM::DOMString defaultValue;
+		DOM::DOMString value = "";
+		const unsigned long textLength;
 
-  const bool willValidate;
-  const ValidityState validity;
-  const DOM::DOMString validationMessage;
-  bool checkValidity();
-  bool reportValidity();
-  void setCustomValidity(DOMString error);
+		const bool willValidate;
+		const ValidityState validity;
+		const DOM::DOMString validationMessage;
+		bool checkValidity();
+		bool reportValidity();
+		void setCustomValidity(DOM::DOMString error);
 
-  const NodeList labels;
+		const DOM::NodeList labels;
 
-  void select();
-   unsigned long selectionStart;
-   unsigned long selectionEnd;
-   DOM::DOMString selectionDirection;
-  void setRangeText(DOMString replacement);
-  void setRangeText(DOMString replacement, unsigned long start, unsigned long end, optional SelectionMode selectionMode = "preserve");
-  void setSelectionRange(unsigned long start, unsigned long end, optional DOM::DOMString direction);
+		void select();
+		unsigned long selectionStart;
+		unsigned long selectionEnd;
+		DOM::DOMString selectionDirection;
+		void setRangeText(DOM::DOMString replacement);
+		void setRangeText(DOM::DOMString replacement, unsigned long start, unsigned long end, SelectionMode selectionMode = SelectionMode::PRESERVE);
+		void setSelectionRange(unsigned long start, unsigned long end);
+		void setSelectionRange(unsigned long start, unsigned long end, DOM::DOMString direction);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTEXTAREAELEMENT_HPP_ */
 

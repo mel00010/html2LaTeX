@@ -20,25 +20,31 @@
 #ifndef SRC_HTML_WEBAPI_HTMLSLOTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLSLOTELEMENT_HPP_
 
+#include <list>
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Element.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLSlotElement : HTMLElement {
-    DOM::DOMString name;
-  sequence<Node> assignedNodes(optional AssignedNodesOptions options);
-  sequence<Element> assignedElements(optional AssignedNodesOptions options);
+struct AssignedNodesOptions;
+
+class HTMLSlotElement: public DOM::Element {
+	public:
+		DOM::DOMString name;
+		std::list<DOM::Node> assignedNodes(std::optional<AssignedNodesOptions> options);
+		std::list<DOM::Element> assignedElements(std::optional<AssignedNodesOptions> options);
 };
 
-dictionary AssignedNodesOptions {
-  bool flatten = false;
+struct AssignedNodesOptions {
+	public:
+		bool flatten = false;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLSLOTELEMENT_HPP_ */
 

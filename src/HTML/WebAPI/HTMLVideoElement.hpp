@@ -20,24 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLVIDEOELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLVIDEOELEMENT_HPP_
 
+#include "HTMLMediaElement.hpp"
+
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLVideoElement : HTMLMediaElement {
-    unsigned long width;
-    unsigned long height;
-  const unsigned long videoWidth;
-  const unsigned long videoHeight;
-    USVString poster;
-    bool playsInline;
+class HTMLVideoElement: public HTMLMediaElement {
+	public:
+		unsigned long width;
+		unsigned long height;
+		const unsigned long videoWidth;
+		const unsigned long videoHeight;
+		DOM::USVString poster;
+		bool playsInline;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLVIDEOELEMENT_HPP_ */
 

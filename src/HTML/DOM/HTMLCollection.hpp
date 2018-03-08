@@ -32,8 +32,8 @@ namespace DOM {
 class HTMLCollection {
 	public:
 		const size_t length;
-		std::optional<Element>& item(size_t index); // getter
-		std::optional<Element>& namedItem(DOMString& name); // getter
+		std::optional<Element>& getItem(size_t index); // getter
+		std::optional<Element>& getNamedItem(DOMString& name); // getter
 };
 
 } /* namespace DOM */

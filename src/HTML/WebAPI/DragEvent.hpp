@@ -20,23 +20,30 @@
 #ifndef SRC_HTML_WEBAPI_DRAGEVENT_HPP_
 #define SRC_HTML_WEBAPI_DRAGEVENT_HPP_
 
+#include "DataTransfer.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- Constructor(DOMString type, optional DragEventInit eventInitDict)]
-class DragEvent : MouseEvent {
-  const DataTransfer? dataTransfer;
+struct DragEventInit;
+
+class DragEvent: MouseEvent {
+	public:
+		DragEvent(DOM::DOMString type, std::optional<DragEventInit> eventInitDict);
+		const std::optional<DataTransfer> dataTransfer;
 };
 
-dictionary DragEventInit : MouseEventInit {
-  DataTransfer? dataTransfer = null;
+struct DragEventInit: MouseEventInit {
+	public:
+		std::optional<DataTransfer> dataTransfer = std::nullopt;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_DRAGEVENT_HPP_ */
 

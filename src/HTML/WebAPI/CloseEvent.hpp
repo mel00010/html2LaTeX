@@ -24,6 +24,7 @@
 
 #include "../DOM/DOMString.hpp"
 #include "../DOM/Event.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
@@ -37,14 +38,14 @@ class CloseEvent: public DOM::Event {
 		CloseEvent(DOM::DOMString type, std::optional<CloseEventInit> eventInitDict);
 		const bool wasClean;
 		const unsigned short code;
-		const USVString reason;
+		const DOM::USVString reason;
 };
 
 struct CloseEventInit: public DOM::EventInit {
 	public:
 		bool wasClean = false;
 		unsigned short code = 0;
-		USVString reason = "";
+		DOM::USVString reason = "";
 };
 
 }

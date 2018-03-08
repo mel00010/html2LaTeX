@@ -20,78 +20,94 @@
 #ifndef SRC_HTML_WEBAPI_WINDOW_HPP_
 #define SRC_HTML_WEBAPI_WINDOW_HPP_
 
+#include "ApplicationCache.hpp"
+#include "BarProp.hpp"
+#include "CustomElementRegistry.hpp"
+#include "External.hpp"
+#include "History.hpp"
+#include "Location.hpp"
+#include "Navigator.hpp"
+#include "WindowEventHandlers.hpp"
+#include "WindowLocalStorage.hpp"
+#include "WindowOrWorkerGlobalScope.hpp"
+#include "WindowSessionStorage.hpp"
+
+#include <any>
+#include <list>
+#include <optional>
+
+#include "../DOM/Document.hpp"
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Element.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Global=Window,
- Exposed=Window,
- LegacyUnenumerableNamedProperties]
-class Window : EventTarget {
-  // the current browsing context
-  [Unforgeable] const WindowProxy window;
-  [Replaceable] const WindowProxy self;
-  [Unforgeable] const Document document;
-   DOM::DOMString name; 
-  [PutForwards=href, Unforgeable] const Location location;
-  const History history;
-  const CustomElementRegistry customElements;
-  [Replaceable] const BarProp locationbar;
-  [Replaceable] const BarProp menubar;
-  [Replaceable] const BarProp personalbar;
-  [Replaceable] const BarProp scrollbars;
-  [Replaceable] const BarProp statusbar;
-  [Replaceable] const BarProp toolbar;
-   DOM::DOMString status;
-  void close();
-  const bool closed;
-  void stop();
-  void focus();
-  void blur();
+using FrameRequestCallback = void (*)(DOMHighResTimeStamp time);
 
-  // other browsing contexts
-  [Replaceable] const WindowProxy frames;
-  [Replaceable] const unsigned long length;
-  [Unforgeable] const WindowProxy? top;
-   any opener;
-  [Replaceable] const WindowProxy? parent;
-  const Element? frameElement;
-  WindowProxy? open(optional USVString url = "about:blank", optional DOM::DOMString target = "_blank", optional [TreatNullAs=EmptyString] DOM::DOMString features = "");
-  getter object (DOMString name);
-  // Since this is the global object, the IDL named getter adds a NamedPropertiesObject exotic
-  // object on the prototype chain. Indeed, this does not make the global object an exotic object.
-  // Indexed access is taken care of by the WindowProxy exotic object.
+class Window: public DOM::EventTarget, public GlobalEventHandlers, public WindowEventHandlers, public WindowLocalStorage, public WindowSessionStorage, public WindowOrWorkerGlobalScope {
+	public:
+		// the current browsing context
+		const WindowProxy window;
+		const WindowProxy self;
+		const DOM::Document document;
+		DOM::DOMString name;
+		const Location location;
+		const History history;
+		const CustomElementRegistry customElements;
+		const BarProp locationbar;
+		const BarProp menubar;
+		const BarProp personalbar;
+		const BarProp scrollbars;
+		const BarProp statusbar;
+		const BarProp toolbar;
+		DOM::DOMString status;
+		void close();
+		const bool closed;
+		void stop();
+		void focus();
+		void blur();
 
-  // the user agent
-  const Navigator navigator; 
-  const ApplicationCache applicationCache;
+		// other browsing contexts
+		const WindowProxy frames;
+		const unsigned long length;
+		const std::optional<WindowProxy> top;
+		std::any opener;
+		const std::optional<WindowProxy> parent;
+		const std::optional<DOM::Element> frameElement;
+		std::optional<WindowProxy> open(DOM::USVString url = "about:blank", DOM::DOMString target = "_blank", DOM::DOMString features = "");
+		Window getObject(DOM::DOMString name);
+		// Since this is the global object, the IDL named getter adds a NamedPropertiesObject exotic
+		// object on the prototype chain. Indeed, this does not make the global object an exotic object.
+		// Indexed access is taken care of by the WindowProxy exotic object.
 
-  // user prompts
-  void alert();
-  void alert(DOMString message);
-  bool confirm(optional DOM::DOMString message = "");
-  DOM::DOMString? prompt(optional DOM::DOMString message = "", optional DOM::DOMString default = "");
-  void print();
+		// the user agent
+		const Navigator navigator;
+		const ApplicationCache applicationCache;
 
-  unsigned long requestAnimationFrame(FrameRequestCallback callback);
-  void cancelAnimationFrame(unsigned long handle);
+		// user prompts
+		void alert();
+		void alert(DOM::DOMString message);
+		bool confirm(DOM::DOMString message = "");
+		std::optional<DOM::DOMString> prompt(DOM::DOMString message = "", DOM::DOMString _default = "");
+		void print();
 
-  void postMessage(any message, USVString targetOrigin, optional sequence<object> transfer = []);
+		unsigned long requestAnimationFrame(FrameRequestCallback callback);
+		void cancelAnimationFrame(unsigned long handle);
 
-  // also has obsolete members
-  void captureEvents();
-  void releaseEvents();
+		void postMessage(std::any message, DOM::USVString targetOrigin, std::list<std::any> transfer = { });
 
-  [Replaceable, SameObject] const External external;
+		// also has obsolete members
+		void captureEvents();
+		void releaseEvents();
+
+	protected:
+		const External external;
 };
-Window includes GlobalEventHandlers;
-Window includes WindowEventHandlers;
-
-callback FrameRequestCallback = void (DOMHighResTimeStamp time);
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WINDOW_HPP_ */
 

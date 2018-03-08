@@ -20,20 +20,19 @@
 #ifndef SRC_HTML_WEBAPI_HTMLDLISTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLDLISTELEMENT_HPP_
 
+#include "HTMLElement.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLDListElement : HTMLElement {
-  // also has obsolete members\
-    bool compact;
+class HTMLDListElement: public HTMLElement {
+	public:
+		// also has obsolete members
+		bool compact;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLDLISTELEMENT_HPP_ */
 

@@ -20,24 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLPARAMELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLPARAMELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLParamElement : HTMLElement {
-    DOM::DOMString name;
-    DOM::DOMString value;
+class HTMLParamElement: public HTMLElement {
+	public:
+		DOM::DOMString name;
+		DOM::DOMString value;
 
-  // also has obsolete members
-    DOM::DOMString type;
-    DOM::DOMString valueType;
+		// also has obsolete members
+		DOM::DOMString type;
+		DOM::DOMString valueType;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLPARAMELEMENT_HPP_ */
 

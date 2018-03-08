@@ -20,31 +20,36 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTABLEROWELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTABLEROWELEMENT_HPP_
 
+#include "HTMLTableCellElement.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTableRowElement : HTMLElement {
-  const long rowIndex;
-  const long sectionRowIndex;
-  [SameObject] const HTMLCollection cells;
-  HTMLTableCellElement insertCell(optional long index = -1);
-   void deleteCell(long index);
+class HTMLTableRowElement: public HTMLElement {
+	public:
+		const long rowIndex;
+		const long sectionRowIndex;
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString ch;
-    DOM::DOMString chOff;
-    DOM::DOMString vAlign;
+		HTMLTableCellElement insertCell(long index = -1);
+		void deleteCell(long index);
 
-    [TreatNullAs=EmptyString] DOM::DOMString bgColor;
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString ch;
+		DOM::DOMString chOff;
+		DOM::DOMString vAlign;
+
+		DOM::DOMString bgColor = "";
+
+	protected:
+		const DOM::HTMLCollection cells;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTABLEROWELEMENT_HPP_ */
 

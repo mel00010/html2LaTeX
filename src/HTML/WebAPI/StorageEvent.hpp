@@ -20,31 +20,43 @@
 #ifndef SRC_HTML_WEBAPI_STORAGEEVENT_HPP_
 #define SRC_HTML_WEBAPI_STORAGEEVENT_HPP_
 
+#include "Storage.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- Constructor(DOMString type, optional StorageEventInit eventInitDict)]
-class StorageEvent : Event {
-  const DOM::DOMString? key;
-  const DOM::DOMString? oldValue;
-  const DOM::DOMString? newValue;
-  const USVString url;
-  const Storage? storageArea;
+struct StorageEventInit;
+
+class StorageEvent: DOM::Event {
+	public:
+		StorageEvent(DOM::DOMString type);
+		StorageEvent(DOM::DOMString type, StorageEventInit eventInitDict);
+
+		const std::optional<DOM::DOMString> key;
+		const std::optional<DOM::DOMString> oldValue;
+		const std::optional<DOM::DOMString> newValue;
+		const DOM::USVString url;
+		const std::optional<Storage> storageArea;
 };
 
-dictionary StorageEventInit : EventInit {
-  DOM::DOMString? key = null;
-  DOM::DOMString? oldValue = null;
-  DOM::DOMString? newValue = null;
-  USVString url = "";
-  Storage? storageArea = null;
+struct StorageEventInit: public DOM::EventInit {
+	public:
+		std::optional<DOM::DOMString> key = std::nullopt;
+		std::optional<DOM::DOMString> oldValue = std::nullopt;
+		std::optional<DOM::DOMString> newValue = std::nullopt;
+		DOM::USVString url = "";
+		std::optional<Storage> storageArea = std::nullopt;
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_STORAGEEVENT_HPP_ */
 

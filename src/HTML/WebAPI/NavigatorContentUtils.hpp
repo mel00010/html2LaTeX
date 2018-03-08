@@ -20,19 +20,21 @@
 #ifndef SRC_HTML_WEBAPI_NAVIGATORCONTENTUTILS_HPP_
 #define SRC_HTML_WEBAPI_NAVIGATORCONTENTUTILS_HPP_
 
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class NavigatorContentUtils {
-  void registerProtocolHandler(DOMString scheme, USVString url, DOM::DOMString title);
-  void unregisterProtocolHandler(DOMString scheme, USVString url);
+	public:
+		void registerProtocolHandler(DOM::DOMString scheme, DOM::USVString url, DOM::DOMString title);
+		void unregisterProtocolHandler(DOM::DOMString scheme, DOM::USVString url);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_NAVIGATORCONTENTUTILS_HPP_ */
 

@@ -22,6 +22,7 @@
 
 #include "DOMString.hpp"
 
+#include <list>
 #include <optional>
 
 namespace HTML {
@@ -32,8 +33,8 @@ class DOMTokenList {
 		const unsigned long length;
 		std::optional<DOMString> item(unsigned long index); // getter
 		bool contains(DOMString token);
-		void add(DOMString... tokens);
-		void remove(DOMString... tokens);
+		void add(std::list<DOMString> tokens);
+		void remove(std::list<DOMString> tokens);
 		bool toggle(DOMString token, std::optional<bool> force);
 		void replace(DOMString token, DOMString newToken);
 		bool supports(DOMString token);
@@ -43,8 +44,5 @@ class DOMTokenList {
 
 } /* namespace DOM */
 } /* namespace HTML */
-
-
-
 
 #endif /* SRC_HTML_DOM_DOMTOKENLIST_HPP_ */

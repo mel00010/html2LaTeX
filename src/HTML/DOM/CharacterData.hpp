@@ -29,7 +29,7 @@
 namespace HTML {
 namespace DOM {
 
-class CharacterData : public Node, public ChildNode {
+class CharacterData: public Node, public ChildNode {
 	public:
 		DOMString data = U"";
 		const size_t length;
@@ -38,12 +38,10 @@ class CharacterData : public Node, public ChildNode {
 		void insertData(size_t offset, DOMString data);
 		void deleteData(size_t offset, size_t count);
 		void replaceData(size_t offset, size_t count, DOMString data);
-};
+	};
 
-} /* namespace DOM */
+}
+/* namespace DOM */
 } /* namespace HTML */
-
-
-
 
 #endif /* SRC_HTML_DOM_CHARACTERDATA_HPP_ */

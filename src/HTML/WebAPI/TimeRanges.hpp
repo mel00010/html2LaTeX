@@ -20,20 +20,18 @@
 #ifndef SRC_HTML_WEBAPI_TIMERANGES_HPP_
 #define SRC_HTML_WEBAPI_TIMERANGES_HPP_
 
-
 namespace HTML {
 namespace WebAPI {
 
-
 class TimeRanges {
-  const unsigned long length;
-  double start(unsigned long index);
-  double end(unsigned long index);
+	public:
+		const unsigned long length;
+		double start(unsigned long index);
+		double end(unsigned long index);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_TIMERANGES_HPP_ */
 

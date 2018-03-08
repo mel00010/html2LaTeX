@@ -20,30 +20,39 @@
 #ifndef SRC_HTML_WEBAPI_HTMLCANVASELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLCANVASELEMENT_HPP_
 
+#include "CanvasRenderingContext2D.hpp"
+#include "HTMLElement.hpp"
+#include "ImageBitmapRenderingContext.hpp"
+#include "OffscreenCanvas.hpp"
+
+#include <any>
+#include <optional>
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-typedef (CanvasRenderingContext2D or ImageBitmapRenderingContext or WebGLRenderingContext) RenderingContext;
+typedef std::variant<CanvasRenderingContext2D, ImageBitmapRenderingContext, WebGLRenderingContext> RenderingContext;
+using BlobCallback = void (*)(std::optional<Blob> blob);
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLCanvasElement : HTMLElement {
-    unsigned long width;
-    unsigned long height;
+class HTMLCanvasElement: public HTMLElement {
+	public:
+		unsigned long width;
+		unsigned long height;
 
-  RenderingContext? getContext(DOMString contextId, optional any options = null);
+		std::optional<RenderingContext> getContext(DOM::DOMString contextId, std::optional<std::any> options = std::nullopt);
 
-  USVString toDataURL(optional DOM::DOMString type, optional any quality);
-  void toBlob(BlobCallback _callback, optional DOM::DOMString type, optional any quality);
-  OffscreenCanvas transferControlToOffscreen();
+		DOM::USVString toDataURL(std::optional<DOM::DOMString> type, std::optional<std::any> quality);
+		void toBlob(BlobCallback _callback, std::optional<DOM::DOMString> type, std::optional<std::any> quality);
+		OffscreenCanvas transferControlToOffscreen();
 };
 
-callback BlobCallback = void (Blob? blob);
-
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLCANVASELEMENT_HPP_ */
 

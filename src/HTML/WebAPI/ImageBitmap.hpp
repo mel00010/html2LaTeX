@@ -20,38 +20,47 @@
 #ifndef SRC_HTML_WEBAPI_IMAGEBITMAP_HPP_
 #define SRC_HTML_WEBAPI_IMAGEBITMAP_HPP_
 
+#include "CanvasRenderingContext2D.hpp"
+
+#include <variant>
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=(Window,Worker), Serializable, Transferable]
 class ImageBitmap {
-  const unsigned long width;
-  const unsigned long height;
-  void close();
+	public:
+		const unsigned long width;
+		const unsigned long height;
+		void close();
 };
 
-typedef (CanvasImageSource or
-         Blob or
-         ImageData) ImageBitmapSource;
+typedef std::variant<CanvasImageSource, Blob, ImageData> ImageBitmapSource;
 
-enum ImageOrientation { "none", "flipY" };
-enum PremultiplyAlpha { "none", "premultiply", "default" };
-enum ColorSpaceConversion { "none", "default" };
-enum ResizeQuality { "pixelated", "low", "medium", "high" };
+enum class ImageOrientation {
+	NONE, FLIPY
+};
+enum class PremultiplyAlpha {
+	NONE, PREMULTIPLY, DEFAULT
+};
+enum class ColorSpaceConversion {
+	NONE, DEFAULT
+};
+enum class ResizeQuality {
+	PIXELATED, LOW, MEDIUM, HIGH
+};
 
-dictionary ImageBitmapOptions {
-  ImageOrientation imageOrientation = "none";
-  PremultiplyAlpha premultiplyAlpha = "default";
-  ColorSpaceConversion colorSpaceConversion = "default";
-  [EnforceRange] unsigned long resizeWidth;
-  [EnforceRange] unsigned long resizeHeight;
-  ResizeQuality resizeQuality = "low";
+struct ImageBitmapOptions {
+	public:
+		ImageOrientation imageOrientation = ImageOrientation::NONE;
+		PremultiplyAlpha premultiplyAlpha = PremultiplyAlpha::DEFAULT;
+		ColorSpaceConversion colorSpaceConversion = ColorSpaceConversion::DEFAULT;
+		unsigned long resizeWidth;
+		unsigned long resizeHeight;
+		ResizeQuality resizeQuality = ResizeQuality::LOW;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_IMAGEBITMAP_HPP_ */
 

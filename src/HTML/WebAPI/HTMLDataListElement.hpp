@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_HTMLDATALISTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLDATALISTELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLDataListElement : HTMLElement {
-  [SameObject] const HTMLCollection options;
+class HTMLDataListElement: public HTMLElement {
+	protected:
+		const DOM::HTMLCollection options;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLDATALISTELEMENT_HPP_ */
 

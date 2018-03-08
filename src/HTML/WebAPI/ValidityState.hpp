@@ -20,28 +20,26 @@
 #ifndef SRC_HTML_WEBAPI_VALIDITYSTATE_HPP_
 #define SRC_HTML_WEBAPI_VALIDITYSTATE_HPP_
 
-
 namespace HTML {
 namespace WebAPI {
 
-
 class ValidityState {
-  const bool valueMissing;
-  const bool typeMismatch;
-  const bool patternMismatch;
-  const bool tooLong;
-  const bool tooShort;
-  const bool rangeUnderflow;
-  const bool rangeOverflow;
-  const bool stepMismatch;
-  const bool badInput;
-  const bool customError;
-  const bool valid;
+	public:
+		const bool valueMissing;
+		const bool typeMismatch;
+		const bool patternMismatch;
+		const bool tooLong;
+		const bool tooShort;
+		const bool rangeUnderflow;
+		const bool rangeOverflow;
+		const bool stepMismatch;
+		const bool badInput;
+		const bool customError;
+		const bool valid;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_VALIDITYSTATE_HPP_ */
 

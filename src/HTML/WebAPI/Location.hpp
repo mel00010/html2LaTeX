@@ -1,4 +1,4 @@
-/*******************************************************************************
+/**********"*********************************************************************
  * Location.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
@@ -20,32 +20,35 @@
 #ifndef SRC_HTML_WEBAPI_LOCATION_HPP_
 #define SRC_HTML_WEBAPI_LOCATION_HPP_
 
+#include "DOMStringList.hpp"
+
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
 class Location { // but see also additional creation steps and overridden internal methods
-  [Unforgeable] stringifier  USVString href;
-  [Unforgeable] const USVString origin;
-  [Unforgeable]  USVString protocol;
-  [Unforgeable]  USVString host;
-  [Unforgeable]  USVString hostname;
-  [Unforgeable]  USVString port;
-  [Unforgeable]  USVString pathname;
-  [Unforgeable]  USVString search;
-  [Unforgeable]  USVString hash;
+	public:
+		DOM::USVString href;
+		const DOM::USVString origin;
+		DOM::USVString protocol;
+		DOM::USVString host;
+		DOM::USVString hostname;
+		DOM::USVString port;
+		DOM::USVString pathname;
+		DOM::USVString search;
+		DOM::USVString hash;
 
-  [Unforgeable] void assign(USVString url);
-  [Unforgeable] void replace(USVString url);
-  [Unforgeable] void reload();
+		void assign(DOM::USVString url);
+		void replace(DOM::USVString url);
+		void reload();
 
-  [Unforgeable, SameObject] const DOM::DOMStringList ancestorOrigins;
+	protected:
+		const DOMStringList ancestorOrigins;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_LOCATION_HPP_ */
 

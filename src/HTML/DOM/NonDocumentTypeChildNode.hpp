@@ -34,13 +34,10 @@ class NonDocumentTypeChildNode {
 };
 
 /* IDL Mixins
-Element includes NonDocumentTypeChildNode;
-CharacterData includes NonDocumentTypeChildNode;
-*/
+ Element includes NonDocumentTypeChildNode;
+ CharacterData includes NonDocumentTypeChildNode;
+ */
 } /* namespace DOM */
 } /* namespace HTML */
-
-
-
 
 #endif /* SRC_HTML_DOM_NONDOCUMENTTYPECHILDNODE_HPP_ */

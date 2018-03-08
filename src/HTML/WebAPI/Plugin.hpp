@@ -20,24 +20,27 @@
 #ifndef SRC_HTML_WEBAPI_PLUGIN_HPP_
 #define SRC_HTML_WEBAPI_PLUGIN_HPP_
 
+#include "MimeType.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- LegacyUnenumerableNamedProperties]
 class Plugin {
-  const DOM::DOMString name;
-  const DOM::DOMString description;
-  const DOM::DOMString filename;
-  const unsigned long length;
-  getter MimeType? item(unsigned long index);
-  getter MimeType? namedItem(DOMString name);
+	public:
+		const DOM::DOMString name;
+		const DOM::DOMString description;
+		const DOM::DOMString filename;
+		const unsigned long length;
+		std::optional<MimeType> getItem(unsigned long index);
+		std::optional<MimeType> getNamedItem(DOM::DOMString name);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_PLUGIN_HPP_ */
 

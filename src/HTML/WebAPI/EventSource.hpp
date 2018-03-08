@@ -22,15 +22,20 @@
 
 #include "EventHandler.hpp"
 
+#include "../DOM/EventTarget.hpp"
+#include "../DOM/USVString.hpp"
+
 namespace HTML {
 namespace WebAPI {
 
-class EventSource: public EventTarget {
-	public:
-		EventSource(USVString url);
+struct EventSourceInit;
 
-		EventSource(USVString url, EventSourceInit eventSourceInitDict);
-		const USVString url;
+class EventSource: public DOM::EventTarget {
+	public:
+		EventSource(DOM::USVString url);
+
+		EventSource(DOM::USVString url, EventSourceInit eventSourceInitDict);
+		const DOM::USVString url;
 		const bool withCredentials;
 
 		// ready state

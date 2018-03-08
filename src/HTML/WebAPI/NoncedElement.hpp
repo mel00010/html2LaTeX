@@ -20,18 +20,19 @@
 #ifndef SRC_HTML_WEBAPI_NONCEDELEMENT_HPP_
 #define SRC_HTML_WEBAPI_NONCEDELEMENT_HPP_
 
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class NoncedElement {
-   DOM::DOMString nonce;
+	public:
+		DOM::DOMString nonce;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_NONCEDELEMENT_HPP_ */
 

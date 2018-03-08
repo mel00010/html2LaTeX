@@ -20,18 +20,17 @@
 #ifndef SRC_HTML_WEBAPI_NAVIGATORONLINE_HPP_
 #define SRC_HTML_WEBAPI_NAVIGATORONLINE_HPP_
 
-
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class NavigatorOnLine {
-  const bool onLine;
+	public:
+		const bool onLine;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_NAVIGATORONLINE_HPP_ */
 

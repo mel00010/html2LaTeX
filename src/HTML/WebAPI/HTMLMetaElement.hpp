@@ -20,24 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLMETAELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLMETAELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLMetaElement : HTMLElement {
-    DOM::DOMString name;
-    DOM::DOMString httpEquiv;
-    DOM::DOMString content;
+class HTMLMetaElement: public HTMLElement {
+	public:
+		DOM::DOMString name;
+		DOM::DOMString httpEquiv;
+		DOM::DOMString content;
 
-  // also has obsolete members
-    DOM::DOMString scheme;
+		// also has obsolete members
+		DOM::DOMString scheme;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLMETAELEMENT_HPP_ */
 

@@ -20,28 +20,34 @@
 #ifndef SRC_HTML_WEBAPI_HISTORY_HPP_
 #define SRC_HTML_WEBAPI_HISTORY_HPP_
 
+#include <any>
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-enum ScrollRestoration { "auto", "manual" };
-
+enum class ScrollRestoration {
+	AUTO, MANUAL
+};
 
 class History {
-  const unsigned long index;
-  const unsigned long length;
-   ScrollRestoration scrollRestoration;
-  const any state;
-  void go(optional long delta = 0);
-  void back();
-  void forward();
-  void pushState(any data, DOM::DOMString title, optional USVString? url = null);
-  void replaceState(any data, DOM::DOMString title, optional USVString? url = null);
+	public:
+		const unsigned long index;
+		const unsigned long length;
+		ScrollRestoration scrollRestoration;
+		const std::any state;
+		void go(long delta = 0);
+		void back();
+		void forward();
+		void pushState(std::any data, DOM::DOMString title, std::optional<DOM::USVString> url = std::nullopt);
+		void replaceState(std::any data, DOM::DOMString title, std::optional<DOM::USVString> url = std::nullopt);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HISTORY_HPP_ */
 

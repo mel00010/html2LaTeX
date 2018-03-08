@@ -20,20 +20,23 @@
 #ifndef SRC_HTML_WEBAPI_DOMSTRINGLIST_HPP_
 #define SRC_HTML_WEBAPI_DOMSTRINGLIST_HPP_
 
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=(Window,Worker)]
-class DOM::DOMStringList {
-  const unsigned long length;
-  getter DOM::DOMString? item(unsigned long index);
-  bool contains(DOMString string);
+class DOMStringList {
+	public:
+		const unsigned long length;
+		std::optional<DOM::DOMString> getItem(unsigned long index);
+		bool contains(DOM::DOMString string);
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_DOMSTRINGLIST_HPP_ */
 

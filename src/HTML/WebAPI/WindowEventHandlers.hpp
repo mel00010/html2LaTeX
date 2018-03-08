@@ -20,33 +20,34 @@
 #ifndef SRC_HTML_WEBAPI_WINDOWEVENTHANDLERS_HPP_
 #define SRC_HTML_WEBAPI_WINDOWEVENTHANDLERS_HPP_
 
+#include "EventHandler.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class WindowEventHandlers {
-   EventHandler onafterprint;
-   EventHandler onbeforeprint;
-   OnBeforeUnloadEventHandler onbeforeunload;
-   EventHandler onhashchange;
-   EventHandler onlanguagechange;
-   EventHandler onmessage;
-   EventHandler onmessageerror;
-   EventHandler onoffline;
-   EventHandler ononline;
-   EventHandler onpagehide;
-   EventHandler onpageshow;
-   EventHandler onpopstate;
-   EventHandler onrejectionhandled;
-   EventHandler onstorage;
-   EventHandler onunhandledrejection;
-   EventHandler onunload;
+	public:
+		EventHandler onafterprint;
+		EventHandler onbeforeprint;
+		OnBeforeUnloadEventHandler onbeforeunload;
+		EventHandler onhashchange;
+		EventHandler onlanguagechange;
+		EventHandler onmessage;
+		EventHandler onmessageerror;
+		EventHandler onoffline;
+		EventHandler ononline;
+		EventHandler onpagehide;
+		EventHandler onpageshow;
+		EventHandler onpopstate;
+		EventHandler onrejectionhandled;
+		EventHandler onstorage;
+		EventHandler onunhandledrejection;
+		EventHandler onunload;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WINDOWEVENTHANDLERS_HPP_ */
 

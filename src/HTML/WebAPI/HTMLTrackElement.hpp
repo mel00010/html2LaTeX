@@ -20,31 +20,34 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTRACKELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTRACKELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+#include "TextTrack.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTrackElement : HTMLElement {
-    DOM::DOMString kind;
-    USVString src;
-    DOM::DOMString srclang;
-    DOM::DOMString label;
-    bool default;
+class HTMLTrackElement: public HTMLElement {
+	public:
+		DOM::DOMString kind;
+		DOM::USVString src;
+		DOM::DOMString srclang;
+		DOM::DOMString label;
+		bool _default;
 
-  const unsigned short NONE = 0;
-  const unsigned short LOADING = 1;
-  const unsigned short LOADED = 2;
-  const unsigned short ERROR = 3;
-  const unsigned short readyState;
+		const unsigned short NONE = 0;
+		const unsigned short LOADING = 1;
+		const unsigned short LOADED = 2;
+		const unsigned short ERROR = 3;
+		const unsigned short readyState;
 
-  const TextTrack track;
+		const TextTrack track;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTRACKELEMENT_HPP_ */
 

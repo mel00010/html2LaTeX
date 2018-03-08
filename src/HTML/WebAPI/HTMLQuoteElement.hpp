@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_HTMLQUOTEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLQUOTEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLQuoteElement : HTMLElement {
-    USVString cite;
+class HTMLQuoteElement: public HTMLElement {
+	public:
+		DOM::USVString cite;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLQUOTEELEMENT_HPP_ */
 

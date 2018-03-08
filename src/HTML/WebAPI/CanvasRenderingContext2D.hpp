@@ -20,12 +20,17 @@
 #ifndef SRC_HTML_WEBAPI_CANVASRENDERINGCONTEXT2D_HPP_
 #define SRC_HTML_WEBAPI_CANVASRENDERINGCONTEXT2D_HPP_
 
+#include "HTMLCanvasElement.hpp"
+#include "HTMLImageElement.hpp"
+#include "HTMLVideoElement.hpp"
+#include "ImageBitmap.hpp"
+#include "OffscreenCanvas.hpp"
+
 #include <list>
 #include <optional>
 #include <variant>
 
 #include "../DOM/DOMString.hpp"
-#include "../DOM/Element.hpp"
 
 namespace HTML {
 namespace WebAPI {
@@ -56,14 +61,9 @@ class TextMetrics;
 class ImageData;
 class Path2D;
 
-typedef std::variant<HTMLImageElement,
-		SVGImageElement> HTMLOrSVGImageElement;
+typedef std::variant<HTMLImageElement, SVGImageElement> HTMLOrSVGImageElement;
 
-typedef std::variant<HTMLOrSVGImageElement,
-		HTMLVideoElement,
-		HTMLCanvasElement,
-		ImageBitmap,
-		OffscreenCanvas> CanvasImageSource;
+typedef std::variant<HTMLOrSVGImageElement, HTMLVideoElement, HTMLCanvasElement, ImageBitmap, OffscreenCanvas> CanvasImageSource;
 
 enum class CanvasFillRule {
 	NON_ZERO, EVEN_ODD
@@ -199,7 +199,7 @@ class CanvasDrawPath {
 class CanvasUserInterface {
 	public:
 		void drawFocusIfNeeded(DOM::Element element);
-		void drawFocusIfNeeded(Path2D path, Element element);
+		void drawFocusIfNeeded(Path2D path, DOM::Element element);
 		void scrollPathIntoView();
 		void scrollPathIntoView(Path2D path);
 };

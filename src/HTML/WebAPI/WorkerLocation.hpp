@@ -20,26 +20,26 @@
 #ifndef SRC_HTML_WEBAPI_WORKERLOCATION_HPP_
 #define SRC_HTML_WEBAPI_WORKERLOCATION_HPP_
 
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Worker]
 class WorkerLocation {
-  stringifier const USVString href;
-  const USVString origin;
-  const USVString protocol;
-  const USVString host;
-  const USVString hostname;
-  const USVString port;
-  const USVString pathname;
-  const USVString search;
-  const USVString hash;
+	public:
+		const DOM::USVString href;
+		const DOM::USVString origin;
+		const DOM::USVString protocol;
+		const DOM::USVString host;
+		const DOM::USVString hostname;
+		const DOM::USVString port;
+		const DOM::USVString pathname;
+		const DOM::USVString search;
+		const DOM::USVString hash;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WORKERLOCATION_HPP_ */
 

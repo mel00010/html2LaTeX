@@ -20,50 +20,66 @@
 #ifndef SRC_HTML_WEBAPI_HTMLSELECTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLSELECTELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+#include "HTMLOptGroupElement.hpp"
+#include "HTMLOptionElement.hpp"
+#include "HTMLOptionsCollection.hpp"
+#include "ValidityState.hpp"
+
+#include <optional>
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/NodeList.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLSelectElement : HTMLElement {
-    DOM::DOMString autocomplete;
-    bool autofocus;
-    bool disabled;
-  const HTMLFormElement? form;
-    bool multiple;
-    DOM::DOMString name;
-    bool required;
-    unsigned long size;
+class HTMLSelectElement: public HTMLElement {
+	public:
+		DOM::DOMString autocomplete;
+		bool autofocus;
+		bool disabled;
+		const std::optional<HTMLFormElement> form;
+		bool multiple;
+		DOM::DOMString name;
+		bool required;
+		unsigned long size;
 
-  const DOM::DOMString type;
+		const DOM::DOMString type;
 
-  [SameObject] const HTMLOptionsCollection options;
-    unsigned long length;
-  getter Element? item(unsigned long index);
-  HTMLOptionElement? namedItem(DOMString name);
-   void add((HTMLOptionElement or HTMLOptGroupElement) element, optional (HTMLElement or long)? before = null);
-   void remove(); // ChildNode overload
-   void remove(long index);
-   setter void (unsigned long index, HTMLOptionElement? option);
+	protected:
+		const HTMLOptionsCollection options;
 
-  [SameObject] const HTMLCollection selectedOptions;
-   long selectedIndex;
-   DOM::DOMString value;
+	public:
+		unsigned long length;
+		std::optional<Element> getItem(unsigned long index);
+		std::optional<HTMLOptionElement> namedItem(DOM::DOMString name);
+		void add(std::variant<HTMLOptionElement, HTMLOptGroupElement> element,
+				std::optional<std::variant<HTMLElement, long>> before = std::nullopt);
+		void remove(); // ChildNode overload
+		void remove(long index);
+		void set(unsigned long index, std::optional<HTMLOptionElement> option);
 
-  const bool willValidate;
-  const ValidityState validity;
-  const DOM::DOMString validationMessage;
-  bool checkValidity();
-  bool reportValidity();
-  void setCustomValidity(DOMString error);
+	protected:
+		const DOM::HTMLCollection selectedOptions;
 
-  const NodeList labels;
+	public:
+		long selectedIndex;
+		DOM::DOMString value;
+
+		const bool willValidate;
+		const ValidityState validity;
+		const DOM::DOMString validationMessage;
+		bool checkValidity();
+		bool reportValidity();
+		void setCustomValidity(DOM::DOMString error);
+
+		const DOM::NodeList labels;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLSELECTELEMENT_HPP_ */
 

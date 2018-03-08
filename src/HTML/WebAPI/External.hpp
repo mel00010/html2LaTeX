@@ -20,20 +20,17 @@
 #ifndef SRC_HTML_WEBAPI_EXTERNAL_HPP_
 #define SRC_HTML_WEBAPI_EXTERNAL_HPP_
 
-
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- NoInterfaceObject]
 class External {
-  void AddSearchProvider();
-  void IsSearchProviderInstalled();
+	public:
+		void AddSearchProvider();
+		void IsSearchProviderInstalled();
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_EXTERNAL_HPP_ */
 

@@ -20,28 +20,35 @@
 #ifndef SRC_HTML_WEBAPI_HTMLOPTIONELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLOPTIONELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor,
- NamedConstructor=Option(optional DOM::DOMString text = "", optional DOM::DOMString value, optional bool defaultSelected = false, optional bool selected = false)]
-class HTMLOptionElement : HTMLElement {
-    bool disabled;
-  const HTMLFormElement? form;
-    DOM::DOMString label;
-    bool defaultSelected;
-   bool selected;
-    DOM::DOMString value;
+class HTMLOptionElement: HTMLElement {
+	public:
+		HTMLOptionElement(std::optional<DOM::DOMString> text = "",
+				std::optional<DOM::DOMString> value,
+				std::optional<bool> defaultSelected = false,
+				std::optional<bool> selected = false);
 
-    DOM::DOMString text;
-  const long index;
+		bool disabled;
+		const std::optional<HTMLFormElement> form;
+		DOM::DOMString label;
+		bool defaultSelected;
+		bool selected;
+		DOM::DOMString value;
+
+		DOM::DOMString text;
+		const long index;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLOPTIONELEMENT_HPP_ */
 

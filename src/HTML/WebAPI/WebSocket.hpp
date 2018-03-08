@@ -20,43 +20,53 @@
 #ifndef SRC_HTML_WEBAPI_WEBSOCKET_HPP_
 #define SRC_HTML_WEBAPI_WEBSOCKET_HPP_
 
+#include "EventHandler.hpp"
+
+#include <list>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/EventTarget.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-enum BinaryType { "blob", "arraybuffer" };
-[Constructor(USVString url, optional (DOMString or sequence<DOMString>) protocols = []), Exposed=(Window,Worker)]
-class WebSocket : EventTarget {
-  const USVString url;
+enum class BinaryType {
+	BLOB, ARRAYBUFFER
+};
 
-  // ready state
-  const unsigned short CONNECTING = 0;
-  const unsigned short OPEN = 1;
-  const unsigned short CLOSING = 2;
-  const unsigned short CLOSED = 3;
-  const unsigned short readyState;
-  const unsigned long long bufferedAmount;
+class WebSocket: DOM::EventTarget {
+	public:
+		WebSocket(DOM::USVString url, std::list<DOM::DOMString> protocols = { });
+		const DOM::USVString url;
 
-  // networking
-   EventHandler onopen;
-   EventHandler onerror;
-   EventHandler onclose;
-  const DOM::DOMString extensions;
-  const DOM::DOMString protocol;
-  void close(optional [Clamp] unsigned short code, optional USVString reason);
+		// ready state
+		const unsigned short CONNECTING = 0;
+		const unsigned short OPEN = 1;
+		const unsigned short CLOSING = 2;
+		const unsigned short CLOSED = 3;
+		const unsigned short readyState;
+		const unsigned long long bufferedAmount;
 
-  // messaging
-   EventHandler onmessage;
-   BinaryType binaryType;
-  void send(USVString data);
-  void send(Blob data);
-  void send(ArrayBuffer data);
-  void send(ArrayBufferView data);
+		// networking
+		EventHandler onopen;
+		EventHandler onerror;
+		EventHandler onclose;
+		const DOM::DOMString extensions;
+		const DOM::DOMString protocol;
+		void close(unsigned short code, DOM::USVString reason);
+
+		// messaging
+		EventHandler onmessage;
+		BinaryType binaryType;
+		void send(DOM::USVString data);
+		void send(Blob data);
+		void send(ArrayBuffer data);
+		void send(ArrayBufferView data);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WEBSOCKET_HPP_ */
 

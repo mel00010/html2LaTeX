@@ -20,29 +20,35 @@
 #ifndef SRC_HTML_WEBAPI_HTMLFRAMEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLFRAMEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include <optional>
+
+#include "../DOM/Document.hpp"
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLFrameElement : HTMLElement {
-    DOM::DOMString name;
-    DOM::DOMString scrolling;
-    USVString src;
-    DOM::DOMString frameBorder;
-    USVString longDesc;
-    bool noResize;
-  const Document? contentDocument;
-  const WindowProxy? contentWindow;
+class HTMLFrameElement: public HTMLElement {
+	public:
+		DOM::DOMString name;
+		DOM::DOMString scrolling;
+		DOM::USVString src;
+		DOM::DOMString frameBorder;
+		DOM::USVString longDesc;
+		bool noResize;
+		const std::optional<DOM::Document> contentDocument;
+		const std::optional<WindowProxy> contentWindow;
 
-    [TreatNullAs=EmptyString] DOM::DOMString marginHeight;
-    [TreatNullAs=EmptyString] DOM::DOMString marginWidth;
+		DOM::DOMString marginHeight = "";
+		DOM::DOMString marginWidth = "";
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLFRAMEELEMENT_HPP_ */
 

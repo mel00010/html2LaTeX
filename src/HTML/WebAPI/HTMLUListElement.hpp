@@ -20,21 +20,22 @@
 #ifndef SRC_HTML_WEBAPI_HTMLULISTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLULISTELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLUListElement : HTMLElement {
-  // also has obsolete members
-    bool compact;
-    DOM::DOMString type;
+class HTMLUListElement: public HTMLElement {
+	public:
+		// also has obsolete members
+		bool compact;
+		DOM::DOMString type;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLULISTELEMENT_HPP_ */
 

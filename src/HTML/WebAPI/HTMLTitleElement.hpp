@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTITLEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTITLEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTitleElement : HTMLElement {
-    DOM::DOMString text;
+class HTMLTitleElement: public HTMLElement {
+	public:
+		DOM::DOMString text;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTITLEELEMENT_HPP_ */
 

@@ -20,20 +20,21 @@
 #ifndef SRC_HTML_WEBAPI_HTMLOPTGROUPELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLOPTGROUPELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLOptGroupElement : HTMLElement {
-    bool disabled;
-    DOM::DOMString label;
+class HTMLOptGroupElement: public HTMLElement {
+	public:
+		bool disabled;
+		DOM::DOMString label;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLOPTGROUPELEMENT_HPP_ */
 

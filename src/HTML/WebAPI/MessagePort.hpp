@@ -20,24 +20,29 @@
 #ifndef SRC_HTML_WEBAPI_MESSAGEPORT_HPP_
 #define SRC_HTML_WEBAPI_MESSAGEPORT_HPP_
 
+#include "EventHandler.hpp"
+
+#include <any>
+#include <list>
+
+#include "../DOM/EventTarget.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=(Window,Worker,AudioWorklet), Transferable]
-class MessagePort : EventTarget {
-  void postMessage(any message, optional sequence<object> transfer = []);
-  void start();
-  void close();
+class MessagePort: public DOM::EventTarget {
+	public:
+		void postMessage(std::any message, std::list<std::any> transfer = { });
+		void start();
+		void close();
 
-  // event handlers
-   EventHandler onmessage;
-   EventHandler onmessageerror;
+		// event handlers
+		EventHandler onmessage;
+		EventHandler onmessageerror;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_MESSAGEPORT_HPP_ */
 

@@ -20,17 +20,29 @@
 #ifndef SRC_HTML_WEBAPI_HTMLFORMCONTROLSCOLLECTION_HPP_
 #define SRC_HTML_WEBAPI_HTMLFORMCONTROLSCOLLECTION_HPP_
 
+#include <optional>
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Element.hpp"
+#include "../DOM/HTMLCollection.hpp"
+#include "../DOM/NodeList.hpp"
+
 namespace HTML {
 namespace WebAPI {
 
-class HTMLFormControlsCollection: HTMLCollection {
+class RadioNodeList;
+
+class HTMLFormControlsCollection: public DOM::HTMLCollection {
+	public:
 		// inherits length and item()
-		getter (RadioNodeList or Element)? namedItem(DOMString name);
+		std::optional<std::variant<RadioNodeList,DOM::Element>> getNamedItem(DOM::DOMString name);
 		// shadows inherited namedItem()
 };
 
-class RadioNodeList: NodeList {
-		DOMString value;
+class RadioNodeList: public DOM::NodeList {
+	public:
+		DOM::DOMString value;
 };
 
 } /* namespace WebAPI */

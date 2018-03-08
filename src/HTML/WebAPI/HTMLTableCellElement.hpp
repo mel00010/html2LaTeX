@@ -20,38 +20,39 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTABLECELLELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTABLECELLELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTableCellElement : HTMLElement {
-    unsigned long colSpan;
-    unsigned long rowSpan;
-    DOM::DOMString headers;
-  const long cellIndex;
+class HTMLTableCellElement: public HTMLElement {
+	public:
+		unsigned long colSpan;
+		unsigned long rowSpan;
+		DOM::DOMString headers;
+		const long cellIndex;
 
-    DOM::DOMString scope; // only conforming for th elements
-    DOM::DOMString abbr;  // only conforming for th elements
+		DOM::DOMString scope; // only conforming for th elements
+		DOM::DOMString abbr;  // only conforming for th elements
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString axis;
-    DOM::DOMString height;
-    DOM::DOMString width;
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString axis;
+		DOM::DOMString height;
+		DOM::DOMString width;
 
-    DOM::DOMString ch;
-    DOM::DOMString chOff;
-    bool noWrap;
-    DOM::DOMString vAlign;
+		DOM::DOMString ch;
+		DOM::DOMString chOff;
+		bool noWrap;
+		DOM::DOMString vAlign;
 
-    [TreatNullAs=EmptyString] DOM::DOMString bgColor;
+		DOM::DOMString bgColor = "";
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTABLECELLELEMENT_HPP_ */
 

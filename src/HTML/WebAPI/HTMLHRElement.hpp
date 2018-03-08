@@ -20,24 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLHRELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLHRELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLHRElement : HTMLElement {
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString color;
-    bool noShade;
-    DOM::DOMString size;
-    DOM::DOMString width;
+class HTMLHRElement: public HTMLElement {
+	public:
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString color;
+		bool noShade;
+		DOM::DOMString size;
+		DOM::DOMString width;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLHRELEMENT_HPP_ */
 

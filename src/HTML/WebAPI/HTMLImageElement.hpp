@@ -20,46 +20,54 @@
 #ifndef SRC_HTML_WEBAPI_HTMLIMAGEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLIMAGEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include <future>
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor,
- NamedConstructor=Image(optional unsigned long width, optional unsigned long height)]
-class HTMLImageElement : HTMLElement {
-    DOM::DOMString alt;
-    USVString src;
-    USVString srcset;
-    DOM::DOMString sizes;
-    DOM::DOMString? crossOrigin;
-    DOM::DOMString useMap;
-    bool isMap;
-    unsigned long width;
-    unsigned long height;
-  const unsigned long naturalWidth;
-  const unsigned long naturalHeight;
-  const bool complete;
-  const USVString currentSrc;
-    DOM::DOMString referrerPolicy;
-    DOM::DOMString decoding;
+class HTMLImageElement: public HTMLElement {
+	public:
+		HTMLImageElement();
+		HTMLImageElement(unsigned long width, unsigned long height);
 
-  Promise<void> decode();
+		DOM::DOMString alt;
+		DOM::USVString src;
+		DOM::USVString srcset;
+		DOM::DOMString sizes;
+		std::optional<DOM::DOMString> crossOrigin;
+		DOM::DOMString useMap;
+		bool isMap;
+		unsigned long width;
+		unsigned long height;
+		const unsigned long naturalWidth;
+		const unsigned long naturalHeight;
+		const bool complete;
+		const DOM::USVString currentSrc;
+		DOM::DOMString referrerPolicy;
+		DOM::DOMString decoding;
 
-  // also has obsolete members
-    DOM::DOMString name;
-    USVString lowsrc;
-    DOM::DOMString align;
-    unsigned long hspace;
-    unsigned long vspace;
-    USVString longDesc;
+		std::promise decode();
 
-    [TreatNullAs=EmptyString] DOM::DOMString border;
+		// also has obsolete members
+		DOM::DOMString name;
+		DOM::USVString lowsrc;
+		DOM::DOMString align;
+		unsigned long hspace;
+		unsigned long vspace;
+		DOM::USVString longDesc;
+
+		DOM::DOMString border = "";
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLIMAGEELEMENT_HPP_ */
 

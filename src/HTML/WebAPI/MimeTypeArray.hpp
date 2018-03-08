@@ -20,21 +20,24 @@
 #ifndef SRC_HTML_WEBAPI_MIMETYPEARRAY_HPP_
 #define SRC_HTML_WEBAPI_MIMETYPEARRAY_HPP_
 
+#include "MimeType.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- LegacyUnenumerableNamedProperties]
 class MimeTypeArray {
-  const unsigned long length;
-  getter MimeType? item(unsigned long index);
-  getter MimeType? namedItem(DOMString name);
+	public:
+		const unsigned long length;
+		std::optional<MimeType> getItem(unsigned long index);
+		std::optional<MimeType> getNamedItem(DOM::DOMString name);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_MIMETYPEARRAY_HPP_ */
 

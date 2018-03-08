@@ -20,36 +20,48 @@
 #ifndef SRC_HTML_WEBAPI_WINDOWORWORKERGLOBALSCOPE_HPP_
 #define SRC_HTML_WEBAPI_WINDOWORWORKERGLOBALSCOPE_HPP_
 
+#include "ImageBitmap.hpp"
+
+#include <any>
+#include <functional>
+#include <future>
+#include <list>
+#include <variant>
+
+#include "../DOM/ByteString.hpp"
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-typedef (DOMString or Function) TimerHandler;
+typedef std::variant<DOM::DOMString, std::function> TimerHandler;
 
 /* Mixin */
 class WindowOrWorkerGlobalScope {
-  [Replaceable] const USVString origin;
+	public:
+		const DOM::USVString origin;
 
-  // base64 utility methods
-  DOM::DOMString btoa(DOMString data);
-  ByteString atob(DOMString data);
+		// base64 utility methods
+		DOM::DOMString btoa(DOM::DOMString data);
+		DOM::ByteString atob(DOM::DOMString data);
 
-  // timers
-  long setTimeout(TimerHandler handler, optional long timeout = 0, any... arguments);
-  void clearTimeout(optional long handle = 0);
-  long setInterval(TimerHandler handler, optional long timeout = 0, any... arguments);
-  void clearInterval(optional long handle = 0);
+		// timers
+		long setTimeout(TimerHandler handler, long timeout = 0, std::list<std::any> arguments = { });
+		void clearTimeout(long handle = 0);
+		long setInterval(TimerHandler handler, long timeout = 0, std::list<std::any> arguments = { });
+		void clearInterval(long handle = 0);
 
-  // ImageBitmap
-  Promise<ImageBitmap> createImageBitmap(ImageBitmapSource image, optional ImageBitmapOptions options);
-  Promise<ImageBitmap> createImageBitmap(ImageBitmapSource image, long sx, long sy, long sw, long sh, optional ImageBitmapOptions options);
+		// ImageBitmap
+		std::promise<ImageBitmap> createImageBitmap(ImageBitmapSource image);
+		std::promise<ImageBitmap> createImageBitmap(ImageBitmapSource image, ImageBitmapOptions options);
+
+		std::promise<ImageBitmap> createImageBitmap(ImageBitmapSource image, long sx, long sy, long sw, long sh);
+		std::promise<ImageBitmap> createImageBitmap(ImageBitmapSource image, long sx, long sy, long sw, long sh, ImageBitmapOptions options);
 };
-Window includes WindowOrWorkerGlobalScope;
-WorkerGlobalScope includes WindowOrWorkerGlobalScope;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WINDOWORWORKERGLOBALSCOPE_HPP_ */
 

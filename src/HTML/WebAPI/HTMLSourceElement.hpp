@@ -20,23 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLSOURCEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLSOURCEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLSourceElement : HTMLElement {
-    USVString src;
-    DOM::DOMString type;
-    USVString srcset;
-    DOM::DOMString sizes;
-    DOM::DOMString media;
+class HTMLSourceElement: public HTMLElement {
+	public:
+		DOM::USVString src;
+		DOM::DOMString type;
+		DOM::USVString srcset;
+		DOM::DOMString sizes;
+		DOM::DOMString media;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLSOURCEELEMENT_HPP_ */
 

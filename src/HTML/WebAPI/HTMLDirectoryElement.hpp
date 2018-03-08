@@ -20,19 +20,18 @@
 #ifndef SRC_HTML_WEBAPI_HTMLDIRECTORYELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLDIRECTORYELEMENT_HPP_
 
+#include "HTMLElement.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLDirectoryElement : HTMLElement {
-    bool compact;
+class HTMLDirectoryElement: public HTMLElement {
+	public:
+		bool compact;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLDIRECTORYELEMENT_HPP_ */
 

@@ -20,49 +20,55 @@
 #ifndef SRC_HTML_WEBAPI_HTMLOBJECTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLOBJECTELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+#include "ValidityState.hpp"
+
+#include <optional>
+
+#include "../DOM/Document.hpp"
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLObjectElement : HTMLElement {
-    USVString data;
-    DOM::DOMString type;
-    bool typeMustMatch;
-    DOM::DOMString name;
-    DOM::DOMString useMap;
-  const HTMLFormElement? form;
-    DOM::DOMString width;
-    DOM::DOMString height;
-  const Document? contentDocument;
-  const WindowProxy? contentWindow;
-  Document? getSVGDocument();
+class HTMLObjectElement: public HTMLElement {
+	public:
+		DOM::USVString data;
+		DOM::DOMString type;
+		bool typeMustMatch;
+		DOM::DOMString name;
+		DOM::DOMString useMap;
+		const std::optional<HTMLFormElement> form;
+		DOM::DOMString width;
+		DOM::DOMString height;
+		const std::optional<DOM::Document> contentDocument;
+		const std::optional<WindowProxy> contentWindow;
+		std::optional<DOM::Document> getSVGDocument();
 
-  const bool willValidate;
-  const ValidityState validity;
-  const DOM::DOMString validationMessage;
-  bool checkValidity();
-  bool reportValidity();
-  void setCustomValidity(DOMString error);
+		const bool willValidate;
+		const ValidityState validity;
+		const DOM::DOMString validationMessage;
+		bool checkValidity();
+		bool reportValidity();
+		void setCustomValidity(DOM::DOMString error);
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString archive;
-    DOM::DOMString code;
-    bool declare;
-    unsigned long hspace;
-    DOM::DOMString standby;
-    unsigned long vspace;
-    DOM::DOMString codeBase;
-    DOM::DOMString codeType;
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString archive;
+		DOM::DOMString code;
+		bool declare;
+		unsigned long hspace;
+		DOM::DOMString standby;
+		unsigned long vspace;
+		DOM::DOMString codeBase;
+		DOM::DOMString codeType;
 
-    [TreatNullAs=EmptyString] DOM::DOMString border;
+		DOM::DOMString border = "";
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLOBJECTELEMENT_HPP_ */
 

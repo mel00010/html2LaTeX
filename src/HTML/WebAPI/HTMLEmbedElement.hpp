@@ -20,27 +20,32 @@
 #ifndef SRC_HTML_WEBAPI_HTMLEMBEDELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLEMBEDELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include <optional>
+
+#include "../DOM/Document.hpp"
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLEmbedElement : HTMLElement {
-    USVString src;
-    DOM::DOMString type;
-    DOM::DOMString width;
-    DOM::DOMString height;
-  Document? getSVGDocument();
+class HTMLEmbedElement: public HTMLElement {
+	public:
+		DOM::USVString src;
+		DOM::DOMString type;
+		DOM::DOMString width;
+		DOM::DOMString height;
+		std::optional<DOM::Document> getSVGDocument();
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString name;
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString name;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLEMBEDELEMENT_HPP_ */
 

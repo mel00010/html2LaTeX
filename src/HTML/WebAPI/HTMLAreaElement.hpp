@@ -20,31 +20,38 @@
 #ifndef SRC_HTML_WEBAPI_HTMLAREAELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLAREAELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+#include "HTMLHyperlinkElementUtils.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/DOMTokenList.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLAreaElement : HTMLElement {
-    DOM::DOMString alt;
-    DOM::DOMString coords;
-    DOM::DOMString shape;
-    DOM::DOMString target;
-    DOM::DOMString download;
-    USVString ping;
-    DOM::DOMString rel;
-  [SameObject, PutForwards=value] const DOMTokenList relList;
-    DOM::DOMString referrerPolicy;
+class HTMLAreaElement: public HTMLElement, public HTMLHyperlinkElementUtils {
+	public:
+		DOM::DOMString alt;
+		DOM::DOMString coords;
+		DOM::DOMString shape;
+		DOM::DOMString target;
+		DOM::DOMString download;
+		DOM::USVString ping;
+		DOM::DOMString rel;
 
-	  bool noHref;
-  // also has obsolete members
+	protected:
+		const DOM::DOMTokenList relList;
+
+	public:
+		DOM::DOMString referrerPolicy;
+
+		bool noHref;
+		// also has obsolete members
 };
-HTMLAreaElement includes HTMLHyperlinkElementUtils;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLAREAELEMENT_HPP_ */
 

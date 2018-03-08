@@ -20,20 +20,22 @@
 #ifndef SRC_HTML_WEBAPI_HTMLMODELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLMODELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLModElement : HTMLElement {
-    USVString cite;
-    DOM::DOMString dateTime;
+class HTMLModElement: public HTMLElement {
+	public:
+		DOM::USVString cite;
+		DOM::DOMString dateTime;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLMODELEMENT_HPP_ */
 

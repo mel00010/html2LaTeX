@@ -20,26 +20,27 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTABLECOLELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTABLECOLELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTableColElement : HTMLElement {
-    unsigned long span;
+class HTMLTableColElement: public HTMLElement {
+	public:
+		unsigned long span;
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString ch;
-    DOM::DOMString chOff;
-    DOM::DOMString vAlign;
-    DOM::DOMString width;
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString ch;
+		DOM::DOMString chOff;
+		DOM::DOMString vAlign;
+		DOM::DOMString width;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTABLECOLELEMENT_HPP_ */
 

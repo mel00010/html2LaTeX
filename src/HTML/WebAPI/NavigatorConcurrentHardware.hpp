@@ -24,7 +24,9 @@
 namespace HTML {
 namespace WebAPI {
 
+class NavigatorConcurrentHardware {
 
+};
 
 } /* namespace WebAPI */
 } /* namespace HTML */

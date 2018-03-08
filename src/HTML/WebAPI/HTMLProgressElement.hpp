@@ -20,22 +20,23 @@
 #ifndef SRC_HTML_WEBAPI_HTMLPROGRESSELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLPROGRESSELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/NodeList.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLProgressElement : HTMLElement {
-    double value;
-    double max;
-  const double position;
-  const NodeList labels;
+class HTMLProgressElement: public HTMLElement {
+	public:
+		double value;
+		double max;
+		const double position;
+		const DOM::NodeList labels;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLPROGRESSELEMENT_HPP_ */
 

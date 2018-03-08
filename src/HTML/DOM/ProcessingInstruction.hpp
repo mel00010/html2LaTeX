@@ -26,12 +26,12 @@
 namespace HTML {
 namespace DOM {
 
-class ProcessingInstruction : public CharacterData {
-	const DOMString target;
+class ProcessingInstruction: public CharacterData {
+	public:
+		const DOMString target;
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_DOM_PROCESSINGINSTRUCTION_HPP_ */

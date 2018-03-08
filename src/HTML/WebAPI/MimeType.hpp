@@ -20,21 +20,23 @@
 #ifndef SRC_HTML_WEBAPI_MIMETYPE_HPP_
 #define SRC_HTML_WEBAPI_MIMETYPE_HPP_
 
+#include "Plugin.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
 class MimeType {
-  const DOM::DOMString type;
-  const DOM::DOMString description;
-  const DOM::DOMString suffixes; // comma-separated
-  const Plugin enabledPlugin;
+	public:
+		const DOM::DOMString type;
+		const DOM::DOMString description;
+		const DOM::DOMString suffixes; // comma-separated
+		const Plugin enabledPlugin;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_MIMETYPE_HPP_ */
 

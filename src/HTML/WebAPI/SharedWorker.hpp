@@ -20,20 +20,27 @@
 #ifndef SRC_HTML_WEBAPI_SHAREDWORKER_HPP_
 #define SRC_HTML_WEBAPI_SHAREDWORKER_HPP_
 
+#include "AbstractWorker.hpp"
+#include "MessagePort.hpp"
+#include "Worker.hpp"
+
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Constructor(USVString scriptURL, optional (DOMString or WorkerOptions) options),
- Exposed=(Window,Worker)]
-class SharedWorker : EventTarget {
-  const MessagePort port;
+class SharedWorker: public DOM::EventTarget, public AbstractWorker {
+	public:
+		SharedWorker(DOM::USVString scriptURL);
+		SharedWorker(DOM::USVString scriptURL, std::variant<DOM::DOMString, WorkerOptions> options);
+		const MessagePort port;
 };
-SharedWorker includes AbstractWorker;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_SHAREDWORKER_HPP_ */
 

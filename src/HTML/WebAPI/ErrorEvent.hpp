@@ -20,30 +20,39 @@
 #ifndef SRC_HTML_WEBAPI_ERROREVENT_HPP_
 #define SRC_HTML_WEBAPI_ERROREVENT_HPP_
 
+#include <any>
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Constructor(DOMString type, optional ErrorEventInit eventInitDict), Exposed=(Window,Worker)]
-class ErrorEvent : Event {
-  const DOM::DOMString message;
-  const USVString filename;
-  const unsigned long lineno;
-  const unsigned long colno;
-  const any error;
+struct ErrorEventInit;
+
+class ErrorEvent: public DOM::Event {
+	public:
+		ErrorEvent(DOM::DOMString type, std::optional<ErrorEventInit> eventInitDict);
+		const DOM::DOMString message;
+		const DOM::USVString filename;
+		const unsigned long lineno;
+		const unsigned long colno;
+		const std::any error;
 };
 
-dictionary ErrorEventInit : EventInit {
-  DOM::DOMString message = "";
-  USVString filename = "";
-  unsigned long lineno = 0;
-  unsigned long colno = 0;
-  any error = null;
+struct ErrorEventInit: public DOM::EventInit {
+	public:
+		DOM::DOMString message = "";
+		DOM::USVString filename = "";
+		unsigned long lineno = 0;
+		unsigned long colno = 0;
+		std::any error = std::nullopt;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_ERROREVENT_HPP_ */
 

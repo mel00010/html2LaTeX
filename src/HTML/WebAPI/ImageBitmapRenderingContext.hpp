@@ -20,23 +20,28 @@
 #ifndef SRC_HTML_WEBAPI_IMAGEBITMAPRENDERINGCONTEXT_HPP_
 #define SRC_HTML_WEBAPI_IMAGEBITMAPRENDERINGCONTEXT_HPP_
 
+#include "HTMLCanvasElement.hpp"
+#include "ImageBitmap.hpp"
+
+#include <optional>
 
 namespace HTML {
 namespace WebAPI {
 
-
 class ImageBitmapRenderingContext {
-  const HTMLCanvasElement canvas;
-  void transferFromImageBitmap(ImageBitmap? bitmap);
+	public:
+		const HTMLCanvasElement canvas;
+		void transferFromImageBitmap(std::optional<ImageBitmap> bitmap);
 };
 
-dictionary ImageBitmapRenderingContextSettings {
-  bool alpha = true;
+struct ImageBitmapRenderingContextSettings {
+	public:
+		bool alpha = true;
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_IMAGEBITMAPRENDERINGCONTEXT_HPP_ */
 

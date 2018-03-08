@@ -20,20 +20,21 @@
 #ifndef SRC_HTML_WEBAPI_HTMLHTMLELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLHTMLELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLHtmlElement : HTMLElement {
-  // also has obsolete members
-    DOM::DOMString version;
+class HTMLHtmlElement: public HTMLElement {
+	public:
+		// also has obsolete members
+		DOM::DOMString version;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLHTMLELEMENT_HPP_ */
 

@@ -27,7 +27,7 @@
 namespace HTML {
 namespace DOM {
 
-class AbortSignal : public EventTarget {
+class AbortSignal: public EventTarget {
 	public:
 		const bool aborted;
 		WebAPI::EventHandler onabort;
@@ -35,8 +35,5 @@ class AbortSignal : public EventTarget {
 
 } /* namespace DOM */
 } /* namespace HTML */
-
-
-
 
 #endif /* SRC_HTML_DOM_ABORTSIGNAL_HPP_ */

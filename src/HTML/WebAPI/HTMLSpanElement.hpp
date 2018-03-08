@@ -20,17 +20,16 @@
 #ifndef SRC_HTML_WEBAPI_HTMLSPANELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLSPANELEMENT_HPP_
 
+#include "HTMLElement.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLSpanElement : HTMLElement {};
+class HTMLSpanElement: HTMLElement {
+};
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLSPANELEMENT_HPP_ */
 

@@ -20,22 +20,22 @@
 #ifndef SRC_HTML_WEBAPI_VIDEOTRACK_HPP_
 #define SRC_HTML_WEBAPI_VIDEOTRACK_HPP_
 
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
 class VideoTrack {
-  const DOM::DOMString id;
-  const DOM::DOMString kind;
-  const DOM::DOMString label;
-  const DOM::DOMString language;
-   bool selected;
+	public:
+		const DOM::DOMString id;
+		const DOM::DOMString kind;
+		const DOM::DOMString label;
+		const DOM::DOMString language;
+		bool selected;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_VIDEOTRACK_HPP_ */
 

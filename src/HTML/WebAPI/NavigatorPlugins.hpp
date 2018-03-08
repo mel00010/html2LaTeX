@@ -20,20 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_NAVIGATORPLUGINS_HPP_
 #define SRC_HTML_WEBAPI_NAVIGATORPLUGINS_HPP_
 
+#include "MimeTypeArray.hpp"
+#include "PluginArray.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class NavigatorPlugins {
-  [SameObject] const PluginArray plugins;
-  [SameObject] const MimeTypeArray mimeTypes;
-  bool javaEnabled();
+	public:
+		bool javaEnabled();
+
+	protected:
+		const PluginArray plugins;
+		const MimeTypeArray mimeTypes;
+
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_NAVIGATORPLUGINS_HPP_ */
 

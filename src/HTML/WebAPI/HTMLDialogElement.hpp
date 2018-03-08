@@ -20,23 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLDIALOGELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLDIALOGELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLDialogElement : HTMLElement {
-    bool open;
-   DOM::DOMString returnValue;
-   void show();
-   void showModal();
-   void close(optional DOM::DOMString returnValue);
+class HTMLDialogElement: public HTMLElement {
+	public:
+		bool open;
+		DOM::DOMString returnValue;
+		void show();
+		void showModal();
+		void close();
+		void close(DOM::DOMString returnValue);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLDIALOGELEMENT_HPP_ */
 

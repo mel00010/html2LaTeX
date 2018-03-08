@@ -20,19 +20,21 @@
 #ifndef SRC_HTML_WEBAPI_HTMLAUDIOELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLAUDIOELEMENT_HPP_
 
+#include "HTMLMediaElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
-[Exposed=Window,
- HTMLConstructor,
- NamedConstructor=Audio(optional DOM::DOMString src)]
-class HTMLAudioElement : HTMLMediaElement {};
+class HTMLAudioElement: public HTMLMediaElement {
+	public:
+		HTMLAudioElement();
+		HTMLAudioElement(DOM::DOMString src);
+};
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLAUDIOELEMENT_HPP_ */
 

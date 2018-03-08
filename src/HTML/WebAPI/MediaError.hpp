@@ -20,24 +20,24 @@
 #ifndef SRC_HTML_WEBAPI_MEDIAERROR_HPP_
 #define SRC_HTML_WEBAPI_MEDIAERROR_HPP_
 
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-
 class MediaError {
-  const unsigned short MEDIA_ERR_ABORTED = 1;
-  const unsigned short MEDIA_ERR_NETWORK = 2;
-  const unsigned short MEDIA_ERR_DECODE = 3;
-  const unsigned short MEDIA_ERR_SRC_NOT_SUPPORTED = 4;
+	public:
+		const unsigned short MEDIA_ERR_ABORTED = 1;
+		const unsigned short MEDIA_ERR_NETWORK = 2;
+		const unsigned short MEDIA_ERR_DECODE = 3;
+		const unsigned short MEDIA_ERR_SRC_NOT_SUPPORTED = 4;
 
-  const unsigned short code;
-  const DOM::DOMString message;
+		const unsigned short code;
+		const DOM::DOMString message;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_MEDIAERROR_HPP_ */
 

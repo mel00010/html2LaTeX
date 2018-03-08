@@ -20,32 +20,43 @@
 #ifndef SRC_HTML_WEBAPI_HTMLFIELDSETELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLFIELDSETELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+#include "ValidityState.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLFieldSetElement : HTMLElement {
-    bool disabled;
-  const HTMLFormElement? form;
-    DOM::DOMString name;
+class HTMLFieldSetElement: public HTMLElement {
+	public:
+		bool disabled;
+		const std::optional<HTMLFormElement> form;
+		DOM::DOMString name;
 
-  const DOM::DOMString type;
+		const DOM::DOMString type;
 
-  [SameObject] const HTMLCollection elements;
+	protected:
+		const DOM::HTMLCollection elements;
 
-  const bool willValidate;
-  [SameObject] const ValidityState validity;
-  const DOM::DOMString validationMessage;
-  bool checkValidity();
-  bool reportValidity();
-  void setCustomValidity(DOMString error);
+	public:
+		const bool willValidate;
+
+	protected:
+		const ValidityState validity;
+
+	public:
+		const DOM::DOMString validationMessage;
+		bool checkValidity();
+		bool reportValidity();
+		void setCustomValidity(DOM::DOMString error);
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLFIELDSETELEMENT_HPP_ */
 

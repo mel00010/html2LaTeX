@@ -20,20 +20,24 @@
 #ifndef SRC_HTML_WEBAPI_HTMLMAPELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLMAPELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLMapElement : HTMLElement {
-    DOM::DOMString name;
-  [SameObject] const HTMLCollection areas;
+class HTMLMapElement: public HTMLElement {
+	public:
+		DOM::DOMString name;
+
+	protected:
+		const DOM::HTMLCollection areas;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLMAPELEMENT_HPP_ */
 

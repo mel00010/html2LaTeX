@@ -20,14 +20,15 @@
 #ifndef SRC_HTML_WEBAPI_HTMLDETAILSELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLDETAILSELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLDetailsElement : HTMLElement {
-    bool open;
+class HTMLDetailsElement : public HTMLElement {
+	public:
+		bool open;
 };
 
 } /* namespace WebAPI */

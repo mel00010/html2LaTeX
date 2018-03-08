@@ -20,19 +20,19 @@
 #ifndef SRC_HTML_WEBAPI_WINDOWSESSIONSTORAGE_HPP_
 #define SRC_HTML_WEBAPI_WINDOWSESSIONSTORAGE_HPP_
 
+#include "Storage.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class WindowSessionStorage {
-  const Storage sessionStorage;
+	public:
+		const Storage sessionStorage;
 };
-Window includes WindowSessionStorage;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WINDOWSESSIONSTORAGE_HPP_ */
 

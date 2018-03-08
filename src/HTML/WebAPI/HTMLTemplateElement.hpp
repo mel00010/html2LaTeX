@@ -20,19 +20,20 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTEMPLATEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTEMPLATEELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DocumentFragment.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTemplateElement : HTMLElement {
-  const DocumentFragment content;
+class HTMLTemplateElement: public HTMLElement {
+	public:
+		const DOM::DocumentFragment content;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTEMPLATEELEMENT_HPP_ */
 

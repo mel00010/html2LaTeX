@@ -20,20 +20,22 @@
 #ifndef SRC_HTML_WEBAPI_HTMLPARAGRAPHELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLPARAGRAPHELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLParagraphElement : HTMLElement {
-  // also has obsolete members
-    DOM::DOMString align;
+class HTMLParagraphElement: public HTMLElement {
+	public:
+		// also has obsolete members
+		DOM::DOMString align;
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLPARAGRAPHELEMENT_HPP_ */
 

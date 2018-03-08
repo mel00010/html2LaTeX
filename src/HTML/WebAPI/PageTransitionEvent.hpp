@@ -20,23 +20,29 @@
 #ifndef SRC_HTML_WEBAPI_PAGETRANSITIONEVENT_HPP_
 #define SRC_HTML_WEBAPI_PAGETRANSITIONEVENT_HPP_
 
+#include "../DOM/DOMString.hpp"
+#include "../DOM/Event.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- Constructor(DOMString type, optional PageTransitionEventInit eventInitDict)]
-class PageTransitionEvent : Event {
-  const bool persisted;
+struct PageTransitionEventInit;
+
+class PageTransitionEvent: public DOM::Event {
+	public:
+		PageTransitionEvent(DOM::DOMString type);
+		PageTransitionEvent(DOM::DOMString type, PageTransitionEventInit eventInitDict);
+		const bool persisted;
 };
 
-dictionary PageTransitionEventInit : EventInit {
-  bool persisted = false;
+struct PageTransitionEventInit: DOM::EventInit {
+	public:
+		bool persisted = false;
 };
 
-} /* namespace WebAPI */
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_PAGETRANSITIONEVENT_HPP_ */
 

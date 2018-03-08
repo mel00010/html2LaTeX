@@ -20,32 +20,35 @@
 #ifndef SRC_HTML_WEBAPI_HTMLSCRIPTELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLSCRIPTELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLScriptElement : HTMLElement {
-    USVString src;
-    DOM::DOMString type;
-    bool noModule;
-    bool async;
-    bool defer;
-    DOM::DOMString? crossOrigin;
-    DOM::DOMString text;
-    DOM::DOMString integrity;
+class HTMLScriptElement: public HTMLElement {
+	public:
+		DOM::USVString src;
+		DOM::DOMString type;
+		bool noModule;
+		bool async;
+		bool defer;
+		std::optional<DOM::DOMString> crossOrigin;
+		DOM::DOMString text;
+		DOM::DOMString integrity;
 
-
-  // also has obsolete members
-    DOM::DOMString charset;
-    DOM::DOMString event;
-    DOM::DOMString htmlFor;
+		// also has obsolete members
+		DOM::DOMString charset;
+		DOM::DOMString event;
+		DOM::DOMString htmlFor;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLSCRIPTELEMENT_HPP_ */
 

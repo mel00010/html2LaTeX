@@ -20,21 +20,22 @@
 #ifndef SRC_HTML_WEBAPI_HTMLFRAMESETELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLFRAMESETELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+#include "WindowEventHandlers.hpp"
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLFrameSetElement : HTMLElement {
-    DOM::DOMString cols;
-    DOM::DOMString rows;
+class HTMLFrameSetElement: public HTMLElement, public WindowEventHandlers {
+	public:
+		DOM::DOMString cols;
+		DOM::DOMString rows;
 };
-HTMLFrameSetElement includes WindowEventHandlers;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLFRAMESETELEMENT_HPP_ */
 

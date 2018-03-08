@@ -20,35 +20,43 @@
 #ifndef SRC_HTML_WEBAPI_HTMLLINKELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLLINKELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/DOMTokenList.hpp"
+#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLLinkElement : HTMLElement {
-    USVString href;
-    DOM::DOMString? crossOrigin;
-    DOM::DOMString rel;
-    DOM::DOMString as; // (default "")
-  [SameObject, PutForwards=value] const DOMTokenList relList;
-    DOM::DOMString media;
-    DOM::DOMString integrity;
-    DOM::DOMString hreflang;
-    DOM::DOMString type;
-  [SameObject, PutForwards=value] const DOMTokenList sizes;
-    DOM::DOMString referrerPolicy;
+class HTMLLinkElement: public HTMLElement, public LinkStyle {
+	public:
+		DOM::USVString href;
+		std::optional<DOM::DOMString> crossOrigin;
+		DOM::DOMString rel;
+		DOM::DOMString as; // (default "")
 
-  // also has obsolete members
-    DOM::DOMString charset;
-    DOM::DOMString rev;
-    DOM::DOMString target;
+	protected:
+		const DOM::DOMTokenList relList;
+
+	public:
+		DOM::DOMString media;
+		DOM::DOMString integrity;
+		DOM::DOMString hreflang;
+		DOM::DOMString type;
+		const DOM::DOMTokenList sizes;
+		DOM::DOMString referrerPolicy;
+
+		// also has obsolete members
+		DOM::DOMString charset;
+		DOM::DOMString rev;
+		DOM::DOMString target;
 };
-HTMLLinkElement includes LinkStyle;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLLINKELEMENT_HPP_ */
 

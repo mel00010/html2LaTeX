@@ -20,20 +20,19 @@
 #ifndef SRC_HTML_WEBAPI_HTMLPREELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLPREELEMENT_HPP_
 
+#include "HTMLElement.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLPreElement : HTMLElement {
-  // also has obsolete members
-    long width;
+class HTMLPreElement: public HTMLElement {
+	public:
+		// also has obsolete members
+		long width;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLPREELEMENT_HPP_ */
 

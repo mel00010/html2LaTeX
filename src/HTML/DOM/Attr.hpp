@@ -28,22 +28,20 @@
 namespace HTML {
 namespace DOM {
 
-class Attr : public Node {
-  const std::optional<DOMString> namespaceURI;
-  const std::optional<DOMString> prefix;
-  const DOMString localName;
-  const DOMString name;
-  DOMString value;
+class Attr: public Node {
+	public:
+		const std::optional<DOMString> namespaceURI;
+		const std::optional<DOMString> prefix;
+		const DOMString localName;
+		const DOMString name;
+		DOMString value;
 
-  const std::optional<Element> ownerElement;
+		const std::optional<Element> ownerElement;
 
-  const bool specified; // useless; always returns true
+		const bool specified; // useless; always returns true
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
-
-
-
 
 #endif /* SRC_HTML_DOM_ATTR_HPP_ */

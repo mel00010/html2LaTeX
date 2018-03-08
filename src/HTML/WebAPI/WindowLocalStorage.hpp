@@ -20,19 +20,19 @@
 #ifndef SRC_HTML_WEBAPI_WINDOWLOCALSTORAGE_HPP_
 #define SRC_HTML_WEBAPI_WINDOWLOCALSTORAGE_HPP_
 
+#include "Storage.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
 /* Mixin */
 class WindowLocalStorage {
-  const Storage localStorage;
+	public:
+		const Storage localStorage;
 };
-Window includes WindowLocalStorage;
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_WINDOWLOCALSTORAGE_HPP_ */
 

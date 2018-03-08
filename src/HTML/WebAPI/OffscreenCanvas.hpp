@@ -20,33 +20,47 @@
 #ifndef SRC_HTML_WEBAPI_OFFSCREENCANVAS_HPP_
 #define SRC_HTML_WEBAPI_OFFSCREENCANVAS_HPP_
 
+#include <any>
+#include <future>
+#include <optional>
+#include <variant>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/EventTarget.hpp"
+#include "ImageBitmap.hpp"
+#include "OffscreenCanvasRenderingContext2D.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-typedef (OffscreenCanvasRenderingContext2D or
-        WebGLRenderingContext) OffscreenRenderingContext;
+typedef std::variant<OffscreenCanvasRenderingContext2D, WebGLRenderingContext> OffscreenRenderingContext;
 
-dictionary ImageEncodeOptions {
-  DOM::DOMString type = "image/png";
-  unrestricted double quality = 1.0;
+struct ImageEncodeOptions {
+	public:
+		DOM::DOMString type = "image/png";
+		double quality = 1.0;
 };
 
-enum OffscreenRenderingContextId { "2d", "webgl" };
-
-[Constructor([EnforceRange] unsigned long long width, [EnforceRange] unsigned long long height), Exposed=(Window,Worker), Transferable]
-class OffscreenCanvas : EventTarget {
-   unsigned long long width;
-   unsigned long long height;
-
-  OffscreenRenderingContext? getContext(OffscreenRenderingContextId contextId, optional any options = null);
-  ImageBitmap transferToImageBitmap();
-  Promise<Blob> convertToBlob(optional ImageEncodeOptions options);
+enum OffscreenRenderingContextId {
+	TWO_D, WEBGL
 };
 
-} /* namespace WebAPI */
+class OffscreenCanvas: public DOM::EventTarget {
+	public:
+		OffscreenCanvas(unsigned long long width, unsigned long long height);
+
+		unsigned long long width;
+		unsigned long long height;
+
+		std::optional<OffscreenRenderingContext> getContext(OffscreenRenderingContextId contextId,
+				std::optional<std::any> options = std::nullopt);
+		ImageBitmap transferToImageBitmap();
+		std::promise<Blob> convertToBlob(std::optional<ImageEncodeOptions> options);
+};
+
+}
+/* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_OFFSCREENCANVAS_HPP_ */
 

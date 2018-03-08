@@ -20,48 +20,56 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTABLEELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTABLEELEMENT_HPP_
 
+#include "HTMLTableCaptionElement.hpp"
+#include "HTMLTableRowElement.hpp"
+#include "HTMLTableSectionElement.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTableElement : HTMLElement {
-    HTMLTableCaptionElement? caption;
-  HTMLTableCaptionElement createCaption();
-   void deleteCaption();
+class HTMLTableElement: public HTMLElement {
+	public:
+		std::optional<HTMLTableCaptionElement> caption;
+		HTMLTableCaptionElement createCaption();
+		void deleteCaption();
 
-    HTMLTableSectionElement? tHead;
-  HTMLTableSectionElement createTHead();
-   void deleteTHead();
+		std::optional<HTMLTableCaptionElement> tHead;
+		HTMLTableSectionElement createTHead();
+		void deleteTHead();
 
-    HTMLTableSectionElement? tFoot;
-  HTMLTableSectionElement createTFoot();
-   void deleteTFoot();
+		std::optional<HTMLTableCaptionElement> tFoot;
+		HTMLTableSectionElement createTFoot();
+		void deleteTFoot();
 
-  [SameObject] const HTMLCollection tBodies;
-  HTMLTableSectionElement createTBody();
+		HTMLTableSectionElement createTBody();
 
-  [SameObject] const HTMLCollection rows;
-  HTMLTableRowElement insertRow(optional long index = -1);
-   void deleteRow(long index);
+		HTMLTableRowElement insertRow(long index = -1);
+		void deleteRow(long index);
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString border;
-    DOM::DOMString frame;
-    DOM::DOMString rules;
-    DOM::DOMString summary;
-    DOM::DOMString width;
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString border;
+		DOM::DOMString frame;
+		DOM::DOMString rules;
+		DOM::DOMString summary;
+		DOM::DOMString width;
 
-    [TreatNullAs=EmptyString] DOM::DOMString bgColor;
-    [TreatNullAs=EmptyString] DOM::DOMString cellPadding;
-    [TreatNullAs=EmptyString] DOM::DOMString cellSpacing;
+		DOM::DOMString bgColor = "";
+		DOM::DOMString cellPadding = "";
+		DOM::DOMString cellSpacing = "";
+
+	protected:
+		const DOM::HTMLCollection rows;
+		const DOM::HTMLCollection tBodies;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTABLEELEMENT_HPP_ */
 

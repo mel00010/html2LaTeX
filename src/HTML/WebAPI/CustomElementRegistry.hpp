@@ -22,6 +22,7 @@
 
 #include <any>
 #include <functional>
+#include <future>
 #include <optional>
 
 #include "../DOM/DOMString.hpp"
@@ -33,7 +34,7 @@ class CustomElementRegistry {
 	public:
 		void define(DOM::DOMString name, std::function constructor, std::optional<ElementDefinitionOptions> options);
 		std::any get(DOM::DOMString name);
-		Promise<void> whenDefined(DOM::DOMString name);
+		std::promise whenDefined(DOM::DOMString name);
 };
 
 struct ElementDefinitionOptions {

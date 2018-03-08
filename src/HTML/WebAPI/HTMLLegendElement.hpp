@@ -20,22 +20,25 @@
 #ifndef SRC_HTML_WEBAPI_HTMLLEGENDELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLLEGENDELEMENT_HPP_
 
+#include "HTMLFormElement.hpp"
+
+#include <optional>
+
+#include "../DOM/DOMString.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLLegendElement : HTMLElement {
-  const HTMLFormElement? form;
+class HTMLLegendElement: public HTMLElement {
+	public:
+		const std::optional<HTMLFormElement> form;
 
-  // also has obsolete members
-    DOM::DOMString align;
+		// also has obsolete members
+		DOM::DOMString align;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLLEGENDELEMENT_HPP_ */
 

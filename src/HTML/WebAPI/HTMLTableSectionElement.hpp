@@ -20,27 +20,31 @@
 #ifndef SRC_HTML_WEBAPI_HTMLTABLESECTIONELEMENT_HPP_
 #define SRC_HTML_WEBAPI_HTMLTABLESECTIONELEMENT_HPP_
 
+#include "HTMLElement.hpp"
+
+#include "../DOM/DOMString.hpp"
+#include "../DOM/HTMLCollection.hpp"
 
 namespace HTML {
 namespace WebAPI {
 
-[Exposed=Window,
- HTMLConstructor]
-class HTMLTableSectionElement : HTMLElement {
-  [SameObject] const HTMLCollection rows;
-  HTMLElement insertRow(optional long index = -1);
-   void deleteRow(long index);
+class HTMLTableSectionElement: public HTMLElement {
+	public:
+		HTMLElement insertRow(long index = -1);
+		void deleteRow(long index);
 
-  // also has obsolete members
-    DOM::DOMString align;
-    DOM::DOMString ch;
-    DOM::DOMString chOff;
-    DOM::DOMString vAlign;
+		// also has obsolete members
+		DOM::DOMString align;
+		DOM::DOMString ch;
+		DOM::DOMString chOff;
+		DOM::DOMString vAlign;
+
+	protected:
+		const DOM::HTMLCollection rows;
 };
 
 } /* namespace WebAPI */
 } /* namespace HTML */
-
 
 #endif /* SRC_HTML_WEBAPI_HTMLTABLESECTIONELEMENT_HPP_ */
 
