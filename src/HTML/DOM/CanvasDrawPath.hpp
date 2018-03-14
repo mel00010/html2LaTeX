@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * CanvasDrawPath.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,37 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
+#ifndef SRC_HTML_DOM_CANVASDRAWPATH_HPP_
+#define SRC_HTML_DOM_CANVASDRAWPATH_HPP_
 
-#include "DOMString.hpp"
-#include "Event.hpp"
-
-#include <any>
+#include "Path2D.hpp"
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
-	public:
-		const std::any detail;
-
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
+enum class CanvasFillRule {
+	NON_ZERO, EVEN_ODD
 };
 
-struct CustomEventInit: public EventInit {
+/* Mixin */
+class CanvasDrawPath {
 	public:
-		std::any detail = nullptr;
+		// path API (see also CanvasPath)
+		void beginPath();
+		void fill(CanvasFillRule fillRule = CanvasFillRule::NON_ZERO);
+		void fill(Path2D path, CanvasFillRule fillRule = CanvasFillRule::NON_ZERO);
+		void stroke();
+		void stroke(Path2D path);
+		void clip(CanvasFillRule fillRule = CanvasFillRule::NON_ZERO);
+		void clip(Path2D path, CanvasFillRule fillRule = CanvasFillRule::NON_ZERO);
+		void resetClip();
+		bool isPointInPath(double x, double y, CanvasFillRule fillRule = CanvasFillRule::NON_ZERO);
+		bool isPointInPath(Path2D path, double x, double y, CanvasFillRule fillRule = CanvasFillRule::NON_ZERO);
+		bool isPointInStroke(double x, double y);
+		bool isPointInStroke(Path2D path, double x, double y);
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */
+#endif /* SRC_HTML_DOM_CANVASDRAWPATH_HPP_ */

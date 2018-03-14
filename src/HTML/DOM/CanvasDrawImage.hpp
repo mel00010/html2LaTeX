@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * CanvasDrawImage.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,34 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
+#ifndef SRC_HTML_DOM_CANVASDRAWIMAGE_HPP_
+#define SRC_HTML_DOM_CANVASDRAWIMAGE_HPP_
 
-#include "DOMString.hpp"
-#include "Event.hpp"
+#include "HTMLCanvasElement.hpp"
+#include "HTMLImageElement.hpp"
+#include "HTMLVideoElement.hpp"
+#include "ImageBitmap.hpp"
+#include "OffscreenCanvas.hpp"
 
-#include <any>
+#include <variant>
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
-	public:
-		const std::any detail;
+typedef std::variant<HTMLImageElement, SVGImageElement> HTMLOrSVGImageElement;
 
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
-};
+typedef std::variant<HTMLOrSVGImageElement, HTMLVideoElement, HTMLCanvasElement, ImageBitmap, OffscreenCanvas> CanvasImageSource;
 
-struct CustomEventInit: public EventInit {
+/* Mixin */
+class CanvasDrawImage {
 	public:
-		std::any detail = nullptr;
+		// drawing images
+		void drawImage(CanvasImageSource image, double dx, double dy);
+		void drawImage(CanvasImageSource image, double dx, double dy, double dw, double dh);
+		void drawImage(CanvasImageSource image, double sx, double sy, double sw, double sh, double dx, double dy, double dw, double dh);
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */
+#endif /* SRC_HTML_DOM_CANVASDRAWIMAGE_HPP_ */

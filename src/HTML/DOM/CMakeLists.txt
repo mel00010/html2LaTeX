@@ -11,7 +11,26 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/BarProp.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/BeforeUnloadEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/BroadcastChannel.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ByteString.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasCompositing.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasDrawImage.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasDrawPath.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasFillStrokeStyles.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasFilters.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasGradient.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasImageData.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasImageSmoothing.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasPathDrawingStyles.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasPath.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasPattern.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasRect.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CanvasRenderingContext2D.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasShadowStyles.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasState.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasTextDrawingStyles.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasText.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasTransform.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CanvasUserInterface.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CDataSection.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CharacterData.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ChildNode.hpp
@@ -23,9 +42,10 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/DataTransferItem.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DataTransferItemList.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DedicatedWorkerGlobalScope.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Document.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DocumentAndElementEventHandlers.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DocumentFragment.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Document.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DocumentOrShadowRoot.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DocumentType.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DOMImplementation.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DOMString.hpp
@@ -34,9 +54,10 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/DOMTokenList.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DragEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ElementContentEditable.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Element.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ErrorEvent.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Event.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/EventHandler.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Event.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/EventSource.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/EventTarget.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/External.hpp
@@ -120,6 +141,7 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/HTMLVideoElement.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ImageBitmap.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ImageBitmapRenderingContext.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ImageData.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Location.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MediaError.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MessageChannel.hpp
@@ -138,8 +160,8 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/NavigatorLanguage.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NavigatorOnLine.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NavigatorPlugins.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Node.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NodeFilter.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Node.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NodeIterator.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NodeList.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NoncedElement.hpp
@@ -149,6 +171,7 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/OffscreenCanvasRenderingContext2D.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/PageTransitionEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ParentNode.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Path2D.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/PluginArray.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Plugin.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/PopStateEvent.hpp
@@ -158,10 +181,11 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/ShadowRoot.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/SharedWorkerGlobalScope.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/SharedWorker.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Storage.hpp
-		${CMAKE_CURRENT_SOURCE_DIR}/StorageEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Slotable.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/StorageEvent.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Storage.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Text.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/TextMetrics.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TextTrackCue.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TextTrackCueList.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TextTrack.hpp
@@ -169,6 +193,7 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/TimeRanges.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TrackEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TreeWalker.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/USVString.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ValidityState.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/VideoTrack.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/VideoTrackList.hpp
@@ -182,6 +207,118 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/Worker.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/WorkerLocation.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/WorkerNavigator.hpp
+	PRIVATE
+		ApplicationCache.cpp
+		AudioTrackList.cpp
+		BroadcastChannel.cpp
+		CanvasDrawImage.cpp
+		CanvasDrawPath.cpp
+		CanvasFillStrokeStyles.cpp
+		CanvasGradient.cpp
+		CanvasImageData.cpp
+		CanvasPath.cpp
+		CanvasPathDrawingStyles.cpp
+		CanvasPattern.cpp
+		CanvasRect.cpp
+		CanvasState.cpp
+		CanvasText.cpp
+		CanvasTransform.cpp
+		CanvasUserInterface.cpp
+		CharacterData.cpp
+		ChildNode.cpp
+		CloseEvent.cpp
+		CustomElementRegistry.cpp
+		CustomEvent.cpp
+		DataTransfer.cpp
+		DataTransferItem.cpp
+		DataTransferItemList.cpp
+		DedicatedWorkerGlobalScope.cpp
+		Document.cpp
+		DOMImplementation.cpp
+		DOMStringList.cpp
+		DOMStringMap.cpp
+		DOMTokenList.cpp
+		DragEvent.cpp
+		ElementContentEditable.cpp
+		Element.cpp
+		ErrorEvent.cpp
+		Event.cpp
+		EventSource.cpp
+		EventTarget.cpp
+		External.cpp
+		HashChangeEvent.cpp
+		History.cpp
+		HTMLAllCollection.cpp
+		HTMLAudioElement.cpp
+		HTMLButtonElement.cpp
+		HTMLCanvasElement.cpp
+		HTMLCollection.cpp
+		HTMLDialogElement.cpp
+		HTMLElement.cpp
+		HTMLEmbedElement.cpp
+		HTMLFieldSetElement.cpp
+		HTMLFormControlsCollection.cpp
+		HTMLFormElement.cpp
+		HTMLIFrameElement.cpp
+		HTMLImageElement.cpp
+		HTMLInputElement.cpp
+		HTMLMarqueeElement.cpp
+		HTMLMediaElement.cpp
+		HTMLObjectElement.cpp
+		HTMLOptionElement.cpp
+		HTMLOptionsCollection.cpp
+		HTMLOutputElement.cpp
+		HTMLSelectElement.cpp
+		HTMLSlotElement.cpp
+		HTMLTableElement.cpp
+		HTMLTableRowElement.cpp
+		HTMLTableSectionElement.cpp
+		HTMLTextAreaElement.cpp
+		ImageBitmap.cpp
+		ImageBitmapRenderingContext.cpp
+		ImageData.cpp
+		Location.cpp
+		MessageChannel.cpp
+		MessageEvent.cpp
+		MessagePort.cpp
+		MimeTypeArray.cpp
+		MutationObserver.cpp
+		NamedNodeMap.cpp
+		NavigatorContentUtils.cpp
+		NavigatorID.cpp
+		NavigatorPlugins.cpp
+		Node.cpp
+		NodeFilter.cpp
+		NodeIterator.cpp
+		NodeList.cpp
+		NonElementParentNode.cpp
+		OffscreenCanvas.cpp
+		OffscreenCanvasRenderingContext2D.cpp
+		PageTransitionEvent.cpp
+		ParentNode.cpp
+		Path2D.cpp
+		PluginArray.cpp
+		Plugin.cpp
+		PopStateEvent.cpp
+		PromiseRejectionEvent.cpp
+		Range.cpp
+		SharedWorker.cpp
+		Storage.cpp
+		StorageEvent.cpp
+		Text.cpp
+		TextTrack.cpp
+		TextTrackCueList.cpp
+		TextTrackList.cpp
+		TimeRanges.cpp
+		TrackEvent.cpp
+		TreeWalker.cpp
+		VideoTrackList.cpp
+		WebSocket.cpp
+		Window.cpp
+		WindowOrWorkerGlobalScope.cpp
+		Worker.cpp
+		WorkerGlobalScope.cpp
+		
 )
 target_link_libraries(DOM
 	PUBLIC

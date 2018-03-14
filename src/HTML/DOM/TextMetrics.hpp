@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * TextMetrics.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,32 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
-
-#include "DOMString.hpp"
-#include "Event.hpp"
-
-#include <any>
+#ifndef SRC_HTML_DOM_TEXTMETRICS_HPP_
+#define SRC_HTML_DOM_TEXTMETRICS_HPP_
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
+class TextMetrics {
 	public:
-		const std::any detail;
+		// x-direction
+		const double width; // advance width
+		const double actualBoundingBoxLeft;
+		const double actualBoundingBoxRight;
 
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
-};
-
-struct CustomEventInit: public EventInit {
-	public:
-		std::any detail = nullptr;
+		// y-direction
+		const double fontBoundingBoxAscent;
+		const double fontBoundingBoxDescent;
+		const double actualBoundingBoxAscent;
+		const double actualBoundingBoxDescent;
+		const double emHeightAscent;
+		const double emHeightDescent;
+		const double hangingBaseline;
+		const double alphabeticBaseline;
+		const double ideographicBaseline;
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */
+#endif /* SRC_HTML_DOM_TEXTMETRICS_HPP_ */

@@ -20,13 +20,12 @@
 #ifndef SRC_HTML_DOM_HTMLIMAGEELEMENT_HPP_
 #define SRC_HTML_DOM_HTMLIMAGEELEMENT_HPP_
 
+#include "DOMString.hpp"
 #include "HTMLElement.hpp"
+#include "USVString.hpp"
 
 #include <future>
 #include <optional>
-
-#include "../DOM/DOMString.hpp"
-#include "../DOM/USVString.hpp"
 
 namespace HTML {
 namespace DOM {

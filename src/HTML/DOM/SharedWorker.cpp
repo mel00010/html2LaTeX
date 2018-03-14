@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * SharedWorker.cpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,12 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
 
-#include "DOMString.hpp"
-#include "Event.hpp"
-
-#include <any>
+#include "SharedWorker.hpp"
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
-	public:
-		const std::any detail;
-
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
-};
-
-struct CustomEventInit: public EventInit {
-	public:
-		std::any detail = nullptr;
-};
-
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */

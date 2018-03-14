@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * CanvasTextDrawingStyles.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,39 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
+#ifndef SRC_HTML_DOM_CANVASTEXTDRAWINGSTYLES_HPP_
+#define SRC_HTML_DOM_CANVASTEXTDRAWINGSTYLES_HPP_
 
 #include "DOMString.hpp"
-#include "Event.hpp"
-
-#include <any>
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
-	public:
-		const std::any detail;
-
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
+enum class CanvasTextAlign {
+	START, END, LEFT, RIGHT, CENTER
 };
 
-struct CustomEventInit: public EventInit {
+enum class CanvasTextBaseline {
+	TOP, HANGING, MIDDLE, ALPHABETIC, IDEOGRAPHIC, BOTTOM
+};
+
+enum class CanvasDirection {
+	LTR, RTL, INHERIT
+};
+
+/* Mixin */
+class CanvasTextDrawingStyles {
 	public:
-		std::any detail = nullptr;
+		// text
+		DOMString font; // (default 10px sans-serif)
+		CanvasTextAlign textAlign; // (default: "start")
+		CanvasTextBaseline textBaseline; // (default: "alphabetic")
+		CanvasDirection direction; // (default: "inherit")
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */
+
+
+#endif /* SRC_HTML_DOM_CANVASTEXTDRAWINGSTYLES_HPP_ */

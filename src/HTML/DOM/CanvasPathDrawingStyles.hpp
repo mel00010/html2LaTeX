@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * CanvasPathDrawingStyles.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,40 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
+#ifndef SRC_HTML_DOM_CANVASPATHDRAWINGSTYLES_HPP_
+#define SRC_HTML_DOM_CANVASPATHDRAWINGSTYLES_HPP_
 
-#include "DOMString.hpp"
-#include "Event.hpp"
-
-#include <any>
+#include <list>
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
-	public:
-		const std::any detail;
-
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
+enum class CanvasLineCap {
+	BUTT, ROUND, SQUARE
 };
 
-struct CustomEventInit: public EventInit {
+enum class CanvasLineJoin {
+	ROUND, BEVEL, MITER
+};
+
+/* Mixin */
+class CanvasPathDrawingStyles {
 	public:
-		std::any detail = nullptr;
+		// line caps/joins
+		double lineWidth; // (default 1)
+		CanvasLineCap lineCap; // (default "butt")
+		CanvasLineJoin lineJoin; // (default "miter")
+		double miterLimit; // (default 10)
+
+		// dashed lines
+		void setLineDash(std::list<double> segments); // default empty
+		std::list<double> getLineDash();
+		double lineDashOffset;
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */
+
+
+#endif /* SRC_HTML_DOM_CANVASPATHDRAWINGSTYLES_HPP_ */

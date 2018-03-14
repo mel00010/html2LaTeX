@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * CanvasFillStrokeStyles.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,33 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
+#ifndef SRC_HTML_DOM_CANVASFILLSTROKESTYLES_HPP_
+#define SRC_HTML_DOM_CANVASFILLSTROKESTYLES_HPP_
 
+#include "CanvasDrawImage.hpp"
+#include "CanvasGradient.hpp"
+#include "CanvasPattern.hpp"
 #include "DOMString.hpp"
-#include "Event.hpp"
 
-#include <any>
+#include <optional>
+#include <variant>
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
+/* Mixin */
+class CanvasFillStrokeStyles {
 	public:
-		const std::any detail;
+		// colors and styles (see also the CanvasPathDrawingStyles and CanvasTextDrawingStyles interfaces)
+		std::variant<DOMString, CanvasGradient, CanvasPattern> strokeStyle; // (default black)
+		std::variant<DOMString, CanvasGradient, CanvasPattern> fillStyle; // (default black)
+		CanvasGradient createLinearGradient(double x0, double y0, double x1, double y1);
+		CanvasGradient createRadialGradient(double x0, double y0, double r0, double x1, double y1, double r1);
+		std::optional<CanvasPattern> createPattern(CanvasImageSource image, DOMString repetition);
 
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
-};
-
-struct CustomEventInit: public EventInit {
-	public:
-		std::any detail = nullptr;
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */
+#endif /* SRC_HTML_DOM_CANVASFILLSTROKESTYLES_HPP_ */

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * CustomEvent.hpp
+ * CanvasTransform.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
  * This file is part of html2LaTeX.
@@ -17,30 +17,31 @@
  * You should have received a copy of the GNU General Public License
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-#ifndef SRC_HTML_DOM_CUSTOMEVENT_HPP_
-#define SRC_HTML_DOM_CUSTOMEVENT_HPP_
+#ifndef SRC_HTML_DOM_CANVASTRANSFORM_HPP_
+#define SRC_HTML_DOM_CANVASTRANSFORM_HPP_
 
-#include "DOMString.hpp"
-#include "Event.hpp"
-
-#include <any>
+#include <optional>
 
 namespace HTML {
 namespace DOM {
 
-class CustomEvent: public Event {
+/* Mixin */
+class CanvasTransform {
 	public:
-		const std::any detail;
+		// transformations (default transform is the identity matrix)
+		void scale(double x, double y);
+		void rotate(double angle);
+		void translate(double x, double y);
+		void transform(double a, double b, double c, double d, double e, double f);
 
-		void initCustomEvent(DOMString type, bool bubbles = false, bool cancelable = false, std::any detail = nullptr);
-};
+		DOMMatrix getTransform();
+		void setTransform(double a, double b, double c, double d, double e, double f);
+		void setTransform(std::optional<DOMMatrix2DInit> transform);
+		void resetTransform();
 
-struct CustomEventInit: public EventInit {
-	public:
-		std::any detail = nullptr;
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
 
-#endif /* SRC_HTML_DOM_CUSTOMEVENT_HPP_ */
+#endif /* SRC_HTML_DOM_CANVASTRANSFORM_HPP_ */
