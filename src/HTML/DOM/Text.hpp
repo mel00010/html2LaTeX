@@ -29,7 +29,7 @@
 namespace HTML {
 namespace DOM {
 
-class Text : public CharacterData, public Slotable {
+class Text: public CharacterData, public Slotable {
 	public:
 		Text splitText(size_t offset);
 		const DOMString wholeText;

@@ -21,7 +21,7 @@
 #define SRC_HTML_DOM_HTMLCOLLECTION_HPP_
 
 #include "DOMString.hpp"
-#include "Node.hpp"
+#include "Element.hpp"
 
 #include <stddef.h>
 #include <optional>

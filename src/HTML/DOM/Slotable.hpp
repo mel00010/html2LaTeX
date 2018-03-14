@@ -20,16 +20,16 @@
 #ifndef SRC_HTML_DOM_SLOTABLE_HPP_
 #define SRC_HTML_DOM_SLOTABLE_HPP_
 
-#include <optional>
+#include "HTMLSlotElement.hpp"
 
-#include "../WebAPI/HTMLSlotElement.hpp"
+#include <optional>
 
 namespace HTML {
 namespace DOM {
 
 class Slotable {
 	public:
-		const std::optional<WebAPI::HTMLSlotElement> assignedSlot;
+		const std::optional<HTMLSlotElement> assignedSlot;
 };
 
 /* IDL Mixins

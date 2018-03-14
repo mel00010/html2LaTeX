@@ -20,8 +20,6 @@
 #ifndef SRC_HTML_DOM_DOCUMENT_HPP_
 #define SRC_HTML_DOM_DOCUMENT_HPP_
 
-#include "../WebAPI/Document.hpp"
-
 #include "Comment.hpp"
 #include "DocumentFragment.hpp"
 #include "DocumentOrShadowRoot.hpp"
@@ -29,7 +27,12 @@
 #include "DOMImplementation.hpp"
 #include "DOMString.hpp"
 #include "Event.hpp"
+#include "EventHandler.hpp"
+#include "HTMLAllCollection.hpp"
 #include "HTMLCollection.hpp"
+#include "HTMLHeadElement.hpp"
+#include "HTMLScriptElement.hpp"
+#include "Location.hpp"
 #include "NodeFilter.hpp"
 #include "NodeIterator.hpp"
 #include "NodeList.hpp"
@@ -43,14 +46,8 @@
 #include <optional>
 #include <variant>
 
-#include "../WebAPI/EventHandler.hpp"
-#include "../WebAPI/HTMLAllCollection.hpp"
-#include "../WebAPI/HTMLHeadElement.hpp"
-#include "../WebAPI/HTMLScriptElement.hpp"
-#include "../WebAPI/Location.hpp"
-
 namespace HTML {
-namespace WebAPI {
+namespace DOM {
 
 enum class DocumentReadyState {
 	LOADING, INTERACTIVE, COMPLETE
@@ -58,7 +55,7 @@ enum class DocumentReadyState {
 
 typedef std::variant<HTMLScriptElement, SVGScriptElement> HTMLOrSVGScriptElement;
 
-} /* namespace WebAPI */
+} /* namespace DOM */
 } /* namespace HTML */
 
 namespace HTML {
@@ -67,8 +64,8 @@ namespace DOM {
 class Document: public Node,
 		public DocumentOrShadowRoot,
 		public ParentNode,
-		public WebAPI::GlobalEventHandlers,
-		public WebAPI::DocumentAndElementEventHandlers {
+		public GlobalEventHandlers,
+		public DocumentAndElementEventHandlers {
 	public:
 		const DOMImplementation implementation;
 		const DOMString URL;
@@ -104,19 +101,19 @@ class Document: public Node,
 
 	public:
 		// resource metadata management
-		const std::optional<WebAPI::Location> location;
+		const std::optional<Location> location;
 		USVString domain;
 		const USVString referrer;
 		USVString cookie;
 		const DOMString lastModified;
-		const WebAPI::DocumentReadyState readyState;
+		const DocumentReadyState readyState;
 
 		// DOM tree accessors
 		object getObject(DOMString name);
 		DOMString title;
 		DOMString dir;
-		std::optional<WebAPI::HTMLElement> body;
-		const std::optional<WebAPI::HTMLHeadElement> head;
+		std::optional<HTMLElement> body;
+		const std::optional<HTMLHeadElement> head;
 
 	protected:
 		const HTMLCollection images;
@@ -128,7 +125,7 @@ class Document: public Node,
 
 	public:
 		NodeList getElementsByName(DOMString elementName);
-		const std::optional<WebAPI::HTMLOrSVGScriptElement> currentScript; // classic scripts in a document tree onlys
+		const std::optional<HTMLOrSVGScriptElement> currentScript; // classic scripts in a document tree onlys
 
 		// dynamic markup insertion
 		Document open(DOMString type = "text/html", DOMString replace = "");
@@ -150,7 +147,7 @@ class Document: public Node,
 		DOMString queryCommandValue(DOMString commandId);
 
 		// special event handler IDL attributes that only apply to Document objects
-		WebAPI::EventHandler onreadystatechange;
+		EventHandler onreadystatechange;
 		DOMString fgColor;
 		DOMString linkColor;
 		DOMString vlinkColor;
@@ -167,7 +164,7 @@ class Document: public Node,
 		void releaseEvents();
 
 	protected:
-		const WebAPI::HTMLAllCollection all;
+		const HTMLAllCollection all;
 };
 
 class XMLDocument: public Document {

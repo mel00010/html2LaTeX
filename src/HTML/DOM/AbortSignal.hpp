@@ -20,9 +20,8 @@
 #ifndef SRC_HTML_DOM_ABORTSIGNAL_HPP_
 #define SRC_HTML_DOM_ABORTSIGNAL_HPP_
 
+#include "EventHandler.hpp"
 #include "EventTarget.hpp"
-
-#include "../WebAPI/EventHandler.hpp"
 
 namespace HTML {
 namespace DOM {
@@ -30,7 +29,7 @@ namespace DOM {
 class AbortSignal: public EventTarget {
 	public:
 		const bool aborted;
-		WebAPI::EventHandler onabort;
+		EventHandler onabort;
 };
 
 } /* namespace DOM */
