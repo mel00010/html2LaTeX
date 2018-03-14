@@ -22,6 +22,7 @@
 
 #include "DOMString.hpp"
 #include "Element.hpp"
+#include "Node.hpp"
 
 #include <list>
 #include <optional>

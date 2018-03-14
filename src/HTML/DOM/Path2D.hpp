@@ -21,6 +21,7 @@
 #define SRC_HTML_DOM_PATH2D_HPP_
 
 #include "CanvasPath.hpp"
+#include "DOMMatrix.hpp"
 #include "DOMString.hpp"
 
 #include <optional>
@@ -30,7 +31,7 @@ namespace DOM {
 
 class Path2D: public CanvasPath {
 	public:
-		Path2D(Path2D path);
+//		Path2D(Path2D path);
 		Path2D(DOMString path);
 		void addPath(Path2D path, std::optional<DOMMatrix2DInit> transform);
 };

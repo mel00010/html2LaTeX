@@ -23,7 +23,7 @@
 #include "DOMString.hpp"
 #include "EventTarget.hpp"
 #include "ImageBitmap.hpp"
-#include "OffscreenCanvasRenderingContext2D.hpp"
+//#include "OffscreenCanvasRenderingContext2D.hpp"
 
 #include <any>
 #include <future>
@@ -33,11 +33,16 @@
 namespace HTML {
 namespace DOM {
 
-typedef std::variant<OffscreenCanvasRenderingContext2D, WebGLRenderingContext> OffscreenRenderingContext;
+class OffscreenCanvasRenderingContext2D;
+
+//typedef std::variant<OffscreenCanvasRenderingContext2D, WebGLRenderingContext> OffscreenRenderingContext;
+typedef std::variant<OffscreenCanvasRenderingContext2D> OffscreenRenderingContext;
+
+class ImageBitmap;
 
 struct ImageEncodeOptions {
 	public:
-		DOMString type = "image/png";
+		DOMString type = U"image/png";
 		double quality = 1.0;
 };
 

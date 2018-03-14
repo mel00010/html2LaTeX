@@ -47,7 +47,7 @@ class HTMLTableCellElement: public HTMLElement {
 		bool noWrap;
 		DOMString vAlign;
 
-		DOMString bgColor = "";
+		DOMString bgColor = U"";
 };
 
 } /* namespace DOM */

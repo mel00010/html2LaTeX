@@ -34,7 +34,7 @@ struct ElementDefinitionOptions;
 
 class CustomElementRegistry {
 	public:
-		void define(DOMString name, std::function constructor, std::optional<ElementDefinitionOptions> options);
+		void define(DOMString name, std::function<std::any> constructor, std::optional<ElementDefinitionOptions> options);
 		std::any get(DOMString name);
 		std::promise<void> whenDefined(DOMString name);
 };

@@ -30,8 +30,8 @@ namespace DOM {
 
 class HTMLOptionElement: HTMLElement {
 	public:
-		HTMLOptionElement(std::optional<DOMString> text = "",
-				std::optional<DOMString> value,
+		HTMLOptionElement(std::optional<DOMString> text = U"",
+				std::optional<DOMString> value = std::nullopt,
 				std::optional<bool> defaultSelected = false,
 				std::optional<bool> selected = false);
 

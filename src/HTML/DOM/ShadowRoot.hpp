@@ -22,22 +22,24 @@
 
 #include "DocumentFragment.hpp"
 #include "DocumentOrShadowRoot.hpp"
-#include "Element.hpp"
+//#include "Element.hpp"
 
 namespace HTML {
 namespace DOM {
 
-enum class ShadowRootMode;
-
-class ShadowRoot: public DocumentFragment, public DocumentOrShadowRoot {
-	public:
-		const ShadowRootMode mode;
-		const Element host;
-};
-
+class Element;
+class DocumentFragment;
 enum class ShadowRootMode {
 	OPEN, CLOSED
 };
+
+class ShadowRoot: public DocumentOrShadowRoot, public DocumentFragment {
+	public:
+		const ShadowRootMode mode;
+		const Element* host;
+};
+
+
 
 } /* namespace DOM */
 } /* namespace HTML */

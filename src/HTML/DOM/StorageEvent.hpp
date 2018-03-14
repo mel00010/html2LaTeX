@@ -49,7 +49,7 @@ struct StorageEventInit: public EventInit {
 		std::optional<DOMString> key = std::nullopt;
 		std::optional<DOMString> oldValue = std::nullopt;
 		std::optional<DOMString> newValue = std::nullopt;
-		USVString url = "";
+		USVString url = U"";
 		std::optional<Storage> storageArea = std::nullopt;
 };
 

@@ -32,9 +32,11 @@
 namespace HTML {
 namespace DOM {
 
+class WorkerGlobalScope;
+
 class WorkerGlobalScope: public EventTarget, public WindowOrWorkerGlobalScope {
 	public:
-		const WorkerGlobalScope self;
+		const WorkerGlobalScope* self;
 		const WorkerLocation location;
 		const WorkerNavigator navigator;
 		void importScripts(std::list<USVString> urls);

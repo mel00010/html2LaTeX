@@ -21,6 +21,7 @@
 #define SRC_HTML_DOM_NAVIGATORLANGUAGE_HPP_
 
 #include "DOMString.hpp"
+#include "FrozenArray.hpp"
 
 namespace HTML {
 namespace DOM {

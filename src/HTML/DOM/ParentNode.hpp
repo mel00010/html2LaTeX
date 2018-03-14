@@ -21,7 +21,7 @@
 #define SRC_HTML_DOM_PARENTNODE_HPP_
 
 #include "DOMString.hpp"
-#include "Element.hpp"
+//#include "Element.hpp"
 #include "HTMLCollection.hpp"
 #include "NodeList.hpp"
 
@@ -31,17 +31,18 @@
 
 namespace HTML {
 namespace DOM {
+class Element;
 
 class ParentNode {
 	public:
-		const std::optional<Element> firstElementChild;
-		const std::optional<Element> lastElementChild;
+		const std::optional<Element*> firstElementChild;
+		const std::optional<Element*> lastElementChild;
 		const unsigned long childElementCount;
 
 		void prepend(std::vector<std::variant<Node, DOMString>> nodes);
 		void append(std::vector<std::variant<Node, DOMString>> nodes);
 
-		std::optional<Element> querySelector(DOMString selectors);
+		std::optional<Element*> querySelector(DOMString selectors);
 		NodeList querySelectorAll(DOMString selectors);
 
 	protected:

@@ -29,6 +29,10 @@
 namespace HTML {
 namespace DOM {
 
+class Element;
+class Node;
+class NamedNodeMap;
+
 class Attr: public Node {
 	public:
 		const std::optional<DOMString> namespaceURI;
@@ -37,7 +41,7 @@ class Attr: public Node {
 		const DOMString name;
 		DOMString value;
 
-		const std::optional<Element> ownerElement;
+		const std::optional<Element*> ownerElement;
 
 		const bool specified; // useless; always returns true
 };

@@ -21,7 +21,7 @@
 #define SRC_HTML_DOM_HTMLCOLLECTION_HPP_
 
 #include "DOMString.hpp"
-#include "Element.hpp"
+//#include "Element.hpp"
 
 #include <stddef.h>
 #include <optional>
@@ -29,17 +29,16 @@
 namespace HTML {
 namespace DOM {
 
+class Element;
+
 class HTMLCollection {
 	public:
 		const size_t length;
-		std::optional<Element>& getItem(size_t index); // getter
-		std::optional<Element>& getNamedItem(DOMString& name); // getter
+		std::optional<Element*>& getItem(size_t index); // getter
+		std::optional<Element*>& getNamedItem(DOMString& name); // getter
 };
 
 } /* namespace DOM */
 } /* namespace HTML */
-
-
-
 
 #endif /* SRC_HTML_DOM_HTMLCOLLECTION_HPP_ */

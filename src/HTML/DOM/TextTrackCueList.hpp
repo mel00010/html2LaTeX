@@ -21,12 +21,17 @@
 #define SRC_HTML_DOM_TEXTTRACKCUELIST_HPP_
 
 #include "DOMString.hpp"
-#include "TextTrackCue.hpp"
+//#include "TextTrackCue.hpp"
+//#include "TextTrack.hpp"
 
 #include <optional>
 
 namespace HTML {
 namespace DOM {
+
+class TextTrackCue;
+class TextTrack;
+class EventTarget;
 
 class TextTrackCueList {
 	public:

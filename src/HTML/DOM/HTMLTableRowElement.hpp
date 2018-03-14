@@ -41,7 +41,7 @@ class HTMLTableRowElement: public HTMLElement {
 		DOMString chOff;
 		DOMString vAlign;
 
-		DOMString bgColor = "";
+		DOMString bgColor = U"";
 
 	protected:
 		const HTMLCollection cells;

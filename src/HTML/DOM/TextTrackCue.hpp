@@ -29,9 +29,15 @@
 namespace HTML {
 namespace DOM {
 
+class TextTrack;
+class TextTrackCueList;
+class EventTarget;
+class Event;
+//class EventHandler;
+
 class TextTrackCue: public EventTarget {
 	public:
-		const std::optional<TextTrack> track;
+		const std::optional<TextTrack*> track;
 
 		DOMString id;
 		double startTime;

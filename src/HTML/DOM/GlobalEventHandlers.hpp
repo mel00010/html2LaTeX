@@ -25,6 +25,10 @@
 namespace HTML {
 namespace DOM {
 
+class OnErrorEventHandler {
+
+};
+
 /* Mixin */
 class GlobalEventHandlers {
 	public:

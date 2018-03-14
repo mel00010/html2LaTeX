@@ -26,6 +26,9 @@
 namespace HTML {
 namespace DOM {
 
+class Node;
+class ParentNode;
+
 class DocumentFragment : public Node, public ParentNode {
 };
 

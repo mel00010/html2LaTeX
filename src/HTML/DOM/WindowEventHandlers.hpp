@@ -25,6 +25,10 @@
 namespace HTML {
 namespace DOM {
 
+class OnBeforeUnloadEventHandler {
+
+};
+
 /* Mixin */
 class WindowEventHandlers {
 	public:

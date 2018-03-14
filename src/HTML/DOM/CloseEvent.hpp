@@ -45,7 +45,7 @@ struct CloseEventInit: public EventInit {
 	public:
 		bool wasClean = false;
 		unsigned short code = 0;
-		USVString reason = "";
+		USVString reason = U"";
 };
 
 } /* namespace DOM */

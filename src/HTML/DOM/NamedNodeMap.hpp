@@ -28,6 +28,10 @@
 namespace HTML {
 namespace DOM {
 
+class Attr;
+class Element;
+class Node;
+
 class NamedNodeMap {
 	public:
 		const unsigned long length;

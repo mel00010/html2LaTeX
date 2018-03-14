@@ -21,6 +21,7 @@
 #define SRC_HTML_DOM_DATATRANSFERITEM_HPP_
 
 #include "DOMString.hpp"
+#include "File.hpp"
 
 #include <optional>
 

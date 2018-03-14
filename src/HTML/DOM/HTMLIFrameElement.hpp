@@ -25,6 +25,7 @@
 #include "DOMTokenList.hpp"
 #include "HTMLElement.hpp"
 #include "USVString.hpp"
+#include "WindowProxy.hpp"
 
 #include <optional>
 
@@ -57,8 +58,8 @@ class HTMLIFrameElement: public HTMLElement {
 		DOMString frameBorder;
 		USVString longDesc;
 
-		DOMString marginHeight = "";
-		DOMString marginWidth = "";
+		DOMString marginHeight = U"";
+		DOMString marginWidth = U"";
 };
 
 } /* namespace DOM */

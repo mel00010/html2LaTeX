@@ -21,6 +21,7 @@
 #define SRC_HTML_DOM_HTMLMEDIAELEMENT_HPP_
 
 #include "AudioTrackList.hpp"
+#include "Blob.hpp"
 #include "DOMString.hpp"
 #include "HTMLElement.hpp"
 #include "MediaError.hpp"
@@ -41,7 +42,9 @@ namespace DOM {
 enum class CanPlayTypeResult {
 	EMPTY, MAYBE, PROBABLY
 };
-typedef std::variant<MediaStream, MediaSource, Blob> MediaProvider;
+//typedef std::variant<MediaStream, MediaSource, Blob> MediaProvider;
+typedef std::variant<Blob> MediaProvider;
+
 
 class HTMLMediaElement: public HTMLElement {
 	public:
@@ -85,7 +88,7 @@ class HTMLMediaElement: public HTMLElement {
 		const bool ended;
 		bool autoplay;
 		bool loop;
-		std::promise play();
+		std::promise<std::any> play();
 		void pause();
 
 		// controls
@@ -102,8 +105,8 @@ class HTMLMediaElement: public HTMLElement {
 
 	public:
 		TextTrack addTextTrack(TextTrackKind kind,
-				std::optional<DOMString> label = "",
-				std::optional<DOMString> language = "");
+				std::optional<DOMString> label = U"",
+				std::optional<DOMString> language = U"");
 };
 
 } /* namespace DOM */

@@ -20,7 +20,8 @@
 #ifndef SRC_HTML_DOM_HTMLCANVASELEMENT_HPP_
 #define SRC_HTML_DOM_HTMLCANVASELEMENT_HPP_
 
-#include "CanvasRenderingContext2D.hpp"
+#include "Blob.hpp"
+//#include "CanvasRenderingContext2D.hpp"
 #include "DOMString.hpp"
 #include "HTMLElement.hpp"
 #include "ImageBitmapRenderingContext.hpp"
@@ -34,7 +35,12 @@
 namespace HTML {
 namespace DOM {
 
-typedef std::variant<CanvasRenderingContext2D, ImageBitmapRenderingContext, WebGLRenderingContext> RenderingContext;
+class ImageBitmapRenderingContext;
+class CanvasRenderingContext2D;
+class OffscreenCanvas;
+//typedef std::variant<CanvasRenderingContext2D, ImageBitmapRenderingContext, WebGLRenderingContext> RenderingContext;
+typedef std::variant<CanvasRenderingContext2D> RenderingContext;
+
 using BlobCallback = void (*)(std::optional<Blob> blob);
 
 class HTMLCanvasElement: public HTMLElement {

@@ -22,6 +22,7 @@
 
 #include "DOMString.hpp"
 #include "Event.hpp"
+#include "FrozenArray.hpp"
 #include "MessagePort.hpp"
 #include "USVString.hpp"
 
@@ -33,7 +34,9 @@
 namespace HTML {
 namespace DOM {
 
-typedef std::variant<WindowProxy, MessagePort, ServiceWorker> MessageEventSource;
+//typedef std::variant<WindowProxy, MessagePort, ServiceWorker> MessageEventSource;
+typedef std::variant<MessagePort> MessageEventSource;
+
 
 struct MessageEventInit;
 
@@ -51,8 +54,8 @@ class MessageEvent: public Event {
 				std::optional<bool> bubbles = false,
 				std::optional<bool> cancelable = false,
 				std::optional<std::any> data = std::nullopt,
-				std::optional<USVString> origin = "",
-				std::optional<DOMString> lastEventId = "",
+				std::optional<USVString> origin = U"",
+				std::optional<DOMString> lastEventId = U"",
 				std::optional<MessageEventSource> source = std::nullopt,
 				std::optional<std::list<MessagePort>> ports = { });
 };
@@ -60,8 +63,8 @@ class MessageEvent: public Event {
 struct MessageEventInit: public EventInit {
 	public:
 		std::any data = std::nullopt;
-		USVString origin = "";
-		DOMString lastEventId = "";
+		USVString origin = U"";
+		DOMString lastEventId = U"";
 		std::optional<MessageEventSource> source = std::nullopt;
 		std::list<MessagePort> ports = { };
 };

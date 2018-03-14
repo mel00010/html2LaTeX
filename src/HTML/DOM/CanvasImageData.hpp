@@ -35,10 +35,8 @@ class CanvasImageData {
 		void putImageData(ImageData imagedata, long dx, long dy);
 		void putImageData(ImageData imagedata, long dx, long dy, long dirtyX, long dirtyY, long dirtyWidth, long dirtyHeight);
 };
-s
 
-}
-/* namespace DOM */
+} /* namespace DOM */
 } /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_CANVASIMAGEDATA_HPP_ */

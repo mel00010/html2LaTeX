@@ -20,7 +20,9 @@
 #ifndef SRC_HTML_DOM_IMAGEBITMAP_HPP_
 #define SRC_HTML_DOM_IMAGEBITMAP_HPP_
 
-#include "CanvasRenderingContext2D.hpp"
+#include "Blob.hpp"
+#include "CanvasDrawImage.hpp"
+#include "ImageData.hpp"
 
 #include <variant>
 
@@ -34,7 +36,8 @@ class ImageBitmap {
 		void close();
 };
 
-typedef std::variant<CanvasImageSource, Blob, ImageData> ImageBitmapSource;
+//typedef std::variant<CanvasImageSource, Blob, ImageData> ImageBitmapSource;
+typedef std::variant<Blob, ImageData> ImageBitmapSource;
 
 enum class ImageOrientation {
 	NONE, FLIPY

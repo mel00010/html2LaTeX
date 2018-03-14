@@ -20,6 +20,8 @@
 #ifndef SRC_HTML_DOM_CANVASTRANSFORM_HPP_
 #define SRC_HTML_DOM_CANVASTRANSFORM_HPP_
 
+#include "DOMMatrix.hpp"
+
 #include <optional>
 
 namespace HTML {

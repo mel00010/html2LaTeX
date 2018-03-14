@@ -1,4 +1,4 @@
-w/*******************************************************************************
+/*******************************************************************************
  * ImageBitmapRenderingContext.hpp
  * Copyright (C) 2018  Mel McCalla <melmccalla@gmail.com>
  *
@@ -28,9 +28,12 @@ w/******************************************************************************
 namespace HTML {
 namespace DOM {
 
+class ImageBitmap;
+class HTMLCanvasElement;
+
 class ImageBitmapRenderingContext {
 	public:
-		const HTMLCanvasElement canvas;
+		const HTMLCanvasElement* canvas;
 		void transferFromImageBitmap(std::optional<ImageBitmap> bitmap);
 };
 

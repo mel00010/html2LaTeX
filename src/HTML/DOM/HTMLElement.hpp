@@ -30,10 +30,14 @@
 namespace HTML {
 namespace DOM {
 
+class FocusOptions {
+
+};
+
 class HTMLElement: public Element,
 		public GlobalEventHandlers,
 		public DocumentAndElementEventHandlers,
-		public ElementContentEditable,
+//		public ElementContentEditable,
 		public NoncedElement {
 	public:
 		// metadata attributes

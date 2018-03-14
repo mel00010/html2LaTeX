@@ -20,8 +20,19 @@
 #ifndef SRC_HTML_DOM_OFFSCREENCANVASRENDERINGCONTEXT2D_HPP_
 #define SRC_HTML_DOM_OFFSCREENCANVASRENDERINGCONTEXT2D_HPP_
 
-#include "CanvasRenderingContext2D.hpp"
+#include "CanvasCompositing.hpp"
+#include "CanvasDrawImage.hpp"
+#include "CanvasDrawPath.hpp"
+#include "CanvasFillStrokeStyles.hpp"
+#include "CanvasFilters.hpp"
+#include "CanvasImageSmoothing.hpp"
+#include "CanvasPath.hpp"
+#include "CanvasPathDrawingStyles.hpp"
+#include "CanvasRect.hpp"
+#include "CanvasState.hpp"
+#include "CanvasTransform.hpp"
 #include "OffscreenCanvas.hpp"
+
 
 namespace HTML {
 namespace DOM {

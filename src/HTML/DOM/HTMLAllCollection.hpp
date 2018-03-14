@@ -21,14 +21,17 @@
 #define SRC_HTML_DOM_HTMLALLCOLLECTION_HPP_
 
 #include "DOMString.hpp"
-#include "Element.hpp"
-#include "HTMLCollection.hpp"
+//#include "Element.hpp"
+//#include "HTMLCollection.hpp"
 
 #include <optional>
 #include <variant>
 
 namespace HTML {
 namespace DOM {
+
+class Element;
+class HTMLCollection;
 
 class HTMLAllCollection {
 	public:

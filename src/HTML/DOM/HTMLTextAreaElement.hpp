@@ -22,6 +22,7 @@
 
 #include "DOMString.hpp"
 #include "HTMLFormElement.hpp"
+#include "HTMLInputElement.hpp"
 #include "NodeList.hpp"
 #include "ValidityState.hpp"
 
@@ -29,6 +30,8 @@
 
 namespace HTML {
 namespace DOM {
+
+enum class SelectionMode;
 
 class HTMLTextAreaElement: public HTMLElement {
 	public:
@@ -49,7 +52,7 @@ class HTMLTextAreaElement: public HTMLElement {
 
 		const DOMString type;
 		DOMString defaultValue;
-		DOMString value = "";
+		DOMString value = U"";
 		const unsigned long textLength;
 
 		const bool willValidate;

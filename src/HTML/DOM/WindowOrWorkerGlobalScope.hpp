@@ -34,7 +34,7 @@
 namespace HTML {
 namespace DOM {
 
-typedef std::variant<DOMString, std::function> TimerHandler;
+typedef std::variant<DOMString, std::function<std::any>> TimerHandler;
 
 /* Mixin */
 class WindowOrWorkerGlobalScope {

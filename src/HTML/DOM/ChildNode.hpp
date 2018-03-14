@@ -21,13 +21,15 @@
 #define SRC_HTML_DOM_CHILDNODE_HPP_
 
 #include "DOMString.hpp"
-#include "Node.hpp"
+//#include "Node.hpp"
 
 #include <variant>
 #include <vector>
 
 namespace HTML {
 namespace DOM {
+
+class Node;
 
 /* Mixin */
 class ChildNode {

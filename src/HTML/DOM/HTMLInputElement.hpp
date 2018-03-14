@@ -21,6 +21,7 @@
 #define SRC_HTML_DOM_HTMLINPUTELEMENT_HPP_
 
 #include "DOMString.hpp"
+#include "FileList.hpp"
 #include "HTMLFormElement.hpp"
 #include "NodeList.hpp"
 #include "USVString.hpp"
@@ -31,6 +32,10 @@
 
 namespace HTML {
 namespace DOM {
+
+enum class SelectionMode {
+		PRESERVE
+};
 
 class HTMLInputElement: public HTMLElement {
 	public:
@@ -67,7 +72,7 @@ class HTMLInputElement: public HTMLElement {
 		DOMString step;
 		DOMString type;
 		DOMString defaultValue;
-		DOMString value = "";
+		DOMString value = U"";
 		std::optional<std::any> valueAsDate;
 		double valueAsNumber;
 		unsigned long width;

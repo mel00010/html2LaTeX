@@ -25,6 +25,8 @@
 namespace HTML {
 namespace DOM {
 
+class Node;
+
 class Range {
 	public:
 		const Node startContainer;

@@ -58,9 +58,9 @@ class HTMLTableElement: public HTMLElement {
 		DOMString summary;
 		DOMString width;
 
-		DOMString bgColor = "";
-		DOMString cellPadding = "";
-		DOMString cellSpacing = "";
+		DOMString bgColor = U"";
+		DOMString cellPadding = U"";
+		DOMString cellSpacing = U"";
 
 	protected:
 		const HTMLCollection rows;

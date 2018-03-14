@@ -28,15 +28,22 @@
 namespace HTML {
 namespace DOM {
 
+class MouseEvent {
+
+};
+struct MouseEventInit {
+
+};
+
 struct DragEventInit;
 
-class DragEvent: MouseEvent {
+class DragEvent: public MouseEvent {
 	public:
 		DragEvent(DOMString type, std::optional<DragEventInit> eventInitDict);
 		const std::optional<DataTransfer> dataTransfer;
 };
 
-struct DragEventInit: MouseEventInit {
+struct DragEventInit: public MouseEventInit {
 	public:
 		std::optional<DataTransfer> dataTransfer = std::nullopt;
 };

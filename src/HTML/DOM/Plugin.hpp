@@ -28,6 +28,8 @@
 namespace HTML {
 namespace DOM {
 
+class MimeType;
+
 class Plugin {
 	public:
 		const DOMString name;

@@ -26,12 +26,14 @@
 namespace HTML {
 namespace DOM {
 
+class Plugin;
+
 class MimeType {
 	public:
 		const DOMString type;
 		const DOMString description;
 		const DOMString suffixes; // comma-separated
-		const Plugin enabledPlugin;
+		const Plugin* enabledPlugin;
 };
 
 } /* namespace DOM */

@@ -44,8 +44,8 @@ class ErrorEvent: public Event {
 
 struct ErrorEventInit: public EventInit {
 	public:
-		DOMString message = "";
-		USVString filename = "";
+		DOMString message = U"";
+		USVString filename = U"";
 		unsigned long lineno = 0;
 		unsigned long colno = 0;
 		std::any error = std::nullopt;

@@ -38,8 +38,8 @@ class HashChangeEvent : public Event {
 };
 
 struct HashChangeEventInit : public EventInit {
-	USVString oldURL = "";
-	USVString newURL = "";
+	USVString oldURL = U"";
+	USVString newURL = U"";
 };
 
 }

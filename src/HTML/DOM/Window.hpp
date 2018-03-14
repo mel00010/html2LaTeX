@@ -24,6 +24,7 @@
 #include "BarProp.hpp"
 #include "CustomElementRegistry.hpp"
 #include "Document.hpp"
+#include "DOMHighResTimeStamp.hpp"
 #include "DOMString.hpp"
 #include "Element.hpp"
 #include "External.hpp"
@@ -34,6 +35,7 @@
 #include "WindowEventHandlers.hpp"
 #include "WindowLocalStorage.hpp"
 #include "WindowOrWorkerGlobalScope.hpp"
+#include "WindowProxy.hpp"
 #include "WindowSessionStorage.hpp"
 
 #include <any>
@@ -42,6 +44,8 @@
 
 namespace HTML {
 namespace DOM {
+
+class Element;
 
 using FrameRequestCallback = void (*)(DOMHighResTimeStamp time);
 
@@ -75,7 +79,7 @@ class Window: public EventTarget, public GlobalEventHandlers, public WindowEvent
 		std::any opener;
 		const std::optional<WindowProxy> parent;
 		const std::optional<Element> frameElement;
-		std::optional<WindowProxy> open(USVString url = "about:blank", DOMString target = "_blank", DOMString features = "");
+		std::optional<WindowProxy> open(USVString url = U"about:blank", DOMString target = U"_blank", DOMString features = U"");
 		Window getObject(DOMString name);
 		// Since this is the global object, the IDL named getter adds a NamedPropertiesObject exotic
 		// object on the prototype chain. Indeed, this does not make the global object an exotic object.
@@ -88,8 +92,8 @@ class Window: public EventTarget, public GlobalEventHandlers, public WindowEvent
 		// user prompts
 		void alert();
 		void alert(DOMString message);
-		bool confirm(DOMString message = "");
-		std::optional<DOMString> prompt(DOMString message = "", DOMString _default = "");
+		bool confirm(DOMString message = U"");
+		std::optional<DOMString> prompt(DOMString message = U"", DOMString _default = U"");
 		void print();
 
 		unsigned long requestAnimationFrame(FrameRequestCallback callback);

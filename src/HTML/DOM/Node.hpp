@@ -20,15 +20,18 @@
 #ifndef SRC_HTML_DOM_NODE_HPP_
 #define SRC_HTML_DOM_NODE_HPP_
 
-#include "Document.hpp"
+//#include "Document.hpp"
 #include "DOMString.hpp"
-#include "Element.hpp"
 
 #include <list>
 #include <optional>
 
 namespace HTML {
 namespace DOM {
+
+//class Node;
+class Element;
+class Document;
 
 class Node {
 	public:

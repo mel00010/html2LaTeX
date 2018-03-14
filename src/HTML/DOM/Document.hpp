@@ -26,6 +26,7 @@
 #include "DocumentType.hpp"
 #include "DOMImplementation.hpp"
 #include "DOMString.hpp"
+#include "Element.hpp"
 #include "Event.hpp"
 #include "EventHandler.hpp"
 #include "HTMLAllCollection.hpp"
@@ -36,6 +37,7 @@
 #include "NodeFilter.hpp"
 #include "NodeIterator.hpp"
 #include "NodeList.hpp"
+#include "object.hpp"
 #include "ProcessingInstruction.hpp"
 #include "Range.hpp"
 #include "Text.hpp"
@@ -53,13 +55,11 @@ enum class DocumentReadyState {
 	LOADING, INTERACTIVE, COMPLETE
 };
 
-typedef std::variant<HTMLScriptElement, SVGScriptElement> HTMLOrSVGScriptElement;
+//typedef std::variant<HTMLScriptElement, SVGScriptElement> HTMLOrSVGScriptElement;
+typedef std::variant<HTMLScriptElement> HTMLOrSVGScriptElement;
 
-} /* namespace DOM */
-} /* namespace HTML */
-
-namespace HTML {
-namespace DOM {
+class Element;
+class Node;
 
 class Document: public Node,
 		public DocumentOrShadowRoot,
@@ -128,18 +128,18 @@ class Document: public Node,
 		const std::optional<HTMLOrSVGScriptElement> currentScript; // classic scripts in a document tree onlys
 
 		// dynamic markup insertion
-		Document open(DOMString type = "text/html", DOMString replace = "");
-		WindowProxy open(USVString url, DOMString name, DOMString features);
+		Document open(DOMString type = U"text/html", DOMString replace = U"");
+//		WindowProxy open(USVString url, DOMString name, DOMString features);
 		void close();
 		void write(std::list<DOMString> text);
 		void writeln(std::list<DOMString> text);
 
 		// user interaction
-		const std::optional<WindowProxy> defaultView;
+//		const std::optional<WindowProxy> defaultView;
 		const std::optional<Element> activeElement;
 		bool hasFocus();
 		DOMString designMode;
-		bool execCommand(DOMString commandId, bool showUI = false, DOMString value = "");
+		bool execCommand(DOMString commandId, bool showUI = false, DOMString value = U"");
 		bool queryCommandEnabled(DOMString commandId);
 		bool queryCommandIndeterm(DOMString commandId);
 		bool queryCommandState(DOMString commandId);

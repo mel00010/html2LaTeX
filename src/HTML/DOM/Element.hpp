@@ -25,7 +25,6 @@
 #include "DOMTokenList.hpp"
 #include "HTMLCollection.hpp"
 #include "NamedNodeMap.hpp"
-#include "Node.hpp"
 #include "ShadowRoot.hpp"
 
 #include <optional>
@@ -35,6 +34,11 @@ namespace HTML {
 namespace DOM {
 
 struct ShadowRootInit;
+class ShadowRoot;
+class Element;
+class Node;
+class Attr;
+class NamedNodeMap;
 
 class Element: public Node {
 	public:
@@ -81,7 +85,7 @@ class Element: public Node {
 
 	protected:
 		const DOMTokenList classList;
-		const NamedNodeMap attributes;
+		const NamedNodeMap* attributes;
 };
 
 struct ShadowRootInit {

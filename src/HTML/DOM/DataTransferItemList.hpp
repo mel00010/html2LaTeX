@@ -22,6 +22,7 @@
 
 #include "DataTransferItem.hpp"
 #include "DOMString.hpp"
+#include "File.hpp"
 
 #include <optional>
 

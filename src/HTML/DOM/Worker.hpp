@@ -37,6 +37,9 @@ struct WorkerOptions;
 enum class WorkerType {
 	CLASSIC, MODULE
 };
+enum class RequestCredentials {
+	OMIT
+};
 
 class Worker: public EventTarget, public AbstractWorker {
 	public:
@@ -53,10 +56,11 @@ class Worker: public EventTarget, public AbstractWorker {
 struct WorkerOptions {
 		WorkerType type = WorkerType::CLASSIC;
 		RequestCredentials credentials = RequestCredentials::OMIT; // credentials is only used if type is "module"
-		DOMString name = "";
-};
+		DOMString name = U"";
+	};
 
-} /* namespace DOM */
+}
+/* namespace DOM */
 } /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_WORKER_HPP_ */

@@ -20,6 +20,9 @@
 #ifndef SRC_HTML_DOM_WEBSOCKET_HPP_
 #define SRC_HTML_DOM_WEBSOCKET_HPP_
 
+#include "ArrayBuffer.hpp"
+#include "ArrayBufferView.hpp"
+#include "Blob.hpp"
 #include "DOMString.hpp"
 #include "EventHandler.hpp"
 #include "EventTarget.hpp"

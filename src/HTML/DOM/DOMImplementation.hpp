@@ -20,7 +20,7 @@
 #ifndef SRC_HTML_DOM_DOMIMPLEMENTATION_HPP_
 #define SRC_HTML_DOM_DOMIMPLEMENTATION_HPP_
 
-#include "Document.hpp"
+//#include "Document.hpp"
 #include "DocumentType.hpp"
 #include "DOMString.hpp"
 
@@ -28,6 +28,8 @@
 
 namespace HTML {
 namespace DOM {
+
+class XMLDocument;
 
 class DOMImplementation : public Node {
 	public:

@@ -25,6 +25,7 @@
 #include "HTMLFormElement.hpp"
 #include "USVString.hpp"
 #include "ValidityState.hpp"
+#include "WindowProxy.hpp"
 
 #include <optional>
 
@@ -63,7 +64,7 @@ class HTMLObjectElement: public HTMLElement {
 		DOMString codeBase;
 		DOMString codeType;
 
-		DOMString border = "";
+		DOMString border = U"";
 };
 
 } /* namespace DOM */

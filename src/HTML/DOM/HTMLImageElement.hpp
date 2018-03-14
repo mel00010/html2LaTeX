@@ -24,6 +24,7 @@
 #include "HTMLElement.hpp"
 #include "USVString.hpp"
 
+#include <any>
 #include <future>
 #include <optional>
 
@@ -51,7 +52,7 @@ class HTMLImageElement: public HTMLElement {
 		DOMString referrerPolicy;
 		DOMString decoding;
 
-		std::promise decode();
+		std::promise<std::any> decode();
 
 		// also has obsolete members
 		DOMString name;
@@ -61,7 +62,7 @@ class HTMLImageElement: public HTMLElement {
 		unsigned long vspace;
 		USVString longDesc;
 
-		DOMString border = "";
+		DOMString border = U"";
 };
 
 }

@@ -22,6 +22,7 @@
 
 #include "DOMString.hpp"
 #include "HTMLElement.hpp"
+#include "LinkStyle.hpp"
 
 namespace HTML {
 namespace DOM {

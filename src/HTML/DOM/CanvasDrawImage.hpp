@@ -31,9 +31,14 @@
 namespace HTML {
 namespace DOM {
 
-typedef std::variant<HTMLImageElement, SVGImageElement> HTMLOrSVGImageElement;
+class HTMLCanvasElement;
+class OffscreenCanvas;
 
-typedef std::variant<HTMLOrSVGImageElement, HTMLVideoElement, HTMLCanvasElement, ImageBitmap, OffscreenCanvas> CanvasImageSource;
+//typedef std::variant<HTMLImageElement, SVGImageElement> HTMLOrSVGImageElement;
+typedef std::variant<HTMLImageElement> HTMLOrSVGImageElement;
+
+//typedef std::variant<HTMLOrSVGImageElement, HTMLVideoElement, HTMLCanvasElement, ImageBitmap, OffscreenCanvas> CanvasImageSource;
+typedef std::variant<HTMLVideoElement, HTMLCanvasElement, OffscreenCanvas> CanvasImageSource;
 
 /* Mixin */
 class CanvasDrawImage {

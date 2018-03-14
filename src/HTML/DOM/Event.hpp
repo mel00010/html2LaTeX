@@ -20,13 +20,17 @@
 #ifndef SRC_HTML_DOM_EVENT_HPP_
 #define SRC_HTML_DOM_EVENT_HPP_
 
-#include "DOMString.hpp"
 #include "EventTarget.hpp"
+#include "DOMString.hpp"
 
 #include <optional>
 
 namespace HTML {
 namespace DOM {
+
+class EventTarget;
+class TextTrackCueList;
+
 
 class Event {
 	public:
@@ -52,7 +56,7 @@ class Event {
 		const bool defaultPrevented;
 
 		bool isTrusted;
-		const DOMTimeStamp timeStamp;
+//		const DOMTimeStamp timeStamp;
 
 		void initEvent(DOMString type, bool bubbles, bool cancelable);
 };

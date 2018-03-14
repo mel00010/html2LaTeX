@@ -23,6 +23,8 @@
 #include "DataTransferItemList.hpp"
 #include "DOMString.hpp"
 #include "Element.hpp"
+#include "FileList.hpp"
+#include "FrozenArray.hpp"
 
 #include <optional>
 

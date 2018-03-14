@@ -30,6 +30,10 @@
 namespace HTML {
 namespace DOM {
 
+class TextTrackCue;
+class TextTrackCueList;
+class Event;
+
 enum TextTrackMode {
 	DISABLED, HIDDEN, SHOWING
 };
@@ -51,8 +55,8 @@ class TextTrack: public EventTarget {
 		const std::optional<TextTrackCueList> cues;
 		const std::optional<TextTrackCueList> activeCues;
 
-		void addCue(TextTrackCue cue);
-		void removeCue(TextTrackCue cue);
+		void addCue(TextTrackCue& cue);
+		void removeCue(TextTrackCue& cue);
 
 		EventHandler oncuechange;
 };

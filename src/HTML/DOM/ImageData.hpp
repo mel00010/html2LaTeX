@@ -20,6 +20,8 @@
 #ifndef SRC_HTML_DOM_IMAGEDATA_HPP_
 #define SRC_HTML_DOM_IMAGEDATA_HPP_
 
+#include "Uint8ClampedArray.hpp"
+
 #include <optional>
 
 namespace HTML {

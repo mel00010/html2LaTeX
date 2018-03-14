@@ -20,10 +20,12 @@
 #ifndef SRC_HTML_DOM_NODEFILTER_HPP_
 #define SRC_HTML_DOM_NODEFILTER_HPP_
 
-#include "Node.hpp"
+//#include "Node.hpp"
 
 namespace HTML {
 namespace DOM {
+
+class Node;
 
 class NodeFilter {
 	public:

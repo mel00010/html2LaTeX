@@ -30,19 +30,19 @@
 namespace HTML {
 namespace DOM {
 
-struct ElementDefinitionOptions;
-
-class CustomElementRegistry {
-	public:
-		void define(DOMString name, std::function constructor, std::optional<ElementDefinitionOptions> options);
-		std::any get(DOMString name);
-		std::promise whenDefined(DOMString name);
-};
-
 struct ElementDefinitionOptions {
 	public:
 		DOMString extends;
 };
+
+class CustomElementRegistry {
+	public:
+		void define(DOMString name, std::function<std::any> constructor, std::optional<ElementDefinitionOptions> options);
+		std::any get(DOMString name);
+		std::promise<std::any> whenDefined(DOMString name);
+};
+
+
 
 }
 /* namespace DOM */

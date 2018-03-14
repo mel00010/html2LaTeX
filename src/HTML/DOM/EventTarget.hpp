@@ -21,7 +21,7 @@
 #define SRC_HTML_DOM_EVENTTARGET_HPP_
 
 #include "DOMString.hpp"
-#include "Event.hpp"
+//#include "Event.hpp"
 
 #include <optional>
 #include <variant>
@@ -29,10 +29,12 @@
 namespace HTML {
 namespace DOM {
 
+class Event;
+
 class EventListener;
 struct EventListenerOptions;
 struct AddEventListenerOptions;
-
+class TextTrackCueList;
 
 class EventTarget {
 	public:
@@ -56,8 +58,7 @@ struct AddEventListenerOptions : public EventListenerOptions {
 	bool once = false;
 };
 
-}
-/* namespace DOM */
+} /* namespace DOM */
 } /* namespace HTML */
 
 #endif /* SRC_HTML_DOM_EVENTTARGET_HPP_ */

@@ -5,12 +5,16 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/AbortSignal.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/AbstractWorker.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ApplicationCache.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ArrayBuffer.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/ArrayBufferView.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Attr.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/AudioTrack.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/AudioTrackList.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/BarProp.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/BeforeUnloadEvent.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Blob.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/BroadcastChannel.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/BufferSource.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ByteString.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CanvasCompositing.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CanvasDrawImage.hpp
@@ -36,18 +40,29 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/ChildNode.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CloseEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Comment.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CSSOMString.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CSSRule.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CSSRuleList.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CSSStyleDeclaration.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CSSStyleSheet.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CustomElementRegistry.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/CustomEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DataTransfer.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DataTransferItem.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DataTransferItemList.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DataView.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DedicatedWorkerGlobalScope.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DocumentAndElementEventHandlers.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DocumentFragment.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Document.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DocumentOrShadowRoot.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DocumentType.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMHighResTimeStamp.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DOMImplementation.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMMatrix.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMMatrixReadOnly.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMPoint.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/DOMPointReadOnly.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DOMString.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DOMStringList.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/DOMStringMap.hpp
@@ -56,11 +71,17 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/ElementContentEditable.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Element.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ErrorEvent.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Error.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/EventHandler.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Event.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/EventSource.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/EventTarget.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/External.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/File.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/FileList.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Float32Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Float64Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/FrozenArray.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/GlobalEventHandlers.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/HashChangeEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/History.hpp
@@ -142,8 +163,13 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/ImageBitmap.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ImageBitmapRenderingContext.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ImageData.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Int16Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Int32Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Int8Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/LinkStyle.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Location.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MediaError.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/MediaList.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MessageChannel.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MessageEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MessagePort.hpp
@@ -167,6 +193,7 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/NoncedElement.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NonDocumentTypeChildNode.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/NonElementParentNode.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/object.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/OffscreenCanvas.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/OffscreenCanvasRenderingContext2D.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/PageTransitionEvent.hpp
@@ -178,12 +205,14 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/ProcessingInstruction.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/PromiseRejectionEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Range.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Screen.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ShadowRoot.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/SharedWorkerGlobalScope.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/SharedWorker.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Slotable.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/StorageEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Storage.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/StyleSheet.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Text.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TextMetrics.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TextTrackCue.hpp
@@ -193,6 +222,10 @@ target_sources(DOM
 		${CMAKE_CURRENT_SOURCE_DIR}/TimeRanges.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TrackEvent.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/TreeWalker.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Uint16Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Uint32Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Uint8Array.hpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Uint8ClampedArray.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/USVString.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ValidityState.hpp
 		${CMAKE_CURRENT_SOURCE_DIR}/VideoTrack.hpp
