@@ -1,0 +1,13 @@
++*/html2LaTeX/src/*.cxx
++*/html2LaTeX/src/*.cc
++*/html2LaTeX/src/*.c++
++*/html2LaTeX/src/*.cpp
++*/html2LaTeX/src/*.c
++*/html2LaTeX/test/*.cxx
++*/html2LaTeX/test/*.cc
++*/html2LaTeX/test/*.c++
++*/html2LaTeX/test/*.cpp
++*/html2LaTeX/test/*.c
+-*/html2LaTeX/build/*
+-/*
+-*
