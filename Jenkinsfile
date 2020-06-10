@@ -6,15 +6,54 @@ pipeline {
     skipDefaultCheckout()
   }
   parameters {
-    string( name: 'CODECHECKER_PATH',
-            defaultValue: '/home/mel/codechecker/build/CodeChecker/bin/_CodeChecker',
-            description: 'Path to CodeChecker executable')
-    booleanParam( name: 'DO_CLANGSA_CTU',
-                  defaultValue: false,
-                  description: 'Run Clang Static Analysis with Cross Translation Unit Analysis?')
+    booleanParam( name: 'DO_CHECKOUT',
+                  defaultValue: true,
+                  description: 'Perform a git checkout?')
+    booleanParam( name: 'DO_BUILD',
+                  defaultValue: true,
+                  description: 'Perform a build?')
     booleanParam( name: 'DO_CLEAN_BUILD',
                   defaultValue: false,
                   description: 'Do a clean build?')
+    booleanParam( name: 'RUN_TESTS',
+                  defaultValue: true,
+                  description: 'Run tests?')
+    booleanParam( name: 'RUN_ANALYSIS',
+                  defaultValue: true,
+                  description: 'Run analysis?')
+    booleanParam( name: 'RUN_CLANGSA_CTU',
+                  defaultValue: false,
+                  description: 'Run Clang Static Analysis with Cross Translation Unit Analysis?')
+    booleanParam( name: 'RUN_CLANGSA',
+                  defaultValue: true,
+                  description: 'Run Clang Static Analysis?')
+    booleanParam( name: 'RUN_CLANGTIDY',
+                  defaultValue: true,
+                  description: 'Run Clang Tidy?')
+    booleanParam( name: 'RUN_CPPCHECK',
+                  defaultValue: true,
+                  description: 'Run CppCheck?')
+    booleanParam( name: 'RUN_INFER',
+                  defaultValue: true,
+                  description: 'Run Facebook Infer?')
+    booleanParam( name: 'RUN_VALGRIND',
+                  defaultValue: true,
+                  description: 'Run Valgrind?')
+    booleanParam( name: 'RUN_VERA',
+                  defaultValue: true,
+                  description: 'Run Vera++?')
+    booleanParam( name: 'RUN_RATS',
+                  defaultValue: true,
+                  description: 'Run RATS?')
+    booleanParam( name: 'RUN_COVERAGE',
+                  defaultValue: true,
+                  description: 'Run coverage report generation?')
+    booleanParam( name: 'RUN_SONARQUBE',
+                  defaultValue: true,
+                  description: 'Run SonarQube scanner?')
+    string( name: 'CODECHECKER_PATH',
+            defaultValue: '/home/mel/codechecker/build/CodeChecker/bin/_CodeChecker',
+            description: 'Path to CodeChecker executable')
   }
 
   stages {
@@ -22,6 +61,9 @@ pipeline {
      * Checkout source code from Github on any of the GIT nodes
      */
     stage('Checkout') {
+      when {
+        expression { params.DO_CHECKOUT == true }
+      }
       steps {
         checkout([
           $class: 'GitSCM',
@@ -47,6 +89,9 @@ pipeline {
           reuseNode true
         }
       }
+      when {
+        expression { params.DO_BUILD == true }
+      }
       steps {
         sh('mkdir -p build/Analysis/CompilerOutput')
 
@@ -55,7 +100,7 @@ pipeline {
                     buildDir: 'build/Release',
                     cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
-        sh('''ninja -C build/Release all tests\
+        sh('''ninja -C build/Release all \
               | tee build/Analysis/CompilerOutput/release.log''')
         stash name: 'ReleaseTests', includes: 'build/Release/test/tests'
 
@@ -96,6 +141,9 @@ pipeline {
     }
 
     stage('Test') {
+      when {
+        expression { params.RUN_TESTS == true }
+      }
       parallel {
         stage('Test Release') {
           steps {
@@ -171,15 +219,20 @@ pipeline {
     }
 
     stage('Analysis') {
+      when {
+            expression { params.RUN_ANALYSIS == true }
+      }
       stages {
         stage('CodeChecker ClangSA CTU') {
           when {
-            expression { params.DO_CLANGSA_CTU == true }
+            expression { params.RUN_CLANGSA_CTU == true }
           }
 
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
+            sh("""cat .codechecker_skip | sed "s|*/GameEngine|${WORKSPACE}|" \
+                > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j2 \
@@ -187,7 +240,7 @@ pipeline {
                   --enable-all \
                   --enable alpha \
                   --ctu \
-                  -i .codechecker_skip \
+                  -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
                   --output build/Analysis/CodeChecker/ClangSA/""")
             stash(name: 'CodeCheckerClangSA_CTUResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
@@ -195,39 +248,49 @@ pipeline {
         }
         stage('CodeChecker ClangSA') {
           when {
-            expression { params.DO_CLANGSA_CTU == false }
+            expression { params.DO_CLANGSA == true }
           }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
+            sh("""cat .codechecker_skip | sed "s|*/GameEngine|${WORKSPACE}|" \
+                > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j8 \
                   --analyzers clangsa \
                   --enable-all \
                   --enable alpha \
-                  -i .codechecker_skip \
+                  -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
                   --output build/Analysis/CodeChecker/ClangSA/""")
             stash(name: 'CodeCheckerClangSAResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
           }
         }
         stage('CodeChecker ClangTidy') {
+          when {
+            expression { params.RUN_CLANGTIDY == true }
+          }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangTidy')
+            sh("""cat .codechecker_skip | sed "s|*/GameEngine|${WORKSPACE}|" \
+                > build/Analysis/CodeChecker/ClangTidy/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j8 \
                   --analyzers clang-tidy \
                   --enable-all \
-                  -i .codechecker_skip \
+                  -i build/Analysis/CodeChecker/ClangTidy/.codechecker_skip \
                   --output build/Analysis/CodeChecker/ClangTidy/""")
             stash(name: 'CodeCheckerClangTidyResults',
                   includes: 'build/Analysis/CodeChecker/ClangTidy/*.plist')
            }
         }
         stage('CppCheck') {
+          when {
+            expression { params.RUN_CPPCHECK == true }
+          }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CppCheck')
@@ -244,18 +307,39 @@ pipeline {
           }
         }
         stage('Infer') {
+          when {
+            expression { params.RUN_INFER == true }
+          }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/Infer')
             sh('''infer run \
                   --compilation-database build/DebugNoPCH/compile_commands.json \
                   --keep-going \
+                  --skip-analysis-in-path build/ \
+                  --skip-analysis-in-path-skips-compilation \
+                  --cost \
+                  --headers \
+                  --loop-hoisting \
+                  --pulse \
+                  --quandary \
+                  --quandaryBO \
+                  --siof \
+                  --starvation \
+                  --siof-check-iostreams \
+                  --bufferoverrun \
+                  --liveness \
+                  --biabduction \
+                  --jobs 4 \
                   --results-dir build/Analysis/Infer''')
             stash(name: 'InferResults',
                   includes: 'build/Analysis/Infer/report.json')
           }
         }
         stage('Valgrind') {
+          when {
+            expression { params.RUN_VALGRIND == true }
+          }
           steps {
             unstash(name: 'ReleaseTests')
             unstash(name: 'DebugTests')
@@ -269,6 +353,9 @@ pipeline {
           }
         }
         stage('Vera++') {
+          when {
+            expression { params.RUN_VERA == true }
+          }
           steps {
             sh('mkdir -p build/Analysis/VeraPlusPlus')
             sh('''find src samples test \
@@ -291,6 +378,9 @@ pipeline {
           }
         }
         stage('RATS') {
+          when {
+            expression { params.RUN_RATS == true }
+          }
           steps {
             sh('mkdir -p build/Analysis/RATS')
             sh('''rats src samples test --xml \
@@ -300,6 +390,9 @@ pipeline {
           }
         }
         stage('Coverage') {
+          when {
+            expression { params.RUN_COVERAGE == true }
+          }
           steps {
             unstash(name: 'CoverageAnalysisData')
             sh('mkdir -p build/Analysis/Coverage')
@@ -310,6 +403,9 @@ pipeline {
           }
         }
         stage('SonarQube analysis') {
+          when {
+            expression { params.RUN_SONARQUBE == true }
+          }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             unstash(name: 'CompilerOutput')
