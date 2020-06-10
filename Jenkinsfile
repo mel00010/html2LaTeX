@@ -344,10 +344,18 @@ pipeline {
             unstash(name: 'ReleaseTests')
             unstash(name: 'DebugTests')
             sh('mkdir -p build/Analysis/Valgrind')
-            sh('''valgrind build/Release/test/tests \
-                  --log-file=build/Analysis/Valgrind/valgrind-%p.log''')
-            sh('''valgrind build/Debug/test/tests \
-                  --log-file=build/Analysis/Valgrind/valgrind-%p.log''')
+            sh('''valgrind \
+                  --log-file=build/Analysis/Valgrind/valgrind-%p.log \
+                  -s \
+                  --leak-check=full \
+                  --show-leak-kinds=all \
+                  build/Release/test/tests''')
+            sh('''valgrind \
+                  --log-file=build/Analysis/Valgrind/valgrind-%p.log \
+                  -s \
+                  --leak-check=full \
+                  --show-leak-kinds=all \
+                  build/Debug/test/tests''')
             stash(name: 'ValgrindResults',
                   includes: 'build/Analysis/Valgrind/*.log')
           }
@@ -407,21 +415,21 @@ pipeline {
             expression { params.RUN_SONARQUBE == true }
           }
           steps {
-            unstash(name: 'DebugNoPCHCompDBase')
-            unstash(name: 'CompilerOutput')
-            unstash(name: 'TestReleaseReports')
-            unstash(name: 'TestDebugReports')
-            unstash(name: 'TestDebugNoPCHReports')
-            unstash(name: 'TestCoverageReports')
-            unstash(name: 'CodeCheckerClangSAResults')
-            unstash(name: 'CodeCheckerClangSA_CTUResults')
-            unstash(name: 'CodeCheckerClangTidyResults')
-            unstash(name: 'CppCheckResults')
-            unstash(name: 'InferResults')
-            unstash(name: 'ValgrindResults')
-            unstash(name: 'VeraResults')
-            unstash(name: 'RATSResults')
-            unstash(name: 'CoverageResults')
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'DebugNoPCHCompDBase')           }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReleaseReports')            }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestDebugReports')              }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestDebugNoPCHReports')         }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestCoverageReports')           }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSAResults')     }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSA_CTUResults') }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangTidyResults')   }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CppCheckResults')               }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'InferResults')                  }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'ValgrindResults')               }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'VeraResults')                   }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'RATSResults')                   }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
 
             script {
               def scannerHome = tool 'sonar-scanner';
