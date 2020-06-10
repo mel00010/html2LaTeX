@@ -20,6 +20,7 @@ target_link_libraries(Parse
 		HTML_types
 		Tokenization
 		TreeConstruction
+		gtest
 )
 add_subdirectory(Tokenization)
 add_subdirectory(TreeConstruction)
