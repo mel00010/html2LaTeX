@@ -55,7 +55,7 @@ pipeline {
                     buildDir: 'build/Release',
                     cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
-        sh('''ninja -C build/Release all \
+        sh('''ninja -C build/Release all tests\
               | tee build/Analysis/CompilerOutput/release.log''')
         stash name: 'ReleaseTests', includes: 'build/Release/test/tests'
 
