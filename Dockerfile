@@ -1,7 +1,5 @@
 FROM debian:experimental
 EXPOSE 22
-RUN
-
 RUN  echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list && \
 apt-get update && \
 apt-get install -t experimental -y --no-install-recommends \
