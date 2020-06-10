@@ -18,98 +18,92 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include <gtest/gtest.h>
-
-#include <HTML/Parse/Tokenization/TokenizationTypes.hpp>
-
-#include <HTML/HTMLTypes.hpp>
-
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include <HTML/HTMLTypes.hpp>
+#include <HTML/Parse/Tokenization/TokenizationTypes.hpp>
+#include <gtest/gtest.h>
 
 namespace HTML {
 namespace Parse {
 namespace Tokenization {
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, DOCTYPEToken) {
-	EXPECT_EQ(DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false),
-	DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
-	EXPECT_NE(DOCTYPEToken(U"not a name", U"not a public_identifier", U"system system_identifier", true),
-	DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
-	EXPECT_NE(DOCTYPEToken(U"name", U"not a public_identifier", U"not a system_identifier", true),
-	DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
-	EXPECT_NE(DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", true),
-	DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
+  EXPECT_EQ(DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false),
+            DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
+  EXPECT_NE(DOCTYPEToken(U"not a name", U"not a public_identifier", U"system system_identifier", true),
+            DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
+  EXPECT_NE(DOCTYPEToken(U"name", U"not a public_identifier", U"not a system_identifier", true),
+            DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
+  EXPECT_NE(DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", true),
+            DOCTYPEToken(U"name", U"public_identifier", U"system_identifier", false));
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, StartTagToken) {
-	EXPECT_EQ(StartTagToken(U"tag_name", false, std::vector<Attribute> {}),
-	StartTagToken(U"tag_name", false, std::vector<Attribute> {}));
-	EXPECT_EQ(StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
-	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"not the same", U"value")}),
-	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"not the same")}),
-	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"not the same", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
-	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"tag_name", true, std::vector<Attribute> {Attribute(U"name", U"value")}),
-	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(StartTagToken(U"not the same", true, std::vector<Attribute> {}),
-	StartTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-
+  EXPECT_EQ(StartTagToken(U"tag_name", false, std::vector<Attribute>{}), StartTagToken(U"tag_name", false, std::vector<Attribute>{}));
+  EXPECT_EQ(StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}),
+            StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"not the same", U"value")}),
+            StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"not the same")}),
+            StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(StartTagToken(U"not the same", false, std::vector<Attribute>{Attribute(U"name", U"value")}),
+            StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(StartTagToken(U"tag_name", true, std::vector<Attribute>{Attribute(U"name", U"value")}),
+            StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(StartTagToken(U"not the same", true, std::vector<Attribute>{}),
+            StartTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, EndTagToken) {
-	EXPECT_EQ(EndTagToken(U"tag_name", false, std::vector<Attribute> {}),
-	EndTagToken(U"tag_name", false, std::vector<Attribute> {}));
-	EXPECT_EQ(EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
-	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"not the same", U"value")}),
-	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"not the same")}),
-	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"not the same", false, std::vector<Attribute> {Attribute(U"name", U"value")}),
-	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"tag_name", true, std::vector<Attribute> {Attribute(U"name", U"value")}),
-	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-	EXPECT_NE(EndTagToken(U"not the same", true, std::vector<Attribute> {}),
-	EndTagToken(U"tag_name", false, std::vector<Attribute> {Attribute(U"name", U"value")}));
-
+  EXPECT_EQ(EndTagToken(U"tag_name", false, std::vector<Attribute>{}), EndTagToken(U"tag_name", false, std::vector<Attribute>{}));
+  EXPECT_EQ(EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}),
+            EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"not the same", U"value")}),
+            EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"not the same")}),
+            EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(EndTagToken(U"not the same", false, std::vector<Attribute>{Attribute(U"name", U"value")}),
+            EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(EndTagToken(U"tag_name", true, std::vector<Attribute>{Attribute(U"name", U"value")}),
+            EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
+  EXPECT_NE(EndTagToken(U"not the same", true, std::vector<Attribute>{}),
+            EndTagToken(U"tag_name", false, std::vector<Attribute>{Attribute(U"name", U"value")}));
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, CharacterToken) {
-	EXPECT_EQ(CharacterToken(), CharacterToken());
-	EXPECT_EQ(CharacterToken(U'\U00001234'), CharacterToken(U'\U00001234'));
-	EXPECT_NE(CharacterToken(U'\U00001234'), CharacterToken(U'\U12340000'));
-	EXPECT_NE(CharacterToken(U'\U00001234'), CharacterToken());
+  EXPECT_EQ(CharacterToken(), CharacterToken());
+  EXPECT_EQ(CharacterToken(U'\U00001234'), CharacterToken(U'\U00001234'));
+  EXPECT_NE(CharacterToken(U'\U00001234'), CharacterToken(U'\U00001235'));
+  EXPECT_NE(CharacterToken(U'\U00001234'), CharacterToken());
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, CommentToken) {
-	EXPECT_EQ(CommentToken(), CommentToken());
-	EXPECT_EQ(CommentToken(U"this is a comment"), CommentToken(U"this is a comment"));
+  EXPECT_EQ(CommentToken(), CommentToken());
+  EXPECT_EQ(CommentToken(U"this is a comment"), CommentToken(U"this is a comment"));
 
-	EXPECT_NE(CommentToken(U"this is a comment"), CommentToken(U"this is not a comment"));
-	EXPECT_NE(CommentToken(U"this is a comment"), CommentToken());
+  EXPECT_NE(CommentToken(U"this is a comment"), CommentToken(U"this is not a comment"));
+  EXPECT_NE(CommentToken(U"this is a comment"), CommentToken());
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, EOFToken) {
-	EXPECT_EQ(EOFToken(), EOFToken());
-	EXPECT_FALSE(EOFToken() != EOFToken());
+  EXPECT_EQ(EOFToken(), EOFToken());
+  EXPECT_FALSE(EOFToken() != EOFToken());
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, NoToken) {
-	EXPECT_EQ(NoToken(), NoToken());
-	EXPECT_FALSE(NoToken() != NoToken());
+  EXPECT_EQ(NoToken(), NoToken());
+  EXPECT_FALSE(NoToken() != NoToken());
 }
 
 TEST(HTML_Parse_Tokenization_TokenizationTypes, Token) {
-	EXPECT_EQ(Token(), Token());
-	EXPECT_EQ(Token(EOFToken()), Token(EOFToken()));
-	EXPECT_NE(Token(EOFToken()), Token(NoToken()));
-	EXPECT_NE(Token(EOFToken()), Token());
+  EXPECT_EQ(Token(), Token());
+  EXPECT_EQ(Token(EOFToken()), Token(EOFToken()));
+  EXPECT_NE(Token(EOFToken()), Token(NoToken()));
+  EXPECT_NE(Token(EOFToken()), Token());
 }
 
 } /* namespace Tokenization */
