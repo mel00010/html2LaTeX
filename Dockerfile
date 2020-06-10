@@ -6,7 +6,7 @@ RUN apt-get update
 RUN apt-get install -t experimental -y --no-install-recommends \
     clang libc++1 libc++-dev clang-tidy lld \
     llvm python cmake doxygen ninja-build \
-    libboost-all-dev openssh-client openssh-server git libc++abi-dev \
+    libboost-all-dev git libc++abi-dev \
     ca-certificates gcc lcov libstdc++-10-dev
 RUN mv /usr/bin/ld /usr/bin/ld.gold
 RUN mv /usr/bin/lld /usr/bin/ld.lld
@@ -15,8 +15,5 @@ RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.gold 1
 RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.gold 1
 RUN update-alternatives --set cc /usr/bin/clang
 RUN update-alternatives --set c++ /usr/bin/clang++
-
-RUN sed -i s/#PermitRootLogin.*/PermitRootLogin\ yes/ /etc/ssh/sshd_config
-RUN echo "root:root" | chpasswd
 
 

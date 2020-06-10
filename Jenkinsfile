@@ -20,7 +20,7 @@ pipeline {
             steps {
                 checkout([
                     $class: 'GitSCM',
-                    branches: [[name: '*/master']],
+                    branches: scm.branches,
                     doGenerateSubmoduleConfigurations: false,
                     extensions: [[
                         $class: 'SubmoduleOption',
@@ -31,10 +31,7 @@ pipeline {
                         trackingSubmodules: false
                     ]],
                     submoduleCfg: [],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/mel00010/html2LaTeX.git',
-                        credentialsId: 'GithubPAC'
-                    ]]
+                    userRemoteConfigs: scm.userRemoteConfigs
                 ])
             }
         }
