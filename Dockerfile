@@ -1,9 +1,10 @@
 FROM debian:experimental
 EXPOSE 22
-RUN echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list
+RUN
 
-RUN apt-get update
-RUN apt-get install -t experimental -y --no-install-recommends \
+RUN  echo 'deb http://deb.debian.org/debian sid main' > /etc/apt/sources.list.d/sid.list && \
+apt-get update && \
+apt-get install -t experimental -y --no-install-recommends \
     clang libc++1 libc++-dev clang-tidy lld \
     llvm python cmake doxygen ninja-build \
     libboost-all-dev git libc++abi-dev \
