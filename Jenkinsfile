@@ -100,7 +100,7 @@ pipeline {
                     buildDir: 'build/Release',
                     cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
-        sh('''ninja -C build/Release all \
+        sh('''ninja -C build/Release all tests \
               | tee build/Analysis/CompilerOutput/release.log''')
         stash name: 'ReleaseTests', includes: 'build/Release/test/tests'
 
@@ -109,7 +109,7 @@ pipeline {
                     buildDir: 'build/Debug',
                     cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
-        sh('''ninja -C build/Debug all \
+        sh('''ninja -C build/Debug all tests \
               | tee build/Analysis/CompilerOutput/debug.log''')
         stash name: 'DebugTests', includes: 'build/Debug/test/tests'
 
@@ -118,7 +118,7 @@ pipeline {
                     buildDir: 'build/Coverage',
                     cleanBuild: params.DO_CLEAN_BUILD,
                     installation: 'cmake-3.17.3')
-        sh('''ninja -C build/Coverage all \
+        sh('''ninja -C build/Coverage all tests \
               | tee build/Analysis/CompilerOutput/coverage.log''')
         stash name: 'CoverageTests', includes: 'build/Coverage/test/tests'
 
@@ -128,7 +128,7 @@ pipeline {
                     cleanBuild: params.DO_CLEAN_BUILD,
                     cmakeArgs: '-DDISABLE_PCH=True',
                     installation: 'cmake-3.17.3')
-        sh('''ninja -C build/DebugNoPCH all \
+        sh('''ninja -C build/DebugNoPCH all tests \
             | tee build/Analysis/CompilerOutput/debugnopch.log''')
         stash(name: 'DebugNoPCHTests',
               includes: 'build/DebugNoPCH/test/tests')
