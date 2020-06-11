@@ -13,19 +13,19 @@ pipeline {
                   defaultValue: true,
                   description: 'Perform a build?')
     booleanParam( name: 'DO_CLEAN_BUILD',
-                  defaultValue: false,
+                  defaultValue: true,
                   description: 'Do a clean build?')
     booleanParam( name: 'RUN_TESTS',
-                  defaultValue: true,
+                  defaultValue: false,
                   description: 'Run tests?')
     booleanParam( name: 'RUN_ANALYSIS',
                   defaultValue: true,
                   description: 'Run analysis?')
     booleanParam( name: 'RUN_CLANGSA_CTU',
-                  defaultValue: false,
+                  defaultValue: true,
                   description: 'Run Clang Static Analysis with Cross Translation Unit Analysis?')
     booleanParam( name: 'RUN_CLANGSA',
-                  defaultValue: true,
+                  defaultValue: false,
                   description: 'Run Clang Static Analysis?')
     booleanParam( name: 'RUN_CLANGTIDY',
                   defaultValue: true,
@@ -37,7 +37,7 @@ pipeline {
                   defaultValue: true,
                   description: 'Run Facebook Infer?')
     booleanParam( name: 'RUN_VALGRIND',
-                  defaultValue: true,
+                  defaultValue: false,
                   description: 'Run Valgrind?')
     booleanParam( name: 'RUN_VERA',
                   defaultValue: true,
@@ -366,7 +366,7 @@ pipeline {
           }
           steps {
             sh('mkdir -p build/Analysis/VeraPlusPlus')
-            sh('''find src samples test \
+            sh('''find src test \
                     -type f             \
                     -name "*.cpp" -o    \
                     -name "*.cxx" -o    \
@@ -391,7 +391,7 @@ pipeline {
           }
           steps {
             sh('mkdir -p build/Analysis/RATS')
-            sh('''rats src samples test --xml \
+            sh('''rats src test --xml \
                   1> build/Analysis/RATS/report.xml''')
             stash(name: 'RATSResults',
                   includes: 'build/Analysis/RATS/report.xml')
