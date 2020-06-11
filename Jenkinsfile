@@ -248,7 +248,7 @@ pipeline {
         }
         stage('CodeChecker ClangSA') {
           when {
-            expression { params.DO_CLANGSA == true }
+            expression { params.RUN_CLANGSA == true }
           }
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
