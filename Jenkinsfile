@@ -366,7 +366,7 @@ pipeline {
           }
           steps {
             sh('mkdir -p build/Analysis/VeraPlusPlus')
-            sh('''find src test \
+            sh('''find src \
                     -type f             \
                     -name "*.cpp" -o    \
                     -name "*.cxx" -o    \
