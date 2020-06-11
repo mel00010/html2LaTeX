@@ -231,7 +231,7 @@ pipeline {
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""cat .codechecker_skip | sed "s|*/GameEngine|${WORKSPACE}|" \
+            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
@@ -253,7 +253,7 @@ pipeline {
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""cat .codechecker_skip | sed "s|*/GameEngine|${WORKSPACE}|" \
+            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
@@ -274,7 +274,7 @@ pipeline {
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
             sh('mkdir -p build/Analysis/CodeChecker/ClangTidy')
-            sh("""cat .codechecker_skip | sed "s|*/GameEngine|${WORKSPACE}|" \
+            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangTidy/.codechecker_skip""")
             sh("""${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
