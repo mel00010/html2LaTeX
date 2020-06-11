@@ -20,46 +20,35 @@
 
 #include "LaTeXOStream.hpp"
 
-#include <bits/locale_conv.h>
-//#include <stddef.h>
+#include <stddef.h>
 //#include <UnicodeToLaTeX.hpp>
 #include <codecvt>
-//#include <fstream>
-//#include <iomanip>
-//#include <iostream>
-//#include <locale>
-//#include <string>
-
+#include <fstream>
+#include <iomanip>
+#include <iostream>
+#include <locale>
+#include <string>
 
 namespace LaTeX {
 
+LaTeXOStream::LaTeXOStream(std::ostream& output, UnicodeToLaTeX& converter) : ostream(output), unicodeToLaTeX(converter) {}
 
-LaTeXOStream::LaTeXOStream(std::ostream& output, UnicodeToLaTeX& converter) :
-		ostream(output), unicodeToLaTeX(converter) {
+LaTeXOStream::~LaTeXOStream() {}
+
+void LaTeXOStream::write(const char* string, __attribute__((unused)) const size_t size) {
+  std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv32;
+  std::u32string str32 = conv32.from_bytes(string);
+
+  ostream << unicodeToLaTeX.convert(str32);
 }
 
-LaTeXOStream::~LaTeXOStream() {
-}
-
-void LaTeXOStream::write(const char* string, __attribute__((unused))  const size_t size) {
-	std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv32;
-	std::u32string str32 = conv32.from_bytes(string);
-
-	ostream << unicodeToLaTeX.convert(str32);
-}
-
-void LaTeXOStream::write(const char32_t& string, __attribute__((unused))   const size_t size) {
-	ostream << unicodeToLaTeX.convert(string);
-}
+void LaTeXOStream::write(const char32_t& string, __attribute__((unused)) const size_t size) { ostream << unicodeToLaTeX.convert(string); }
 
 void LaTeXOStream::write(const std::string& string) {
-	std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv32;
-	std::u32string str32 = conv32.from_bytes(string);
+  std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> conv32;
+  std::u32string str32 = conv32.from_bytes(string);
 
-	ostream << unicodeToLaTeX.convert(str32);
+  ostream << unicodeToLaTeX.convert(str32);
 }
-void LaTeXOStream::write(const std::u32string& string) {
-	ostream << unicodeToLaTeX.convert(string);
-}
+void LaTeXOStream::write(const std::u32string& string) { ostream << unicodeToLaTeX.convert(string); }
 } /* namespace LaTeX */
-

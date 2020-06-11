@@ -2,14 +2,61 @@ cmake_minimum_required (VERSION 3.9)
 
 project (html2LaTeX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 include(GNUInstallDirs)
+INCLUDE(FindPkgConfig)
+set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
+cmake_policy(SET CMP0069 NEW)
+include(CheckIPOSupported)
+
+# Optional IPO. Do not use IPO if it's not supported by compiler.
+check_ipo_supported(RESULT result OUTPUT output)
+if(result)
+  set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+else()
+  message(WARNING "IPO is not supported: ${output}")
+endif()
+
+set(CMAKE_POLICY_DEFAULT_CMP0083 NEW)
+cmake_policy(SET CMP0083 NEW)
+
+include(CheckPIESupported)
+check_pie_supported()
+set(CMAKE_POSITION_INDEPENDENT_CODE FALSE)
+
+set(CMAKE_LINK_WHAT_YOU_USE FALSE)
+
+set(BUILD_SHARED_LIBS OFF)
+
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--thinlto-cache-dir=${PROJECT_BINARY_DIR}/lto.cache")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--thinlto-cache-dir=${PROJECT_BINARY_DIR}/lto.cache")
+
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-find_package (Boost REQUIRED)
+set(REDIRECTION_FLAGS "-ffile-prefix-map=../../samples/=")
+set(REDIRECTION_FLAGS "${REDIRECTION_FLAGS} -ffile-prefix-map=../samples/=")
+set(REDIRECTION_FLAGS "${REDIRECTION_FLAGS} -ffile-prefix-map=${CMAKE_SOURCE_DIR}=")
+set(REDIRECTION_FLAGS "${REDIRECTION_FLAGS} -ffile-prefix-map=../src=GameEngine")
+set(REDIRECTION_FLAGS "${REDIRECTION_FLAGS} -ffile-prefix-map=../../src=GameEngine")
+set(REDIRECTION_FLAGS "${REDIRECTION_FLAGS} -ffile-prefix-map=_deps/=")
 
-add_library(boost INTERFACE IMPORTED)
+set(SHARED_FLAGS "-Wno-unused-result -Wsign-compare")
+set(SHARED_FLAGS "${SHARED_FLAGS} -fstack-protector-strong -Wformat")
+set(SHARED_FLAGS "${SHARED_FLAGS} -Werror=format-security -fwrapv")
+set(SHARED_FLAGS "${SHARED_FLAGS} -Wall -Wextra")
+set(SHARED_FLAGS "${SHARED_FLAGS} -fdiagnostics-color=always")
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SHARED_FLAGS}")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++2a")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SHARED_FLAGS}")
+
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -ggdb")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG_BUILD=1 -DMIN_LOG_LEVEL=0")
+
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -D_DEBUG_BUILD=0 -DMIN_LOG_LEVEL=0 ${REDIRECTION_FLAGS}")
 
 
 set( CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_DEBUG}" CACHE STRING
@@ -36,21 +83,27 @@ set( CMAKE_BUILD_TYPE "${CMAKE_BUILD_TYPE}" CACHE STRING
     "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel Coverage."
     FORCE )
 
-set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -Wno-unused-result -Wsign-compare -fstack-protector-strong")
-set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -Wformat -Werror=format-security -fwrapv")
-set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -Wall -Wextra -std=gnu++17 -g -O0")
-set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage -fprofile-arcs -ftest-coverage -fdiagnostics-color=always")
+if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+  set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -fcoverage-mapping")
+  set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -fprofile-instr-generate")
+  # using Clang
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fconcepts")
+  set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} --coverage -fprofile-arcs")
+  set(CMAKE_CXX_FLAGS_COVERAGE "${CMAKE_CXX_FLAGS_COVERAGE} -ftest-coverage")
+  # using GCC
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+  # using Intel C++
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # using Visual Studio C++
+endif()
 
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wno-unused-result -Wsign-compare -fstack-protector-strong")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wformat -Werror=format-security -fwrapv")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wextra -std=gnu++17")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fdiagnostics-color=always")
+find_package (Boost COMPONENTS program_options REQUIRED)
 
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wno-unused-result -Wsign-compare -fstack-protector-strong")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wformat -Werror=format-security -fwrapv")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall -Wextra -std=gnu++17")
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -fdiagnostics-color=always")
-
+add_library(boost INTERFACE IMPORTED)
+target_link_libraries(boost ${boost_LIBRARIES})
+target_include_directories(boost PUBLIC ${boost_INCLUDE_DIRS})
 
 
 # The version number.

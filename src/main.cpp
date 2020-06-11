@@ -18,13 +18,12 @@
  * along with html2LaTeX.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
 
-#include "HTML/Parse/DetermineCharEncoding.hpp"
-#include "HTML/HTMLTypes.hpp"
-#include "ProgramOptions.hpp"
-
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
+#include "HTML/HTMLTypes.hpp"
+#include "HTML/Parse/DetermineCharEncoding.hpp"
+//#include "ProgramOptions.hpp"
 
 /**
  * @file src/main.cpp
@@ -42,28 +41,27 @@
  * @return Returns 0 if there are no errors.
  */
 int main(int argc, char** argv) {
-	Options options;
-	try {
-		options.parse(argc, argv);
-	}
-	catch (...) {
-		return 1;
-	}
+  //	Options options;
+  //	try {
+  //		options.parse(argc, argv);
+  //	}
+  //	catch (...) {
+  //		return 1;
+  //	}
 
-	std::ifstream file;
-	try {
-		file.open(options.inputFilename, std::istream::binary);
-	} catch (...) {
-		return 1;
-	}
-	HTML::Parse::DetermineCharEncoding determineCharEncoding;
-	HTML::ContentType contentType;
-	try {
-		contentType = determineCharEncoding.determineCharEncoding(file);
-	}
-	catch (...) {
-		return 1;
-	}
-	std::cout << contentType << std::endl;
-	return 0;
+  std::ifstream file;
+  //  try {
+  //    file.open(options.inputFilename, std::istream::binary);
+  //  } catch (...) {
+  //    return 1;
+  //  }
+  HTML::Parse::DetermineCharEncoding determineCharEncoding;
+  HTML::ContentType contentType;
+  try {
+    contentType = determineCharEncoding.determineCharEncoding(file);
+  } catch (...) {
+    return 1;
+  }
+  std::cout << contentType << std::endl;
+  return 0;
 }
