@@ -2,14 +2,14 @@ pipeline {
   agent any
 
   triggers {
-    cron('H */4 * * *')  // Run every 4 hours
-  }
+    cron('H */16 * * *')  // Run every 16 hours
+  } // triggers
 
   options {
     buildDiscarder(logRotator(numToKeepStr: '10'))
     skipDefaultCheckout()
     ansiColor('xterm')
-  }
+  } // options
   parameters {
     booleanParam( name: 'DO_CHECKOUT',
                   defaultValue: true,
@@ -20,33 +20,9 @@ pipeline {
     booleanParam( name: 'DO_CLEAN_BUILD',
                   defaultValue: true,
                   description: 'Do a clean build?')
-    booleanParam( name: 'BUILD_RELEASE',
-                  defaultValue: true,
-                  description: 'Perform a build of the Release config?')
-    booleanParam( name: 'BUILD_DEBUG',
-                  defaultValue: true,
-                  description: 'Perform a build of the Debug config?')
-    booleanParam( name: 'BUILD_COVERAGE',
-                  defaultValue: true,
-                  description: 'Perform a build of the Coverage config?')
-    booleanParam( name: 'BUILD_DEBUGNOPCH',
-                  defaultValue: true,
-                  description: 'Perform a build of the DebugNOPCH config?')
     booleanParam( name: 'RUN_TESTS',
                   defaultValue: true,
                   description: 'Run tests?')
-    booleanParam( name: 'RUN_TESTS_RELEASE',
-                  defaultValue: true,
-                  description: 'Run tests for the Release config?')
-    booleanParam( name: 'RUN_TESTS_DEBUG',
-                  defaultValue: true,
-                  description: 'Run tests for the Debug config?')
-    booleanParam( name: 'RUN_TESTS_COVERAGE',
-                  defaultValue: true,
-                  description: 'Run tests for the Coverage config?')
-    booleanParam( name: 'RUN_TESTS_DEBUGNOPCH',
-                  defaultValue: true,
-                  description: 'Run tests for the DebugNOPCH config?')
     booleanParam( name: 'RUN_ANALYSIS',
                   defaultValue: true,
                   description: 'Run analysis?')
@@ -80,13 +56,19 @@ pipeline {
     booleanParam( name: 'RUN_SONARQUBE',
                   defaultValue: true,
                   description: 'Run SonarQube scanner?')
+    booleanParam( name: 'RUN_SONARCLOUD',
+                  defaultValue: true,
+                  description: 'Run SonarCloud scanner?')
     string( name: 'CODECHECKER_PATH',
             defaultValue: '/home/mel/codechecker/build/CodeChecker/bin/_CodeChecker',
             description: 'Path to CodeChecker executable')
     string( name: 'SOURCE_DIRECTORIES',
             defaultValue: 'src test',
             description: 'Directories to perform analysis on')
-  }
+    string( name: 'REFERENCE_JOB',
+            defaultValue: 'html2LaTeX/DOM_Interfaces',
+            description: 'Reference job for warnings analysis')
+  } // parameters
 
   stages {
     /**
@@ -95,7 +77,7 @@ pipeline {
     stage('Checkout') {
       when {
         expression { params.DO_CHECKOUT == true }
-      }
+      } // when
       steps {
         checkout([
           $class: 'GitSCM',
@@ -108,207 +90,297 @@ pipeline {
             recursiveSubmodules: true,
             reference: '',
             trackingSubmodules: false
-          ]],
+          ]], // extensions
           submoduleCfg: [],
           userRemoteConfigs: scm.userRemoteConfigs
-        ])
-      }
-    }
-    stage('Build') {
-      agent {
-        dockerfile {
-          args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
-          reuseNode true
-        }
-      }
-      when {
-        expression { params.DO_BUILD == true }
-      }
-      stages {
-        stage('Setup') {
-          steps {
-            sh('mkdir -p build/Analysis/CompilerOutput')
-            cmakeBuild( buildType: 'Debug',
-                        generator: 'Ninja',
-                        buildDir: 'build/DebugNoPCH',
-                        cleanBuild: params.DO_CLEAN_BUILD,
-                        cmakeArgs: '-DDISABLE_PCH=True',
-                        installation: 'cmake-3.17.3')
-            stash(name: 'DebugNoPCHCompDBase',
-                  includes: 'build/DebugNoPCH/compile_commands.json')
-          }
-        }
-        stage('Build Release') {
-          when {
-            expression { params.BUILD_RELEASE == true }
-          }
-          steps {
-            cmakeBuild( buildType: 'Release',
-                        generator: 'Ninja',
-                        buildDir: 'build/Release',
-                        cleanBuild: params.DO_CLEAN_BUILD,
-                        installation: 'cmake-3.17.3')
-            sh('''ninja -C build/Release all \
-                  | tee build/Analysis/CompilerOutput/Release.log''')
-            stash name: 'ReleaseTests', includes: 'build/Release/test/tests'
-          }
-        }
-        stage('Build Debug') {
-          when {
-            expression { params.BUILD_DEBUG == true }
-          }
-          steps {
-            cmakeBuild( buildType: 'Debug',
-                        generator: 'Ninja',
-                        buildDir: 'build/Debug',
-                        cleanBuild: params.DO_CLEAN_BUILD,
-                        installation: 'cmake-3.17.3')
-            sh('''ninja -C build/Debug all \
-                  | tee build/Analysis/CompilerOutput/Debug.log''')
-            stash name: 'DebugTests', includes: 'build/Debug/test/tests'
-          }
-        }
-        stage('Build Coverage') {
-          when {
-            expression { params.BUILD_COVERAGE == true }
-          }
-          steps {
-            cmakeBuild( buildType: 'Coverage',
-                        generator: 'Ninja',
-                        buildDir: 'build/Coverage',
-                        cleanBuild: params.DO_CLEAN_BUILD,
-                        installation: 'cmake-3.17.3')
-            sh('''ninja -C build/Coverage all \
-                  | tee build/Analysis/CompilerOutput/Coverage.log''')
-            stash name: 'CoverageTests', includes: 'build/Coverage/test/tests'
-          }
-        }
-        stage('Build DebugNoPCH') {
-          when {
-            expression { params.BUILD_DEBUGNOPCH == true }
-          }
-          steps {
-            sh('''ninja -C build/DebugNoPCH all \
-                | tee build/Analysis/CompilerOutput/DebugNoPCH.log''')
-            stash(name: 'DebugNoPCHTests',
-                  includes: 'build/DebugNoPCH/test/tests')
-          }
-        }
-      }
+        ]) // checkout
+        stash(name: 'source_code',
+              includes: '**/*')
+        stash(name: 'dockerfiles',
+              includes: 'Dockerfile.*')
+      } // steps
+    } // stage('Checkout')
+    stage('Setup') {
+      matrix {
+        axes {
+          axis {
+            name 'COMPILER'
+            values 'gcc', 'clang'
+          } // axis
+        } // axes
+        stages {
+          stage('BuildDockerFile') {
+            agent any
+            stages {
+              stage('Setup') {
+                steps {
+                  unstash(name: 'dockerfiles')
+                } // steps
+              } // stage('Setup')
+              stage('Build') {
+                agent {
+                  dockerfile {
+                    filename "Dockerfile.${COMPILER}"
+                    args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+                    reuseNode true
+                  } // dockerfile
+                } // agent
+                steps {
+                  echo "Building Docker image for ${COMPILER}"
+                } // steps
+              } // stage('Compile')
+            } // stages
+          } // stage('CompileDockerFile')
+        } // stages
+      } // matrix
+    } // stage('Setup')
+    stage('Build and Test') {
+      matrix {
+        axes {
+          axis {
+            name 'COMPILER'
+            values 'gcc', 'clang'
+          } // axis
+          axis {
+            name 'CONFIGURATION'
+            values 'Debug', 'Release', 'RelWithDebInfo', 'Coverage'
+          } // axis
+          axis {
+            name 'DISABLE_PCH'
+            values 'True', 'False'
+          } // axis
+        } // axes
+        when {
+          expression { params.DO_BUILD == true }
+        } // when
+        stages {
+          stage('SetupAndExecute') {
+            agent any
+            stages {
+              stage('Setup') {
+                steps {
+                  unstash(name: 'dockerfiles')
+                } // steps
+              } // stage('Setup')
+              stage('Execute') {
+                agent {
+                  dockerfile {
+                    filename "Dockerfile.${COMPILER}"
+                    args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+                    reuseNode true
+                  } // dockerfile
+                } // agent
+                stages {
+                  stage('Build') {
+                    when {
+                      expression { params.DO_BUILD == true }
+                    } // when
+                    steps {
+                      unstash(name: 'source_code')
+                      sh(script: """mkdir -p build/Analysis/CompilerOutput/${COMPILER}/""", label: 'Create build directory')
+                      cmakeBuild( buildType: "${CONFIGURATION}",
+                                  generator: 'Ninja',
+                                  buildDir: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/",
+                                  cleanBuild: params.DO_CLEAN_BUILD,
+                                  cmakeArgs: "-DDISABLE_PCH=${DISABLE_PCH}",
+                                  installation: 'cmake-latest')
+                      sh(script: """set +o pipefail ; \
+                            ninja -j4 -C build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/ all \
+                            | tee build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log""",
+                            label: 'Compile')
+                      stash(name: "Tests_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests")
+                      stash(name: "CompilerOutput_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/Analysis/CompilerOutput/${COMPILER}/${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.log",
+                            allowEmpty: true)
+                    } // steps
+                  } // stage('Build')
+                  stage('Test') {
+                    when {
+                      expression { params.RUN_TESTS == true}
+                    } // when
+                    steps {
+                      unstash(name: "Tests_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
+                      sh(script: """build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests \
+                          --gtest_output=xml:build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/""",
+                          label: 'Run Tests')
+                      stash(name: "TestReports_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/*")
+                      stash(name: "TestCoverageData_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/")
+                    } // steps
+                    post {
+                      always {
+                        unstash(name: "TestReports_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
+                        xunit (
+                          thresholds: [ skipped(failureThreshold: '0'),
+                                        failed(failureThreshold: '0') ],
+                          tools: [ GoogleTest(pattern: """build/TestReports/${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}/*.xml""") ]
+                        )
+                      } // always
+                    } // post
+                  } // stage('Test')
+                  stage('Valgrind') {
+                    when {
+                      expression { params.RUN_ANALYSIS == true && params.RUN_VALGRIND == true}
+                    } // when
+                    steps {
+                      unstash(name: "Tests_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
+                      sh(script: 'mkdir -p build/Analysis/Valgrind', label: 'Create Analysis Directory')
+                      sh(script: """valgrind \
+                            --log-file=build/Analysis/Valgrind/valgrind-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}-%p.log \
+                            -s \
+                            --leak-check=full \
+                            --show-leak-kinds=all \
+                            build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/tests""",
+                            label: 'Run Valgrind')
+                      stash(name: "ValgrindResults_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/Analysis/Valgrind/valgrind-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}-*.log",
+                            allowEmpty: true)
+                    } // steps
+                  } // stage('Valgrind')
+                  stage('Coverage') {
+                    when {
+                      expression { params.RUN_COVERAGE == true && CONFIGURATION == 'Coverage' }
+                    } // when
+                    steps {
+                      unstash(name: "TestCoverageData_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}")
+                      sh(script: 'mkdir -p build/Analysis/Coverage', label: 'Create Analysis Directory')
+                      sh(script: """gcovr -r . -x \
+                            --object-directory=build/${COMPILER}/${CONFIGURATION}/DisablePCH_${DISABLE_PCH}/test/ \
+                            > build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml""",
+                            label: 'Run GCovR')
+                      stash(name: "CoverageResults_${COMPILER}_${CONFIGURATION}_${DISABLE_PCH}",
+                            includes: "build/Analysis/Coverage/report-${COMPILER}_${CONFIGURATION}_DisablePCH_${DISABLE_PCH}.xml",
+                            allowEmpty: true)
+                    } // steps
+                  } // stage('Coverage')
+                } // stages
+              } // stage('Execute')
+            } // stages
+          } // stage('SetupAndExecute')
+        } // stages
+      } // matrix
       post {
         success {
-          stash(name: 'CompilerOutput',
-                includes: 'build/Analysis/CompilerOutput/*.log')
-        }
-      }
-    }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Debug_True")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Debug_False")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Release_True")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Release_False")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_RelWithDebInfo_True")     }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_RelWithDebInfo_False")    }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Coverage_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_gcc_Coverage_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Debug_True")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Debug_False")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Release_True")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Release_False")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_RelWithDebInfo_True")   }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_RelWithDebInfo_False")  }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_True")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_False")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_True")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_False")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_True")    }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_False")   }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_True")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_False")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_True")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_False")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_True")  }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_False") }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_True")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_False")       }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Debug_True")                 }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Debug_False")                }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Release_True")               }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Release_False")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_RelWithDebInfo_True")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_RelWithDebInfo_False")       }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Coverage_True")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Coverage_False")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Debug_True")               }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Debug_False")              }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Release_True")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Release_False")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_RelWithDebInfo_True")      }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_RelWithDebInfo_False")     }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Coverage_True")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_clang_Coverage_False")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Debug_True")             }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Debug_False")            }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Release_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Release_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_RelWithDebInfo_True")    }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_RelWithDebInfo_False")   }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Coverage_True")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_gcc_Coverage_False")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Debug_True")           }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Debug_False")          }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Release_True")         }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Release_False")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_RelWithDebInfo_True")  }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_RelWithDebInfo_False") }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Coverage_True")        }
+          catchError(buildResult: null, stageResult: null) { unstash(name: "ValgrindResults_clang_Coverage_False")       }
 
-    stage('Test') {
-      when {
-        expression { params.RUN_TESTS == true && params.DO_BUILD == true}
-      }
-      parallel {
-        stage('Test Release') {
-          when {
-            expression { params.BUILD_RELEASE == true && params.RUN_TESTS_RELEASE == true}
-          }
-          steps {
-            unstash(name: 'ReleaseTests')
-            sh('build/Release/test/tests --gtest_output=xml:build/Release/reports/')
-            stash(name: 'TestReleaseReports',
-                  includes: 'build/Release/reports/*.xml')
-          }
-          post {
-            always {
-              xunit (
-                thresholds: [ skipped(failureThreshold: '0'),
-                              failed(failureThreshold: '0') ],
-                tools: [ GoogleTest(pattern: 'build/Release/reports/*.xml') ]
-              )
-            }
-          }
-        }
-        stage('Test Debug') {
-          when {
-            expression { params.BUILD_DEBUG == true && params.RUN_TESTS_DEBUG == true}
-          }
-          steps {
-            unstash(name: 'DebugTests')
-            sh('build/Debug/test/tests --gtest_output=xml:build/Debug/reports/')
-            stash(name: 'TestDebugReports',
-                  includes: 'build/Debug/reports/*.xml')
-          }
-          post {
-            always {
-              xunit (
-                thresholds: [ skipped(failureThreshold: '0'),
-                              failed(failureThreshold: '0') ],
-                tools: [ GoogleTest(pattern: 'build/Debug/reports/*.xml') ]
-              )
-            }
-          }
-        }
-        stage('Test Coverage') {
-          when {
-            expression { params.BUILD_COVERAGE == true && params.RUN_TESTS_COVERAGE == true}
-          }
-          steps {
-            unstash(name: 'CoverageTests')
-            sh('build/Coverage/test/tests --gtest_output=xml:build/Coverage/reports/')
-            stash(name: 'TestCoverageReports',
-                  includes: 'build/Coverage/reports/*.xml')
-            stash(name: 'CoverageAnalysisData',
-                  includes: 'build/Coverage/test/*')
-          }
-          post {
-            always {
-              xunit (
-                thresholds: [ skipped(failureThreshold: '0'),
-                              failed(failureThreshold: '0') ],
-                tools: [ GoogleTest(pattern: 'build/Coverage/reports/*.xml') ]
-              )
-            }
-          }
-        }
-        stage('Test DebugNoPCH') {
-          when {
-            expression { params.BUILD_DEBUGNOPCH == true && params.RUN_TESTS_DEBUGNOPCH == true}
-          }
-          steps {
-            unstash(name: 'DebugNoPCHTests')
-            sh('build/DebugNoPCH/test/tests --gtest_output=xml:build/DebugNoPCH/reports/')
-            stash(name: 'TestDebugNoPCHReports',
-                  includes: 'build/DebugNoPCH/reports/*.xml')
-          }
-          post {
-            always {
-              xunit (
-                thresholds: [ skipped(failureThreshold: '0'),
-                              failed(failureThreshold: '0') ],
-                tools: [ GoogleTest(pattern: 'build/DebugNoPCH/reports/*.xml') ]
-              )
-            }
-          }
-        }
-      }
-    }
+          stash(name: 'CompilerOutput',
+                includes: 'build/Analysis/CompilerOutput/**/*.log',
+                allowEmpty: true)
+          stash(name: 'CoverageResults',
+                includes: 'build/Analysis/Coverage/*.xml',
+                allowEmpty: true)
+          stash(name: 'ValgrindResults',
+                includes: 'build/Analysis/Valgrind/*.log',
+                allowEmpty: true)
+          stash(name: 'TestReports',
+                includes: 'build/TestReports/**/*.xml',
+                allowEmpty: true)
+        } // success
+      } // post
+    } // stage('Build and Test')
 
     stage('Analysis') {
       when {
         expression { params.RUN_ANALYSIS == true }
       }
       stages {
+        stage('Setup') {
+          steps {
+            cmakeBuild( buildType: 'Debug',
+                        generator: 'Ninja',
+                        buildDir: 'build/DebugNoPCH',
+                        cleanBuild: params.DO_CLEAN_BUILD,
+                        cmakeArgs: '-DDISABLE_PCH=True',
+                        installation: 'cmake-latest')
+            stash(name: 'DebugNoPCHCompDBase',
+                  includes: 'build/DebugNoPCH/compile_commands.json')
+            sh(script: '''curl --create-dirs -sSLo .sonar/build-wrapper-linux-x86.zip \
+                  https://sonarcloud.io/static/cpp/build-wrapper-linux-x86.zip''',
+                  label: 'Fetch Sonar Build Wrapper')
+            sh(script: 'unzip -o .sonar/build-wrapper-linux-x86.zip -d .sonar/', label: 'Unzip Sonar Build Wrapper')
+            sh(script: '''.sonar/build-wrapper-linux-x86/build-wrapper-linux-x86-64 \
+                  --out-dir build/BuildWrapper \
+                  ninja -j4 -C build/DebugNoPCH all''',
+                  label: 'Build with Sonar Build Wrapper')
+          } // steps
+        } // stage('Setup')
         stage('CodeChecker ClangSA CTU') {
           when {
             expression { params.RUN_CLANGSA_CTU == true && params.DO_BUILD == true}
-          }
+          } // when
 
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
+            sh(script: 'mkdir -p build/Analysis/CodeChecker/ClangSA', label: 'Create Analysis Directory')
+            sh(script: """set +o pipefail ; \
+                  cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
-            sh("""${CODECHECKER_PATH} analyze \
+            sh(script: """${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
                   -j2 \
                   --analyzers clangsa \
@@ -316,79 +388,81 @@ pipeline {
                   --enable alpha \
                   --ctu \
                   -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
-                  --output build/Analysis/CodeChecker/ClangSA/""")
+                  --output build/Analysis/CodeChecker/ClangSA/""", label: 'Run ClangSA')
             stash(name: 'CodeCheckerClangSA_CTUResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
-          }
-        }
+          } // steps
+        } // stage('CodeChecker ClangSA CTU')
         stage('CodeChecker ClangSA') {
           when {
             expression { params.RUN_CLANGSA == true && params.DO_BUILD == true}
-          }
+          } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CodeChecker/ClangSA')
-            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
+            sh(script: 'mkdir -p build/Analysis/CodeChecker/ClangSA', label: 'Create Analysis Directory')
+            sh(script: """set +o pipefail ; \
+                  cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangSA/.codechecker_skip""")
-            sh("""${CODECHECKER_PATH} analyze \
+            sh(script: """${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
-                  -j8 \
+                  -j6 \
                   --analyzers clangsa \
                   --enable-all \
                   --enable alpha \
                   -i build/Analysis/CodeChecker/ClangSA/.codechecker_skip \
-                  --output build/Analysis/CodeChecker/ClangSA/""")
+                  --output build/Analysis/CodeChecker/ClangSA/""", label: 'Run ClangSA')
             stash(name: 'CodeCheckerClangSAResults',
                   includes: 'build/Analysis/CodeChecker/ClangSA/*.plist')
-          }
-        }
+          } // steps
+        } // stage('CodeChecker ClangSA')
         stage('CodeChecker ClangTidy') {
           when {
             expression { params.RUN_CLANGTIDY == true && params.DO_BUILD == true}
-          }
+          } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CodeChecker/ClangTidy')
-            sh("""cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
+            sh(script: 'mkdir -p build/Analysis/CodeChecker/ClangTidy', label: 'Create Analysis Directory')
+            sh(script: """set +o pipefail ; \
+                  cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" \
                 > build/Analysis/CodeChecker/ClangTidy/.codechecker_skip""")
-            sh("""${CODECHECKER_PATH} analyze \
+            sh(script: """${CODECHECKER_PATH} analyze \
                   "build/DebugNoPCH/compile_commands.json" \
-                  -j8 \
+                  -j6 \
                   --analyzers clang-tidy \
                   --enable-all \
                   -i build/Analysis/CodeChecker/ClangTidy/.codechecker_skip \
-                  --output build/Analysis/CodeChecker/ClangTidy/""")
+                  --output build/Analysis/CodeChecker/ClangTidy/""", label: 'Run ClangTidy')
             stash(name: 'CodeCheckerClangTidyResults',
                   includes: 'build/Analysis/CodeChecker/ClangTidy/*.plist')
-           }
-        }
+           } // steps
+        } // stage('CodeChecker ClangTidy')
         stage('CppCheck') {
           when {
             expression { params.RUN_CPPCHECK == true && params.DO_BUILD == true}
-          }
+          } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/CppCheck')
-            sh("""cppcheck \
-                  -j8 \
+            sh(script: 'mkdir -p build/Analysis/CppCheck')
+            sh(script: """cppcheck \
+                  -j6 \
                   --project=build/DebugNoPCH/compile_commands.json \
                   -i"${WORKSPACE}/build" \
                   --xml \
+                  --xml-version=2 \
                   --enable=all \
-                  --language=c++ 2> build/Analysis/CppCheck/cppcheck.xml""")
-            //publishCppcheck( allowNoReport: true, ignoreBlankFiles: true, pattern: '**/cppcheck-result.xml')
+                  --language=c++ 2> build/Analysis/CppCheck/cppcheck.xml""", label: 'Run CppCheck')
             stash(name: 'CppCheckResults',
                   includes: 'build/Analysis/CppCheck/cppcheck.xml')
-          }
-        }
+          } // steps
+        } // stage('CppCheck')
         stage('Infer') {
           when {
             expression { params.RUN_INFER == true && params.DO_BUILD == true}
-          }
+          } // when
           steps {
             unstash(name: 'DebugNoPCHCompDBase')
-            sh('mkdir -p build/Analysis/Infer')
-            sh('''infer run \
+            sh(script: 'mkdir -p build/Analysis/Infer', label: 'Create Analysis Directory')
+            sh(script: '''infer run \
                   --compilation-database build/DebugNoPCH/compile_commands.json \
                   --keep-going \
                   --skip-analysis-in-path build/ \
@@ -441,92 +515,20 @@ pipeline {
                   --type-size \
                   --uninit-interproc \
                   --no-hoisting-report-only-expensive \
-                  --results-dir build/Analysis/Infer''')
+                  --pmd-xml \
+                  --results-dir build/Analysis/Infer''', label: 'Run FBInfer')
             stash(name: 'InferResults',
                   includes: 'build/Analysis/Infer/report.json')
-          }
-        }
-        stage('Valgrind') {
-          when {
-            expression { params.RUN_VALGRIND == true && params.DO_BUILD == true}
-          }
-          stages {
-            stage('Valgrind Release') {
-              when {
-                expression { params.BUILD_RELEASE == true }
-              }
-              steps {
-                unstash(name: 'ReleaseTests')
-                sh('mkdir -p build/Analysis/Valgrind')
-                sh('''valgrind \
-                      --log-file=build/Analysis/Valgrind/valgrind-Release-%p.log \
-                      -s \
-                      --leak-check=full \
-                      --show-leak-kinds=all \
-                      build/Release/test/tests''')
-              }
-            }
-            stage('Valgrind Debug') {
-              when {
-                expression { params.BUILD_DEBUG == true }
-              }
-              steps {
-                unstash(name: 'DebugTests')
-                sh('mkdir -p build/Analysis/Valgrind')
-                sh('''valgrind \
-                      --log-file=build/Analysis/Valgrind/valgrind-Debug-%p.log \
-                      -s \
-                      --leak-check=full \
-                      --show-leak-kinds=all \
-                      build/Debug/test/tests''')
-              }
-            }
-            stage('Valgrind Coverage') {
-              when {
-                expression { params.BUILD_COVERAGE == true }
-              }
-              steps {
-                unstash(name: 'CoverageTests')
-                sh('mkdir -p build/Analysis/Valgrind')
-                sh('''valgrind \
-                      --log-file=build/Analysis/Valgrind/valgrind-Coverage-%p.log \
-                      -s \
-                      --leak-check=full \
-                      --show-leak-kinds=all \
-                      build/Debug/test/tests''')
-              }
-            }
-            stage('Valgrind DebugNoPCH') {
-              when {
-                expression { params.BUILD_DEBUGNOPCH == true }
-              }
-              steps {
-                unstash(name: 'DebugNoPCHTests')
-                sh('mkdir -p build/Analysis/Valgrind')
-                sh('''valgrind \
-                      --log-file=build/Analysis/Valgrind/valgrind-DebugNoPCH-%p.log \
-                      -s \
-                      --leak-check=full \
-                      --show-leak-kinds=all \
-                      build/Debug/test/tests''')
-              }
-            }
-
-          }
-          post {
-            success {
-              stash(name: 'ValgrindResults',
-                    includes: 'build/Analysis/Valgrind/*.log')
-            }
-          }
-        }
+          } // steps
+        } // stage('Infer')
         stage('Vera++') {
           when {
             expression { params.RUN_VERA == true }
-          }
+          } // when
           steps {
-            sh('mkdir -p build/Analysis/VeraPlusPlus')
-            sh('''find ${SOURCE_DIRECTORIES} \
+            sh(script: 'mkdir -p build/Analysis/VeraPlusPlus', label: 'Create Analysis Directory')
+            sh(script: '''set +o pipefail ; \
+                  find ${SOURCE_DIRECTORIES} \
                     -type f             \
                     -name "*.cpp" -o    \
                     -name "*.cxx" -o    \
@@ -540,47 +542,32 @@ pipeline {
                     -name "*.txx" -o    \
                     -name "*.t"   -o    \
                     -name "*.tt"        \
-                | vera++ --xml-report build/Analysis/VeraPlusPlus/report.xml''')
+                | vera++ --xml-report build/Analysis/VeraPlusPlus/report.xml''',
+              label: 'Run Vera++')
             stash(name: 'VeraResults',
                   includes: 'build/Analysis/VeraPlusPlus/report.xml')
-          }
-        }
+          } // steps
+        } // stage('Vera++')
         stage('RATS') {
           when {
             expression { params.RUN_RATS == true }
-          }
+          } // when
           steps {
-            sh('mkdir -p build/Analysis/RATS')
-            sh("""rats ${SOURCE_DIRECTORIES} --xml \
-                  1> build/Analysis/RATS/report.xml""")
+            sh(script: 'mkdir -p build/Analysis/RATS', label: 'Create Analysis Directory')
+            sh(script: """rats ${SOURCE_DIRECTORIES} --xml \
+                  1> build/Analysis/RATS/report.xml""", label: 'Run RATS')
             stash(name: 'RATSResults',
                   includes: 'build/Analysis/RATS/report.xml')
-          }
-        }
-        stage('Coverage') {
-          when {
-            expression { params.RUN_COVERAGE == true && params.BUILD_COVERAGE == true && params.RUN_TESTS_COVERAGE == true }
-          }
-          steps {
-            unstash(name: 'CoverageAnalysisData')
-            sh('mkdir -p build/Analysis/Coverage')
-            sh('''gcovr -r . -x --object-directory=build/Coverage/test/ \
-                  > build/Analysis/Coverage/report.xml''')
-            stash(name: 'CoverageResults',
-                  includes: 'build/Analysis/Coverage/report.xml')
-          }
-        }
+          } // steps
+        } // stage('RATS')
         stage('SonarQube analysis') {
           when {
             expression { params.RUN_SONARQUBE == true }
-          }
+          } // when
           steps {
             catchError(buildResult: null, stageResult: null) { unstash(name: 'DebugNoPCHCompDBase')           }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReleaseReports')            }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestDebugReports')              }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestDebugNoPCHReports')         }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestCoverageReports')           }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReports')                   }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSAResults')     }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSA_CTUResults') }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangTidyResults')   }
@@ -590,16 +577,63 @@ pipeline {
             catchError(buildResult: null, stageResult: null) { unstash(name: 'VeraResults')                   }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'RATSResults')                   }
             catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
+            unstash(name: 'source_code')
 
             script {
               def scannerHome = tool 'sonar-scanner';
-              withSonarQubeEnv() {
-                sh "${scannerHome}/bin/sonar-scanner"
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
+              withSonarQubeEnv('SonarQube') {
+                sh(script: "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonarqube.properties", label: 'Run SonarScanner')
+              } // withSonarQubeEnv
+            } // script
+          } // steps
+        } // stage('SonarQube analysis')
+        stage('SonarCloud analysis') {
+          when {
+            expression { params.RUN_SONARCLOUD == true }
+          } // when
+          steps {
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReports')                   }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
+            unstash(name: 'source_code')
+
+            script {
+              def scannerHome = tool 'sonar-scanner';
+              withSonarQubeEnv('SonarCloud') {
+                sh(script: "${scannerHome}/bin/sonar-scanner -Dproject.settings=sonarcloud.properties", label: 'Run SonarScanner')
+              } // withSonarQubeEnv
+            } // script
+          } // steps
+        } // stage('SonarCloud analysis')
+      } // stages
+      post {
+        always {
+          catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
+          catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSAResults')     }
+          catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSA_CTUResults') }
+          catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangTidyResults')   }
+          catchError(buildResult: null, stageResult: null) { unstash(name: 'CppCheckResults')               }
+          catchError(buildResult: null, stageResult: null) { unstash(name: 'InferResults')                  }
+          recordIssues(
+            enabledForFailure: true,
+            referenceJobName: params.REFERENCE_JOB,
+            tools: [
+              [$class: 'Cmake'],
+              cppCheck(pattern: 'build/Analysis/CppCheck/cppcheck.xml'),
+              clang(pattern: 'build/Analysis/CompilerOutput/clang/*.log'),
+              clangAnalyzer(pattern: 'build/Analysis/CodeChecker/ClangSA/*.plist'),
+              clangTidy(pattern: 'build/Analysis/CodeChecker/ClangTidy/*.plist'),
+              infer(pattern: 'build/Analysis/Infer/report.xml'),
+              gcc3(pattern: 'build/Analysis/CompilerOutput/gcc/*.log')
+            ] // tools
+          ) // recordIssues
+        } // always
+      } // post
+    } // stage('Analysis')
+  } // stages
+  post {
+    cleanup {
+      cleanWs()
+    } // cleanup
+  } // post
+} // pipeline

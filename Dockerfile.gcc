@@ -1,0 +1,12 @@
+FROM debian:experimental
+EXPOSE 22
+RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.list.d/sid.list && \
+    echo 'deb http://deb.debian.org/debian bullseye main contrib' > /etc/apt/sources.list.d/buster.list && \
+    echo 'deb http://deb.debian.org/debian buster main contrib' > /etc/apt/sources.list.d/buster.list && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends \
+    python cmake doxygen ninja-build \
+    libboost-all-dev \
+    git \
+    ca-certificates gcc-10 g++-10 lcov libstdc++-10-dev gcovr zsh \
+    valgrind
