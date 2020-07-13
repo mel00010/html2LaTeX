@@ -10,3 +10,5 @@ RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.
     git \
     ca-certificates gcc-10 g++-10 lcov libstdc++-10-dev gcovr zsh \
     valgrind
+RUN update-alternatives --install /usr/bin/cc cc /usr/bin/gcc-10 100
+RUN update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-10 100
