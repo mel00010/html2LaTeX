@@ -306,7 +306,13 @@ pipeline {
       }
       parallel {
         stage('CodeChecker ClangSA CTU') {
-          agent any
+          agent {
+            dockerfile {
+              filename "Dockerfile.clang"
+              args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+              reuseNode true
+            } // dockerfile
+          } // agent
           when {
             expression { params.RUN_CLANGSA_CTU == true && params.DO_BUILD == true}
           } // when
@@ -326,7 +332,13 @@ pipeline {
           post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
         } // stage('CodeChecker ClangSA CTU')
         stage('CodeChecker ClangSA') {
-          agent any
+          agent {
+            dockerfile {
+              filename "Dockerfile.clang"
+              args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+              reuseNode true
+            } // dockerfile
+          } // agent
           when {
             expression { params.RUN_CLANGSA == true && params.DO_BUILD == true}
           } // when
@@ -346,7 +358,13 @@ pipeline {
           post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
         } // stage('CodeChecker ClangSA')
         stage('CodeChecker ClangTidy') {
-          agent any
+          agent {
+            dockerfile {
+              filename "Dockerfile.clang"
+              args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+              reuseNode true
+            } // dockerfile
+          } // agent
           when {
             expression { params.RUN_CLANGTIDY == true && params.DO_BUILD == true}
           } // when
@@ -445,6 +463,37 @@ pipeline {
           } // steps
           post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
         } // stage('RATS')
+      } // parallel
+      post {
+        always {
+          node(null) {
+            cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSAResults')     }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSA_CTUResults') }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangTidyResults')   }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'CppCheckResults')               }
+            catchError(buildResult: null, stageResult: null) { unstash(name: 'InferResults')                  }
+            recordIssues(
+              enabledForFailure: true,
+              referenceJobName: params.REFERENCE_JOB,
+              tools: [
+                [$class: 'Cmake'],
+                cppCheck(pattern: 'build/Analysis/CppCheck/cppcheck.xml'),
+                clang(pattern: 'build/Analysis/CompilerOutput/clang/*.log'),
+                clangAnalyzer(pattern: 'build/Analysis/CodeChecker/ClangSA/*.plist'),
+                clangTidy(pattern: 'build/Analysis/CodeChecker/ClangTidy/*.plist'),
+                infer(pattern: 'build/Analysis/Infer/report.xml'),
+                gcc3(pattern: 'build/Analysis/CompilerOutput/gcc/*.log')
+              ] // tools
+            ) // recordIssues
+            cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+          } // node(null)
+        } // always
+      } // post
+    } // stage('Analysis')
+    stage('Sonar') {
+      parallel {
         stage('SonarQube analysis') {
           agent any
           when {
@@ -479,69 +528,53 @@ pipeline {
           post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
         } // stage('SonarQube analysis')
         stage('SonarCloud analysis') {
-          agent {
-            dockerfile {
-              filename "Dockerfile.gcc"
-              args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
-              reuseNode true
-            } // dockerfile
-          } // agent
-          when {
-            expression { params.RUN_SONARCLOUD == true }
-          } // when
-          environment {
-            SONAR_SCANNER_PATH = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
-            SONAR_BUILD_WRAPPER_PATH = tool name: 'SonarBuildWrapper', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-          } // environment
-          steps {
-            cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-            unstash(name: 'source_code')
-            unstash(name: 'DebugNoPCH_gcc')
-            sh(script: """${SONAR_BUILD_WRAPPER_PATH}/build-wrapper-linux-x86-64 \
-                  --out-dir build/BuildWrapper \
-                  ninja -j4 -C build/gcc/DebugNoPCH all""",
-                  label: 'Build with Sonar Build Wrapper')
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReports')                   }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
-            withSonarQubeEnv('SonarCloud') {
-              ansiColor('xterm') {
-                sh(script: "${SONAR_SCANNER_PATH}/bin/sonar-scanner -Dproject.settings=sonarcloud.properties",
-                   label: 'Run SonarScanner')
-              } // ansiColor('xterm')
-            } // withSonarQubeEnv
-          } // steps
-          post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
+          agent any
+          stages {
+            stage('Setup') {
+              steps {
+                cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+                unstash(name: 'dockerfiles')
+              } // steps
+            } // stage('Setup')
+            stage('Analysis') {
+              agent {
+                dockerfile {
+                  filename "Dockerfile.gcc"
+                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
+                  reuseNode true
+                } // dockerfile
+              } // agent
+              when {
+                expression { params.RUN_SONARCLOUD == true }
+              } // when
+              environment {
+                SONAR_SCANNER_PATH = tool name: 'sonar-scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+                SONAR_BUILD_WRAPPER_PATH = tool name: 'SonarBuildWrapper', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+              } // environment
+              steps {
+                cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+                unstash(name: 'source_code')
+                unstash(name: 'DebugNoPCH_gcc')
+                sh(script: """${SONAR_BUILD_WRAPPER_PATH}/build-wrapper-linux-x86-64 \
+                      --out-dir build/BuildWrapper \
+                      ninja -j4 -C build/gcc/DebugNoPCH all""",
+                      label: 'Build with Sonar Build Wrapper')
+                catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
+                catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReports')                   }
+                catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
+                withSonarQubeEnv('SonarCloud') {
+                  ansiColor('xterm') {
+                    sh(script: "${SONAR_SCANNER_PATH}/bin/sonar-scanner -Dproject.settings=sonarcloud.properties",
+                       label: 'Run SonarScanner')
+                  } // ansiColor('xterm')
+                } // withSonarQubeEnv
+              } // steps
+              post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
+            } // stage('Analysis')
+          } // stages
         } // stage('SonarCloud analysis')
-      } // stages
-      post {
-        always {
-          node(null) {
-            cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSAResults')     }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangSA_CTUResults') }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'CodeCheckerClangTidyResults')   }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'CppCheckResults')               }
-            catchError(buildResult: null, stageResult: null) { unstash(name: 'InferResults')                  }
-            recordIssues(
-              enabledForFailure: true,
-              referenceJobName: params.REFERENCE_JOB,
-              tools: [
-                [$class: 'Cmake'],
-                cppCheck(pattern: 'build/Analysis/CppCheck/cppcheck.xml'),
-                clang(pattern: 'build/Analysis/CompilerOutput/clang/*.log'),
-                clangAnalyzer(pattern: 'build/Analysis/CodeChecker/ClangSA/*.plist'),
-                clangTidy(pattern: 'build/Analysis/CodeChecker/ClangTidy/*.plist'),
-                infer(pattern: 'build/Analysis/Infer/report.xml'),
-                gcc3(pattern: 'build/Analysis/CompilerOutput/gcc/*.log')
-              ] // tools
-            ) // recordIssues
-            cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-          } // node(null)
-        } // always
-      } // post
-    } // stage('Analysis')
+      } // parallel
+    } // stage('Sonar')
   } // stages
 } // pipeline
 
@@ -562,20 +595,8 @@ void collateBuildOutput() {
   catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_RelWithDebInfo_False")  }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_True")         }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CompilerOutput_clang_Coverage_False")        }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_True")             }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Debug_False")            }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_True")           }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Release_False")          }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_True")    }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_RelWithDebInfo_False")   }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_True")          }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_gcc_Coverage_False")         }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_True")           }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Debug_False")          }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_True")         }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Release_False")        }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_True")  }
-  catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_RelWithDebInfo_False") }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_True")        }
   catchError(buildResult: null, stageResult: null) { unstash(name: "CoverageResults_clang_Coverage_False")       }
   catchError(buildResult: null, stageResult: null) { unstash(name: "TestReports_gcc_Debug_True")                 }
