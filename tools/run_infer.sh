@@ -3,7 +3,7 @@
 mkdir -p build/Analysis/Infer
 
 ${INFER_PATH}/infer run \
-  --compilation-database build/clang/DebugNoPCH/compile_commands.json \
+  --compilation-database build/Analysis/tmp/Infer/compile_commands.json \
   --keep-going \
   --skip-analysis-in-path build/ \
   --skip-analysis-in-path-skips-compilation \

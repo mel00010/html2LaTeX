@@ -3,7 +3,7 @@
 mkdir -p build/Analysis/CppCheck
 ${CPPCHECK_PATH}/cppcheck \
   -j6 \
-  --project=build/clang/DebugNoPCH/compile_commands.json \
+  --project=build/Analysis/tmp/CppCheck/compile_commands.json \
   -i"${WORKSPACE}/build" \
   --xml \
   --xml-version=2 \

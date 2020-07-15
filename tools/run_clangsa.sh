@@ -3,7 +3,7 @@
 set +o pipefail
 mkdir -p build/Analysis/CodeChecker/ClangSA
 cat .codechecker_skip | sed "s|*/PROJECT_DIR|${WORKSPACE}|" > build/Analysis/CodeChecker/ClangSA/.codechecker_skip
-${CODECHECKER_PATH}/CodeChecker analyze "build/clang/DebugNoPCH/compile_commands.json" \
+${CODECHECKER_PATH}/CodeChecker analyze "build/Analysis/tmp/ClangSA_CTU/compile_commands.json" \
   -j6 \
   --analyzers clangsa \
   --enable-all \

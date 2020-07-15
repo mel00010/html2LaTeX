@@ -317,7 +317,6 @@ pipeline {
               agent {
                 dockerfile {
                   filename "Dockerfile.clang"
-                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
                   reuseNode true
                 } // dockerfile
               } // agent
@@ -330,6 +329,12 @@ pipeline {
                 unstash(name: 'DebugNoPCH_clang')
                 unstash(name: 'source_code')
                 ansiColor('xterm') {
+                  cmakeBuild( buildType: 'Debug',
+                              generator: 'Ninja',
+                              buildDir: 'build/Analysis/tmp/ClangSA_CTU/',
+                              cleanBuild: params.DO_CLEAN_BUILD,
+                              cmakeArgs: '-DDISABLE_PCH=True',
+                              installation: 'cmake-latest')
                   sh(script: 'tools/run_clangsa_ctu.sh', label: 'Run ClangSA')
                 } // ansiColor('xterm')
                 stash(name: 'CodeCheckerClangSA_CTUResults',
@@ -355,7 +360,6 @@ pipeline {
               agent {
                 dockerfile {
                   filename "Dockerfile.clang"
-                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
                   reuseNode true
                 } // dockerfile
               } // agent
@@ -364,10 +368,14 @@ pipeline {
               }
               steps {
                 cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-                unstash(name: 'DebugNoPCHCompDBase_clang')
-                unstash(name: 'DebugNoPCH_clang')
                 unstash(name: 'source_code')
                 ansiColor('xterm') {
+                  cmakeBuild( buildType: 'Debug',
+                              generator: 'Ninja',
+                              buildDir: 'build/Analysis/tmp/ClangSA/',
+                              cleanBuild: params.DO_CLEAN_BUILD,
+                              cmakeArgs: '-DDISABLE_PCH=True',
+                              installation: 'cmake-latest')
                   sh(script: 'tools/run_clangsa.sh', label: 'Run ClangSA')
                 } // ansiColor('xterm')
                 stash(name: 'CodeCheckerClangSAResults',
@@ -393,7 +401,6 @@ pipeline {
               agent {
                 dockerfile {
                   filename "Dockerfile.clang"
-                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
                   reuseNode true
                 } // dockerfile
               } // agent
@@ -402,10 +409,14 @@ pipeline {
               }
               steps {
                 cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-                unstash(name: 'DebugNoPCHCompDBase_clang')
-                unstash(name: 'DebugNoPCH_clang')
                 unstash(name: 'source_code')
                 ansiColor('xterm') {
+                  cmakeBuild( buildType: 'Debug',
+                              generator: 'Ninja',
+                              buildDir: 'build/Analysis/tmp/ClangTidy/',
+                              cleanBuild: params.DO_CLEAN_BUILD,
+                              cmakeArgs: '-DDISABLE_PCH=True',
+                              installation: 'cmake-latest')
                   sh(script: 'tools/run_clang_tidy.sh', label: 'Run Clang-Tidy')
                 } // ansiColor('xterm')
                 stash(name: 'CodeCheckerClangTidyResults',
@@ -426,10 +437,14 @@ pipeline {
 
           steps {
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-            unstash(name: 'DebugNoPCHCompDBase_clang')
-            unstash(name: 'DebugNoPCH_clang')
             unstash(name: 'source_code')
             ansiColor('xterm') {
+              cmakeBuild( buildType: 'Debug',
+                          generator: 'Ninja',
+                          buildDir: 'build/Analysis/tmp/CppCheck/',
+                          cleanBuild: params.DO_CLEAN_BUILD,
+                          cmakeArgs: '-DDISABLE_PCH=True',
+                          installation: 'cmake-latest')
               sh(script: """tools/run_cppcheck.sh""", label: 'Run CppCheck')
             } // ansiColor('xterm')
             stash(name: 'CppCheckResults',
@@ -442,20 +457,40 @@ pipeline {
           when {
             expression { params.RUN_INFER == true && params.DO_BUILD == true}
           } // when
-          environment {
-            INFER_PATH = tool name: 'infer', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-          } // environment
-          steps {
-            cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-            unstash(name: 'DebugNoPCHCompDBase_clang')
-            unstash(name: 'DebugNoPCH_clang')
-            unstash(name: 'source_code')
-            ansiColor('xterm') {
-              sh(script: 'tools/run_infer.sh', label: 'Run FBInfer')
-            } // ansiColor('xterm')
-            stash(name: 'InferResults',
-                  includes: 'build/Analysis/Infer/report.json')
-          } // steps
+          stages {
+            stage('Setup') {
+              steps {
+                cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+                unstash(name: 'dockerfiles')
+              } // steps
+            } // stage('Setup')
+            stage('Analysis') {
+              agent {
+                dockerfile {
+                  filename "Dockerfile.clang"
+                  reuseNode true
+                } // dockerfile
+              } // agent
+              environment {
+                INFER_PATH = tool name: 'infer', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+              } // environment
+              steps {
+                cleanWs(deleteDirs:true, disableDeferredWipeout: true)
+                unstash(name: 'source_code')
+                ansiColor('xterm') {
+                  cmakeBuild( buildType: 'Debug',
+                              generator: 'Ninja',
+                              buildDir: 'build/Analysis/tmp/Infer/',
+                              cleanBuild: params.DO_CLEAN_BUILD,
+                              cmakeArgs: '-DDISABLE_PCH=True',
+                              installation: 'cmake-latest')
+                  sh(script: 'tools/run_infer.sh', label: 'Run FBInfer')
+                } // ansiColor('xterm')
+                stash(name: 'InferResults',
+                      includes: 'build/Analysis/Infer/report.json')
+              } // steps
+            } // stage('Analysis')
+          } // stages
           post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
         } // stage('Infer')
         stage('Vera++') {
@@ -465,6 +500,7 @@ pipeline {
           } // when
           environment {
             VERA_PATH = tool name: 'vera++', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+            SOURCE_DIRECTORIES = params.SOURCE_DIRECTORIES
           } // environment
           steps {
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
@@ -485,6 +521,7 @@ pipeline {
           } // when
           environment {
             RATS_PATH = tool name: 'rats', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
+            SOURCE_DIRECTORIES = params.SOURCE_DIRECTORIES
           } // environment
           steps {
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
