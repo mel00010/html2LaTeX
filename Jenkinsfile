@@ -500,7 +500,7 @@ pipeline {
           } // when
           environment {
             VERA_PATH = tool name: 'vera++', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-            SOURCE_DIRECTORIES = params.SOURCE_DIRECTORIES
+            SOURCE_DIRECTORIES = "${SOURCE_DIRECTORIES}"
           } // environment
           steps {
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
@@ -521,7 +521,7 @@ pipeline {
           } // when
           environment {
             RATS_PATH = tool name: 'rats', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
-            SOURCE_DIRECTORIES = params.SOURCE_DIRECTORIES
+            SOURCE_DIRECTORIES = "${SOURCE_DIRECTORIES}"
           } // environment
           steps {
             cleanWs(deleteDirs:true, disableDeferredWipeout: true)
