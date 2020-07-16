@@ -18,4 +18,6 @@ RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.gold 1
 RUN update-alternatives --set cc /usr/bin/clang
 RUN update-alternatives --set c++ /usr/bin/clang++
 RUN pip install lxml
+RUN pip install psutil
+RUN pip install portalocker
 
