@@ -95,10 +95,10 @@ pipeline {
         ]) // checkout
         stash(name: 'source_code',
               includes: '**/*',
-              useDefaultExcludes=false)
+              useDefaultExcludes: false)
         stash(name: 'dockerfiles',
               includes: 'Dockerfile.*',
-              useDefaultExcludes=false)
+              useDefaultExcludes: false)
       } // steps
       post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
     } // stage('Checkout')
@@ -142,10 +142,10 @@ pipeline {
                   } // ansiColor('xterm')
                   stash(name: "DebugNoPCHCompDBase_${COMPILER}",
                         includes: "build/${COMPILER}/DebugNoPCH/compile_commands.json",
-                        useDefaultExcludes=false)
+                        useDefaultExcludes: false)
                   stash(name: "DebugNoPCH_${COMPILER}",
                         includes: "build/${COMPILER}/DebugNoPCH/*",
-                        useDefaultExcludes=false)
+                        useDefaultExcludes: false)
                 } // steps
                 post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
               } // stage('Compile')
