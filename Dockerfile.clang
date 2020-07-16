@@ -6,7 +6,7 @@ RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.
     apt-get install -y --no-install-recommends \
     python pip cmake doxygen ninja-build \
     libboost-all-dev git \
-    ca-certificates gcc lcov libstdc++-10-dev libtinfo5 && \
+    ca-certificates gcc lcov libstdc++-10-dev libtinfo5 python-lxml && \
     apt-get install -y --no-install-recommends -t experimental \
     clang libc++1 libc++-dev clang-tidy lld \
     llvm libc++abi-dev gcovr zsh valgrind
