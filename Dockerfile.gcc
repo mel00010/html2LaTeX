@@ -1,5 +1,4 @@
 FROM debian:experimental
-EXPOSE 22
 RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.list.d/sid.list && \
     echo 'deb http://deb.debian.org/debian bullseye main contrib' > /etc/apt/sources.list.d/buster.list && \
     echo 'deb http://deb.debian.org/debian buster main contrib' > /etc/apt/sources.list.d/buster.list && \

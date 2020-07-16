@@ -94,9 +94,11 @@ pipeline {
           userRemoteConfigs: scm.userRemoteConfigs
         ]) // checkout
         stash(name: 'source_code',
-              includes: '**/*')
+              includes: '**/*',
+              useDefaultExcludes=false)
         stash(name: 'dockerfiles',
-              includes: 'Dockerfile.*')
+              includes: 'Dockerfile.*',
+              useDefaultExcludes=false)
       } // steps
       post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
     } // stage('Checkout')
@@ -139,9 +141,11 @@ pipeline {
                                 installation: 'cmake-latest')
                   } // ansiColor('xterm')
                   stash(name: "DebugNoPCHCompDBase_${COMPILER}",
-                        includes: "build/${COMPILER}/DebugNoPCH/compile_commands.json")
+                        includes: "build/${COMPILER}/DebugNoPCH/compile_commands.json",
+                        useDefaultExcludes=false)
                   stash(name: "DebugNoPCH_${COMPILER}",
-                        includes: "build/${COMPILER}/DebugNoPCH/*")
+                        includes: "build/${COMPILER}/DebugNoPCH/*",
+                        useDefaultExcludes=false)
                 } // steps
                 post { cleanup { cleanWs(deleteDirs:true, disableDeferredWipeout: true) } }
               } // stage('Compile')
@@ -303,7 +307,7 @@ pipeline {
       parallel {
         stage('CodeChecker ClangSA CTU') {
           when {
-            expression { params.RUN_CLANGSA_CTU == true && params.DO_BUILD == true}
+            expression { params.RUN_CLANGSA_CTU == true }
           } // when
           agent any
           stages {
@@ -347,7 +351,7 @@ pipeline {
         } // stage('CodeChecker ClangSA CTU')
         stage('CodeChecker ClangSA') {
           when {
-            expression { params.RUN_CLANGSA == true && params.DO_BUILD == true}
+            expression { params.RUN_CLANGSA == true }
           } // when
           agent any
           stages {
@@ -389,7 +393,7 @@ pipeline {
         } // stage('CodeChecker ClangSA')
         stage('CodeChecker Clang-Tidy') {
           when {
-            expression { params.RUN_CLANGTIDY == true && params.DO_BUILD == true}
+            expression { params.RUN_CLANGTIDY == true }
           } // when
           agent any
           stages {
@@ -432,7 +436,7 @@ pipeline {
         stage('CppCheck') {
           agent any
           when {
-            expression { params.RUN_CPPCHECK == true && params.DO_BUILD == true}
+            expression { params.RUN_CPPCHECK == true }
           } // when
           environment {
             CPPCHECK_PATH = tool name: 'cppcheck', type: 'com.cloudbees.jenkins.plugins.customtools.CustomTool'
@@ -458,7 +462,7 @@ pipeline {
         stage('Infer') {
           agent any
           when {
-            expression { params.RUN_INFER == true && params.DO_BUILD == true}
+            expression { params.RUN_INFER == true }
           } // when
           stages {
             stage('Setup') {
@@ -621,7 +625,7 @@ pipeline {
                                 ninja -j4 -C build/gcc/DebugNoPCH all""",
                       label: 'Build with Sonar Build Wrapper')
                 } // ansiColor('xterm')
-                
+
                 catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
                 catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReports')                   }
                 catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }

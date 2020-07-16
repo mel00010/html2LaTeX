@@ -1,13 +1,12 @@
 FROM debian:experimental
-EXPOSE 22
 RUN echo 'deb http://deb.debian.org/debian sid main contrib' > /etc/apt/sources.list.d/sid.list && \
     echo 'deb http://deb.debian.org/debian bullseye main contrib' > /etc/apt/sources.list.d/buster.list && \
     echo 'deb http://deb.debian.org/debian buster main contrib' > /etc/apt/sources.list.d/buster.list && \
     apt-get update && \
     apt-get install -y --no-install-recommends \
-    python cmake doxygen ninja-build \
+    python pip cmake doxygen ninja-build \
     libboost-all-dev git \
-    ca-certificates gcc lcov libstdc++-10-dev && \
+    ca-certificates gcc lcov libstdc++-10-dev libtinfo5 && \
     apt-get install -y --no-install-recommends -t experimental \
     clang libc++1 libc++-dev clang-tidy lld \
     llvm libc++abi-dev gcovr zsh valgrind
@@ -18,5 +17,5 @@ RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.gold 1
 RUN update-alternatives --install /usr/bin/ld ld /usr/bin/ld.gold 1
 RUN update-alternatives --set cc /usr/bin/clang
 RUN update-alternatives --set c++ /usr/bin/clang++
-
+RUN pip install lxml
 
