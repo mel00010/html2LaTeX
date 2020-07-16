@@ -317,6 +317,7 @@ pipeline {
               agent {
                 dockerfile {
                   filename "Dockerfile.clang"
+                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
                   reuseNode true
                 } // dockerfile
               } // agent
@@ -360,6 +361,7 @@ pipeline {
               agent {
                 dockerfile {
                   filename "Dockerfile.clang"
+                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
                   reuseNode true
                 } // dockerfile
               } // agent
@@ -401,6 +403,7 @@ pipeline {
               agent {
                 dockerfile {
                   filename "Dockerfile.clang"
+                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
                   reuseNode true
                 } // dockerfile
               } // agent
@@ -468,6 +471,7 @@ pipeline {
               agent {
                 dockerfile {
                   filename "Dockerfile.clang"
+                  args '-v /var/lib/jenkins/tools/:/var/lib/jenkins/tools/'
                   reuseNode true
                 } // dockerfile
               } // agent
@@ -605,10 +609,19 @@ pipeline {
                 cleanWs(deleteDirs:true, disableDeferredWipeout: true)
                 unstash(name: 'source_code')
                 unstash(name: 'DebugNoPCH_gcc')
-                sh(script: """${SONAR_BUILD_WRAPPER_PATH}/build-wrapper-linux-x86-64 \
-                      --out-dir build/BuildWrapper \
-                      ninja -j4 -C build/gcc/DebugNoPCH all""",
+                ansiColor('xterm') {
+                  cmakeBuild( buildType: 'Debug',
+                              generator: 'Ninja',
+                              buildDir: "build/${COMPILER}/DebugNoPCH",
+                              cleanBuild: params.DO_CLEAN_BUILD,
+                              cmakeArgs: '-DDISABLE_PCH=True',
+                              installation: 'cmake-latest')
+                  sh(script: """${SONAR_BUILD_WRAPPER_PATH}/build-wrapper-linux-x86-64 \
+                                --out-dir build/BuildWrapper \
+                                ninja -j4 -C build/gcc/DebugNoPCH all""",
                       label: 'Build with Sonar Build Wrapper')
+                } // ansiColor('xterm')
+                
                 catchError(buildResult: null, stageResult: null) { unstash(name: 'CompilerOutput')                }
                 catchError(buildResult: null, stageResult: null) { unstash(name: 'TestReports')                   }
                 catchError(buildResult: null, stageResult: null) { unstash(name: 'CoverageResults')               }
