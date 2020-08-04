@@ -67,6 +67,12 @@ pipeline {
             description: 'Reference job for warnings analysis')
   } // parameters
 
+  /* Important note!  CodeChecker shits the bed if a @ symbol is present in any
+   * path that it can see.  Unfortunately, thats the symbol jenkins uses by
+   * default to separate concurrent builds.  So, your jenkins instance must have
+   * the system property -Dhudson.slaves.WorkspaceList="" changed.  I am using
+   * __________ as it is highly unlikely to cause a conflict.
+   */
   stages {
     /**
      * Checkout source code from Github on any of the GIT nodes
@@ -330,8 +336,6 @@ pipeline {
               }
               steps {
                 cleanWs(deleteDirs:true, disableDeferredWipeout: true)
-                unstash(name: 'DebugNoPCHCompDBase_clang')
-                unstash(name: 'DebugNoPCH_clang')
                 unstash(name: 'source_code')
                 ansiColor('xterm') {
                   cmakeBuild( buildType: 'Debug',
